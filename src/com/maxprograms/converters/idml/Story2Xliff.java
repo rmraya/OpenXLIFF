@@ -1,0 +1,581 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2018 Maxprograms.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 1.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/org/documents/epl-v10.html
+ *
+ * Contributors:
+ *     Maxprograms - initial API and implementation
+ *******************************************************************************/
+package com.maxprograms.converters.idml;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.lang.System.Logger.Level;
+import java.lang.System.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import com.maxprograms.converters.Utils;
+import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.xml.Attribute;
+import com.maxprograms.xml.Document;
+import com.maxprograms.xml.Element;
+import com.maxprograms.xml.PI;
+import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
+
+public class Story2Xliff {
+	private static String inputFile;
+	private static String skeletonFile;
+	private static String sourceLanguage;
+	private static String targetLanguage;
+	private static String srcEncoding;
+	private static Segmenter segmenter;
+	private static FileOutputStream output;
+	private static FileOutputStream skeleton;
+	private static int id = 1;
+
+	private Story2Xliff() {
+		// do not instantiate this class
+		// use run method instead
+	}
+
+	public static Vector<String> run(Hashtable<String, String> params) {
+		Vector<String> result = new Vector<>();
+		id = 1;
+		inputFile = params.get("source");
+		String xliffFile = params.get("xliff");
+		skeletonFile = params.get("skeleton");
+		sourceLanguage = params.get("srcLang");
+		targetLanguage = params.get("tgtLang");
+		srcEncoding = params.get("srcEncoding");
+		String elementSegmentation = params.get("paragraph");
+		String initSegmenter = params.get("srxFile");
+		String catalog = params.get("catalog");
+		boolean paragraphSegmentation = false;
+
+		if (elementSegmentation == null) {
+			paragraphSegmentation = false;
+		} else {
+			paragraphSegmentation = elementSegmentation.equals("yes");
+		}
+
+		try {
+			if (!paragraphSegmentation) {
+				segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
+			}
+			skeleton = new FileOutputStream(skeletonFile);
+			output = new FileOutputStream(xliffFile);
+			writeHeader();
+
+			SAXBuilder builder = new SAXBuilder();
+			Document doc = builder.build(inputFile);
+			Element root = doc.getRootElement();
+
+			removeChangeTracking(root);
+
+			writeSkeleton("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
+			List<PI> pis = doc.getPI();
+			for (int i = 0; i < pis.size(); i++) {
+				writeSkeleton(pis.get(i).toString() + "\n");
+			}
+			writeSkeleton("<" + root.getName());
+			List<Attribute> atts = root.getAttributes();
+			Iterator<Attribute> ia = atts.iterator();
+			while (ia.hasNext()) {
+				Attribute a = ia.next();
+				writeSkeleton(
+						" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-5$
+			}
+			writeSkeleton(">");
+
+			List<XMLNode> content = root.getContent();
+			Iterator<XMLNode> it = content.iterator();
+			while (it.hasNext()) {
+				XMLNode n = it.next();
+				if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+					Element e = (Element) n;
+					if (e.getName().equals("Story")) {
+						writeSkeleton("<" + e.getName());
+						atts = e.getAttributes();
+						ia = atts.iterator();
+						while (ia.hasNext()) {
+							Attribute a = ia.next();
+							writeSkeleton(" " + a.getName() + "=\""
+									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-3$
+						}
+						writeSkeleton(">");
+						processStory(e);
+						writeSkeleton("</" + e.getName() + ">");
+					} else {
+						writeSkeleton(e.toString());
+					}
+				}
+				if (n.getNodeType() == XMLNode.TEXT_NODE) {
+					writeSkeleton(((TextNode) n).getText());
+				}
+				if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
+					writeSkeleton(n.toString());
+				}
+				if (n.getNodeType() == XMLNode.CDATA_SECTION_NODE) {
+					writeSkeleton(n.toString());
+				}
+			}
+
+			writeSkeleton("</" + root.getName() + ">");
+			skeleton.close();
+
+			writeString("</body>\n");
+			writeString("</file>\n");
+			writeString("</xliff>");
+			output.close();
+
+			result.add("0");
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			Logger logger = System.getLogger(Story2Xliff.class.getName());
+			logger.log(Level.ERROR, "Error converting Story", e);
+			result.add("1");
+			result.add(e.getMessage());
+		}
+		return result;
+	}
+
+	private static void removeChangeTracking(Element root) {
+		Vector<XMLNode> newContent = new Vector<>();
+		List<XMLNode> nodes = root.getContent();
+		Iterator<XMLNode> it = nodes.iterator();
+		boolean changed = false;
+		while (it.hasNext()) {
+			XMLNode n = it.next();
+			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element e = (Element) n;
+				if (e.getName().equals("Change")) {
+					if (e.getAttributeValue("ChangeType", "").equals("DeletedText")) {
+						changed = true;
+					} else {
+						newContent.addAll(e.getContent());
+						changed = true;
+					}
+				} else {
+					newContent.add(n);
+				}
+			} else {
+				newContent.add(n);
+			}
+		}
+		if (changed) {
+			root.setContent(newContent);
+			mergeContent(root);
+		}
+		List<Element> children = root.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			Element child = children.get(i);
+			removeChangeTracking(child);
+		}
+	}
+
+	private static void mergeContent(Element e) {
+		Vector<XMLNode> newContent = new Vector<>();
+		Element current = null;
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				if (current == null) {
+					current = (Element) node;
+					newContent.add(node);
+				} else {
+					Element next = (Element) node;
+					if (current.getName().equals(next.getName()) && validateAttributes(current, next)) {
+						List<XMLNode> nodes = next.getContent();
+						Iterator<XMLNode> nt = nodes.iterator();
+						while (nt.hasNext()) {
+							current.addContent(nt.next());
+						}
+					} else {
+						newContent.add(next);
+						current = next;
+					}
+				}
+			} else {
+				newContent.add(node);
+			}
+		}
+		e.setContent(newContent);
+		List<Element> children = e.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			mergeContent(children.get(i));
+		}
+	}
+
+	private static boolean validateAttributes(Element current, Element next) {
+		List<Attribute> currentList = current.getAttributes();
+		List<Attribute> nextList = next.getAttributes();
+		if (currentList.size() != nextList.size()) {
+			return false;
+		}
+		for (int i = 0; i < currentList.size(); i++) {
+			Attribute a = currentList.get(i);
+			if (!a.getValue().equals(next.getAttributeValue(a.getName(), ""))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static void writeSkeleton(String string) throws IOException {
+		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
+	}
+
+	private static void processStory(Element root) throws IOException {
+		List<XMLNode> content = root.getContent();
+		Iterator<XMLNode> nit = content.iterator();
+		while (nit.hasNext()) {
+			XMLNode n = nit.next();
+			if (n.getNodeType() == XMLNode.TEXT_NODE) {
+				writeSkeleton(n.toString());
+			}
+			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element e = (Element) n;
+				if (e.getName().equals("ParagraphStyleRange")) {
+					if (hasText(e)) {
+						processPara(e);
+					} else {
+						writeSkeleton(e.toString());
+					}
+				} else {
+					if (e.getChildren().isEmpty()) {
+						writeSkeleton(e.toString());
+					} else {
+						writeSkeleton("<" + e.getName());
+						List<Attribute> atts = e.getAttributes();
+						Iterator<Attribute> ia = atts.iterator();
+						while (ia.hasNext()) {
+							Attribute a = ia.next();
+							writeSkeleton(" " + a.getName() + "=\""
+									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-3$
+						}
+						writeSkeleton(">");
+						processStory(e);
+						writeSkeleton("</" + e.getName() + ">");
+					}
+				}
+			}
+			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
+				writeSkeleton(n.toString());
+			}
+			if (n.getNodeType() == XMLNode.CDATA_SECTION_NODE) {
+				writeSkeleton(n.toString());
+			}
+		}
+	}
+
+	private static void processPara(Element e) throws IOException {
+		cleanAttributes(e);
+		mergeStyles(e);
+		writeSkeleton("<" + e.getName());
+		List<Attribute> atts = e.getAttributes();
+		Iterator<Attribute> ia = atts.iterator();
+		while (ia.hasNext()) {
+			Attribute a = ia.next();
+			writeSkeleton(
+					" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-5$
+		}
+		writeSkeleton(">");
+		String source = "<ph>";
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		boolean preamble = true;
+		while (it.hasNext()) {
+			XMLNode n = it.next();
+			if (n.getNodeType() == XMLNode.TEXT_NODE) {
+				source = source + n.toString();
+			}
+			if (n.getNodeType() == XMLNode.CDATA_SECTION_NODE) {
+				source = source + n.toString();
+			}
+			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element el = (Element) n;
+				if (hasText(el)) {
+					preamble = false;
+					source = source + recurseElement(el);
+				} else {
+					if (preamble) {
+						writeSkeleton(el.toString());
+					} else {
+						source = source + el.toString();
+					}
+				}
+			}
+			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
+				source = source + n.toString();
+			}
+		}
+		source = source + "</ph>";
+		String[] parts = splitCell(source);
+		for (int i = 0; i < parts.length; i++) {
+			String s = parts[i];
+			String first = s.substring(0, s.indexOf("</ph>") + 5);
+			writeSkeleton(first.substring("<ph>".length(), first.length() - "</ph>".length()));
+			if (!first.equals(s)) {
+				String center = s.substring(first.length(), s.lastIndexOf("<ph>"));
+				String last = s.substring(s.lastIndexOf("<ph>"));
+				String[] segments = null;
+				if (segmenter != null) {
+					segments = segmenter.segment(fixTags(center));
+				} else {
+					segments = new String[] { fixTags(center) };
+				}
+				for (int h = 0; h < segments.length; h++) {
+					if (segments[h].trim().equals("")) {
+						writeSkeleton(segments[h]);
+					} else {
+						writeSkeleton("%%%" + id + "%%%\n");
+						writeString("<trans-unit id=\"" + id++ + "\" xml:space=\"preserve\">\n<source>" + segments[h]
+								+ "</source>\n</trans-unit>\n");
+					}
+				}
+				writeSkeleton(last.substring("<ph>".length(), last.length() - "</ph>".length()));
+			}
+		}
+		writeSkeleton("</" + e.getName() + ">");
+	}
+
+	private static void mergeStyles(Element e) {
+		List<XMLNode> newContent = new ArrayList<>();
+		List<XMLNode> content = e.getContent();
+		Element current = null;
+		Element currentStyle = null;
+		for (int i = 0; i < content.size(); i++) {
+			XMLNode node = content.get(i);
+			if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				newContent.add(node);
+			}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element child = (Element) node;
+				if (child.getName().equals("CharacterStyleRange")) {
+					current = child;
+					currentStyle = getStyle(current);
+					int h = 1;
+					int skip = 0;
+					while (i + h < content.size()) {
+						XMLNode next = content.get(i + h);
+						if (next.getNodeType() == XMLNode.ELEMENT_NODE) {
+							Element n = (Element) next;
+							if (n.getName().equals("CharacterStyleRange")) {
+								Element nextStyle = getStyle(n);
+								if (currentStyle.equals(nextStyle)) {
+									String text = extractContent(n);
+									addContent(current, text);
+									skip = h;
+								} else {
+									break;
+								}
+							} else {
+								break;
+							}
+						}
+						h++;
+					}
+					newContent.add(node);
+					i = i + skip;
+				} else {
+					newContent.add(node);
+				}
+			}
+		}
+		e.setContent(newContent);
+	}
+
+	private static void addContent(Element e, String text) {
+		Element content = e.getChild("Content");
+		if (content != null) {
+			content.setText(content.getText() + text);
+		}
+	}
+
+	private static String extractContent(Element e) {
+		Element content = e.getChild("Content");
+		if (content != null) {
+			return content.getText();
+		}
+		return "";
+	}
+
+	private static Element getStyle(Element e) {
+		Element result = new Element(e.getName());
+		List<Attribute> atts = e.getAttributes();
+		for (int i = 0; i < atts.size(); i++) {
+			Attribute a = atts.get(i);
+			result.setAttribute(a.getName(), a.getValue());
+		}
+		List<Element> children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			Element child = it.next();
+			if (!child.getName().equals("Content")) {
+				result.addContent(getStyle(child));
+			}
+		}
+		return result;
+	}
+
+	private static void cleanAttributes(Element e) {
+		Attribute a = e.getAttribute("CharacterDirection");
+		if (a != null && a.getValue().equals("DefaultDirection")) {
+			e.removeAttribute("CharacterDirection");
+		}
+		a = e.getAttribute("DiacriticPosition");
+		if (a != null && a.getValue().equals("DefaultPosition")) {
+			e.removeAttribute("DiacriticPosition");
+		}
+		a = e.getAttribute("DigitsType");
+		if (a != null && a.getValue().equals("DefaultDigits")) {
+			e.removeAttribute("DigitsType");
+		}
+		List<Element> children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			cleanAttributes(it.next());
+		}
+	}
+
+	private static String[] splitCell(String string) {
+		int index = string.indexOf("<Cell");
+		if (index == -1 && string.indexOf("<Br") == -1) {
+			return new String[] { string };
+		}
+		Vector<String> v = new Vector<>();
+		while (index != -1) {
+			v.add(string.substring(0, index) + "</ph>");
+			string = "<ph>" + string.substring(index);
+			index = string.indexOf("<Cell", 5);
+		}
+		v.add(string);
+		// split at <Br
+		Vector<String> v2 = new Vector<>();
+		for (int i = 0; i < v.size(); i++) {
+			String s = v.get(i);
+			int index2 = s.indexOf("<Br");
+			if (index2 == -1) {
+				v2.add(s);
+			} else {
+				while (index2 != -1) {
+					String str = s.substring(0, index2) + "</ph>";
+					v2.add(str);
+					s = "<ph>" + s.substring(index2);
+					index2 = s.indexOf("<Br", 7);
+				}
+				v2.add(s);
+			}
+		}
+		return v2.toArray(new String[v2.size()]);
+	}
+
+	private static String fixTags(String string) {
+		String result = "";
+		int id1 = 1;
+		int start = string.indexOf("<ph>");
+		while (start != -1) {
+			result = result + string.substring(0, start);
+			string = string.substring(start);
+			int end = string.indexOf("</ph>");
+			String clean = Utils.cleanString(string.substring("<ph>".length(), end));
+			result = result + "<ph id=\"" + id1++ + "\">" + clean + "</ph>";
+			if (clean.indexOf('\u2028') != -1) {
+				result = result + "\n";
+			}
+			string = string.substring(end + "</ph>".length());
+			start = string.indexOf("<ph>");
+		}
+		result = result + string;
+		return result;
+	}
+
+	private static String recurseElement(Element e) {
+		String result = "";
+		if (e.getName().equals("Content")) {
+			result = result + "<Content></ph>" + Utils.cleanString(e.getText()) + "<ph></Content>";
+		} else {
+			result = result + "<" + e.getName();
+			List<Attribute> atts = e.getAttributes();
+			Iterator<Attribute> ia = atts.iterator();
+			while (ia.hasNext()) {
+				Attribute a = ia.next();
+				result = result + " " + a.getName() + "=\""
+						+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""; //$NON-NLS-3$
+			}
+			if (e.getContent().isEmpty()) {
+				result = result + " />";
+			} else {
+				result = result + ">";
+				List<XMLNode> content = e.getContent();
+				Iterator<XMLNode> it = content.iterator();
+				while (it.hasNext()) {
+					XMLNode n = it.next();
+					if (n.getNodeType() == XMLNode.TEXT_NODE) {
+						result = result + n.toString();
+					}
+					if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+						result = result + recurseElement((Element) n);
+					}
+				}
+				result = result + "</" + e.getName() + ">";
+			}
+		}
+		return result;
+	}
+
+	private static boolean hasText(Element e) {
+		if (e.getName().equals("Content") && !e.getText().isEmpty()) {
+			return true;
+		}
+		List<Element> children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			if (hasText(it.next())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void writeHeader() throws IOException {
+		String tgtLang = "";
+		if (targetLanguage != null) {
+			tgtLang = "\" target-language=\"" + targetLanguage;
+		}
+		String format = "x-idml";
+		writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
+				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+				+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
+		writeString("<?encoding " + srcEncoding + "?>\n");
+
+		writeString("<file original=\"" + Utils.cleanString(inputFile) + "\" source-language=\"" + sourceLanguage
+				+ tgtLang + "\" datatype=\"" + format + "\">\n");
+		writeString("<header>\n");
+		writeString("   <skl>\n");
+		writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+		writeString("   </skl>\n");
+		writeString("</header>\n");
+		writeString("<body>\n");
+	}
+
+	private static void writeString(String string) throws IOException {
+		output.write(string.getBytes(StandardCharsets.UTF_8));
+	}
+}
