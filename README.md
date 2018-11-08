@@ -4,7 +4,7 @@
 
 An open source set of Java filters for creating and merging XLIFF 1.2 and 2.0 files.
 
-Source code of Open XLIFF Filters is available under [Eclipse Public License 1.0] (https://www.eclipse.org/org/documents/epl-v10.html)
+Source code of Open XLIFF Filters is available under [Eclipse Public License 1.0](https://www.eclipse.org/org/documents/epl-v10.html).
 
 With Open XLIFF Filters you can create XLIFF files that don't use proprietary markup.
 
