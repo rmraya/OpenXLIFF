@@ -14,6 +14,8 @@ package com.maxprograms.converters;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,8 +24,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -110,74 +110,80 @@ public class Merge {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
-
 		try {
-			loadXliff(xliff, catalog);
-			if (root.getAttributeValue("version").equals("2.0")) {
-				File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
-				FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
-				loadXliff(tmpXliff.getAbsolutePath(), catalog);
-				Files.delete(Paths.get(tmpXliff.toURI()));
-				unapproved = true;
-			}
-			if (unapproved) {
-				approveAll(root);
-			}
-
-			List<Element> files = root.getChildren("file");
-			fileSet = new HashSet<>();
-			Iterator<Element> it = files.iterator();
-			while (it.hasNext()) {
-				Element file = it.next();
-				fileSet.add(file.getAttributeValue("original"));
-			}
-			List<PI> encList = root.getPI("encoding");
-			if (!encList.isEmpty()) {
-				encoding = encList.get(0).getData();
-			}
-			segments = new Vector<>();
-			createList(root);
-
-			if (fileSet.size() != 1) {
-				File f = new File(target);
-				if (f.exists()) {
-					if (!f.isDirectory()) {
-						LOGGER.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
-						return;
-					}
-				} else {
-					f.mkdirs();
-				}
-			}
-			Iterator<String> ft = fileSet.iterator();
-			Vector<Hashtable<String, String>> paramsList = new Vector<>();
-			while (ft.hasNext()) {
-				String file = ft.next();
-				File xliffFile = File.createTempFile("temp", ".xlf");
-				saveXliff(file, xliffFile);
-				Hashtable<String, String> params = new Hashtable<>();
-				params.put("xliff", xliffFile.getAbsolutePath());
-				if (fileSet.size() == 1) {
-					params.put("backfile", target);
-				} else {
-					params.put("backfile", Utils.getAbsolutePath(target, file));
-				}
-				params.put("encoding", encoding);
-				params.put("catalog", catalog);
-				params.put("format", dataType);
-				paramsList.add(params);
-			}
-			for (int i = 0; i < paramsList.size(); i++) {
-				Vector<String> result = run(paramsList.get(i));
-				if (!"0".equals(result.get(0))) {
-					LOGGER.log(Level.ERROR, result.get(1));
-					return;
-				}
-				File f = new File(paramsList.get(i).get("xliff"));
-				Files.delete(Paths.get(f.toURI()));
-			}
+			merge(xliff, target, catalog, unapproved);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, e.getMessage(), e);
+		}
+	}
+
+	public static void merge(String xliff, String target, String catalog, boolean unapproved) throws IOException, SAXException, ParserConfigurationException {
+		loadXliff(xliff, catalog);
+		if (root.getAttributeValue("version").equals("2.0")) {
+			File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
+			FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
+			loadXliff(tmpXliff.getAbsolutePath(), catalog);
+			Files.delete(Paths.get(tmpXliff.toURI()));
+			unapproved = true;
+		}
+		if (unapproved) {
+			approveAll(root);
+		}
+
+		List<Element> files = root.getChildren("file");
+		fileSet = new HashSet<>();
+		Iterator<Element> it = files.iterator();
+		while (it.hasNext()) {
+			Element file = it.next();
+			fileSet.add(file.getAttributeValue("original"));
+		}
+		List<PI> encList = root.getPI("encoding");
+		if (!encList.isEmpty()) {
+			encoding = encList.get(0).getData();
+		}
+		if (encoding == null) {
+			throw new IOException("Unknown character set");
+		}
+		segments = new Vector<>();
+		createList(root);
+
+		if (fileSet.size() != 1) {
+			File f = new File(target);
+			if (f.exists()) {
+				if (!f.isDirectory()) {
+					LOGGER.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
+					return;
+				}
+			} else {
+				f.mkdirs();
+			}
+		}
+		Iterator<String> ft = fileSet.iterator();
+		Vector<Hashtable<String, String>> paramsList = new Vector<>();
+		while (ft.hasNext()) {
+			String file = ft.next();
+			File xliffFile = File.createTempFile("temp", ".xlf");
+			saveXliff(file, xliffFile);
+			Hashtable<String, String> params = new Hashtable<>();
+			params.put("xliff", xliffFile.getAbsolutePath());
+			if (fileSet.size() == 1) {
+				params.put("backfile", target);
+			} else {
+				params.put("backfile", Utils.getAbsolutePath(target, file));
+			}
+			params.put("encoding", encoding);
+			params.put("catalog", catalog);
+			params.put("format", dataType);
+			paramsList.add(params);
+		}
+		for (int i = 0; i < paramsList.size(); i++) {
+			Vector<String> result = run(paramsList.get(i));
+			if (!"0".equals(result.get(0))) {
+				LOGGER.log(Level.ERROR, result.get(1));
+				return;
+			}
+			File f = new File(paramsList.get(i).get("xliff"));
+			Files.delete(Paths.get(f.toURI()));
 		}
 	}
 
@@ -457,6 +463,46 @@ public class Merge {
 			left.setAttribute("approved", "no");
 		}
 		return left;
+	}
+
+	public static String getTargetFile(String file) throws IOException, SAXException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		Element r = builder.build(file).getRootElement();
+		if (!r.getName().equals("xliff")) {
+			throw new IOException("Selected file is not an XLIFF document");			
+		}
+		List<Element> files = r.getChildren("file");
+		if (files.isEmpty()) {
+			throw new IOException("Selected file is not a valid XLIFF document");
+		}
+		String version = r.getAttributeValue("version");
+		String tgtLanguage = "";
+		if (version.equals("1.2")) {
+			tgtLanguage = files.get(0).getAttributeValue("target-language");
+		} else {
+			tgtLanguage = r.getAttributeValue("trgLang");
+		}
+		if (tgtLanguage.isEmpty()) {
+			throw new IOException("Missing target language");
+		}
+		String target = "Unknown";
+		if (files.size() == 1) {
+			if (file.endsWith(".xlf")) { 
+				target = file.substring(0,file.length()-4);
+				if (target.indexOf(".") != -1) { 
+					target = target.substring(0,target.lastIndexOf("."))  
+							+ "_" + tgtLanguage + target.substring(target.lastIndexOf("."));  
+				}
+			} else {
+				if (target.indexOf(".") != -1) { 
+					target = target.substring(0,target.lastIndexOf("."))  
+							+ "_" + tgtLanguage + target.substring(target.lastIndexOf("."));  
+				}
+			}
+		} else {
+			target = new File(file).getParentFile().getAbsolutePath() +  System.getProperty("file.separator") + tgtLanguage;
+		}
+		return "{\"xliff\": \"" + file + "\", \"target\": \"" + target + "\"}";
 	}
 
 }

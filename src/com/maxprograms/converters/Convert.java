@@ -320,7 +320,7 @@ public class Convert {
 		System.out.println(help);
 	}
 
-	private static void addSkeleton(String fileName, String catalog)
+	public static void addSkeleton(String fileName, String catalog)
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
