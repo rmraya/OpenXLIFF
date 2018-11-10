@@ -9,7 +9,7 @@ mkdir .\open_filters\srx
 xcopy srx open_filters\srx /S
 
 mkdir .\open_filters\xmlfilter
-xcopy srx open_filters\xmlfilter /S
+xcopy xmlfilter open_filters\xmlfilter /S
 
 xcopy convert.bat open_filters\
 xcopy merge.bat open_filters\
