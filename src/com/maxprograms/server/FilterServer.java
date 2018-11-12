@@ -161,12 +161,13 @@ public class FilterServer implements HttpHandler {
 		String target;
 		try {
 			target = Merge.getTargetFile(file);
-			return target;
+			if (!target.isEmpty()) {
+				return "{\"target\": \"" + target + "\"}";
+			}
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error getting target file", e);
-			return "{\"xliff\": \"" + file + "\", \"target\": \"Unknown\"}";
 		}
-
+		return "{\"target\": \"Unknown\"}";
 	}
 
 	private static String getCharsets() {

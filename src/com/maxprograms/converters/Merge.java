@@ -103,6 +103,14 @@ public class Merge {
 			return;
 		}
 		if (target.isEmpty()) {
+			try {
+				target = getTargetFile(xliff);
+			} catch (IOException | SAXException | ParserConfigurationException e) {
+				LOGGER.log(Level.ERROR, "Error getting target file", e);
+				return;
+			}
+		}
+		if (target.isEmpty()) {
 			LOGGER.log(Level.ERROR, "Missing '-target' parameter.");
 			return;
 		}
@@ -197,7 +205,7 @@ public class Merge {
 				+ "   -help:       (optional) Display this help information and exit\n"
 				+ "   -version:    (optional) Display version & build information and exit\n"
 				+ "   -xliff:      XLIFF file to merge\n"
-				+ "   -target:     translated file or folder where to store translated files\n"
+				+ "   -target:     (optional) translated file or folder where to store translated files\n"
 				+ "   -catalog:    (optional) XML catalog to use for processing\n"
 				+ "   -unapproved: (optional) accept translations from unapproved segments\n\n";
 		System.out.println(help);
@@ -485,7 +493,7 @@ public class Merge {
 		if (tgtLanguage.isEmpty()) {
 			throw new IOException("Missing target language");
 		}
-		String target = "Unknown";
+		String target = "";
 		if (files.size() == 1) {
 			if (file.endsWith(".xlf")) { 
 				target = file.substring(0,file.length()-4);
@@ -502,7 +510,7 @@ public class Merge {
 		} else {
 			target = new File(file).getParentFile().getAbsolutePath() +  System.getProperty("file.separator") + tgtLanguage;
 		}
-		return "{\"xliff\": \"" + file + "\", \"target\": \"" + target + "\"}";
+		return target;
 	}
 
 }
