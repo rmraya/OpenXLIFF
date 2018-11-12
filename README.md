@@ -1,4 +1,4 @@
-![alt text](https://maxprograms.com/images/openxliff_m.png "Open Xliff Filters")
+![alt text](https://maxprograms.com/images/openxliff_s.png "Open Xliff Filters")
 
 ## Open XLIFF Filters
 
@@ -7,6 +7,9 @@ An open source set of Java filters for creating and merging XLIFF 1.2 and 2.0 fi
 Source code of Open XLIFF Filters is available under [Eclipse Public License 1.0](https://www.eclipse.org/org/documents/epl-v10.html).
 
 With Open XLIFF Filters you can create XLIFF files that don't use proprietary markup.
+
+Project 
+[XLIFF Manager](https://github.com/rmraya/XLIFFManager) implements an easy to use UI for creating/merging XLIFF files in a graphical environment. 
 
 ### Supported File Formats
 
