@@ -158,16 +158,18 @@ public class FilterServer implements HttpHandler {
 
 	private static String getTargetFile(JSONObject json) {
 		String file = json.getString("file");
-		String target;
+		String target = "";
 		try {
 			target = Merge.getTargetFile(file);
-			if (!target.isEmpty()) {
-				return "{\"target\": \"" + target + "\"}";
-			}
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error getting target file", e);
 		}
-		return "{\"target\": \"Unknown\"}";
+		if (target.isEmpty()) {
+			target = "Unknown";
+		}
+		JSONObject result = new JSONObject();
+		result.put("target", target);
+		return result.toString();
 	}
 
 	private static String getCharsets() {

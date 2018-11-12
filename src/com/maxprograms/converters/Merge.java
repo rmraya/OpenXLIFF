@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -494,7 +495,12 @@ public class Merge {
 			throw new IOException("Missing target language");
 		}
 		String target = "";
-		if (files.size() == 1) {
+		TreeSet<String> originals = new TreeSet<>();
+		Iterator<Element> it = files.iterator();
+		while (it.hasNext()) {
+			originals.add(it.next().getAttributeValue("original",""));
+		}
+		if (originals.size() == 1) {
 			if (file.endsWith(".xlf")) { 
 				target = file.substring(0,file.length()-4);
 				if (target.indexOf(".") != -1) { 
