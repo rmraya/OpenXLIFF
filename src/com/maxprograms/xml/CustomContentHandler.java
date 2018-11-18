@@ -227,7 +227,12 @@ class CustomContentHandler implements ContentHandler, LexicalHandler {
 			current = child;
 		}
 		for (int i = 0; i < atts.getLength(); i++) {
-			current.setAttribute(atts.getQName(i), atts.getValue(i));
+			String u = atts.getURI(i);
+			String name = atts.getQName(i);
+			if (u.equals("http://www.w3.org/XML/1998/namespace") && !name.startsWith("xml:")) {
+				name = "xml:" + name;
+			}
+			current.setAttribute(name, atts.getValue(i));
 		}
 	}
 
