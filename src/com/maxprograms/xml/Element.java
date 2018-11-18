@@ -241,6 +241,20 @@ public class Element implements XMLNode, Serializable {
 		return name;
 	}
 
+	public String getLocalName() {
+		if (name.indexOf(':') == -1) {
+			return name;
+		}
+		return name.substring(name.indexOf(':'));
+	}
+	
+	public String getNamespace() {
+		if (name.indexOf(':') == -1) {
+			return "";
+		}
+		return name.substring(0, name.indexOf(':'));
+	}
+	
 	@Override
 	public short getNodeType() {
 		return XMLNode.ELEMENT_NODE;
