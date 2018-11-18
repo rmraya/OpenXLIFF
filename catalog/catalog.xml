@@ -19,7 +19,8 @@
 	<uri name="urn:oasis:names:tc:xliff:document:1.2" uri="xliff/xliff-core-1.2-transitional.xsd"/>
 	<system systemId="xliff-core-1.2-strict.xsd" uri="xliff/xliff-core-1.2-strict.xsd"/>
 	<system systemId="xliff-core-1.2-transitional.xsd" uri="xliff/xliff-core-1.2-transitional.xsd"/>
-	<nextCatalog catalog="xliff/catalog.xml"/>
+	<nextCatalog catalog="xliff2.0/catalog.xml"/>
+	<nextCatalog catalog="xliff2.1/catalog.xml"/>
 	
 	<uri name="urn:lisa-metrics-tags" uri="gmx-v/gmx-v.xsd"/>
 	<system systemId="http://www.xml-intl.com/dtd/GMX-V.xsd" uri="gmx-v/gmx-v.xsd"/>	
