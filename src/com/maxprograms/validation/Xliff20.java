@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2018 Maxprograms.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 1.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/org/documents/epl-v10.html
+ *
+ * Contributors:
+ *     Maxprograms - initial API and implementation
+ *******************************************************************************/
+
 package com.maxprograms.validation;
 
 import java.io.File;
@@ -25,6 +37,7 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 
 public class Xliff20 {
 
@@ -51,11 +64,16 @@ public class Xliff20 {
 	private HashSet<String> fileId;
 	private HashSet<String> groupId;
 	private HashSet<String> unitId;
+	private HashSet<String> cantDelete;
+	private HashSet<String> sourceId;
+	private HashSet<String> dataId;
 	private HashSet<String> matchId;
 	private HashSet<String> metaId;
 	private HashSet<String> glossId;
 	private boolean inMatch;
 	private boolean isReference;
+	private boolean inSource;
+	private boolean inTarget;
 	
 	public Xliff20() throws IOException {
 		registry = new RegistryParser();
@@ -142,7 +160,7 @@ public class Xliff20 {
 
 			if (XLIFF_GLOSSARY_2_0.equals(declaredNamespaces.get(namespace))) {
 				// In Glossary module
-				
+
 				if ("glossary".equals(e.getLocalName())) {
 					glossId = new HashSet<>();
 				}
@@ -236,6 +254,7 @@ public class Xliff20 {
 				return false;
 			}
 			unitId.add(id);
+			dataId = new HashSet<>();
 		}
 
 		if ("source".equals(e.getLocalName())) {
@@ -244,6 +263,9 @@ public class Xliff20 {
 				reason = "Different \"xml:lang\" in <source>";
 				return false;
 			}
+			sourceId = new HashSet<>();
+			cantDelete = new HashSet<>();
+			inSource = true;
 		}
 
 		if ("target".equals(e.getLocalName())) {
@@ -260,8 +282,173 @@ public class Xliff20 {
 				reason = "Different \"xml:lang\" in <target> from <mtc:match>";
 				return false;
 			}
+			inTarget = true;
 		}
 
+		if ("data".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (dataId.contains(id)) {
+				reason = "Duplicated \"id\" in <data>";
+				return false;
+			}
+			dataId.add(id);
+		}
+		
+		// Inline elements
+
+		if ("cp".equals(e.getLocalName())) {
+			String hex = e.getAttributeValue("hex");
+			int value = Integer.valueOf(hex, 16);
+			String s = "" + (char) value;
+			if (s.equals(XMLUtils.validChars(s))) {
+				reason = "Valid XML character represented as <cp>";
+				return false;
+			}
+		}
+
+		if ("ph".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (inSource) {
+				if (sourceId.contains(id)) {
+					reason = "Duplicated \"id\" in <ph/>";
+					return false;
+				}
+				sourceId.add(id);
+				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.add(id);
+				}
+			}
+			if (inTarget) {
+				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.remove(id);
+				}
+			}
+			String dataRef = e.getAttributeValue("dataRef");
+			if (!dataRef.isEmpty()) {
+				if (!dataId.contains(dataRef)) {
+					reason = "Missing <data> element referenced by <ph>";
+					return false;
+				}
+			}
+		}
+		
+		if ("pc".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (inSource) {
+				if (sourceId.contains(id)) {
+					reason = "Duplicated \"id\" in <pc/>";
+					return false;
+				}
+				sourceId.add(id);
+				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.add(id);
+				}
+			}
+			if (inTarget) {
+				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.remove(id);
+				}
+			}
+			String dataRefStart = e.getAttributeValue("dataRefStart");
+			if (!dataRefStart.isEmpty()) {
+				if (!dataId.contains(dataRefStart)) {
+					reason = "Missing <data> element referenced by \"dataRefStart\" <pc>";
+					return false;
+				}
+			}
+			String dataRefEnd = e.getAttributeValue("dataRefEnd");
+			if (!dataRefEnd.isEmpty()) {
+				if (!dataId.contains(dataRefEnd)) {
+					reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc>";
+					return false;
+				}
+			}
+		}
+		
+		if ("sc".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (inSource) {
+				if (sourceId.contains(id)) {
+					reason = "Duplicated \"id\" in <sc/>";
+					return false;
+				}
+				sourceId.add(id);
+				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.add(id);
+				}
+			}
+			if (inTarget) {
+				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.remove(id);
+				}
+			}
+			String dataRef = e.getAttributeValue("dataRef");
+			if (!dataRef.isEmpty()) {
+				if (!dataId.contains(dataRef)) {
+					reason = "Missing <data> element referenced by <sc>";
+					return false;
+				}
+			}
+		}
+		
+		if ("ec".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (!id.isEmpty()) {
+				if (inSource) {
+					if (sourceId.contains(id)) {
+						reason = "Duplicated \"id\" in <ec/>";
+						return false;
+					}
+					sourceId.add(id);
+					if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+						cantDelete.add(id);
+					}
+				}
+				if (inTarget) {
+					if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+						cantDelete.remove(id);
+					}
+				}
+			} 
+			String dataRef = e.getAttributeValue("dataRef");
+			if (!dataRef.isEmpty()) {
+				if (!dataId.contains(dataRef)) {
+					reason = "Missing <data> element referenced by <ec>";
+					return false;
+				}
+			}
+		}
+
+		if ("mrk".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (inSource) {
+				if (sourceId.contains(id)) {
+					reason = "Duplicated \"id\" in <mrk/>";
+					return false;
+				}
+				sourceId.add(id);
+			}			
+		}
+		
+		if ("sm".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (inSource) {
+				if (sourceId.contains(id)) {
+					reason = "Duplicated \"id\" in <sm/>";
+					return false;
+				}
+				sourceId.add(id);
+			}			
+		}
+		
+		if ("em".equals(e.getLocalName())) {
+			String startRef = e.getAttributeValue("startRef");
+			if (!sourceId.contains(startRef)) {
+				reason = "Missing <sm> referenced by <em>";
+				return false;
+			}
+		}
+		
 		List<Element> children = e.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			boolean result = recurse(children.get(i));
@@ -273,6 +460,17 @@ public class Xliff20 {
 			inMatch = false;
 			isReference = false;
 		}
+		if ("source".equals(e.getLocalName())) {
+			inSource = false;
+		}
+		if ("target".equals(e.getLocalName())) {
+			if (!cantDelete.isEmpty()) {
+				reason = "Inline element with \"canDelete\" set to \"no\" is missing in <target>";
+				return false;
+			}
+			inTarget = false;
+		}
+
 		return true;
 	}
 
