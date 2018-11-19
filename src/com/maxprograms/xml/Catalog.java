@@ -348,4 +348,14 @@ public class Catalog implements EntityResolver2 {
 		contentHandler = handler;
 	}
 
+	public String getLocation(String urn) {
+		if (urn.startsWith("urn:publicid:")) {
+			urn = unwrapUrn(urn);
+		}
+		if (catalog.containsKey(urn)) {
+			return (String) catalog.get(urn);
+		}
+		return null;
+	}
+	
 }

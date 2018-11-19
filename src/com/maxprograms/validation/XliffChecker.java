@@ -160,8 +160,14 @@ public class XliffChecker {
 					return false;
 				}
 			} else if ("2.0".equals(version)) {
-				reason = "XLIFF 2.0 not supported yet";
-				return false;
+				// validate with schemas only, for now
+				Xliff20 validator = new Xliff20();
+				boolean valid = validator.validate(file, catalog);
+				if (!valid) {
+					reason = validator.getReason();
+					return false;
+				}
+				return true;
 			} else if ("2.1".equals(version)) {
 				reason = "XLIFF 2.1 not supported yet";
 				return false;
@@ -1122,7 +1128,7 @@ public class XliffChecker {
 			// custom language code
 			return true;
 		}
-		return !registry.getTagDescription(lang).equals("");
+		return !registry.getTagDescription(lang).isEmpty();
 	}
 
 }

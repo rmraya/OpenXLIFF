@@ -91,7 +91,7 @@ public class Attribute implements XMLNode, Serializable, Comparable<Attribute> {
 		if (name.indexOf(':') == -1) {
 			return name;
 		}
-		return name.substring(name.indexOf(':'));
+		return name.substring(name.indexOf(':')+1);
 	}
 	
 	public String getNamespace() {
