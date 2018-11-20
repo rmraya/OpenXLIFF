@@ -1,4 +1,4 @@
-![alt text](https://maxprograms.com/images/openxliff_s.png "Open Xliff Filters")
+![alt text](https://maxprograms.com/images/openxliff_s.png "Open XLIFF Filters")
 
 ## Open XLIFF Filters
 
@@ -8,8 +8,22 @@ Source code of Open XLIFF Filters is available under [Eclipse Public License 1.0
 
 With Open XLIFF Filters you can create XLIFF files that don't use proprietary markup.
 
+**XLIFFChecker**, an open source XLIFF validation tool, is now part of Open XLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
+
+ - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
+ - **[Converting Documents to XLIFF] (https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
+ - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
+ - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#converting-xliff-validation)** 
+
 Project 
-[XLIFF Manager](https://github.com/rmraya/XLIFFManager) implements an easy to use UI for creating/merging XLIFF files in a graphical environment. 
+**[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment. 
+
+### Releases
+
+Version | Comment | Release Date
+--------|---------|-------------
+1.1.0 | Incorporated XLIFFChecker code| November 20, 2018
+1.0.0 | Initial Release | November 12, 2018
 
 ### Supported File Formats
 
@@ -106,7 +120,7 @@ Document Types
    XML = XML Document
    XMLG = XML (Generic)
 ```
-Only two parameters are absolutly required: `-file` and `-srcLang`. The library tries to automatically detect format and encoding and exits with an error message if it can't guess them. If automatic detection doesn't work, add `-type` and `-enc` parameters.
+Only two parameters are absolutely required: `-file` and `-srcLang`. The library tries to automatically detect format and encoding and exits with an error message if it can't guess them. If automatic detection doesn't work, add `-type` and `-enc` parameters.
 
 Character sets vary with the operating system. Run the conversion script with `-charsets` to get a list of character sets available in you OS.
 
@@ -136,6 +150,32 @@ Where:
    -catalog:    (optional) XML catalog to use for processing
    -unapproved: (optional) accept translations from unapproved segments
 ```
+### XLIFF Validation
+
+The original [XLIFFChecker code](http://sourceforge.net/p/xliffchecker/code/) supports XLIFF 1.0, 1.1 and 1.2. The new version incorporated in Open XIFF Filters also supports XLIFF 2.0.
+
+All XLIFF 2.0 modules are validated using XML Schema validation. 
+
+Standard XML Schema validation does not detect the use of duplicated 'id' attributes, wrong language codes and other constraints written in the different XLIFF specifications.
+
+Extra validation is performed for XLIFF 2.0 Core and for Metadata, Matches and Glossary modules.
+
+
+You can use the library in your own Java code. validation of XLIFF files is handled by the class `com.maxprograms.validation.XliffChecker`.
+
+If you use binaries from the command line, running `.\xliffchecker.bat` or `./xliffchecker.sh` without parameters displays help for XLIFF validation. 
+
+```
+Usage:
+
+   xliffchecker.bat [-help] -file xliffFile [-catalog catalogFile]
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -file:      XLIFF file to validate
+   -catalog:   (optional) XML catalog to use for processing
+```   
 
 
 
