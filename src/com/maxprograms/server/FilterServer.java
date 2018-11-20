@@ -43,6 +43,7 @@ import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Merge;
 import com.maxprograms.languages.Language;
+import com.maxprograms.validation.XliffChecker;
 import com.maxprograms.xliff2.ToXliff2;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -127,6 +128,9 @@ public class FilterServer implements HttpHandler {
 			if (command.equals("getTargetFile")) {
 				response = getTargetFile(json);
 			}
+			if (command.equals("validateXliff")) {
+				response = validateXliff(json);
+			}
 			if (command.equals("getTypes") || uri.toString().endsWith("/getTypes")) {
 				response = getTypes();
 			}
@@ -154,6 +158,39 @@ public class FilterServer implements HttpHandler {
 				os.write(response.getBytes());
 			}
 		}
+	}
+
+	private String validateXliff(JSONObject json) {
+		// TODO Auto-generated method stub
+		String file = json.getString("file");
+		catalog = "";
+		try {
+			catalog = json.getString("catalog");
+		} catch (JSONException je) {
+			// do nothing
+		}
+		if (catalog.isEmpty()) {
+			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
+		}
+		JSONObject result = new JSONObject();
+		try {
+			XliffChecker validator = new XliffChecker();
+			boolean valid = validator.validate(file, catalog);
+			result.put("valid", valid);
+			if (valid) {
+				String version = validator.getVersion();
+				result.put("comment", "Selected file is valid XLIFF " + version);
+			} else {
+				String reason = validator.getReason();
+				result.put("reason", reason);
+			}
+			result.put("status", "OK");
+		} catch (IOException e) {
+			result.put("status", "error");
+			result.put("reason", e.getMessage());
+		}
+		return result.toString(2);
 	}
 
 	private static String getTargetFile(JSONObject json) {
