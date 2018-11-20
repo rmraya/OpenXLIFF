@@ -9,7 +9,8 @@ Source code of Open XLIFF Filters is available under [Eclipse Public License 1.0
 With Open XLIFF Filters you can create XLIFF files that don't use proprietary markup.
 
 **XLIFFChecker**, an open source XLIFF validation tool, is now part of Open XLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
-
+ - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
+ - **[Downloads](https://github.com/rmraya/OpenXLIFF#downloads)**
  - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
  - **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
  - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
@@ -24,6 +25,12 @@ Version | Comment | Release Date
 --------|---------|-------------
 1.1.0 | Incorporated XLIFFChecker code| November 20, 2018
 1.0.0 | Initial Release | November 12, 2018
+
+### Downloads
+
+Ready to use binaries for Windows, Linux and macOS are available for download at https://www.maxprograms.com/products/openxliff.html  
+
+If you prefer to use a graphical interface instead of the command line, get installers for **XLIFF Manager** at https://www.maxprograms.com/products/xliffmanager.html
 
 ### Supported File Formats
 
