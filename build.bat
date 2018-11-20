@@ -14,6 +14,7 @@ xcopy xmlfilter open_filters\xmlfilter /S
 xcopy convert.bat open_filters\
 xcopy merge.bat open_filters\
 xcopy server.bat open_filters\
+xcopy xliffchecker.bat open_filters\
 xcopy LICENSE open_filters\
 
 
