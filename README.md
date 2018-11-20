@@ -11,9 +11,9 @@ With Open XLIFF Filters you can create XLIFF files that don't use proprietary ma
 **XLIFFChecker**, an open source XLIFF validation tool, is now part of Open XLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
 
  - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
- - **[Converting Documents to XLIFF] (https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
+ - **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
  - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
- - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#converting-xliff-validation)** 
+ - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)** 
 
 Project 
 **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment. 
