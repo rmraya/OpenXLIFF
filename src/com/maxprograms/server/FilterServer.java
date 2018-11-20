@@ -55,6 +55,7 @@ public class FilterServer implements HttpHandler {
 
 	private HttpServer server;
 	private Hashtable<String, String> running;
+	private Hashtable<String, JSONObject> validationResults;
 	private boolean embed;
 	private String xliff;
 	private String catalog;
@@ -84,6 +85,7 @@ public class FilterServer implements HttpHandler {
 
 	public FilterServer(int port) throws IOException {
 		running = new Hashtable<>();
+		validationResults = new Hashtable<>();
 		server = HttpServer.create(new InetSocketAddress(port), 0);
 		server.createContext("/FilterServer", this);
 		server.setExecutor(null); // creates a default executor
@@ -121,6 +123,9 @@ public class FilterServer implements HttpHandler {
 			}
 			if (command.equals("status")) {
 				response = getStatus(json);
+			}
+			if (command.equals("validationResult")) {
+				response = getValidationResult(json);
 			}
 			if (command.equals("getFileType")) {
 				response = getFileType(json);
@@ -161,7 +166,6 @@ public class FilterServer implements HttpHandler {
 	}
 
 	private String validateXliff(JSONObject json) {
-		// TODO Auto-generated method stub
 		String file = json.getString("file");
 		catalog = "";
 		try {
@@ -173,24 +177,37 @@ public class FilterServer implements HttpHandler {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
-		JSONObject result = new JSONObject();
-		try {
-			XliffChecker validator = new XliffChecker();
-			boolean valid = validator.validate(file, catalog);
-			result.put("valid", valid);
-			if (valid) {
-				String version = validator.getVersion();
-				result.put("comment", "Selected file is valid XLIFF " + version);
-			} else {
-				String reason = validator.getReason();
-				result.put("reason", reason);
+		
+		String process = "" + System.currentTimeMillis();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				running.put(process,"running");
+				try {
+					XliffChecker validator = new XliffChecker();
+					boolean valid = validator.validate(file, catalog);
+					JSONObject result = new JSONObject();
+					result.put("valid", valid);
+					if (valid) {
+						String version = validator.getVersion();
+						result.put("comment", "Selected file is valid XLIFF " + version);
+					} else {
+						String reason = validator.getReason();
+						result.put("reason", reason);
+					}
+					validationResults.put(process, result);
+					if (running.get(process).equals(("running"))) {
+						LOGGER.log(Level.INFO, "Validation completed");
+						running.put(process,"completed");
+					}
+				} catch (IOException  e) {
+					LOGGER.log(Level.ERROR, "Error validating file", e);
+					running.put(process,e.getMessage());
+				}
 			}
-			result.put("status", "OK");
-		} catch (IOException e) {
-			result.put("status", "error");
-			result.put("reason", e.getMessage());
-		}
-		return result.toString(2);
+		}).start();
+		return "{\"process\":\"" + process + "\"}";
 	}
 
 	private static String getTargetFile(JSONObject json) {
@@ -247,6 +264,20 @@ public class FilterServer implements HttpHandler {
 		return "{\"status\": \"" + status + "\"}";
 	}
 
+	private String getValidationResult(JSONObject json) {
+		JSONObject result = new JSONObject();
+		try {
+			String process = json.getString("process");
+			result = validationResults.get(process);
+			validationResults.remove(process);
+		} catch (JSONException je) {
+			LOGGER.log(Level.ERROR, je);
+			result.put("valid", false);
+			result.put("reason", "Error retrieving result from server");
+		}
+		return result.toString(2);
+	}
+	
 	private String merge(JSONObject json) {
 		xliff = "";
 		try {

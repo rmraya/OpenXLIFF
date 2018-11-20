@@ -43,7 +43,8 @@ public class XliffChecker {
 	private String version;
 
 	private RegistryParser registry;
-
+	
+	private HashSet<String> xliffNamespaces;
 	private Hashtable<String, Set<String>> attributesTable;
 	private Hashtable<String, String> altSrcItTable;
 	private Hashtable<String, String> altTgtItTable;
@@ -155,6 +156,9 @@ public class XliffChecker {
 
 	public XliffChecker() throws IOException {
 		registry = new RegistryParser();
+		xliffNamespaces = new HashSet<>();
+		xliffNamespaces.add("urn:oasis:names:tc:xliff:document:1.1");
+		xliffNamespaces.add("urn:oasis:names:tc:xliff:document:1.2");
 	}
 
 	public boolean validate(String file, String catalog) {
@@ -587,7 +591,7 @@ public class XliffChecker {
 			return true;
 		}
 		String namespace = e.getAttributeValue("xmlns");
-		if (!namespace.isEmpty()) {
+		if (!namespace.isEmpty() && !xliffNamespaces.contains(namespace)) {
 			// ignore element from another namespace
 			return true;
 		}
