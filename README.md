@@ -161,11 +161,9 @@ Where:
 
 The original [XLIFFChecker code](http://sourceforge.net/p/xliffchecker/code/) supports XLIFF 1.0, 1.1 and 1.2. The new version incorporated in Open XIFF Filters also supports XLIFF 2.0.
 
-All XLIFF 2.0 modules are validated using XML Schema validation. 
-
 Standard XML Schema validation does not detect the use of duplicated 'id' attributes, wrong language codes and other constraints written in the different XLIFF specifications.
 
-Extra validation is performed for XLIFF 2.0 Core and for Metadata, Matches and Glossary modules.
+All XLIFF 2.0 modules are validated using XML Schema validation in a first pass. Extra validation is then performed using Java code for XLIFF 2.0 Core and for Metadata, Matches and Glossary modules.
 
 
 You can use the library in your own Java code. validation of XLIFF files is handled by the class `com.maxprograms.validation.XliffChecker`.
