@@ -129,7 +129,7 @@ Document Types
 ```
 Only two parameters are absolutely required: `-file` and `-srcLang`. The library tries to automatically detect format and encoding and exits with an error message if it can't guess them. If automatic detection doesn't work, add `-type` and `-enc` parameters.
 
-Character sets vary with the operating system. Run the conversion script with `-charsets` to get a list of character sets available in you OS.
+Character sets vary with the operating system. Run the conversion script with `-charsets` to get a list of character sets available in your OS.
 
 By default, XLIFF and skeleton are generated in the folder where the source document is located. Extensions used for XLIFF and Skeleton are `.xlf` and `.skl`.
 
