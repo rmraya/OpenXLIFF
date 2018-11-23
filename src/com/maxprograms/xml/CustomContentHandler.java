@@ -18,12 +18,10 @@ import java.util.Stack;
 import java.util.Vector;
 
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.LexicalHandler;
 
-class CustomContentHandler implements ContentHandler, LexicalHandler {
+class CustomContentHandler implements IContentHandler {
 
 	private Document doc;
 	private Element current;
@@ -266,6 +264,7 @@ class CustomContentHandler implements ContentHandler, LexicalHandler {
 		}
 	}
 
+	@Override
 	public Document getDocument() {
 		return doc;
 	}
@@ -338,10 +337,6 @@ class CustomContentHandler implements ContentHandler, LexicalHandler {
 
 	public String getSystemID() {
 		return systemId;
-	}
-
-	public String getPublicID() {
-		return publicId;
 	}
 
 	public void setEncoding(String value) {

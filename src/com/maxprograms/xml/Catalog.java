@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Enumeration;
@@ -35,7 +36,6 @@ public class Catalog implements EntityResolver2 {
 	private String publicId;
 	private String systemId;
 	private String base = "";
-	private CustomContentHandler contentHandler;
 
 	public Catalog(String catalogFile) throws SAXException, IOException, ParserConfigurationException {
 		File file = new File(catalogFile);
@@ -296,56 +296,18 @@ public class Catalog implements EntityResolver2 {
 		// try to find it in the URL reported
 		// by the document
 		try {
-			URL url = new URL(systemId);
+			URL url;
+			if (baseURI != null) {
+				url = new File(new File(new URI(baseURI)), systemId1).toURI().toURL();
+			} else {
+				url = new URL(systemId);
+			}
 			InputStream input = url.openStream();
 			return new InputSource(input);
 		} catch (Exception e) {
-			if (contentHandler != null) {
-				String pub = contentHandler.getPublicID();
-				if (pub != null && catalog.containsKey(pub)) {
-					String parent = (String) catalog.get(pub);
-					try {
-						File f = new File(parent);
-						File g = new File(XMLUtils.getAbsolutePath(f.getParent(), systemId));
-						if (g.exists()) {
-							InputStream input = new FileInputStream(g);
-							return new InputSource(input);
-						}
-					} catch (Exception ex) {
-						// do nothing here, catch below
-					}
-				} else if (publicId == null) {
-					// Get the entity name from the
-					// SYSTEM id and check the catalog
-					String entity = systemId.replaceAll("\\\\", "/");
-					if (entity.indexOf('/') != -1) {
-						entity = entity.substring(entity.lastIndexOf('/') + 1);
-					}
-					if (catalog.containsKey(entity)) {
-						InputStream input = new FileInputStream((String) catalog.get(entity));
-						return new InputSource(input);
-					}
-
-					// try to find it checking file name
-					Enumeration<String> keys = catalog.keys();
-					while (keys.hasMoreElements()) {
-						String key = keys.nextElement();
-						File f = new File((String) catalog.get(key));
-						String location = f.getName();
-						if (systemId.endsWith(location)) {
-							InputStream input = new FileInputStream((String) catalog.get(key));
-							return new InputSource(input);
-						}
-					}
-				}
-			}
 			MessageFormat mf = new MessageFormat("Cannot resolve ''{0}''.");
 			throw new IOException(mf.format(new Object[] { systemId }));
 		}
-	}
-
-	protected void setContentHandler(CustomContentHandler handler) {
-		contentHandler = handler;
 	}
 
 	public String getLocation(String urn) {
@@ -357,5 +319,5 @@ public class Catalog implements EntityResolver2 {
 		}
 		return null;
 	}
-	
+
 }

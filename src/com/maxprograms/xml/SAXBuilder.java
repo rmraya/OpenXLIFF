@@ -36,6 +36,7 @@ public class SAXBuilder {
 	private ErrorHandler errorHandler = null;
 	private boolean validating;
 	private boolean preserveAttributes = false;
+	private IContentHandler contentHandler;
 
 	public SAXBuilder() {
 		validating = false;
@@ -65,8 +66,10 @@ public class SAXBuilder {
 			parser.setFeature("http://apache.org/xml/features/validation/schema", true);
 			parser.setFeature("http://apache.org/xml/features/validation/dynamic", true);
 		}
-		CustomContentHandler handler = new CustomContentHandler();
-		parser.setContentHandler(handler);
+		if (contentHandler == null) {
+			contentHandler = new CustomContentHandler();
+		}
+		parser.setContentHandler(contentHandler);
 		if (resolver == null) {
 			resolver = new DTDResolver();
 		}
@@ -76,16 +79,13 @@ public class SAXBuilder {
 		} else {
 			parser.setErrorHandler(new CustomErrorHandler());
 		}
-		parser.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
+		parser.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
 
 		EntityHandler declhandler = new EntityHandler();
 		parser.setProperty("http://xml.org/sax/properties/declaration-handler", declhandler);
 
-		if (resolver instanceof Catalog) {
-			((Catalog) resolver).setContentHandler(handler);
-		}
 		parser.parse(new InputSource(stream));
-		Document doc = handler.getDocument();
+		Document doc = contentHandler.getDocument();
 
 		Hashtable<String, String> entities = declhandler.getEntities();
 		if (entities.size() > 0) {
@@ -93,6 +93,10 @@ public class SAXBuilder {
 		}
 
 		return doc;
+	}
+
+	public void setContentHandler(IContentHandler handler) {
+		contentHandler = handler;
 	}
 
 	public void setEntityResolver(EntityResolver res) {
@@ -132,10 +136,6 @@ public class SAXBuilder {
 
 		EntityHandler declhandler = new EntityHandler();
 		parser.setProperty("http://xml.org/sax/properties/declaration-handler", declhandler);
-
-		if (resolver instanceof Catalog) {
-			((Catalog) resolver).setContentHandler(handler);
-		}
 
 		parser.parse(new InputSource(url.openStream()));
 		Document doc = handler.getDocument();
