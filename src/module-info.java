@@ -28,6 +28,8 @@ module xliffFilters {
 	exports com.maxprograms.languages;
 	exports com.maxprograms.segmenter;
 
+	opens com.maxprograms.xml to mapdb;	
+
 	requires dtd;
 	requires java.logging;
 	requires transitive java.xml;
