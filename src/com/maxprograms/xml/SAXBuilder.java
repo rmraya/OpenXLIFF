@@ -141,14 +141,15 @@ public class SAXBuilder {
 
 		parser.parse(new InputSource(url.openStream()));
 		Document doc = contentHandler.getDocument();
-
-		Hashtable<String, String> entities = declhandler.getEntities();
-		if (entities != null && entities.size() > 0) {
-			doc.setEntities(entities);
-		}
-		Vector<String> attributes = declhandler.getAttributes();
-		if (attributes != null && preserveAttributes && hasCustomAttributes(url, doc.getEncoding())) {
-			doc.setAttributes(attributes);
+		if (doc != null) {
+			Hashtable<String, String> entities = declhandler.getEntities();
+			if (entities != null && entities.size() > 0) {
+				doc.setEntities(entities);
+			}
+			Vector<String> attributes = declhandler.getAttributes();
+			if (attributes != null && preserveAttributes && hasCustomAttributes(url, doc.getEncoding())) {
+				doc.setAttributes(attributes);
+			}
 		}
 		return doc;
 	}
