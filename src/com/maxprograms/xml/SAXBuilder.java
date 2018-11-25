@@ -143,7 +143,7 @@ public class SAXBuilder {
 		Document doc = contentHandler.getDocument();
 
 		Hashtable<String, String> entities = declhandler.getEntities();
-		if (entities.size() > 0) {
+		if (entities != null && entities.size() > 0) {
 			doc.setEntities(entities);
 		}
 		Vector<String> attributes = declhandler.getAttributes();
