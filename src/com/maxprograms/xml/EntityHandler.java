@@ -54,9 +54,9 @@ public class EntityHandler extends DefaultHandler2 {
 			attributes = new Vector<>();
 		}
 		if (value != null) {
-			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + " " + value + ">"); //$NON-NLS-5$ //$NON-NLS-6$
+			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + " " + value + ">"); 
 		} else {
-			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + ">"); //$NON-NLS-5$
+			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + ">"); 
 		}
 
 	}
