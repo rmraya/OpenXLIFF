@@ -376,7 +376,6 @@ public class Xliff2Xml {
 						for (int i = 0; i < colon; i++) {
 							char c = after.charAt(i);
 							if (Character.isWhitespace(c) || "&.@$*()[]{},/?\\\"\'+=-^".indexOf(c) != -1) {
-								inEntity = false;
 								break;
 							}
 						}

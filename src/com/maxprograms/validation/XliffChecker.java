@@ -620,31 +620,25 @@ public class XliffChecker {
 		// "date" attributes must be in ISO 8601 format
 		if (e.getLocalName().equals("file") || e.getLocalName().equals("phase")) {
 			String date = e.getAttributeValue("date");
-			if (!date.isEmpty()) {
-				if (!checkDate(date)) {
-					MessageFormat mf = new MessageFormat("Invalid date: {0}");
-					reason = mf.format(new Object[] { date });
-					return false;
-				}
+			if (!date.isEmpty() && !checkDate(date)) {
+				MessageFormat mf = new MessageFormat("Invalid date: {0}");
+				reason = mf.format(new Object[] { date });
+				return false;
 			}
 		}
 
 		// external files should be resolvable resources
-		if (e.getLocalName().equals("external-file")) {
-			if (!checkURL(e.getAttributeValue("href"))) {
-				MessageFormat mf = new MessageFormat("Invalid URI: {0}");
-				reason = mf.format(new Object[] { e.getAttribute("href") });
-				return false;
-			}
+		if (e.getLocalName().equals("external-file") && !checkURL(e.getAttributeValue("href"))) {
+			MessageFormat mf = new MessageFormat("Invalid URI: {0}");
+			reason = mf.format(new Object[] { e.getAttribute("href") });
+			return false;
 		}
 
 		// source file should be resolvable resources
-		if (e.getLocalName().equals("file")) {
-			if (!checkURL(e.getAttributeValue("original"))) {
-				MessageFormat mf = new MessageFormat("Invalid URI: {0}");
-				reason = mf.format(new Object[] { e.getAttribute("original") });
-				return false;
-			}
+		if (e.getLocalName().equals("file") && !checkURL(e.getAttributeValue("original"))) {
+			MessageFormat mf = new MessageFormat("Invalid URI: {0}");
+			reason = mf.format(new Object[] { e.getAttribute("original") });
+			return false;
 		}
 
 		// language codes should be valid ISO codes
@@ -652,12 +646,10 @@ public class XliffChecker {
 				|| e.getLocalName().equals("source") || e.getLocalName().equals("target")
 				|| e.getLocalName().equals("alt-trans") || e.getLocalName().equals("seg-source")) {
 			String lang = e.getAttributeValue("xml:lang");
-			if (!lang.equals("")) {
-				if (!checkLanguage(lang)) {
-					MessageFormat mf = new MessageFormat("Invalid language: {0}");
-					reason = mf.format(new Object[] { lang });
-					return false;
-				}
+			if (!lang.equals("") && !checkLanguage(lang)) {
+				MessageFormat mf = new MessageFormat("Invalid language: {0}");
+				reason = mf.format(new Object[] { lang });
+				return false;
 			}
 		}
 
@@ -776,17 +768,15 @@ public class XliffChecker {
 				// Missing target language code
 				// bad practice, but legal
 			}
-			if (!targetLanguage.equals("")) {
-				if (!lang.equals("") && !lang.equalsIgnoreCase(targetLanguage)) {
-					MessageFormat mf = new MessageFormat("Found <target> with wrong language code: {0}");
-					reason = mf.format(new Object[] { lang });
-					return false;
-				}
+			if (!targetLanguage.equals("") && !lang.equals("") && !lang.equalsIgnoreCase(targetLanguage)) {
+				MessageFormat mf = new MessageFormat("Found <target> with wrong language code: {0}");
+				reason = mf.format(new Object[] { lang });
+				return false;
 			}
 		}
 
 		// check for unique "id" in <trans-unit> and <bin-unit>
-		if (version.equals("1.2") && (e.getLocalName().equals("trans-unit") || e.getLocalName().equals("bin-unit"))) { //$NON-NLS-3$
+		if (version.equals("1.2") && (e.getLocalName().equals("trans-unit") || e.getLocalName().equals("bin-unit"))) { 
 			String id = e.getAttributeValue("id");
 			if (!ids.containsKey(id)) {
 				ids.put(id, "");
@@ -808,7 +798,7 @@ public class XliffChecker {
 		}
 
 		// check segment ids
-		if (e.getLocalName().equals("mrk") && e.getAttribute("mtype").equals("seg")) { //$NON-NLS-3$
+		if (e.getLocalName().equals("mrk") && e.getAttributeValue("mtype").equals("seg")) { 
 			String mid = e.getAttributeValue("mid");
 			if (inSegSource) {
 				if (!midTable.containsKey(mid)) {
@@ -1020,11 +1010,9 @@ public class XliffChecker {
 		}
 
 		// check for not paired <it> tags in <file>
-		if (e.getLocalName().equals("file")) {
-			if (srcItTable.size() + tgtItTable.size() > 0) {
-				reason = "Unmatched <it> in <file>.";
-				return false;
-			}
+		if (e.getLocalName().equals("file") && srcItTable.size() + tgtItTable.size() > 0) {
+			reason = "Unmatched <it> in <file>.";
+			return false;
 		}
 
 		// check for missing <trans-unite> referenced in <sub>

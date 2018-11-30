@@ -311,12 +311,10 @@ public class Xml2Xliff {
 		Iterator<Element> i = dtds.iterator();
 		while (i.hasNext()) {
 			Element dtd = i.next();
-			if (pub != null) {
-				if (dtd.getAttributeValue("publicId", "").equals(pub)) {
-					String s = getRootElement(dtd.getText());
-					if (s != null) {
-						return new File(folder, "config_" + s + ".xml").getAbsolutePath();
-					}
+			if (pub != null && dtd.getAttributeValue("publicId", "").equals(pub)) {
+				String s = getRootElement(dtd.getText());
+				if (s != null) {
+					return new File(folder, "config_" + s + ".xml").getAbsolutePath();
 				}
 			}
 			if (sys != null && dtd.getAttributeValue("systemId", "").equals(sys)) {
@@ -369,7 +367,7 @@ public class Xml2Xliff {
 	}
 
 	private static String cleanEntity(String s) {
-		int control = s.indexOf("&");
+		int control = s.indexOf('&');
 		while (control != -1) {
 			int sc = s.indexOf(';', control);
 			if (sc == -1) {
@@ -398,7 +396,7 @@ public class Xml2Xliff {
 			if (control < s.length()) {
 				control++;
 			}
-			control = s.indexOf("&", control);
+			control = s.indexOf('&', control);
 		}
 
 		control = s.indexOf('<');
@@ -634,7 +632,6 @@ public class Xml2Xliff {
 				content = content + ph;
 				break;
 			case XMLNode.TEXT_NODE:
-				// content = content + addEntities(((TextNode) n).getText());
 				content = content + XMLUtils.cleanText(((TextNode) n).getText());
 				break;
 			}
@@ -936,7 +933,7 @@ public class Xml2Xliff {
 	}
 
 	private static String cleanString(String s) {
-		int control = s.indexOf("&");
+		int control = s.indexOf('&');
 		while (control != -1) {
 			int sc = s.indexOf(";", control);
 			if (sc == -1) {
@@ -966,25 +963,25 @@ public class Xml2Xliff {
 			if (control < s.length()) {
 				control++;
 			}
-			control = s.indexOf("&", control);
+			control = s.indexOf('&', control);
 		}
 
-		control = s.indexOf("<");
+		control = s.indexOf('<');
 		while (control != -1) {
 			s = s.substring(0, control) + "&lt;" + s.substring(control + 1);
 			if (control < s.length()) {
 				control++;
 			}
-			control = s.indexOf("<", control);
+			control = s.indexOf('<', control);
 		}
 
-		control = s.indexOf(">");
+		control = s.indexOf('>');
 		while (control != -1) {
 			s = s.substring(0, control) + "&gt;" + s.substring(control + 1);
 			if (control < s.length()) {
 				control++;
 			}
-			control = s.indexOf(">", control);
+			control = s.indexOf('>', control);
 		}
 		s = s.replaceAll("%%%/ph%%%", "</ph>");
 		s = s.replaceAll("%%%ph", "<ph");
@@ -1547,7 +1544,7 @@ public class Xml2Xliff {
 			while (tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
 				if (token.startsWith("encoding")) {
-					result = token.substring(token.indexOf("\"") + 1, token.lastIndexOf("\""));
+					result = token.substring(token.indexOf('\"') + 1, token.lastIndexOf('\"'));
 				}
 			}
 		}

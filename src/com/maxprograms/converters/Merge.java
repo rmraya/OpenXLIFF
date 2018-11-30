@@ -503,14 +503,14 @@ public class Merge {
 		if (originals.size() == 1) {
 			if (file.endsWith(".xlf")) { 
 				target = file.substring(0,file.length()-4);
-				if (target.indexOf(".") != -1) { 
-					target = target.substring(0,target.lastIndexOf("."))  
+				if (target.indexOf('.') != -1) { 
+					target = target.substring(0,target.lastIndexOf('.'))  
 							+ "_" + tgtLanguage + target.substring(target.lastIndexOf("."));  
 				}
 			} else {
-				if (target.indexOf(".") != -1) { 
-					target = target.substring(0,target.lastIndexOf("."))  
-							+ "_" + tgtLanguage + target.substring(target.lastIndexOf("."));  
+				if (target.indexOf('.') != -1) { 
+					target = target.substring(0,target.lastIndexOf('.'))  
+							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));  
 				}
 			}
 		} else {

@@ -344,24 +344,18 @@ public class Xliff20 {
 					cantDelete.add(id);
 				}
 			}
-			if (inTarget) {
-				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
-					cantDelete.remove(id);
-				}
+			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
+				cantDelete.remove(id);
 			}
 			String dataRefStart = e.getAttributeValue("dataRefStart");
-			if (!dataRefStart.isEmpty()) {
-				if (!dataId.contains(dataRefStart)) {
-					reason = "Missing <data> element referenced by \"dataRefStart\" <pc>";
-					return false;
-				}
+			if (!dataRefStart.isEmpty() && !dataId.contains(dataRefStart)) {
+				reason = "Missing <data> element referenced by \"dataRefStart\" <pc>";
+				return false;
 			}
 			String dataRefEnd = e.getAttributeValue("dataRefEnd");
-			if (!dataRefEnd.isEmpty()) {
-				if (!dataId.contains(dataRefEnd)) {
-					reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc>";
-					return false;
-				}
+			if (!dataRefEnd.isEmpty() && !dataId.contains(dataRefEnd)) {
+				reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc>";
+				return false;
 			}
 		}
 		
@@ -377,17 +371,13 @@ public class Xliff20 {
 					cantDelete.add(id);
 				}
 			}
-			if (inTarget) {
-				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
-					cantDelete.remove(id);
-				}
+			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
+				cantDelete.remove(id);
 			}
 			String dataRef = e.getAttributeValue("dataRef");
-			if (!dataRef.isEmpty()) {
-				if (!dataId.contains(dataRef)) {
-					reason = "Missing <data> element referenced by <sc>";
-					return false;
-				}
+			if (!dataRef.isEmpty() && !dataId.contains(dataRef)) {
+				reason = "Missing <data> element referenced by <sc>";
+				return false;
 			}
 		}
 		
@@ -404,18 +394,14 @@ public class Xliff20 {
 						cantDelete.add(id);
 					}
 				}
-				if (inTarget) {
-					if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+				if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
 						cantDelete.remove(id);
-					}
 				}
 			} 
 			String dataRef = e.getAttributeValue("dataRef");
-			if (!dataRef.isEmpty()) {
-				if (!dataId.contains(dataRef)) {
-					reason = "Missing <data> element referenced by <ec>";
-					return false;
-				}
+			if (!dataRef.isEmpty() && !dataId.contains(dataRef)) {
+				reason = "Missing <data> element referenced by <ec>";
+				return false;
 			}
 		}
 

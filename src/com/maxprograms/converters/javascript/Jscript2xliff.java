@@ -157,12 +157,9 @@ public class Jscript2xliff {
 					inString = true;
 				}
 			}
-			if (!inString && c == '/') {
-				// a comment can start here
-				if (i + 1 < line.length() && line.charAt(i + 1) == '/') {
-					// it's a comment!
-					return line.substring(i);
-				}
+			if (!inString && c == '/' && i + 1 < line.length() && line.charAt(i + 1) == '/') {
+				// it's a comment!
+				return line.substring(i);
 			}
 		}
 		return "";
