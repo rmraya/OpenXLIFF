@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2018 Maxprograms.
+ * Copyright (c) 2003, 2019 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
