@@ -53,13 +53,13 @@ public class FileFormats {
 			return null;
 		}
 		try {
-			FileInputStream input = new FileInputStream(file);
 			byte[] array = new byte[40960];
-			if (input.read(array) == -1) {
-				input.close();
-				throw new IOException("Premature end of file");
+			try (FileInputStream input = new FileInputStream(file)) {
+				if (input.read(array) == -1) {
+					input.close();
+					throw new IOException("Premature end of file");
+				}
 			}
-			input.close();
 			String string = "";
 
 			Charset bom = EncodingResolver.getBOM(fileName);

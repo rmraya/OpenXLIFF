@@ -103,9 +103,9 @@ public class Xliff2DitaMap {
 				r.setAttribute("xml:lang", tgtlang);
 				Indenter.indent(r, 2);
 				instance.cleanConref(r);
-				FileOutputStream out = new FileOutputStream(outputFile);
-				outputter.output(doc, out);
-				out.close();
+				try (FileOutputStream out = new FileOutputStream(outputFile)) {
+					outputter.output(doc, out);
+				}
 				File f = new File(values[0]);
 				Files.delete(Paths.get(f.toURI()));
 			}
@@ -237,9 +237,9 @@ public class Xliff2DitaMap {
 		}
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.preserveSpace(true);
-		FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath());
-		outputter.output(doc, output);
-		output.close();
+		try (FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath())) {
+			outputter.output(doc, output);
+		}
 		filesTable.put(element.getAttributeValue("original"), new String[] { xliff.getAbsolutePath(),
 				file.getChild("header").getChild("skl").getChild("external-file").getAttributeValue("href") });
 	}

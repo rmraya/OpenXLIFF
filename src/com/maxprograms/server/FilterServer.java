@@ -100,9 +100,10 @@ public class FilterServer implements HttpHandler {
 	@Override
 	public void handle(HttpExchange t) throws IOException {
 		URI uri = t.getRequestURI();
-		InputStream is = t.getRequestBody();
-		String request = readRequestBody(is);
-		is.close();
+		String request = "";
+		try (InputStream is = t.getRequestBody()) {
+			request = readRequestBody(is);
+		}
 
 		JSONObject json = null;
 		String response = "";

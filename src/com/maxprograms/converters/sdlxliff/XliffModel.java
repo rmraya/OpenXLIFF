@@ -243,12 +243,12 @@ public class XliffModel {
 	}
 
 	public void save(String url) throws IOException {
-		FileOutputStream output = new FileOutputStream(url);
-		XMLOutputter outputer = new XMLOutputter();
-		outputer.setEncoding(encoding);
-		outputer.preserveSpace(true);
-		outputer.output(doc, output);
-		output.close();
+		try (FileOutputStream output = new FileOutputStream(url)) {
+			XMLOutputter outputer = new XMLOutputter();
+			outputer.setEncoding(encoding);
+			outputer.preserveSpace(true);
+			outputer.output(doc, output);
+		}
 	}
 
 	public boolean isSegmented() {

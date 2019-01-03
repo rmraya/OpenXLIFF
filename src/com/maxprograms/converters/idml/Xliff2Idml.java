@@ -179,8 +179,8 @@ public class Xliff2Idml {
 		file.getChild("header").getChild("skl").getChild("external-file").setAttribute("href",
 				xliff.getAbsolutePath() + ".skl"); //$NON-NLS-1$
 		XMLOutputter outputter = new XMLOutputter();
-		FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath());
-		outputter.output(doc, output);
-		output.close();
+		try (FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath())) {
+			outputter.output(doc, output);
+		}
 	}
 }
