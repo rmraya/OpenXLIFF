@@ -35,6 +35,6 @@ module xliffFilters {
 	requires jsoup;
 	requires java.logging;
 	requires jdk.httpserver;
+	requires java.base;
 	requires transitive java.xml;
-	requires transitive java.base;
 }
