@@ -31,9 +31,10 @@ module xliffFilters {
 	opens com.maxprograms.xml to mapdb;	
 
 	requires dtd;
-	requires java.logging;
-	requires transitive java.xml;
-	requires jsoup;
-	requires jdk.httpserver;
 	requires json;
+	requires jsoup;
+	requires java.logging;
+	requires jdk.httpserver;
+	requires transitive java.xml;
+	requires transitive java.base;
 }
