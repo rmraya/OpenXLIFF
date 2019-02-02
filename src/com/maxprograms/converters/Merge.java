@@ -71,9 +71,9 @@ public class Merge {
 		String catalog = "";
 		boolean unapproved = false;
 
-		args = Convert.fixPath(args);
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
+		String[] arguments = Convert.fixPath(args);
+		for (int i = 0; i < arguments.length; i++) {
+			String arg = arguments[i];
 			if (arg.equals("-version")) {
 				LOGGER.log(Level.INFO, () -> "Version: " + Constants.VERSION + " Build: " + Constants.BUILD);
 				return;
@@ -82,20 +82,20 @@ public class Merge {
 				help();
 				return;
 			}
-			if (arg.equals("-xliff") && (i + 1) < args.length) {
-				xliff = args[i + 1];
+			if (arg.equals("-xliff") && (i + 1) < arguments.length) {
+				xliff = arguments[i + 1];
 			}
-			if (arg.equals("-target") && (i + 1) < args.length) {
-				target = args[i + 1];
+			if (arg.equals("-target") && (i + 1) < arguments.length) {
+				target = arguments[i + 1];
 			}
-			if (arg.equals("-catalog") && (i + 1) < args.length) {
-				catalog = args[i + 1];
+			if (arg.equals("-catalog") && (i + 1) < arguments.length) {
+				catalog = arguments[i + 1];
 			}
 			if (arg.equals("-unapproved")) {
 				unapproved = true;
 			}
 		}
-		if (args.length < 2) {
+		if (arguments.length < 2) {
 			help();
 			return;
 		}
@@ -126,8 +126,9 @@ public class Merge {
 		}
 	}
 
-	public static void merge(String xliff, String target, String catalog, boolean unapproved) throws IOException, SAXException, ParserConfigurationException {
+	public static void merge(String xliff, String target, String catalog, boolean acceptUnaproved) throws IOException, SAXException, ParserConfigurationException {
 		loadXliff(xliff, catalog);
+		boolean unapproved = acceptUnaproved;
 		if (root.getAttributeValue("version").equals("2.0")) {
 			File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
 			FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);

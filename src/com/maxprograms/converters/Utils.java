@@ -40,19 +40,17 @@ public class Utils {
 		// do not instantiate this class
 	}
 
-	public static String cleanString(String input) {
-		input = input.replaceAll("&", "&amp;");
-		input = input.replaceAll("<", "&lt;");
-		input = input.replaceAll(">", "&gt;");
-		return XMLUtils.validChars(input);
+	public static String cleanString(String string) {
+		String result = string.replaceAll("&", "&amp;");
+		result = result.replaceAll("<", "&lt;");
+		result = result.replaceAll(">", "&gt;");
+		return XMLUtils.validChars(result);
 	}
 
 	public static String getAbsolutePath(String homeFile, String relative) throws IOException {
 		try {
-			if (relative.indexOf('%') != -1) {
-				relative = URLDecoder.decode(relative, StandardCharsets.UTF_8);
-			}
-			File result = new File(relative);
+			File result = relative.indexOf('%') != -1 ? new File(URLDecoder.decode(relative, StandardCharsets.UTF_8))
+					: new File(relative);
 			if (!result.isAbsolute()) {
 				File home = new File(homeFile);
 				// If home is a file, get the parent

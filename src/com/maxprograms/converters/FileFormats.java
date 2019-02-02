@@ -56,7 +56,6 @@ public class FileFormats {
 			byte[] array = new byte[40960];
 			try (FileInputStream input = new FileInputStream(file)) {
 				if (input.read(array) == -1) {
-					input.close();
 					throw new IOException("Premature end of file");
 				}
 			}

@@ -62,7 +62,7 @@ public class Convert {
 
 	public static void main(String[] args) {
 
-		args = fixPath(args);
+		String[] arguments = fixPath(args);
 
 		String source = "";
 		String type = "";
@@ -78,8 +78,8 @@ public class Convert {
 		boolean paragraph = false;
 		boolean xliff20 = false;
 
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
+		for (int i = 0; i < arguments.length; i++) {
+			String arg = arguments[i];
 			if (arg.equals("-version")) {
 				LOGGER.log(Level.INFO, () -> "Version: " + Constants.VERSION + " Build: " + Constants.BUILD);
 				return;
@@ -92,35 +92,35 @@ public class Convert {
 				listCharsets();
 				return;
 			}
-			if (arg.equals("-file") && (i + 1) < args.length) {
-				source = args[i + 1];
+			if (arg.equals("-file") && (i + 1) < arguments.length) {
+				source = arguments[i + 1];
 			}
-			if (arg.equals("-type") && (i + 1) < args.length) {
-				type = args[i + 1];
+			if (arg.equals("-type") && (i + 1) < arguments.length) {
+				type = arguments[i + 1];
 			}
-			if (arg.equals("-enc") && (i + 1) < args.length) {
-				enc = args[i + 1];
+			if (arg.equals("-enc") && (i + 1) < arguments.length) {
+				enc = arguments[i + 1];
 			}
-			if (arg.equals("-srcLang") && (i + 1) < args.length) {
-				srcLang = args[i + 1];
+			if (arg.equals("-srcLang") && (i + 1) < arguments.length) {
+				srcLang = arguments[i + 1];
 			}
-			if (arg.equals("-tgtLang") && (i + 1) < args.length) {
-				tgtLang = args[i + 1];
+			if (arg.equals("-tgtLang") && (i + 1) < arguments.length) {
+				tgtLang = arguments[i + 1];
 			}
-			if (arg.equals("-srx") && (i + 1) < args.length) {
-				srx = args[i + 1];
+			if (arg.equals("-srx") && (i + 1) < arguments.length) {
+				srx = arguments[i + 1];
 			}
-			if (arg.equals("-skl") && (i + 1) < args.length) {
-				skl = args[i + 1];
+			if (arg.equals("-skl") && (i + 1) < arguments.length) {
+				skl = arguments[i + 1];
 			}
-			if (arg.equals("-xliff") && (i + 1) < args.length) {
-				xliff = args[i + 1];
+			if (arg.equals("-xliff") && (i + 1) < arguments.length) {
+				xliff = arguments[i + 1];
 			}
-			if (arg.equals("-catalog") && (i + 1) < args.length) {
-				catalog = args[i + 1];
+			if (arg.equals("-catalog") && (i + 1) < arguments.length) {
+				catalog = arguments[i + 1];
 			}
-			if (arg.equals("-ditaval") && (i + 1) < args.length) {
-				ditaval = args[i + 1];
+			if (arg.equals("-ditaval") && (i + 1) < arguments.length) {
+				ditaval = arguments[i + 1];
 			}
 			if (arg.equals("-embed")) {
 				embed = true;
@@ -132,7 +132,7 @@ public class Convert {
 				xliff20 = true;
 			}
 		}
-		if (args.length < 4) {
+		if (arguments.length < 4) {
 			help();
 			return;
 		}
