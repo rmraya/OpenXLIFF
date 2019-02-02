@@ -60,14 +60,10 @@ public class Attribute implements XMLNode, Serializable, Comparable<Attribute> {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof Attribute)) {
 			return false;
 		}
-		XMLNode node = (XMLNode) obj;
-		if (node.getNodeType() != XMLNode.ATTRIBUTE_NODE) {
-			return false;
-		}
-		Attribute a = (Attribute) node;
+		Attribute a = (Attribute) obj;
 		return a.getName().equals(name) && a.getValue().equals(value);
 	}
 

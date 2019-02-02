@@ -48,14 +48,10 @@ public class CData implements XMLNode, Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof CData)) {
 			return false;
 		}
-		XMLNode node = (XMLNode) obj;
-		if (node.getNodeType() != XMLNode.CDATA_SECTION_NODE) {
-			return false;
-		}
-		CData cd = (CData) node;
+		CData cd = (CData) obj;
 		return value.equals(cd.getData());
 	}
 

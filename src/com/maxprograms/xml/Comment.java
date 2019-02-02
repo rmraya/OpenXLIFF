@@ -48,14 +48,10 @@ public class Comment implements XMLNode, Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof Comment)) {
 			return false;
 		}
-		XMLNode node = (XMLNode) obj;
-		if (node.getNodeType() != XMLNode.COMMENT_NODE) {
-			return false;
-		}
-		Comment c = (Comment) node;
+		Comment c = (Comment) obj;
 		return value.equals(c.getText());
 	}
 

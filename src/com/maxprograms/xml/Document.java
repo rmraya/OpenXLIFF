@@ -43,13 +43,10 @@ public class Document implements XMLNode {
 	public Document(String namespaceURI, String qualifiedName, String publicId, String systemId) {
 		this.publicId = publicId;
 		this.systemId = systemId;
-		if (namespaceURI == null) {
-			namespaceURI = "";
-		}
 		content = new Vector<>();
 		root = new Element(qualifiedName);
 		content.add(root);
-		if (!namespaceURI.equals("")) {
+		if (namespaceURI != null && !namespaceURI.isEmpty()) {
 			String prefix = root.getPrefix();
 			if (prefix != null) {
 				root.setAttribute("xmlns:" + prefix, namespaceURI);
@@ -60,15 +57,12 @@ public class Document implements XMLNode {
 	}
 
 	public Document(String namespaceURI, String qualifiedName, String internalSubset) {
-		if (namespaceURI == null) {
-			namespaceURI = "";
-		}
 		this.internalSubset = internalSubset;
 		content = new Vector<>();
 		root = new Element(qualifiedName);
 		content.add(root);
 
-		if (!namespaceURI.equals("")) {
+		if (namespaceURI != null && !namespaceURI.isEmpty()) {
 			String prefix = root.getPrefix();
 			if (prefix != null) {
 				root.setAttribute("xmlns:" + prefix, namespaceURI);
@@ -79,9 +73,6 @@ public class Document implements XMLNode {
 	}
 
 	protected Document(String namespaceURI, String qualifiedName, Vector<XMLNode> prolog) {
-		if (namespaceURI == null) {
-			namespaceURI = "";
-		}
 		content = new Vector<>();
 		if (prolog != null) {
 			Iterator<XMLNode> it = prolog.iterator();
@@ -102,7 +93,7 @@ public class Document implements XMLNode {
 		}
 		root = new Element(qualifiedName);
 		content.add(root);
-		if (!namespaceURI.equals("")) {
+		if (namespaceURI != null && !namespaceURI.isEmpty()) {
 			String prefix = root.getPrefix();
 			if (prefix != null) {
 				root.setAttribute("xmlns:" + prefix, namespaceURI);
@@ -242,7 +233,7 @@ public class Document implements XMLNode {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof Document)) {
 			return false;
 		}
 		Document doc = (Document) obj;

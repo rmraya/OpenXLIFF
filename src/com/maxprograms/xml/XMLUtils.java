@@ -21,10 +21,10 @@ public class XMLUtils {
 		// do not instantiate
 	}
 
-	public static String cleanText(String input) {
-		input = input.replaceAll("&", "&amp;");
-		input = input.replaceAll("<", "&lt;");
-		return input.replaceAll(">", "&gt;");
+	public static String cleanText(String string) {
+		String result = string.replaceAll("&", "&amp;");
+		result = result.replaceAll("<", "&lt;");
+		return result.replaceAll(">", "&gt;");
 	}
 
 	public static String validChars(String input) {
@@ -53,12 +53,12 @@ public class XMLUtils {
 		return buffer.toString();
 	}
 
-	public static String uncleanText(String input) {
-		input = input.replaceAll("&amp;", "&");
-		input = input.replaceAll("&lt;", "<");
-		input = input.replaceAll("&gt;", ">");
-		input = input.replaceAll("&quot;", "\"");
-		return input.replaceAll("&apos;", "\'");
+	public static String uncleanText(String string) {
+		String result = string.replaceAll("&amp;", "&");
+		result = result.replaceAll("&lt;", "<");
+		result = result.replaceAll("&gt;", ">");
+		result = result.replaceAll("&quot;", "\"");
+		return result.replaceAll("&apos;", "\'");
 	}
 
 	public static byte[] getBytes(String string, Charset charset) {

@@ -53,14 +53,10 @@ public class TextNode implements XMLNode, Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof TextNode)) {
 			return false;
 		}
-		XMLNode node = (XMLNode) obj;
-		if (node.getNodeType() != XMLNode.TEXT_NODE) {
-			return false;
-		}
-		return text.equals(((TextNode) node).getText());
+		return text.equals(((TextNode) obj).getText());
 	}
 
 	@Override

@@ -209,13 +209,13 @@ public class XMLOutputter {
 		}
 	}
 
-	private String cleanString(String input) {
-		if (input == null) {
+	private String cleanString(String string) {
+		if (string == null) {
 			return null;
 		}
-		input = input.replaceAll("&", "&amp;");
-		input = input.replaceAll("<", "&lt;");
-		input = input.replaceAll(">", "&gt;");
+		String result = string.replaceAll("&", "&amp;");
+		result = result.replaceAll("<", "&lt;");
+		result = result.replaceAll(">", "&gt;");
 
 		// now replace common text with
 		// the entities declared in the DTD
@@ -226,26 +226,27 @@ public class XMLOutputter {
 			String value = entities.get(key);
 			if (!value.equals("") && !key.equals("amp") && !key.equals("lt") && !key.equals("gt")
 					&& !key.equals("quot")) {
-				input = replaceEntities(input, value, "&" + key + ";");
+				result = replaceEntities(result, value, "&" + key + ";");
 			}
 		}
 
 		// now check for valid characters
 
-		return XMLUtils.validChars(input);
+		return XMLUtils.validChars(result);
 
 	}
 
 	private static String replaceEntities(String string, String token, String entity) {
-		int index = string.indexOf(token);
+		String result = string;
+		int index = result.indexOf(token);
 		while (index != -1) {
-			String before = string.substring(0, index);
-			String after = string.substring(index + token.length());
+			String before = result.substring(0, index);
+			String after = result.substring(index + token.length());
 			// check if we are not inside an entity
 			int amp = before.lastIndexOf('&');
 			if (amp == -1) {
 				// we are not in an entity
-				string = before + entity + after;
+				result = before + entity + after;
 			} else {
 				boolean inEntity = true;
 				for (int i = amp; i < before.length(); i++) {
@@ -260,7 +261,7 @@ public class XMLOutputter {
 					int colon = after.indexOf(';');
 					if (colon == -1) {
 						// we are not in an entity
-						string = before + entity + after;
+						result = before + entity + after;
 					} else {
 						// verify is there is something that breaks the entity before
 						for (int i = 0; i < colon; i++) {
@@ -272,14 +273,14 @@ public class XMLOutputter {
 					}
 				} else {
 					// we are not in an entity
-					string = before + entity + after;
+					result = before + entity + after;
 				}
 			}
-			if (index < string.length()) {
-				index = string.indexOf(token, index + 1);
+			if (index < result.length()) {
+				index = result.indexOf(token, index + 1);
 			}
 		}
-		return string;
+		return result;
 	}
 
 	private void writeString(String input) throws IOException {
@@ -320,12 +321,13 @@ public class XMLOutputter {
 	}
 
 	protected static String replaceToken(String string, String token, String newText) {
-		int index = string.indexOf(token);
+		String result = string;
+		int index = result.indexOf(token);
 		while (index != -1) {
-			string = string.substring(0, index) + newText + string.substring(index + token.length());
-			index = string.indexOf(token, index + newText.length());
+			result = result.substring(0, index) + newText + result.substring(index + token.length());
+			index = result.indexOf(token, index + newText.length());
 		}
-		return string;
+		return result;
 	}
 
 	public void setEmptyDoctype(boolean b) {

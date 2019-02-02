@@ -120,8 +120,8 @@ class CustomContentHandler implements IContentHandler {
 		}
 	}
 
-	protected static Vector<Attribute> getPseudoAttributes(String data) {
-		data = data.trim();
+	protected static Vector<Attribute> getPseudoAttributes(String string) {
+		String data = string.trim();
 		Vector<Attribute> result = new Vector<>();
 		String name = "";
 		String value = "";

@@ -122,14 +122,10 @@ public class Element implements XMLNode, Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof Element)) {
 			return false;
 		}
-		XMLNode node = (XMLNode) obj;
-		if (node.getNodeType() != XMLNode.ELEMENT_NODE) {
-			return false;
-		}
-		Element s = (Element) node;
+		Element s = (Element) obj;
 		if (!name.equals(s.getName())) {
 			return false;
 		}

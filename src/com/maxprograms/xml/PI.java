@@ -61,14 +61,10 @@ public class PI implements XMLNode, Serializable {
 		if (obj == null) {
 			return false;
 		}
-		if (this.getClass() != obj.getClass()) {
+		if (!(obj instanceof PI)) {
 			return false;
 		}
-		XMLNode node = (XMLNode) obj;
-		if (node.getNodeType() != XMLNode.PROCESSING_INSTRUCTION_NODE) {
-			return false;
-		}
-		PI pi = (PI) node;
+		PI pi = (PI) obj;
 		return target.equals(pi.getTarget()) && data.equals(pi.getData());
 	}
 

@@ -40,8 +40,8 @@ public class Catalog implements EntityResolver2 {
 	public Catalog(String catalogFile) throws SAXException, IOException, ParserConfigurationException {
 		File file = new File(catalogFile);
 		if (!file.isAbsolute()) {
-			catalogFile = XMLUtils.getAbsolutePath(System.getProperty("user.dir"), catalogFile);
-			file = new File(catalogFile);
+			String absolute = XMLUtils.getAbsolutePath(System.getProperty("user.dir"), catalogFile);
+			file = new File(absolute);
 		}
 		workDir = file.getParent();
 		if (!workDir.endsWith("\\") && !workDir.endsWith("/")) {
@@ -122,7 +122,7 @@ public class Catalog implements EntityResolver2 {
 	private String makeAbsolute(String file) throws IOException {
 		File f = new File(file);
 		if (!f.isAbsolute()) {
-			file = XMLUtils.getAbsolutePath(workDir, file);
+			return XMLUtils.getAbsolutePath(workDir, file);
 		}
 		return file;
 	}
@@ -311,11 +311,9 @@ public class Catalog implements EntityResolver2 {
 	}
 
 	public String getLocation(String urn) {
-		if (urn.startsWith("urn:publicid:")) {
-			urn = unwrapUrn(urn);
-		}
-		if (catalog.containsKey(urn)) {
-			return (String) catalog.get(urn);
+		String key = urn.startsWith("urn:publicid:") ? unwrapUrn(urn) : urn;
+		if (catalog.containsKey(key)) {
+			return (String) catalog.get(key);
 		}
 		return null;
 	}
