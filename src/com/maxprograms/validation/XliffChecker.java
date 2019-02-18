@@ -69,24 +69,24 @@ public class XliffChecker {
 
 	public static void main(String[] args) {
 
-		args = fixPath(args);
+		String[] fixedArgs = fixPath(args);
 
 		String file = "";
 		String catalog = "";
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
+		for (int i = 0; i < fixedArgs.length; i++) {
+			String arg = fixedArgs[i];
 			if (arg.equals("-help")) {
 				help();
 				return;
 			}
-			if (arg.equals("-file") && (i + 1) < args.length) {
-				file = args[i + 1];
+			if (arg.equals("-file") && (i + 1) < fixedArgs.length) {
+				file = fixedArgs[i + 1];
 			}
-			if (arg.equals("-catalog") && (i + 1) < args.length) {
-				catalog = args[i + 1];
+			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
+				catalog = fixedArgs[i + 1];
 			}
 		}
-		if (args.length < 2) {
+		if (fixedArgs.length < 2) {
 			help();
 			return;
 		}

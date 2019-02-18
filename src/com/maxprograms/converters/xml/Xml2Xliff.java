@@ -108,9 +108,9 @@ public class Xml2Xliff {
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		segId = 1;
-		stack = new Stack<String>();
+		stack = new Stack<>();
 
 		inputFile = params.get("source");
 		xliffFile = params.get("xliff");
@@ -248,7 +248,7 @@ public class Xml2Xliff {
 		 */
 		// builder.expandEntities(false);
 		Document doc = builder.build(fileName);
-		entities = new Hashtable<String, String>();
+		entities = new Hashtable<>();
 
 		Hashtable<String, String> map = doc.getEntities();
 
@@ -843,19 +843,19 @@ public class Xml2Xliff {
 	}
 
 	private static String normalize(String string) {
-		string = string.replace('\n', ' ');
-		string = string.replace('\t', ' ');
-		string = string.replace('\r', ' ');
-		string = string.replace('\f', ' ');
+		String result = string.replace('\n', ' ');
+		result = result.replace('\t', ' ');
+		result = result.replace('\r', ' ');
+		result = result.replace('\f', ' ');
 		String rs = "";
-		int length = string.length();
+		int length = result.length();
 		for (int i = 0; i < length; i++) {
-			char ch = string.charAt(i);
+			char ch = result.charAt(i);
 			if (ch != ' ') {
 				rs = rs + ch;
 			} else {
 				rs = rs + ch;
-				while (i < (length - 1) && string.charAt(i + 1) == ' ') {
+				while (i < (length - 1) && result.charAt(i + 1) == ' ') {
 					i++;
 				}
 			}
@@ -898,23 +898,23 @@ public class Xml2Xliff {
 	}
 
 	private static String clean(String string) {
-		string = string.replaceAll("<", MATHLT);
-		string = string.replaceAll(">", MATHGT);
-		string = string.replaceAll("\"", DOUBLEPRIME);
-		return replaceAmp(string);
+		String result = string.replaceAll("<", MATHLT);
+		result = result.replaceAll(">", MATHGT);
+		result = result.replaceAll("\"", DOUBLEPRIME);
+		return replaceAmp(result);
 	}
 
 	private static String replaceAmp(String value) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
 			if (c == '&') {
-				result = result + GAMP;
+				result.append(GAMP);
 			} else {
-				result = result + c;
+				result.append(c);
 			}
 		}
-		return result;
+		return result.toString();
 	}
 
 	private static String tag(String element) {
@@ -932,7 +932,8 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String cleanString(String s) {
+	private static String cleanString(String string) {
+		String s = string;
 		int control = s.indexOf('&');
 		while (control != -1) {
 			int sc = s.indexOf(";", control);
@@ -1457,45 +1458,37 @@ public class Xml2Xliff {
 		e.setContent(normal);
 	}
 
-	/**
-	 * @param value
-	 * @return
-	 */
 	private static String cleanAttribute(String value) {
+		String result = value;
 		if (stack.size() > 1 && !text.startsWith("" + '\u007F' + '\u007F')) {
 			// this is an inline element and will be placed in <ph>
-			value = value.replaceAll("&", "###AMP###");
+			result = result.replaceAll("&", "###AMP###");
 		} else {
-			value = value.replaceAll("&", "&amp;");
+			result = result.replaceAll("&", "&amp;");
 		}
-		value = value.replaceAll(">", "&gt;");
-		value = value.replaceAll("<", "&lt;");
-		value = value.replaceAll("\"", "&quot;");
-		return value;
+		result = result.replaceAll(">", "&gt;");
+		result = result.replaceAll("<", "&lt;");
+		result = result.replaceAll("\"", "&quot;");
+		return result;
 	}
 
 	private static String getType(String string) {
 
 		String result = "";
 		if (string.startsWith("<![CDATA[")) {
-
 			return "![CDATA[";
 		}
+		
 		if (string.startsWith("<!--")) {
-
 			return "!--";
 		}
-		if (string.startsWith("<?")) {
 
+		if (string.startsWith("<?")) {
 			return "?";
 		}
 
-		if (!string.equals("")) {
-			// skip initial "<"
-			string = string.substring(1);
-		}
-
-		for (int i = 0; i < string.length(); i++) {
+		// skip initial "<"
+		for (int i = 1; i < string.length(); i++) {
 			char c = string.charAt(i);
 			if (c == ' ' || c == '\n' || c == '\f' || c == '\t' || c == '\r' || c == '>') {
 				break;
