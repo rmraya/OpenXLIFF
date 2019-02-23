@@ -71,7 +71,7 @@ public class Merge {
 		String catalog = "";
 		boolean unapproved = false;
 
-		String[] arguments = Convert.fixPath(args);
+		String[] arguments = Utils.fixPath(args);
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
 			if (arg.equals("-version")) {

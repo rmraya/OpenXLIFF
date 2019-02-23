@@ -25,6 +25,7 @@ import java.util.Base64.Encoder;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Vector;
 import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
 
@@ -109,4 +110,25 @@ public class Utils {
 		return !registry.getTagDescription(lang).isEmpty();
 	}
 
+	public static String[] fixPath(String[] args) {
+		Vector<String> result = new Vector<>();
+		String current = "";
+		for (int i = 0; i < args.length; i++) {
+			String arg = args[i];
+			if (arg.startsWith("-")) {
+				if (!current.isEmpty()) {
+					result.add(current.trim());
+					current = "";
+				}
+				result.add(arg);
+			} else {
+				current = current + " " + arg;
+			}
+		}
+		if (!current.isEmpty()) {
+			result.add(current.trim());
+		}
+		return result.toArray(new String[result.size()]);
+	}
+	
 }

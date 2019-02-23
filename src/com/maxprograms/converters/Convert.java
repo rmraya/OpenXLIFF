@@ -62,7 +62,7 @@ public class Convert {
 
 	public static void main(String[] args) {
 
-		String[] arguments = fixPath(args);
+		String[] arguments = Utils.fixPath(args);
 
 		String source = "";
 		String type = "";
@@ -249,27 +249,6 @@ public class Convert {
 		} else {
 			LOGGER.log(Level.ERROR, result.get(1));
 		}
-	}
-
-	protected static String[] fixPath(String[] args) {
-		Vector<String> result = new Vector<>();
-		String current = "";
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
-			if (arg.startsWith("-")) {
-				if (!current.isEmpty()) {
-					result.add(current.trim());
-					current = "";
-				}
-				result.add(arg);
-			} else {
-				current = current + " " + arg;
-			}
-		}
-		if (!current.isEmpty()) {
-			result.add(current.trim());
-		}
-		return result.toArray(new String[result.size()]);
 	}
 
 	private static void help() {
