@@ -78,9 +78,6 @@ public class SvgStats {
 				catalog = fixedArgs[i + 1];
 			}
 		}
-		if (fixedArgs.length < 2) {
-			return;
-		}
 		if (file.isEmpty()) {
 			LOGGER.log(Level.ERROR, "Missing '-file' parameter.");
 			return;
@@ -103,7 +100,7 @@ public class SvgStats {
 	}
 
 	
-	private void analyze(String file, String catalog) throws SAXException, IOException, ParserConfigurationException {
+	public void analyze(String file, String catalog) throws SAXException, IOException, ParserConfigurationException {
 		// TODO Auto-generated method stub
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
@@ -122,7 +119,6 @@ public class SvgStats {
 		}
 	}
 
-
 	private void parseXliff2(Element e) {
 		// TODO Auto-generated method stub
 		if ("segment".equals(e.getName())) {
@@ -132,14 +128,34 @@ public class SvgStats {
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
 			parseXliff1(it.next());
-		}
-		
+		}		
 	}
 
 	private void parseXliff1(Element e) {
-		// TODO Auto-generated method stub
 		if ("trans-unit".equals(e.getName())) {
-			
+			SegmentStatus status = new SegmentStatus();
+			status.setApproved(e.getAttributeValue("approved", "no").equalsIgnoreCase("yes"));
+			List<Element> matches = e.getChildren("alt-trans");
+			if (!matches.isEmpty()) {
+				int max = 0;
+				Iterator<Element> it = matches.iterator();
+				while (it.hasNext()) {
+					Element match = it.next();
+					try {
+						int quality = Integer.parseInt(match.getAttributeValue("match-quality", "0"));
+						if (quality > max) {
+							max = quality;
+						}
+					} catch (NumberFormatException ex) {
+						// ignore
+					}
+				}
+				if (max > 100) {
+					max = 100;
+				}
+				status.setMatch(max);
+			}
+			segmentsList.add(status);
 		}
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
