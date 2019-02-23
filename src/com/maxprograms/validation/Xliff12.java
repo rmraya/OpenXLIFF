@@ -17,7 +17,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.nio.file.Files;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -45,6 +44,7 @@ public class Xliff12 {
 			File temp;
 			try {
 				temp = File.createTempFile("temp", ".xlf");
+				temp.deleteOnExit();
 				XMLOutputter outputter = new XMLOutputter();
 				try (FileOutputStream output = new FileOutputStream(temp)) {
 					outputter.output(document, output);
@@ -58,11 +58,11 @@ public class Xliff12 {
 				SAXBuilder builder = new SAXBuilder();
 				builder.setValidating(true);
 				builder.setEntityResolver(new Catalog(catalog));
-				document = builder.build(temp);
-				Files.delete(temp.toPath());
+				builder.build(temp);
 			} catch (IOException | SAXException | ParserConfigurationException e) {
 				LOGGER.log(Level.ERROR, e);
 				reason = e.getMessage();
+				return false;
 			}
 		}
 		return true;

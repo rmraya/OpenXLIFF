@@ -23,12 +23,12 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Utils;
 import com.maxprograms.languages.RegistryParser;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
@@ -69,7 +69,7 @@ public class XliffChecker {
 
 	public static void main(String[] args) {
 
-		String[] fixedArgs = fixPath(args);
+		String[] fixedArgs = Utils.fixPath(args);
 
 		String file = "";
 		String catalog = "";
@@ -131,27 +131,6 @@ public class XliffChecker {
 
 	public String getVersion() {
 		return version;
-	}
-
-	protected static String[] fixPath(String[] args) {
-		Vector<String> result = new Vector<>();
-		String current = "";
-		for (int i = 0; i < args.length; i++) {
-			String arg = args[i];
-			if (arg.startsWith("-")) {
-				if (!current.isEmpty()) {
-					result.add(current.trim());
-					current = "";
-				}
-				result.add(arg);
-			} else {
-				current = current + " " + arg;
-			}
-		}
-		if (!current.isEmpty()) {
-			result.add(current.trim());
-		}
-		return result.toArray(new String[result.size()]);
 	}
 
 	public XliffChecker() throws IOException {
@@ -1121,6 +1100,10 @@ public class XliffChecker {
 				} else if (day < 1 || day > 28) {
 					return false;
 				}
+				break;
+			default:
+				// wrong month
+				return false;
 			}
 			int hour = Integer.parseInt("" + date.charAt(11) + date.charAt(12));
 			if (hour < 0 || hour > 23) {
