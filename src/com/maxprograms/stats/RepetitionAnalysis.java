@@ -14,6 +14,8 @@ package com.maxprograms.stats;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Comparator;
@@ -28,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -36,10 +39,47 @@ import com.maxprograms.xml.XMLNode;
 
 public class RepetitionAnalysis {
 
+	private static final Logger LOGGER = System.getLogger(RepetitionAnalysis.class.getName());
+
 	private static String srcLang;
 	private static Hashtable<String, Vector<Element>> segments;
 	private static Vector<Element> sources;
 	private static Vector<String> files;
+
+	public static void main(String[] args) {
+
+		String[] fixedArgs = Utils.fixPath(args);
+
+		String file = "";
+		String catalog = "";
+		for (int i = 0; i < fixedArgs.length; i++) {
+			String arg = fixedArgs[i];
+			if (arg.equals("-file") && (i + 1) < fixedArgs.length) {
+				file = fixedArgs[i + 1];
+			}
+			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
+				catalog = fixedArgs[i + 1];
+			}
+		}
+		if (file.isEmpty()) {
+			LOGGER.log(Level.ERROR, "Missing '-file' parameter.");
+			return;
+		}
+		if (catalog.isEmpty()) {
+			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
+		}
+		File catalogFile = new File(catalog);
+		if (!catalogFile.exists()) {
+			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
+			return;
+		}
+		try {
+			RepetitionAnalysis.analyse(file, catalog);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			LOGGER.log(Level.ERROR, "Error analyzing file", e);
+		}
+	}
 
 	private static void createList(Element root) {
 		List<Element> elements = root.getChildren();
@@ -66,10 +106,10 @@ public class RepetitionAnalysis {
 				if (target != null && !target.getText().equals("")) {
 					translated = "yes";
 				}
-				List<Element> trans_units = el.getChildren("alt-trans");
+				List<Element> transUnits = el.getChildren("alt-trans");
 				String type = "";
 				int[] count = getCount(el);
-				if (!trans_units.isEmpty()) {
+				if (!transUnits.isEmpty()) {
 					type = getMatch(el);
 				} else {
 					if (approved.equalsIgnoreCase("yes") && target != null
@@ -167,22 +207,22 @@ public class RepetitionAnalysis {
 		
 		// get SVGs
 		SvgStats svgStats = new SvgStats();
-		svgStats.analyze(projectFileName, catalog);
+		svgStats.analyse(projectFileName, catalog);
 
 		//
 		// publish results
 		//
-		int newSegs_t = 0;
-		int iceSegs_t = 0;
-		int untrSegs_t = 0;
-		int matches_t = 0;
-		int repeated_t = 0;
-		int repInt_t = 0;
-		int repExt_t = 0;
-		int matches_95_t = 0;
-		int matches_85_t = 0;
-		int matches_75_t = 0;
-		int matches_50_t = 0;
+		int newSegsTotal = 0;
+		int iceSegsTotal = 0;
+		int untrSegsTotal = 0;
+		int matchesTotal = 0;
+		int repeatedTotal = 0;
+		int repIntTotal = 0;
+		int repExtTotal = 0;
+		int matches95Total = 0;
+		int matches85Total = 0;
+		int matches75Total = 0;
+		int matches50Total = 0;
 
 		try (FileOutputStream out = new FileOutputStream(projectFileName + ".log.html")) {
 			writeString(out, "<!DOCTYPE html>\n");
@@ -278,11 +318,11 @@ public class RepetitionAnalysis {
 								+ "</td><td class=\"right\">" + repExt + "</td><td class=\"right\">"
 								+ (newSegs + iceSegs + matches + repInt + repExt) + "</td>");
 				writeString(out, "</tr>\n");
-				newSegs_t += newSegs;
-				iceSegs_t += iceSegs;
-				matches_t += matches;
-				repInt_t += repInt;
-				repExt_t += repExt;
+				newSegsTotal += newSegs;
+				iceSegsTotal += iceSegs;
+				matchesTotal += matches;
+				repIntTotal += repInt;
+				repExtTotal += repExt;
 			}
 
 			writeString(out, "<tr>");
@@ -290,27 +330,27 @@ public class RepetitionAnalysis {
 					"<td bgcolor=\"#ededed\" style=\"border-right:1px #adbfbe solid;border-bottom:1px #adbfbe solid;\">&nbsp;</td><td align=\"center\" bgcolor=\"#ededed\"><b>"
 							+ "SUM"
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ newSegs_t
+							+ newSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ iceSegs_t
+							+ iceSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ matches_t
+							+ matchesTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ repInt_t
+							+ repIntTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ repExt_t
+							+ repExtTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ (newSegs_t + matches_t + repInt_t + repExt_t) + "</b></td>");
+							+ (newSegsTotal + matchesTotal + repIntTotal + repExtTotal) + "</b></td>");
 			writeString(out, "</tr>\n");
 			writeString(out, "</table>\n");
 		
 			//
 			// Words based analysis
 			//
-			iceSegs_t = 0;
-			matches_t = 0;
-			repeated_t = 0;
-			newSegs_t = 0;
+			iceSegsTotal = 0;
+			matchesTotal = 0;
+			repeatedTotal = 0;
+			newSegsTotal = 0;
 			writeString(out,
 					"<h2>" + "Words Based Analysis" + "</h2>\n");
 			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
@@ -328,10 +368,10 @@ public class RepetitionAnalysis {
 				int untrSegs = 0;
 				int matches = 0;
 				int repeated = 0;
-				int matches_95 = 0;
-				int matches_85 = 0;
-				int matches_75 = 0;
-				int matches_50 = 0;
+				int matches95 = 0;
+				int matches85 = 0;
+				int matches75 = 0;
+				int matches50 = 0;
 
 				while (it.hasNext()) {
 					Element e = it.next();
@@ -346,16 +386,16 @@ public class RepetitionAnalysis {
 						matches += Integer.valueOf(e.getAttributeValue("words")).intValue();
 					}
 					if (type.equals("95")) {
-						matches_95 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches95 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 					}
 					if (type.equals("85")) {
-						matches_85 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches85 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 					}
 					if (type.equals("75")) {
-						matches_75 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches75 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 					}
 					if (type.equals("50")) {
-						matches_50 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches50 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 					}
 					if (type.startsWith("rep")) {
 						repeated += Integer.valueOf(e.getAttributeValue("words")).intValue();
@@ -366,29 +406,29 @@ public class RepetitionAnalysis {
 				writeString(out, "<td class=\"center\">" + (i + 1) + "</td>" + "<td class=\"left\">" + files.get(i)
 						+ "</td><td class=\"right\">" + newSegs + "</td><td class=\"right\">" + iceSegs
 						+ "</td><td class=\"right\">" + untrSegs + "</td><td class=\"right\">" + matches
-						+ "</td><td class=\"right\">" + repeated + "</td><td class=\"right\">" + matches_95
-						+ "</td><td class=\"right\">" + matches_85 + "</td><td class=\"right\">" + matches_75
-						+ "</td><td class=\"right\">" + matches_50 + "</td><td class=\"right\">" + (newSegs + iceSegs
-								+ matches + untrSegs + repeated + matches_95 + matches_85 + matches_75 + matches_50)
+						+ "</td><td class=\"right\">" + repeated + "</td><td class=\"right\">" + matches95
+						+ "</td><td class=\"right\">" + matches85 + "</td><td class=\"right\">" + matches75
+						+ "</td><td class=\"right\">" + matches50 + "</td><td class=\"right\">" + (newSegs + iceSegs
+								+ matches + untrSegs + repeated + matches95 + matches85 + matches75 + matches50)
 						+ "</td>");
 				writeString(out, "</tr>\n");
-				newSegs_t += newSegs;
-				iceSegs_t += iceSegs;
-				untrSegs_t += untrSegs;
-				matches_t += matches;
-				repeated_t += repeated;
-				matches_95_t += matches_95;
-				matches_85_t += matches_85;
-				matches_75_t += matches_75;
-				matches_50_t += matches_50;
+				newSegsTotal += newSegs;
+				iceSegsTotal += iceSegs;
+				untrSegsTotal += untrSegs;
+				matchesTotal += matches;
+				repeatedTotal += repeated;
+				matches95Total += matches95;
+				matches85Total += matches85;
+				matches75Total += matches75;
+				matches50Total += matches50;
 
 				newSegs = 0;
 				iceSegs = 0;
 				matches = 0;
-				matches_95 = 0;
-				matches_85 = 0;
-				matches_75 = 0;
-				matches_50 = 0;
+				matches95 = 0;
+				matches85 = 0;
+				matches75 = 0;
+				matches50 = 0;
 				repeated = 0;
 			}
 
@@ -398,26 +438,26 @@ public class RepetitionAnalysis {
 							+ "SUM");
 			writeString(out,
 					"</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ newSegs_t
+							+ newSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ iceSegs_t
+							+ iceSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ untrSegs_t
+							+ untrSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ matches_t
+							+ matchesTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ repeated_t
+							+ repeatedTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ matches_95_t
+							+ matches95Total
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ matches_85_t
+							+ matches85Total
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ matches_75_t
+							+ matches75Total
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ matches_50_t
+							+ matches50Total
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>"
-							+ (newSegs_t + iceSegs_t + untrSegs_t + matches_t + repeated_t + matches_95_t + matches_85_t
-									+ matches_75_t + matches_50_t)
+							+ (newSegsTotal + iceSegsTotal + untrSegsTotal + matchesTotal + repeatedTotal + matches95Total + matches85Total
+									+ matches75Total + matches50Total)
 							+ "</b></td>");
 			writeString(out, "</tr>\n");
 			writeString(out, "</table>\n");
@@ -596,10 +636,10 @@ public class RepetitionAnalysis {
 	}
 
 	private static String getMatch(Element e) {
-		List<Element> trans_units = e.getChildren("alt-trans");
+		List<Element> transUnits = e.getChildren("alt-trans");
 		int max = 0;
 		String type = "";
-		Iterator<Element> i = trans_units.iterator();
+		Iterator<Element> i = transUnits.iterator();
 		while (i.hasNext()) {
 			Element trans = i.next();
 			String quality = trans.getAttributeValue("match-quality");
@@ -633,25 +673,22 @@ public class RepetitionAnalysis {
 			return "";
 		}
 		StringBuilder text = new StringBuilder();
-		List<XMLNode> l = src.getContent();
-		if (l == null) {
-			return "";
-		}
-		Iterator<XMLNode> i = l.iterator();
-		while (i.hasNext()) {
-			XMLNode o = i.next();
-			if (o.getNodeType() == XMLNode.TEXT_NODE
+		List<XMLNode> content = src.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.TEXT_NODE
 					&& src.getAttributeValue("mtype", "translatable").equals(translate)) {
 				if (space.equals("default")) {
 					if (text.length() > 0) {
 						text.append(' ');
 					}
-					text.append(normalise(o.toString(), true));
+					text.append(normalise(node.toString(), true));
 				} else {
-					text.append(o.toString());
+					text.append(node.toString());
 				}
-			} else if (o.getNodeType() == XMLNode.ELEMENT_NODE) {
-				Element el = (Element) o;
+			} else if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element el = (Element) node;
 				String type = el.getName();
 				// discard all inline elements
 				// except <g>, <mrk>, <hi> and <sub>
@@ -719,7 +756,7 @@ public class RepetitionAnalysis {
 					// concatenated words
 					StringTokenizer tok2 = new StringTokenizer(str, charsInNumber);
 					while (tok2.hasMoreTokens()) {
-						str = tok2.nextToken();
+						tok2.nextToken();
 						wordnum++;
 					}
 				} else {
@@ -767,7 +804,6 @@ public class RepetitionAnalysis {
 		Vector<Element> segs = new Vector<>();
 		createList(rootClone, segs);
 
-		rootClone = null;
 		it = segs.iterator();
 		Vector<Element> srcs = new Vector<>();
 		while (it.hasNext()) {
@@ -782,10 +818,10 @@ public class RepetitionAnalysis {
 				translated = "yes";
 			}
 
-			List<Element> trans_units = e.getChildren("alt-trans");
+			List<Element> transUnits = e.getChildren("alt-trans");
 			String type = "";
 			int[] count = getCount(e);
-			if (!trans_units.isEmpty()) {
+			if (!transUnits.isEmpty()) {
 				type = getMatch(e);
 			} else {
 				if (approved.equalsIgnoreCase("yes") && target != null
@@ -795,7 +831,6 @@ public class RepetitionAnalysis {
 					type = "new";
 				}
 			}
-			e = null;
 			src.setAttribute("words", "" + count[0]);
 			src.setAttribute("untranslatable", "" + count[1]);
 			src.setAttribute("type", type);
@@ -832,10 +867,10 @@ public class RepetitionAnalysis {
 		int newSegs = 0;
 		int matches = 0;
 		int repeated = 0;
-		int matches_95 = 0;
-		int matches_85 = 0;
-		int matches_75 = 0;
-		int matches_50 = 0;
+		int matches95 = 0;
+		int matches85 = 0;
+		int matches75 = 0;
+		int matches50 = 0;
 
 		while (it.hasNext()) {
 			Element e = it.next();
@@ -850,16 +885,16 @@ public class RepetitionAnalysis {
 				matches += Integer.valueOf(e.getAttributeValue("words")).intValue();
 			}
 			if (type.equals("95")) {
-				matches_95 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches95 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 			}
 			if (type.equals("85")) {
-				matches_85 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches85 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 			}
 			if (type.equals("75")) {
-				matches_75 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches75 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 			}
 			if (type.equals("50")) {
-				matches_50 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches50 += Integer.valueOf(e.getAttributeValue("words")).intValue();
 			}
 			if (type.startsWith("rep")) {
 				repeated += Integer.valueOf(e.getAttributeValue("words")).intValue();
@@ -889,10 +924,10 @@ public class RepetitionAnalysis {
 		result[0] = newSegs;
 		result[1] = matches;
 		result[2] = repeated;
-		result[3] = matches_95;
-		result[4] = matches_85;
-		result[5] = matches_75;
-		result[6] = matches_50;
+		result[3] = matches95;
+		result[4] = matches85;
+		result[5] = matches75;
+		result[6] = matches50;
 		result[7] = allwords;
 		result[8] = numapproved;
 		result[9] = numtranslated;
@@ -1045,7 +1080,7 @@ public class RepetitionAnalysis {
 				}
 			}
 		}
-		if (repeat == true) {
+		if (repeat) {
 			return normalise(result.toString(), trim);
 		}
 		if (trim) {

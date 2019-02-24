@@ -11,12 +11,7 @@
  *******************************************************************************/
 package com.maxprograms.stats;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +20,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -72,74 +66,9 @@ public class SvgStats {
 
 	}
 
-	private static final Logger LOGGER = System.getLogger(SvgStats.class.getName());
-
 	private List<SegmentStatus> segmentsList;
 
-	public static void main(String[] args) {
-
-		String[] fixedArgs = Utils.fixPath(args);
-
-		String file = "";
-		String catalog = "";
-		for (int i = 0; i < fixedArgs.length; i++) {
-			String arg = fixedArgs[i];
-			if (arg.equals("-file") && (i + 1) < fixedArgs.length) {
-				file = fixedArgs[i + 1];
-			}
-			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
-				catalog = fixedArgs[i + 1];
-			}
-		}
-		if (file.isEmpty()) {
-			LOGGER.log(Level.ERROR, "Missing '-file' parameter.");
-			return;
-		}
-		if (catalog.isEmpty()) {
-			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
-			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
-		}
-		File catalogFile = new File(catalog);
-		if (!catalogFile.exists()) {
-			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
-			return;
-		}
-		try {
-			SvgStats instance = new SvgStats();
-			instance.analyze(file, catalog);
-
-			Element matchesSvg = instance.generateMatchesSvg();
-			Element translatedSvg = instance.generateTranslatedSvg();
-			Element approvedSvg = instance.generateApprovedSvg();
-			
-			try(FileOutputStream out = new FileOutputStream(new File(file + ".html"))) {
-				writeString(out, "<!DOCTYPE html>\n");
-				writeString(out, "<html>\n");
-				writeString(out, "<head>\n");
-				writeString(out, "</head>\n");
-				writeString(out, "<body>\n");
-			
-				writeString(out, "Translated Segments\n");
-				writeString(out, "<br>\n");
-				writeString(out, translatedSvg.toString());
-				writeString(out, "<br>\n");
-				writeString(out, "Approved Segments\n");
-				writeString(out, "<br>\n");
-				writeString(out, approvedSvg.toString());
-				writeString(out, "<br>\n");
-				writeString(out, "TM Matches Quality\n");
-				writeString(out, "<br>\n");
-				writeString(out, matchesSvg.toString());
-				
-				writeString(out, "</body>\n");
-				writeString(out, "</html>\n");
-			}
-		} catch (IOException | SAXException | ParserConfigurationException e) {
-			LOGGER.log(Level.ERROR, "Error analyzing file", e);
-		}
-	}
-
-	public void analyze(String file, String catalog) throws SAXException, IOException, ParserConfigurationException {
+	public void analyse(String file, String catalog) throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document document = builder.build(file);
@@ -156,10 +85,6 @@ public class SvgStats {
 		if (segmentsList.isEmpty()) {
 			throw new IOException("Empty XLIFF");
 		}
-	}
-
-	private static void writeString(FileOutputStream out, String string) throws IOException {
-		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
 	private Element basicSvg() {
