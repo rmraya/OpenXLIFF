@@ -113,26 +113,26 @@ public class SvgStats {
 			Element approvedSvg = instance.generateApprovedSvg();
 			
 			try(FileOutputStream out = new FileOutputStream(new File(file + ".html"))) {
-				instance.writeString(out, "<!DOCTYPE html>\n");
-				instance.writeString(out, "<html>\n");
-				instance.writeString(out, "<head>\n");
-				instance.writeString(out, "</head>\n");
-				instance.writeString(out, "<body>\n");
+				writeString(out, "<!DOCTYPE html>\n");
+				writeString(out, "<html>\n");
+				writeString(out, "<head>\n");
+				writeString(out, "</head>\n");
+				writeString(out, "<body>\n");
 			
-				instance.writeString(out, "Translated Segments\n");
-				instance.writeString(out, "<br>\n");
-				instance.writeString(out, translatedSvg.toString());
-				instance.writeString(out, "<br>\n");
-				instance.writeString(out, "Approved Segments\n");
-				instance.writeString(out, "<br>\n");
-				instance.writeString(out, approvedSvg.toString());
-				instance.writeString(out, "<br>\n");
-				instance.writeString(out, "TM Matches Quality\n");
-				instance.writeString(out, "<br>\n");
-				instance.writeString(out, matchesSvg.toString());
+				writeString(out, "Translated Segments\n");
+				writeString(out, "<br>\n");
+				writeString(out, translatedSvg.toString());
+				writeString(out, "<br>\n");
+				writeString(out, "Approved Segments\n");
+				writeString(out, "<br>\n");
+				writeString(out, approvedSvg.toString());
+				writeString(out, "<br>\n");
+				writeString(out, "TM Matches Quality\n");
+				writeString(out, "<br>\n");
+				writeString(out, matchesSvg.toString());
 				
-				instance.writeString(out, "</body>\n");
-				instance.writeString(out, "</html>\n");
+				writeString(out, "</body>\n");
+				writeString(out, "</html>\n");
 			}
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error analyzing file", e);
@@ -156,10 +156,9 @@ public class SvgStats {
 		if (segmentsList.isEmpty()) {
 			throw new IOException("Empty XLIFF");
 		}
-		
 	}
 
-	private void writeString(FileOutputStream out, String string) throws IOException {
+	private static void writeString(FileOutputStream out, String string) throws IOException {
 		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
