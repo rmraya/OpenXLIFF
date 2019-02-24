@@ -174,7 +174,6 @@ public class Element implements XMLNode, Serializable {
 				newContent.add(n);
 			}
 		}
-		content = null;
 		content = newContent;
 	}
 
