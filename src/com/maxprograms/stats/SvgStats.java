@@ -72,7 +72,7 @@ public class SvgStats {
 
 	}
 
-	private static Logger LOGGER = System.getLogger(SvgStats.class.getName());
+	private static final Logger LOGGER = System.getLogger(SvgStats.class.getName());
 
 	private List<SegmentStatus> segmentsList;
 
@@ -225,7 +225,7 @@ public class SvgStats {
 		return svg;
 	}
 
-	private Element generateMatchesSvg() {
+	public Element generateMatchesSvg() {
 		Element svg = basicSvg();
 
 		Element text100 = new Element("text");
@@ -268,7 +268,7 @@ public class SvgStats {
 		return svg;
 	}
 
-	private Element generateTranslatedSvg() {
+	public Element generateTranslatedSvg() {
 		Element svg = basicSvg();
 
 		int size = segmentsList.size() * 10 / 2000;
@@ -290,7 +290,7 @@ public class SvgStats {
 		return svg;
 	}
 
-	private Element generateApprovedSvg() {
+	public Element generateApprovedSvg() {
 		Element svg = basicSvg();
 
 		int size = segmentsList.size() * 10 / 2000;
