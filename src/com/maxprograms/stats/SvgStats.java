@@ -332,6 +332,10 @@ public class SvgStats {
 
 	private void parseXliff(Element e) {
 		if ("trans-unit".equals(e.getName())) {
+			Element src = e.getChild("source");
+			if (src.getContent().isEmpty()) {
+				return;
+			}
 			SegmentStatus status = new SegmentStatus();
 			status.setApproved(e.getAttributeValue("approved", "no").equalsIgnoreCase("yes"));
 			Element target = e.getChild("target");
