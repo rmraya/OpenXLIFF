@@ -124,7 +124,7 @@ public class SvgStats {
 			barWidth = 2;
 			offset = 0;
 			stroke = "stroke-width:1;";
-			xLimit = (int) (Math.ceil(listSize/100.0) * 100); 
+			xLimit = (int) (Math.ceil(listSize / 100.0) * 100);
 			maxBars = 400 * listSize / xLimit;
 			groupSize = listSize / maxBars;
 		}
@@ -161,7 +161,7 @@ public class SvgStats {
 		}
 		for (int x = 0; x < 10; x++) {
 			Element text = new Element("text");
-			text.setText((x+1) * (xLimit / 10) + "");
+			text.setText((x + 1) * (xLimit / 10) + "");
 			text.setAttribute("style", "font-family:sans-serif;font-size:10px;");
 			text.setAttribute("x", "" + (84 + x * 80));
 			text.setAttribute("y", "122");
