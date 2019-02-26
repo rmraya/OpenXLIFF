@@ -535,7 +535,7 @@ public class RepetitionAnalysis {
 			Element translatedSvg = svgStats.generateTranslatedSvg();
 			Element approvedSvg = svgStats.generateApprovedSvg();
 			
-			writeString(out, "<div style=\"padding-left:100px;\">\n");
+			writeString(out, "<div style=\"padding-left:50px;\">\n");
 			writeString(out, "<h3>Translated Segments</h3>\n");
 			writeString(out, translatedSvg.toString());
 			writeString(out, "\n<br>\n");

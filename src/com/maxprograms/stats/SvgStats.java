@@ -67,6 +67,12 @@ public class SvgStats {
 	}
 
 	private List<SegmentStatus> segmentsList;
+	private int groupSize;
+	private int barWidth;
+	private int maxBars;
+	private int xLimit;
+	private int offset;
+	private String stroke;
 
 	public void analyse(String file, String catalog) throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
@@ -85,56 +91,87 @@ public class SvgStats {
 		if (segmentsList.isEmpty()) {
 			throw new IOException("Empty XLIFF");
 		}
+		int listSize = segmentsList.size();
+		if (listSize <= 10) {
+			groupSize = 1;
+			barWidth = 80;
+			offset = 40;
+			stroke = "stroke-width:78;";
+			maxBars = 10;
+			xLimit = 10;
+		} else if (listSize > 10 && listSize <= 50) {
+			groupSize = 1;
+			barWidth = 16;
+			offset = 8;
+			stroke = "stroke-width:14;";
+			maxBars = 50;
+			xLimit = 50;
+		} else if (listSize > 50 && listSize <= 100) {
+			groupSize = 1;
+			barWidth = 8;
+			offset = 4;
+			stroke = "stroke-width:6;";
+			maxBars = 100;
+			xLimit = 100;
+		} else if (listSize > 100 && listSize <= 200) {
+			groupSize = 1;
+			barWidth = 4;
+			offset = 1;
+			stroke = "stroke-width:1;";
+			maxBars = 200;
+			xLimit = 200;
+		} else {
+			barWidth = 2;
+			offset = 0;
+			stroke = "stroke-width:1;";
+			xLimit = (int) (Math.ceil(listSize/100.0) * 100); 
+			maxBars = 400 * listSize / xLimit;
+			groupSize = listSize / maxBars;
+		}
 	}
 
 	private Element basicSvg() {
 		Element svg = new Element("svg");
 		svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-		svg.setAttribute("width", "640px");
+		svg.setAttribute("width", "840px");
 		svg.setAttribute("height", "130px");
 
 		Element rect = new Element("rect");
-		rect.setAttribute("width", "640px");
+		rect.setAttribute("width", "840px");
 		rect.setAttribute("height", "130px");
-		rect.setAttribute("style", "fill:white;");
+		rect.setAttribute("style", "fill:#eeeeee;");
 		svg.addContent(rect);
 
 		Element xAxe = new Element("line");
 		xAxe.setAttribute("x1", "5");
 		xAxe.setAttribute("y1", "110");
-		xAxe.setAttribute("x2", "615");
+		xAxe.setAttribute("x2", "815");
 		xAxe.setAttribute("y2", "110");
 		xAxe.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:2;");
 		svg.addContent(xAxe);
 
-		for (int x = 0; x < 20; x++) {
+		for (int x = 0; x <= 20; x++) {
 			Element pipe = new Element("line");
-			pipe.setAttribute("x1", "" + (40 + x * 30));
-			pipe.setAttribute("x2", "" + (40 + x * 30));
-			if (x % 2 == 0) {
-				pipe.setAttribute("y1", "108");
-				pipe.setAttribute("y2", "112");
-			} else {
-				pipe.setAttribute("y1", "106");
-				pipe.setAttribute("y2", "114");
-			}
+			pipe.setAttribute("x1", "" + (10 + x * 40));
+			pipe.setAttribute("x2", "" + (10 + x * 40));
+			pipe.setAttribute("y1", "110");
+			pipe.setAttribute("y2", "114");
 			pipe.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:1;");
 			svg.addContent(pipe);
 		}
-		int size = segmentsList.size() * 10 / 1000;
-		for (int x = 10; x <= 100; x += 10) {
+		for (int x = 0; x < 10; x++) {
 			Element text = new Element("text");
-			text.setText(x * size + "");
+			text.setText((x+1) * (xLimit / 10) + "");
 			text.setAttribute("style", "font-family:sans-serif;font-size:10px;");
-			text.setAttribute("x", "" + +x * 6);
+			text.setAttribute("x", "" + (84 + x * 80));
 			text.setAttribute("y", "122");
 			svg.addContent(text);
 		}
 
 		Element yAxe = new Element("line");
-		yAxe.setAttribute("x1", "10");
+		yAxe.setAttribute("x1", "9");
 		yAxe.setAttribute("y1", "5");
-		yAxe.setAttribute("x2", "10");
+		yAxe.setAttribute("x2", "9");
 		yAxe.setAttribute("y2", "115");
 		yAxe.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:2;");
 		svg.addContent(yAxe);
@@ -142,7 +179,7 @@ public class SvgStats {
 		Element yTop = new Element("line");
 		yTop.setAttribute("x1", "10");
 		yTop.setAttribute("y1", "10");
-		yTop.setAttribute("x2", "610");
+		yTop.setAttribute("x2", "810");
 		yTop.setAttribute("y2", "10");
 		yTop.setAttribute("style", "stroke:grey;stroke-width:1;stroke-dasharray:5,5;");
 		svg.addContent(yTop);
@@ -156,14 +193,14 @@ public class SvgStats {
 		Element text100 = new Element("text");
 		text100.setText("100%");
 		text100.setAttribute("style", "font-family:sans-serif;font-size:10px;");
-		text100.setAttribute("x", "612");
+		text100.setAttribute("x", "812");
 		text100.setAttribute("y", "15");
 		svg.addContent(text100);
 
 		Element yCenter = new Element("line");
 		yCenter.setAttribute("x1", "10");
 		yCenter.setAttribute("y1", "60");
-		yCenter.setAttribute("x2", "610");
+		yCenter.setAttribute("x2", "810");
 		yCenter.setAttribute("y2", "60");
 		yCenter.setAttribute("style", "stroke:grey;stroke-width:1;stroke-dasharray:5,5;");
 		svg.addContent(yCenter);
@@ -171,22 +208,21 @@ public class SvgStats {
 		Element text50 = new Element("text");
 		text50.setText("50%");
 		text50.setAttribute("style", "font-family:sans-serif;font-size:10px;");
-		text50.setAttribute("x", "612");
+		text50.setAttribute("x", "812");
 		text50.setAttribute("y", "65");
 		svg.addContent(text50);
 
-		int size = segmentsList.size() * 10 / 2000;
-		for (int x = 0; x < 200; x++) {
-			float y = matchAverage(x, size);
+		for (int x = 0; x < maxBars; x++) {
+			float y = matchAverage(x);
 			if (y < 1) {
 				continue;
 			}
 			Element line = new Element("line");
-			line.setAttribute("x1", "" + (12 + 3 * x));
+			line.setAttribute("x1", "" + (10 + offset + barWidth * x));
 			line.setAttribute("y1", "" + (110 - y));
-			line.setAttribute("x2", "" + (12 + 3 * x));
-			line.setAttribute("y2", "110");
-			line.setAttribute("style", "stroke:blue;stroke-width:1;");
+			line.setAttribute("x2", "" + (10 + offset + barWidth * x));
+			line.setAttribute("y2", "109");
+			line.setAttribute("style", "stroke:blue;" + stroke);
 			svg.addContent(line);
 		}
 		Indenter.indent(svg, 2);
@@ -195,20 +231,17 @@ public class SvgStats {
 
 	public Element generateTranslatedSvg() {
 		Element svg = basicSvg();
-
-		int size = segmentsList.size() * 10 / 2000;
-		for (int x = 0; x < 200; x++) {
-			float y = translatedAverage(x, size);
+		for (int x = 0; x < maxBars; x++) {
+			float y = translatedAverage(x);
 			if (y < 1) {
 				continue;
 			}
-
 			Element line = new Element("line");
-			line.setAttribute("x1", "" + (12 + 3 * x));
+			line.setAttribute("x1", "" + (10 + offset + barWidth * x));
 			line.setAttribute("y1", "" + (110 - y));
-			line.setAttribute("x2", "" + (12 + 3 * x));
-			line.setAttribute("y2", "110");
-			line.setAttribute("style", "stroke:green;stroke-width:2;");
+			line.setAttribute("x2", "" + (10 + offset + barWidth * x));
+			line.setAttribute("y2", "109");
+			line.setAttribute("style", "stroke:green;" + stroke);
 			svg.addContent(line);
 		}
 		Indenter.indent(svg, 2);
@@ -217,62 +250,77 @@ public class SvgStats {
 
 	public Element generateApprovedSvg() {
 		Element svg = basicSvg();
-
-		int size = segmentsList.size() * 10 / 2000;
-		for (int x = 0; x < 200; x++) {
-			float y = approvedAverage(x, size);
+		for (int x = 0; x < maxBars; x++) {
+			float y = approvedAverage(x);
 			if (y < 1) {
 				continue;
 			}
-
 			Element line = new Element("line");
-			line.setAttribute("x1", "" + (12 + 3 * x));
+			line.setAttribute("x1", "" + (10 + offset + barWidth * x));
 			line.setAttribute("y1", "" + (110 - y));
-			line.setAttribute("x2", "" + (12 + 3 * x));
-			line.setAttribute("y2", "110");
-			line.setAttribute("style", "stroke:red;stroke-width:2;");
+			line.setAttribute("x2", "" + (10 + offset + barWidth * x));
+			line.setAttribute("y2", "109");
+			line.setAttribute("style", "stroke:red;" + stroke);
 			svg.addContent(line);
 		}
 		Indenter.indent(svg, 2);
 		return svg;
 	}
 
-	private float translatedAverage(int x, int size) {
+	private float translatedAverage(int x) {
+		if (groupSize == 1) {
+			if (x < segmentsList.size()) {
+				return segmentsList.get(x).isTranslated() ? 100 : 0;
+			}
+			return 0;
+		}
 		float total = 0;
 		int counted = 0;
-		for (int count = 0; count < size; count++) {
-			if (x * size + count < segmentsList.size()) {
-				total += segmentsList.get(x * size + count).isTranslated() ? 1 : 0;
+		for (int count = 0; count < groupSize; count++) {
+			if (x * groupSize + count < segmentsList.size()) {
+				total += segmentsList.get(x * groupSize + count).isTranslated() ? 1 : 0;
 				counted++;
 			}
 		}
 		if (counted == 0) {
 			return 0;
 		}
-		return total > counted/2 ? 100 : 0;
+		return total > counted / 2 ? 100 : 0;
 	}
 
-	private float approvedAverage(int x, int size) {
+	private float approvedAverage(int x) {
+		if (groupSize == 1) {
+			if (x < segmentsList.size()) {
+				return segmentsList.get(x).isApproved() ? 100 : 0;
+			}
+			return 0;
+		}
 		float total = 0;
 		int counted = 0;
-		for (int count = 0; count < size; count++) {
-			if (x * size + count < segmentsList.size()) {
-				total += segmentsList.get(x * size + count).isApproved() ? 1 : 0;
+		for (int count = 0; count < groupSize; count++) {
+			if (x * groupSize + count < segmentsList.size()) {
+				total += segmentsList.get(x * groupSize + count).isApproved() ? 1 : 0;
 				counted++;
 			}
 		}
 		if (counted == 0) {
 			return 0;
 		}
-		return total > counted/2 ? 100 : 0;
+		return total > counted / 2 ? 100 : 0;
 	}
 
-	private float matchAverage(int x, int size) {
+	private float matchAverage(int x) {
+		if (groupSize == 1) {
+			if (x < segmentsList.size()) {
+				return segmentsList.get(x).getMatch();
+			}
+			return 0;
+		}
 		float total = 0;
 		int counted = 0;
-		for (int count = 0; count < size; count++) {
-			if (x * size + count < segmentsList.size()) {
-				total += segmentsList.get(x * size + count).getMatch();
+		for (int count = 0; count < groupSize; count++) {
+			if (x * groupSize + count < segmentsList.size()) {
+				total += segmentsList.get(x * groupSize + count).getMatch();
 				counted++;
 			}
 		}
