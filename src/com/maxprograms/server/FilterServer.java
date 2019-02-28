@@ -44,6 +44,7 @@ import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Merge;
 import com.maxprograms.languages.Language;
+import com.maxprograms.stats.RepetitionAnalysis;
 import com.maxprograms.validation.XliffChecker;
 import com.maxprograms.xliff2.ToXliff2;
 import com.sun.net.httpserver.HttpExchange;
@@ -138,6 +139,9 @@ public class FilterServer implements HttpHandler {
 			if (command.equals("validateXliff")) {
 				response = validateXliff(json);
 			}
+			if (command.equals("analyseXliff")) {
+				response = analyseXliff(json);
+			}
 			if (command.equals("getTypes") || uri.toString().endsWith("/getTypes")) {
 				response = getTypes();
 			}
@@ -167,6 +171,41 @@ public class FilterServer implements HttpHandler {
 		}
 	}
 
+	private String analyseXliff(JSONObject json) {
+		String file = json.getString("file");
+		catalog = "";
+		try {
+			catalog = json.getString("catalog");
+		} catch (JSONException je) {
+			// do nothing
+		}
+		if (catalog.isEmpty()) {
+			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
+		}
+
+		String process = "" + System.currentTimeMillis();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				running.put(process, "running");
+				try {
+					RepetitionAnalysis instance = new RepetitionAnalysis();
+					instance.analyse(file, catalog);
+					if (running.get(process).equals(("running"))) {
+						LOGGER.log(Level.INFO, "Analysis completed");
+						running.put(process, "completed");
+					}
+				} catch (IOException | SAXException | ParserConfigurationException e) {
+					LOGGER.log(Level.ERROR, "Error analysing file", e);
+					running.put(process, e.getMessage());
+				}
+			}
+		}).start();
+		return "{\"process\":\"" + process + "\"}";
+	}
+
 	private String validateXliff(JSONObject json) {
 		String file = json.getString("file");
 		catalog = "";
@@ -179,13 +218,13 @@ public class FilterServer implements HttpHandler {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
-		
+
 		String process = "" + System.currentTimeMillis();
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				running.put(process,"running");
+				running.put(process, "running");
 				try {
 					XliffChecker validator = new XliffChecker();
 					boolean valid = validator.validate(file, catalog);
@@ -201,11 +240,11 @@ public class FilterServer implements HttpHandler {
 					validationResults.put(process, result);
 					if (running.get(process).equals(("running"))) {
 						LOGGER.log(Level.INFO, "Validation completed");
-						running.put(process,"completed");
+						running.put(process, "completed");
 					}
-				} catch (IOException  e) {
+				} catch (IOException e) {
 					LOGGER.log(Level.ERROR, "Error validating file", e);
-					running.put(process,e.getMessage());
+					running.put(process, e.getMessage());
 				}
 			}
 		}).start();
@@ -279,7 +318,7 @@ public class FilterServer implements HttpHandler {
 		}
 		return result.toString(2);
 	}
-	
+
 	private String merge(JSONObject json) {
 		xliff = "";
 		try {
@@ -314,16 +353,16 @@ public class FilterServer implements HttpHandler {
 
 			@Override
 			public void run() {
-				running.put(process,"running");
+				running.put(process, "running");
 				try {
 					Merge.merge(xliff, target, catalog, unapproved);
 					if (running.get(process).equals(("running"))) {
 						LOGGER.log(Level.INFO, "Merge completed");
-						running.put(process,"completed");
+						running.put(process, "completed");
 					}
 				} catch (IOException | SAXException | ParserConfigurationException e) {
 					LOGGER.log(Level.ERROR, "Error merging file", e);
-					running.put(process,e.getMessage());
+					running.put(process, e.getMessage());
 				}
 			}
 		}).start();
@@ -377,7 +416,7 @@ public class FilterServer implements HttpHandler {
 				type = detected;
 				LOGGER.log(Level.INFO, "Auto-detected type: " + type);
 			} else {
-				LOGGER.log(Level.ERROR, "Unable to auto-detect file format. Use '-type' parameter."); 
+				LOGGER.log(Level.ERROR, "Unable to auto-detect file format. Use '-type' parameter.");
 			}
 		}
 		String enc = "";
@@ -392,7 +431,7 @@ public class FilterServer implements HttpHandler {
 				enc = charset.name();
 				LOGGER.log(Level.INFO, "Auto-detected encoding: " + enc);
 			} else {
-				LOGGER.log(Level.ERROR, "Unable to auto-detect character set. Use '-enc' parameter."); 
+				LOGGER.log(Level.ERROR, "Unable to auto-detect character set. Use '-enc' parameter.");
 			}
 		}
 		String srx = "";
@@ -462,7 +501,7 @@ public class FilterServer implements HttpHandler {
 
 			@Override
 			public void run() {
-				running.put(process,"running");
+				running.put(process, "running");
 				Vector<String> result = Convert.run(params);
 				if ("0".equals(result.get(0))) {
 					if (embed) {
@@ -470,24 +509,24 @@ public class FilterServer implements HttpHandler {
 							Convert.addSkeleton(xliff, catalog);
 						} catch (SAXException | IOException | ParserConfigurationException e) {
 							LOGGER.log(Level.ERROR, "Error embedding skeleton", e);
-							running.put(process,e.getMessage());
+							running.put(process, e.getMessage());
 							is20 = false;
 						}
 					}
 					if (is20) {
 						result = ToXliff2.run(new File(xliff), catalog);
 						if (!"0".equals(result.get(0))) {
-							LOGGER.log(Level.ERROR,result.get(1));
-							running.put(process,result.get(1));
+							LOGGER.log(Level.ERROR, result.get(1));
+							running.put(process, result.get(1));
 						}
 					}
 				} else {
-					LOGGER.log(Level.ERROR,result.get(1));
-					running.put(process,result.get(1));
+					LOGGER.log(Level.ERROR, result.get(1));
+					running.put(process, result.get(1));
 				}
 				if (running.get(process).equals(("running"))) {
 					LOGGER.log(Level.INFO, "Conversion completed");
-					running.put(process,"completed");
+					running.put(process, "completed");
 				}
 			}
 		}).start();
