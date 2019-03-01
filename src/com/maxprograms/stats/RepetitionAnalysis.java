@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
+import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -140,15 +141,27 @@ public class RepetitionAnalysis {
 		}
 	}
 
-	public void analyse(String projectFileName, String catalog)
+	public void analyse(String fileName, String catalog)
 			throws SAXException, IOException, ParserConfigurationException {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Iterator<Element> it = null;
-		String shortName = new File(projectFileName).getName();
-		Document doc = builder.build(projectFileName);
+		String shortName = new File(fileName).getName();
+		Document doc = builder.build(fileName);
 		Element root = doc.getRootElement();
+
+		SvgStats svgStats = new SvgStats();
+		if (root.getAttributeValue("version").startsWith("2.")) {
+			File temp = File.createTempFile("temp", ".xlf");
+			temp.deleteOnExit();
+			FromXliff2.run(fileName, temp.getAbsolutePath(), catalog);
+			doc = builder.build(fileName);
+			root = doc.getRootElement();
+			svgStats.analyse(temp.getAbsolutePath(), catalog);
+		} else {
+			svgStats.analyse(fileName, catalog);
+		}
 		segments = new Hashtable<>();
 		files = new Vector<>();
 
@@ -200,9 +213,6 @@ public class RepetitionAnalysis {
 			}
 		}
 
-		// get SVGs
-		SvgStats svgStats = new SvgStats();
-		svgStats.analyse(projectFileName, catalog);
 
 		//
 		// publish results
@@ -219,7 +229,7 @@ public class RepetitionAnalysis {
 		int matches75Total = 0;
 		int matches50Total = 0;
 
-		try (FileOutputStream out = new FileOutputStream(projectFileName + ".log.html")) {
+		try (FileOutputStream out = new FileOutputStream(fileName + ".log.html")) {
 			writeString(out, "<!DOCTYPE html>\n");
 			writeString(out, "<html>\n");
 			writeString(out, "<head>\n");
