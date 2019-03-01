@@ -15,6 +15,7 @@ With Open XLIFF Filters you can create XLIFF files that don't use proprietary ma
  - **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
  - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
  - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)** 
+ - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 
 Project 
 **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment. 
