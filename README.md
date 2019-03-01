@@ -202,5 +202,5 @@ Where:
    -catalog:   (optional) XML catalog to use for processing
 ```
 
-The generated HTML report is generated in the folder where the XLIFF file is located and its name is the name of the XLIFF plus `.log.html`. 
+The HTML report is generated in the folder where the XLIFF file is located and its name is the name of the XLIFF plus `.log.html`. 
 
