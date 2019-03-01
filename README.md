@@ -165,8 +165,7 @@ Standard XML Schema validation does not detect the use of duplicated 'id' attrib
 
 All XLIFF 2.0 modules are validated using XML Schema validation in a first pass. Extra validation is then performed using Java code for XLIFF 2.0 Core and for Metadata, Matches and Glossary modules.
 
-
-You can use the library in your own Java code. validation of XLIFF files is handled by the class `com.maxprograms.validation.XliffChecker`.
+You can validate XLIFF files using your own Java code. Validation of XLIFF files is handled by the class `com.maxprograms.validation.XliffChecker`.
 
 If you use binaries from the command line, running `.\xliffchecker.bat` or `./xliffchecker.sh` without parameters displays help for XLIFF validation. 
 
@@ -182,5 +181,25 @@ Where:
    -catalog:   (optional) XML catalog to use for processing
 ```   
 
+### Translation Status Analysis
 
+This library lets you produce an HTML file with word counts and segment status statistics from an XLIFF file.  
+
+If you use binaries from the command line, running `.\analysis.bat` or `./analysis.sh` without parameters displays help for statistics generation.
+
+You can generate statistics using your own Java code. Statistics generation is handled by the class `com.maxprograms.stats.RepetitionAnalysis`.
+
+```
+Usage:
+
+   analysis.sh [-help] -file xliffFile [-catalog catalogFile] 
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -file:      XLIFF file to analyze
+   -catalog:   (optional) XML catalog to use for processing
+```
+
+The generated HTML report is generated in the folder where the XLIFF file is located and its name is the name of the XLIFF plus `.log.html`. 
 
