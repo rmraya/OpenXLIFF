@@ -55,12 +55,20 @@ public class RepetitionAnalysis {
 		String catalog = "";
 		for (int i = 0; i < fixedArgs.length; i++) {
 			String arg = fixedArgs[i];
+			if (arg.equals("-help")) {
+				help();
+				return;
+			}
 			if (arg.equals("-file") && (i + 1) < fixedArgs.length) {
 				file = fixedArgs[i + 1];
 			}
 			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
 				catalog = fixedArgs[i + 1];
 			}
+		}
+		if (fixedArgs.length < 2) {
+			help();
+			return;
 		}
 		if (file.isEmpty()) {
 			LOGGER.log(Level.ERROR, "Missing '-file' parameter.");
@@ -81,6 +89,18 @@ public class RepetitionAnalysis {
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error analyzing file", e);
 		}
+	}
+
+	private static void help() {
+		String launcher = "   analysis.sh ";
+		if (System.getProperty("file.separator").equals("\\")) {
+			launcher = "   analysis.bat ";
+		}
+		String help = "Usage:\n\n" + launcher + "[-help] -file xliffFile [-catalog catalogFile] \n\n" + "Where:\n\n"
+				+ "   -help:      (optional) Display this help information and exit\n"
+				+ "   -file:      XLIFF file to analyze\n"
+				+ "   -catalog:   (optional) XML catalog to use for processing\n";
+		System.out.println(help);
 	}
 
 	private void createList(Element root) {
@@ -212,7 +232,6 @@ public class RepetitionAnalysis {
 				}
 			}
 		}
-
 
 		//
 		// publish results
