@@ -11,5 +11,6 @@ cp convert.sh open_filters/
 cp merge.sh open_filters/
 cp server.sh open_filters/
 cp xliffchecker.sh open_filters/
+cp analysis.sh open_filters/
 cp LICENSE open_filters/
 
