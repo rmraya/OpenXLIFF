@@ -176,7 +176,7 @@ public class RepetitionAnalysis {
 			File temp = File.createTempFile("temp", ".xlf");
 			temp.deleteOnExit();
 			FromXliff2.run(fileName, temp.getAbsolutePath(), catalog);
-			doc = builder.build(fileName);
+			doc = builder.build(temp);
 			root = doc.getRootElement();
 			svgStats.analyse(temp.getAbsolutePath(), catalog);
 		} else {
