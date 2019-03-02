@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -27,7 +28,6 @@ public class Element implements XMLNode, Serializable {
 	private static final long serialVersionUID = 3004362075586010085L;
 
 	private String name;
-	private List<Attribute> attributes;
 	private Vector<XMLNode> content;
 	private Hashtable<String, Attribute> attsTable;
 
@@ -35,14 +35,12 @@ public class Element implements XMLNode, Serializable {
 
 	public Element() {
 		name = "";
-		attributes = new Vector<>();
 		attsTable = new Hashtable<>();
 		content = new Vector<>();
 	}
 
 	public Element(String name) {
 		this.name = name;
-		attributes = new Vector<>();
 		attsTable = new Hashtable<>();
 		content = new Vector<>();
 	}
@@ -77,14 +75,12 @@ public class Element implements XMLNode, Serializable {
 
 	public void clone(Element src) {
 		name = src.getName();
-		attributes = new Vector<>();
 		attsTable = new Hashtable<>();
 		List<Attribute> atts = src.getAttributes();
 		Iterator<Attribute> it = atts.iterator();
 		while (it.hasNext()) {
 			Attribute a = it.next();
 			Attribute n = new Attribute(a.getName(), a.getValue());
-			attributes.add(n);
 			attsTable.put(n.getName(), n);
 		}
 		content = new Vector<>();
@@ -129,11 +125,13 @@ public class Element implements XMLNode, Serializable {
 		if (!name.equals(s.getName())) {
 			return false;
 		}
-		if (attributes.size() != s.getAttributes().size()) {
+		if (attsTable.size() != s.attsTable.size()) {
 			return false;
 		}
-		for (int i = 0; i < attributes.size(); i++) {
-			Attribute a = attributes.get(i);
+		Set<String> keys = attsTable.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			Attribute a = attsTable.get(it.next());
 			Attribute b = s.getAttribute(a.getName());
 			if (b == null) {
 				return false;
@@ -182,7 +180,9 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public List<Attribute> getAttributes() {
-		return attributes;
+		List<Attribute> result = new Vector<>();
+		result.addAll(attsTable.values());
+		return result;
 	}
 
 	public String getAttributeValue(String attributeName) {
@@ -242,14 +242,14 @@ public class Element implements XMLNode, Serializable {
 		}
 		return name.substring(name.indexOf(':'));
 	}
-	
+
 	public String getNamespace() {
 		if (name.indexOf(':') == -1) {
 			return "";
 		}
 		return name.substring(0, name.indexOf(':'));
 	}
-	
+
 	@Override
 	public short getNodeType() {
 		return XMLNode.ELEMENT_NODE;
@@ -276,13 +276,6 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public void removeAttribute(String attributeName) {
-		for (int i = 0; i < attributes.size(); i++) {
-			Attribute a = attributes.get(i);
-			if (a.getName().equals(attributeName)) {
-				attributes.remove(a);
-				break;
-			}
-		}
 		attsTable.remove(attributeName);
 	}
 
@@ -306,20 +299,8 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public void setAttribute(String attributeName, String value) {
-		if (!attsTable.containsKey(attributeName)) {
-			Attribute a = new Attribute(attributeName, value);
-			attsTable.put(attributeName, a);
-			attributes.add(a);
-		} else {
-			for (int i = 0; i < attributes.size(); i++) {
-				Attribute a = attributes.get(i);
-				if (a.getName().equals(attributeName)) {
-					a.setValue(value);
-					attsTable.put(attributeName, a);
-					break;
-				}
-			}
-		}
+		Attribute a = new Attribute(attributeName, value);
+		attsTable.put(attributeName, a);
 	}
 
 	public void setContent(List<XMLNode> c) {
@@ -337,8 +318,10 @@ public class Element implements XMLNode, Serializable {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder("<" + name);
-		for (int i = 0; i < attributes.size(); i++) {
-			Attribute a = attributes.get(i);
+		Set<String> keys = attsTable.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			Attribute a = attsTable.get(it.next());
 			result.append(" " + a.toString());
 		}
 		if (content.isEmpty()) {
@@ -403,7 +386,6 @@ public class Element implements XMLNode, Serializable {
 
 	public void setAttributes(List<Attribute> vector) {
 		attsTable.clear();
-		attributes.clear();
 		Iterator<Attribute> it = vector.iterator();
 		while (it.hasNext()) {
 			Attribute a = it.next();
@@ -421,8 +403,10 @@ public class Element implements XMLNode, Serializable {
 	@Override
 	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
 		output.write(XMLUtils.getBytes("<" + name, charset));
-		for (int i = 0; i < attributes.size(); i++) {
-			Attribute a = attributes.get(i);
+		Set<String> keys = attsTable.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			Attribute a = attsTable.get(it.next());
 			output.write(XMLUtils.getBytes(" ", charset));
 			a.writeBytes(output, charset);
 		}

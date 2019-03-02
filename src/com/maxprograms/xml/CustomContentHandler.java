@@ -63,7 +63,6 @@ class CustomContentHandler implements IContentHandler {
 
 	@Override
 	public void endDocument() throws SAXException {
-		stack = null;
 		inDocument = false;
 	}
 

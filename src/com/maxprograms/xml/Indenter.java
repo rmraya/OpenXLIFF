@@ -57,10 +57,10 @@ public class Indenter {
 		StringBuilder start = new StringBuilder("\n");
 		StringBuilder end = new StringBuilder("\n");
 		for (int i = 0; i < (level * numSpaces); i++) {
-			start.append(" ");
+			start.append(' ');
 		}
 		for (int i = 0; i < ((level - 1) * numSpaces); i++) {
-			end.append(" ");
+			end.append(' ');
 		}
 		List<XMLNode> content = new ArrayList<>();
 		List<XMLNode> nodes = e.getContent();

@@ -17,11 +17,18 @@ import java.nio.charset.Charset;
 
 public class XMLUtils {
 
+	public static final byte[] UTF8BOM = { -17, -69, -65 }; 
+	public static final byte[] UTF816BEBOM  = { -1, -2 };
+	public static final byte[] UTF816LEBOM = { -2, -1 }; 
+
 	private XMLUtils() {
 		// do not instantiate
 	}
 
 	public static String cleanText(String string) {
+		if (string == null) {
+			return null;
+		}
 		String result = string.replaceAll("&", "&amp;");
 		result = result.replaceAll("<", "&lt;");
 		return result.replaceAll(">", "&gt;");
