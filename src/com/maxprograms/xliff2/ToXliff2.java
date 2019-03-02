@@ -35,6 +35,7 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class ToXliff2 {
 
@@ -70,6 +71,7 @@ public class ToXliff2 {
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(new File(outputFile))) {
+				out.write(XMLUtils.UTF8BOM);
 				outputter.output(xliff2, out);
 			}
 			result.addElement("0");
@@ -278,21 +280,24 @@ public class ToXliff2 {
 				}
 			}
 
+			Element originalData = new Element("originalData");
+			unit.addContent(originalData);
+
 			Element src = source.getChild("source");
 			List<Element> tags = src.getChildren("ph");
 			Set<String> tagSet = new TreeSet<>();
-			if (!tags.isEmpty()) {
-				Element originalData = new Element("originalData");
-				unit.addContent(originalData);
-				for (int i = 0; i < tags.size(); i++) {
-					Element ph = tags.get(i);
+			for (int i = 0; i < tags.size(); i++) {
+				Element ph = tags.get(i);
+				String id = "ph" + ph.getAttributeValue("id");
+				if (!tagSet.contains(id)) {
 					Element data = new Element("data");
-					data.setAttribute("id", "ph" + ph.getAttributeValue("id"));
+					data.setAttribute("id", id);
 					data.setContent(ph.getContent());
 					originalData.addContent(data);
 					tagSet.add("ph" + ph.getAttributeValue("id"));
 				}
 			}
+			
 			Element segment = new Element("segment");
 			segment.setAttribute("id", source.getAttributeValue("id"));
 			segment.setAttribute("canResegment", "no");
@@ -318,8 +323,6 @@ public class ToXliff2 {
 						Element ph = new Element("ph");
 						ph.setAttribute("id", "ph" + tag.getAttributeValue("id"));
 						ph.setAttribute("dataRef", "ph" + tag.getAttributeValue("id"));
-						ph.setAttribute("canDelete", "no");
-						ph.setAttribute("canCopy", "no");
 						src2.addContent(ph);
 					}
 					if (tag.getName().equals("mrk")) {
@@ -352,12 +355,16 @@ public class ToXliff2 {
 						Element tag = (Element) node;
 						if (tag.getName().equals("ph")) {
 							Element ph = new Element("ph");
-							ph.setAttribute("id", "ph" + tag.getAttributeValue("id"));
-							if (tagSet.contains(ph.getAttributeValue("id"))) {
-								ph.setAttribute("dataRef", "ph" + tag.getAttributeValue("id"));
-								ph.setAttribute("canDelete", "no");
+							String id = "ph" + tag.getAttributeValue("id");
+							ph.setAttribute("id", id);
+							if (!tagSet.contains(id)) {
+								Element data = new Element("data");
+								data.setAttribute("id", id);
+								data.setContent(ph.getContent());
+								originalData.addContent(data);
+								tagSet.add(id);
 							}
-							ph.setAttribute("canCopy", "no");
+							ph.setAttribute("dataRef", id);
 							tgt2.addContent(ph);
 						}
 						if (tag.getName().equals("mrk")) {
@@ -408,7 +415,15 @@ public class ToXliff2 {
 							Element tag = (Element) node;
 							if (tag.getName().equals("ph")) {
 								Element ph = new Element("ph");
-								ph.setAttribute("id", "ph" + tag.getAttributeValue("id"));
+								String id =  "ph" + tag.getAttributeValue("id");
+								ph.setAttribute("id",id);
+								if (!tagSet.contains(id)) {
+									Element data = new Element("data");
+									data.setAttribute("id", id);
+									data.setContent(ph.getContent());
+									originalData.addContent(data);
+									tagSet.add(id);
+								}
 								tsrc.addContent(ph);
 							}
 							if (tag.getName().equals("mrk")) {
@@ -436,7 +451,15 @@ public class ToXliff2 {
 							Element tag = (Element) node;
 							if (tag.getName().equals("ph")) {
 								Element ph = new Element("ph");
-								ph.setAttribute("id", "ph" + tag.getAttributeValue("id"));
+								String id =  "ph" + tag.getAttributeValue("id");
+								ph.setAttribute("id",id);
+								if (!tagSet.contains(id)) {
+									Element data = new Element("data");
+									data.setAttribute("id", id);
+									data.setContent(ph.getContent());
+									originalData.addContent(data);
+									tagSet.add(id);
+								}
 								ttgt.addContent(ph);
 							}
 							if (tag.getName().equals("mrk")) {
@@ -454,6 +477,9 @@ public class ToXliff2 {
 					tmatch.addContent(ttgt);
 					mtc.addContent(tmatch);
 				}
+			}
+			if (originalData.getChildren("data").isEmpty()) {
+				unit.removeChild(originalData);
 			}
 		}
 

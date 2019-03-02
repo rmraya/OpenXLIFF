@@ -33,6 +33,7 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class FromXliff2 {
 
@@ -63,6 +64,7 @@ public class FromXliff2 {
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(new File(outputFile))) {
+				out.write(XMLUtils.UTF8BOM);
 				outputter.output(xliff12, out);
 			}
 			result.addElement("0");
@@ -246,7 +248,6 @@ public class FromXliff2 {
 					}
 				}
 			}
-			transUnit.addContent("\n        ");
 			transUnit.addContent(src);
 			Element tgt2 = segment.getChild("target");
 			if (tgt2 != null) {
@@ -280,105 +281,113 @@ public class FromXliff2 {
 						}
 					}
 				}
-				transUnit.addContent("\n        ");
 				transUnit.addContent(tgt);
 			}
-			transUnit.addContent("\n      ");
-
-			List<Element> notesList = source.getChildren("notes");
-			for (int i = 0; i < notesList.size(); i++) {
-				Element note = notesList.get(i);
-				Element n = new Element("note");
-				String appliesTo = note.getAttributeValue("appliesTo");
-				if (!appliesTo.isEmpty()) {
-					n.setAttribute("annotates", appliesTo);
+			
+			Element notes = source.getChild("notes");
+			if (notes != null) {
+				List<Element> notesList = notes.getChildren("note");
+				for (int i = 0; i < notesList.size(); i++) {
+					Element note = notesList.get(i);
+					Element n = new Element("note");
+					String appliesTo = note.getAttributeValue("appliesTo");
+					if (!appliesTo.isEmpty()) {
+						n.setAttribute("annotates", appliesTo);
+					}
+					n.addContent(note.getText());
+					transUnit.addContent(n);
 				}
-				n.addContent(note.getText());
-				transUnit.addContent(n);
-				transUnit.addContent("\n      ");
 			}
 
-			List<Element> matchesList = source.getChildren("mtc:matches");
-			for (int i = 0; i < matchesList.size(); i++) {
-				Element match = matchesList.get(i);
-				Element altTrans = new Element("alt-trans");
-				String quality = match.getAttributeValue("matchQuality");
-				if (!quality.isEmpty()) {
-					try {
-						float f = Float.parseFloat(quality);
-						int round = Math.round(f);
-						altTrans.setAttribute("match-quality", "" + round);
-					} catch (NumberFormatException ne) {
-						// do nothing
-					}
-				}
-				altTrans.setAttribute("origin", match.getAttributeValue("origin", "unknown"));
-				Element matchSrc = match.getChild("source");
-				Element s = new Element("source");
-				nodes = matchSrc.getContent();
-				it = nodes.iterator();
-				while (it.hasNext()) {
-					XMLNode node = it.next();
-					if (node.getNodeType() == XMLNode.TEXT_NODE) {
-						s.addContent(node);
-					}
-					if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-						Element tag = (Element) node;
-						if (tag.getName().equals("ph")) {
-							Element ph = new Element("ph");
-							ph.setAttribute("id", tag.getAttributeValue("id").substring("ph".length()));
-							ph.addContent(tags.get(tag.getAttributeValue("id")));
-							s.addContent(ph);
+			Element matches = source.getChild("mtc:matches");
+			if (matches != null) {
+				List<Element> matchesList = matches.getChildren("mtc:match");
+				for (int i = 0; i < matchesList.size(); i++) {
+					Element match = matchesList.get(i);
+					Element altTrans = new Element("alt-trans");
+					String quality = match.getAttributeValue("matchQuality");
+					if (!quality.isEmpty()) {
+						try {
+							float f = Float.parseFloat(quality);
+							int round = Math.round(f);
+							altTrans.setAttribute("match-quality", "" + round);
+						} catch (NumberFormatException ne) {
+							// do nothing
 						}
-						if (tag.getName().equals("mrk")) {
-							Element mrk = new Element("mrk");
-							mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
-							mrk.setAttribute("ts", tag.getAttributeValue("value"));
-							if (tag.getAttributeValue("translate", "yes").equals("no")) {
-								mrk.setAttribute("mtype", "protected");
-							} else {
-								mrk.setAttribute("mtype", "term");
+					}
+					altTrans.setAttribute("origin", match.getAttributeValue("origin", "unknown"));
+					Element matchSrc = match.getChild("source");
+					Element s = new Element("source");
+					nodes = matchSrc.getContent();
+					it = nodes.iterator();
+					while (it.hasNext()) {
+						XMLNode node = it.next();
+						if (node.getNodeType() == XMLNode.TEXT_NODE) {
+							s.addContent(node);
+						}
+						if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+							Element tag = (Element) node;
+							if (tag.getName().equals("ph")) {
+								Element ph = new Element("ph");
+								String id = tag.getAttributeValue("id").substring("ph".length());
+								ph.setAttribute("id", id);
+								String tagContent = tags.get(tag.getAttributeValue("id"));
+								if (tagContent != null) {
+									ph.addContent(tagContent);
+								}
+								s.addContent(ph);
 							}
-							mrk.setContent(tag.getContent());
-							s.addContent(mrk);
-						}
-					}
-				}
-				Element matchTgt = match.getChild("target");
-				Element t = new Element("target");
-				nodes = matchTgt.getContent();
-				it = nodes.iterator();
-				while (it.hasNext()) {
-					XMLNode node = it.next();
-					if (node.getNodeType() == XMLNode.TEXT_NODE) {
-						t.addContent(node);
-					}
-					if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-						Element tag = (Element) node;
-						if (tag.getName().equals("ph")) {
-							Element ph = new Element("ph");
-							ph.setAttribute("id", tag.getAttributeValue("id").substring("ph".length()));
-							ph.addContent(tags.get(tag.getAttributeValue("id")));
-							t.addContent(ph);
-						}
-						if (tag.getName().equals("mrk")) {
-							Element mrk = new Element("mrk");
-							mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
-							mrk.setAttribute("ts", tag.getAttributeValue("value"));
-							if (tag.getAttributeValue("translate", "yes").equals("no")) {
-								mrk.setAttribute("mtype", "protected");
-							} else {
-								mrk.setAttribute("mtype", "term");
+							if (tag.getName().equals("mrk")) {
+								Element mrk = new Element("mrk");
+								mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
+								mrk.setAttribute("ts", tag.getAttributeValue("value"));
+								if (tag.getAttributeValue("translate", "yes").equals("no")) {
+									mrk.setAttribute("mtype", "protected");
+								} else {
+									mrk.setAttribute("mtype", "term");
+								}
+								mrk.setContent(tag.getContent());
+								s.addContent(mrk);
 							}
-							mrk.setContent(tag.getContent());
-							t.addContent(mrk);
 						}
 					}
+					altTrans.addContent(s);
+					Element matchTgt = match.getChild("target");
+					Element t = new Element("target");
+					nodes = matchTgt.getContent();
+					it = nodes.iterator();
+					while (it.hasNext()) {
+						XMLNode node = it.next();
+						if (node.getNodeType() == XMLNode.TEXT_NODE) {
+							t.addContent(node);
+						}
+						if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+							Element tag = (Element) node;
+							if (tag.getName().equals("ph")) {
+								Element ph = new Element("ph");
+								ph.setAttribute("id", tag.getAttributeValue("id").substring("ph".length()));
+								ph.addContent(tags.get(tag.getAttributeValue("id")));
+								t.addContent(ph);
+							}
+							if (tag.getName().equals("mrk")) {
+								Element mrk = new Element("mrk");
+								mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
+								mrk.setAttribute("ts", tag.getAttributeValue("value"));
+								if (tag.getAttributeValue("translate", "yes").equals("no")) {
+									mrk.setAttribute("mtype", "protected");
+								} else {
+									mrk.setAttribute("mtype", "term");
+								}
+								mrk.setContent(tag.getContent());
+								t.addContent(mrk);
+							}
+						}
+					}
+					altTrans.addContent(t);
+					transUnit.addContent(altTrans);
 				}
-				Indenter.indent(altTrans, 2);
-				transUnit.addContent(altTrans);
-				transUnit.addContent("\n      ");
 			}
+			Indenter.indent(transUnit, 2);
 		}
 		List<Element> children = source.getChildren();
 		Iterator<Element> it = children.iterator();
