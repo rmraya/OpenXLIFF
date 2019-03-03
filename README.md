@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.2.0 | Added Translation Status Analysis | March 3, 2019
 1.1.0 | Incorporated XLIFFChecker code| November 20, 2018
 1.0.0 | Initial Release | November 12, 2018
 
