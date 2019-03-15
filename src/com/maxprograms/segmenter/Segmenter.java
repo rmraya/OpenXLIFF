@@ -74,7 +74,7 @@ public class Segmenter {
 			return new String[] {};
 		}
 		String pureText = prepareString(string);
-		Vector<String> parts = new Vector<String>();
+		Vector<String> parts = new Vector<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));
 			String right = hideTags(pureText.substring(pos));
@@ -136,15 +136,16 @@ public class Segmenter {
 	}
 
 	private String hideTags(String string) {
+		String result = string;
 		Enumeration<String> keys = tags.keys();
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement();
-			int index = string.indexOf(key);
+			int index = result.indexOf(key);
 			if (index != -1) {
-				string = string.substring(0, index) + string.substring(index + 1);
+				result = result.substring(0, index) + result.substring(index + 1);
 			}
 		}
-		return string;
+		return result;
 	}
 
 	private static boolean endsWith(String string, String exp) {
@@ -185,8 +186,9 @@ public class Segmenter {
 		return false;
 	}
 
-	private String prepareString(String string) {
-		tags = new Hashtable<String, String>();
+	private String prepareString(String raw) {
+		String string = raw;
+		tags = new Hashtable<>();
 		int k = 0;
 		int start = string.indexOf("<mrk ");
 		int end = string.indexOf("</mrk>");
@@ -252,19 +254,20 @@ public class Segmenter {
 	}
 
 	private String cleanup(String string) {
+		String result = string;
 		Enumeration<String> keys = tags.keys();
 		while (keys.hasMoreElements()) {
 			String key = keys.nextElement();
-			int index = string.indexOf(key);
+			int index = result.indexOf(key);
 			if (index != -1) {
-				string = string.substring(0, index) + tags.get(key) + string.substring(index + 1);
+				result = result.substring(0, index) + tags.get(key) + result.substring(index + 1);
 			}
 		}
-		return string;
+		return result;
 	}
 
 	private void buildRulesList(String srcLanguage) {
-		maps = new ArrayList<String>();
+		maps = new ArrayList<>();
 		List<Element> allMaps = root.getChild("body").getChild("maprules").getChildren("languagemap");
 		Iterator<Element> it = allMaps.iterator();
 		while (it.hasNext()) {
@@ -276,7 +279,7 @@ public class Segmenter {
 				}
 			}
 		}
-		rules = new ArrayList<Element>();
+		rules = new ArrayList<>();
 		List<Element> languageRules = root.getChild("body").getChild("languagerules").getChildren("languagerule");
 		it = languageRules.iterator();
 		while (it.hasNext()) {
@@ -297,10 +300,10 @@ public class Segmenter {
 	}
 
 	public Element segment(Element source) throws SAXException, IOException, ParserConfigurationException {
-		tags = new Hashtable<String, String>();
+		tags = new Hashtable<>();
 		tagId = 0;
 		String pureText = pureText(source);
-		Vector<String> parts = new Vector<String>();
+		Vector<String> parts = new Vector<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));
 			String right = hideTags(pureText.substring(pos));
@@ -395,12 +398,12 @@ public class Segmenter {
 		return res;
 	}
 
-	public static String cleanString(String input) {
-		input = input.replaceAll("&", "&amp;");
-		input = input.replaceAll("<", "&lt;");
-		input = input.replaceAll(">", "&gt;");
-		return validChars(input);
-	} // end cleanString
+	public static String cleanString(String string) {
+		String result = string.replaceAll("&", "&amp;");
+		result = result.replaceAll("<", "&lt;");
+		result = result.replaceAll(">", "&gt;");
+		return validChars(result);
+	} 
 
 	public static String validChars(String input) {
 		// Valid: #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
