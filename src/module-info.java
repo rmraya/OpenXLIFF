@@ -27,6 +27,7 @@ module xliffFilters {
 	exports com.maxprograms.converters.plaintext;
 	exports com.maxprograms.languages;
 	exports com.maxprograms.segmenter;
+	exports com.maxprograms.stats;
 
 	opens com.maxprograms.xml to mapdb;	
 
