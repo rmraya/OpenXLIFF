@@ -23,6 +23,7 @@ module xliffFilters {
 	exports com.maxprograms.converters.idml;
 	exports com.maxprograms.converters.mif;
 	exports com.maxprograms.converters.rc;
+	exports com.maxprograms.converters.sdlxliff;
 	exports com.maxprograms.converters.txml;
 	exports com.maxprograms.converters.plaintext;
 	exports com.maxprograms.languages;
