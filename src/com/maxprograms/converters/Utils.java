@@ -88,7 +88,7 @@ public class Utils {
 		}
 	}
 
-	public static String encodeFromFile(String filename) throws java.io.IOException {
+	public static String encodeFromFile(String filename) throws IOException {
 		File file = new File(filename);
 		int size = Math.max((int) (file.length() * 1.4), 4096);
 		byte[] buffer = new byte[size]; // Need max() for math on small files (v2.2.1)
