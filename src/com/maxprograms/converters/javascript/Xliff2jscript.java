@@ -41,7 +41,8 @@ public class Xliff2jscript {
 	private static String encoding;
 
 	private Xliff2jscript() {
-		// privatr for security
+		// do not instantiate this class
+		// use run method instead
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
