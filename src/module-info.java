@@ -30,6 +30,7 @@ module xliffFilters {
 	exports com.maxprograms.segmenter;
 	exports com.maxprograms.stats;
 	exports com.maxprograms.xliff2;
+	exports com.maxprograms.validation;
 
 	opens com.maxprograms.xml to mapdb;	
 
