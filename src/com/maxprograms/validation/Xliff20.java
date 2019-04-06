@@ -64,17 +64,26 @@ public class Xliff20 {
 	private HashSet<String> fileId;
 	private HashSet<String> groupId;
 	private HashSet<String> unitId;
+	private HashSet<String> ignorableId;
+	private HashSet<String> segmentId;
 	private HashSet<String> cantDelete;
 	private HashSet<String> sourceId;
 	private HashSet<String> dataId;
 	private HashSet<String> matchId;
 	private HashSet<String> metaId;
 	private HashSet<String> glossId;
+	private HashSet<String> noteId;
+	private HashSet<String> scId;
+	private HashSet<String> smId;
+	private HashSet<String> fileScId;
+	private HashSet<String> orderSet;
 	private boolean inMatch;
 	private boolean isReference;
 	private boolean inSource;
 	private boolean inTarget;
-	
+	private String currentState;	
+	private String fsPrefix = "";
+
 	public Xliff20() throws IOException {
 		registry = new RegistryParser();
 	}
@@ -196,23 +205,26 @@ public class Xliff20 {
 				Attribute a = it.next();
 				if ("xmlns".equals(a.getNamespace())) {
 					declaredNamespaces.put(a.getLocalName(), a.getValue());
+					if (XLIFF_FS_2_0.equals(a.getValue())) {
+						fsPrefix = a.getLocalName();
+					}
 				}
 			}
 			srcLang = e.getAttributeValue("srcLang");
 			if (!checkLanguage(srcLang)) {
-				reason = "Invalid source language";
+				reason = "Invalid source language '" + srcLang + "'";
 				return false;
 			}
 			trgLang = e.getAttributeValue("trgLang");
 			if (!trgLang.isEmpty() && !checkLanguage(trgLang)) {
-				reason = "Invalid target language";
+				reason = "Invalid target language '" + trgLang + "'";
 				return false;
 			}
+			fileId = new HashSet<>();
 		}
 
 		if ("file".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
-			fileId = new HashSet<>();
 			if (fileId.contains(id)) {
 				reason = "Duplicated \"id\" in <file>";
 				return false;
@@ -220,6 +232,10 @@ public class Xliff20 {
 			fileId.add(id);
 			groupId = new HashSet<>();
 			unitId = new HashSet<>();
+			fileScId = new HashSet<>();
+			if (noteId != null) {
+				noteId = null;
+			}
 		}
 
 		if ("skeleton".equals(e.getLocalName())) {
@@ -238,6 +254,19 @@ public class Xliff20 {
 			}
 		}
 
+		if ("notes".equals(e.getLocalName())) {
+			noteId = new HashSet<>();
+		}
+
+		if ("note".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (noteId.contains(id)) {
+				reason = "Duplicated \"id\" in <note>";
+				return false;
+			}
+			noteId.add(id);
+		}
+
 		if ("group".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (groupId.contains(id)) {
@@ -254,7 +283,51 @@ public class Xliff20 {
 				return false;
 			}
 			unitId.add(id);
+			if (e.getChildren("segment").size() == 0) {
+				reason = "<unit> without <segment> child";
+				return false;
+			}
 			dataId = new HashSet<>();
+			ignorableId = new HashSet<>();
+			segmentId = new HashSet<>();
+			if (noteId != null) {
+				noteId = null;
+			}
+			scId = new HashSet<>();
+			smId = new HashSet<>();
+			orderSet = new HashSet<>();
+		}
+
+		if ("ignorable".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (!id.isEmpty()) {
+				if (ignorableId.contains(id)) {
+					reason = "Duplicated \"id\" in <ignorable>";
+					return false;
+				}
+				ignorableId.add(id);
+				if (segmentId.contains(id)) {
+					reason = "<ignorable> with \"id\" of sibling <segment>";
+					return false;
+				}
+			}
+			currentState = null;
+		}
+
+		if ("segment".equals(e.getLocalName())) {
+			String id = e.getAttributeValue("id");
+			if (!id.isEmpty()) {
+				if (segmentId.contains(id)) {
+					reason = "Duplicated \"id\" in <segment>";
+					return false;
+				}
+				segmentId.add(id);
+				if (ignorableId.contains(id)) {
+					reason = "<segment> with \"id\" of sibling <ignorable>";
+					return false;
+				}
+			}
+			currentState = e.getAttributeValue("state", "initial");
 		}
 
 		if ("source".equals(e.getLocalName())) {
@@ -282,6 +355,16 @@ public class Xliff20 {
 				reason = "Different \"xml:lang\" in <target> from <mtc:match>";
 				return false;
 			}
+			if (!inMatch) {
+				String count = e.getAttributeValue("order");
+				if (!count.isEmpty()) {
+					if (orderSet.contains(count)) {
+						reason = "Duplicated \"order\" in <target>";
+						return false;
+					}
+					orderSet.add(count);
+				}
+			}
 			inTarget = true;
 		}
 
@@ -293,7 +376,7 @@ public class Xliff20 {
 			}
 			dataId.add(id);
 		}
-		
+
 		// Inline elements
 
 		if ("cp".equals(e.getLocalName())) {
@@ -323,7 +406,12 @@ public class Xliff20 {
 					cantDelete.remove(id);
 				}
 			}
+			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
+			if (isCopy && !dataRef.isEmpty()) {
+				reason = "<ph> element with both \"copyOf\" and \"dataRef\"";
+				return false;
+			}
 			if (!dataRef.isEmpty()) {
 				if (!dataId.contains(dataRef)) {
 					reason = "Missing <data> element referenced by <ph>";
@@ -331,7 +419,7 @@ public class Xliff20 {
 				}
 			}
 		}
-		
+
 		if ("pc".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
@@ -347,18 +435,27 @@ public class Xliff20 {
 			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
 				cantDelete.remove(id);
 			}
+			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRefStart = e.getAttributeValue("dataRefStart");
+			if (isCopy && !dataRefStart.isEmpty()) {
+				reason = "<pc> element with both \"copyOf\" and \"dataRefStart\"";
+				return false;
+			}
 			if (!dataRefStart.isEmpty() && !dataId.contains(dataRefStart)) {
 				reason = "Missing <data> element referenced by \"dataRefStart\" <pc>";
 				return false;
 			}
 			String dataRefEnd = e.getAttributeValue("dataRefEnd");
+			if (isCopy && !dataRefEnd.isEmpty()) {
+				reason = "<pc> element with both \"copyOf\" and \"dataRefEnd\"";
+				return false;
+			}
 			if (!dataRefEnd.isEmpty() && !dataId.contains(dataRefEnd)) {
 				reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc>";
 				return false;
 			}
 		}
-		
+
 		if ("sc".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
@@ -367,6 +464,8 @@ public class Xliff20 {
 					return false;
 				}
 				sourceId.add(id);
+				scId.add(id);
+				fileScId.add(id);
 				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
 					cantDelete.add(id);
 				}
@@ -374,15 +473,50 @@ public class Xliff20 {
 			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
 				cantDelete.remove(id);
 			}
+			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
+			if (isCopy && !dataRef.isEmpty()) {
+				reason = "<sc> element with both \"copyOf\" and \"dataRef\"";
+				return false;
+			}
 			if (!dataRef.isEmpty() && !dataId.contains(dataRef)) {
 				reason = "Missing <data> element referenced by <sc>";
 				return false;
 			}
 		}
-		
+
 		if ("ec".equals(e.getLocalName())) {
+			boolean isolated = e.getAttributeValue("isolated", "no").equals("yes");
 			String id = e.getAttributeValue("id");
+			String startRef = e.getAttributeValue("startRef");
+			if (isolated && id.isEmpty()) {
+				reason = "Missing \"id\" attribute in isolated <ec/>";
+				return false;
+			}
+			if (isolated && !startRef.isEmpty()) {
+				reason = "\"startRef\" attribute present in isolated <ec/>";
+				return false;
+			}
+			if (!isolated && startRef.isEmpty()) {
+				reason = "Missing \"startRef\" attribute in non-isolated <ec/>";
+				return false;
+			}
+			if (!isolated && !id.isEmpty()) {
+				reason = "\"id\" attribute present in non-isolated <ec/>";
+				return false;
+			}
+			if (!isolated && !e.getAttributeValue("dir").isEmpty()) {
+				reason = "Attribute \"dir\" used in non-isolated <ec/>";
+				return false;
+			}
+			if (isolated && !fileScId.contains(id)) {
+				reason = "Missing <sc/> element with id=\"" + id + "\" referenced by <ec/>";
+				return false;
+			}
+			if (!isolated && !scId.contains(startRef)) {
+				reason = "Missing <sc/> element in <unit> with id=\"" + startRef + "\" referenced by <ec/>";
+				return false;
+			}
 			if (!id.isEmpty()) {
 				if (inSource) {
 					if (sourceId.contains(id)) {
@@ -395,10 +529,15 @@ public class Xliff20 {
 					}
 				}
 				if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
-						cantDelete.remove(id);
+					cantDelete.remove(id);
 				}
-			} 
+			}
+			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
+			if (isCopy && !dataRef.isEmpty()) {
+				reason = "<ec> element with both \"copyOf\" and \"dataRef\"";
+				return false;
+			}
 			if (!dataRef.isEmpty() && !dataId.contains(dataRef)) {
 				reason = "Missing <data> element referenced by <ec>";
 				return false;
@@ -413,9 +552,33 @@ public class Xliff20 {
 					return false;
 				}
 				sourceId.add(id);
-			}			
+			}
+			String type = e.getAttributeValue("type");
+			if ("comment".equals(type)) {
+				if (e.getAttributeValue("value").isEmpty()) {
+					String ref = e.getAttributeValue("ref");
+					if (ref.isEmpty()) {
+						reason = "Missing \"ref\" in comment annotation";
+						return false;
+					}
+					if (!ref.startsWith("#n") || ref.indexOf('=') == -1) {
+						reason = "Invalid fragment identifier '" + ref + "' in comment annotation";
+						return false;
+					}
+					String refId = ref.substring(ref.indexOf('=') + 1);
+					if (noteId == null || !noteId.contains(refId)) {
+						reason = "Missing <note> referenced in comment annotation";
+						return false;
+					}
+				} else {
+					if (!e.getAttributeValue("ref").isEmpty()) {
+						reason = "Comment annotation contains both \"value\" and \"ref\"";
+						return false;
+					}
+				}
+			}
 		}
-		
+
 		if ("sm".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
@@ -424,13 +587,25 @@ public class Xliff20 {
 					return false;
 				}
 				sourceId.add(id);
-			}			
+				smId.add(id);
+			}
 		}
-		
+
 		if ("em".equals(e.getLocalName())) {
 			String startRef = e.getAttributeValue("startRef");
-			if (!sourceId.contains(startRef)) {
-				reason = "Missing <sm> referenced by <em>";
+			if (!smId.contains(startRef)) {
+				reason = "Missing <sm> with id=\"" + startRef + "\"referenced by <em>";
+				return false;
+			}
+		}
+
+		// attributes from fs module
+		
+		if (!fsPrefix.isEmpty()) {
+			String fs = e.getAttributeValue(fsPrefix + ":fs");
+			String subFs = e.getAttributeValue(fsPrefix + ":subFs");
+			if (!subFs.isEmpty() && fs.isEmpty()) {
+				reason = "Attribute \"" + fsPrefix + ":subFs\" without corresponding \"" + fsPrefix + ":fs\"";
 				return false;
 			}
 		}
@@ -456,7 +631,254 @@ public class Xliff20 {
 			}
 			inTarget = false;
 		}
+		if ("segment".equals(e.getLocalName())) {
+			Element target = e.getChild("target");
+			if (!currentState.equals("initial") && target == null) {
+				reason = "Missing <target> in <segment> with \"state\" other than \"initial\"";
+				return false;
+			}
+			if ("final".equals(currentState)) {
+				if (!validateInlineElements(e)) {
+					return false;
+				}
+			}
+		}
+		if ("ignorable".equals(e.getLocalName())) {
+			if (!validateInlineElements(e)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
+	private boolean validateInlineElements(Element e) {
+		Element target = e.getChild("target");
+		if ("ignorable".equals(e.getLocalName()) && target == null) {
+			return true;
+		}
+		Element source = e.getChild("source");
+		List<Element> sourceList = source.getChildren();
+		Iterator<Element> it = sourceList.iterator();
+		while (it.hasNext()) {
+			Element tag = it.next();
+			if ("ph".equals(tag.getName())) {
+				List<Element> phList = target.getChildren("ph");
+				for (int i=0 ; i<phList.size() ; i++) {
+					Element ph = phList.get(i);
+					if (tag.getAttributeValue("id").equals(ph.getAttributeValue("id"))) {
+						if (!tag.getAttributeValue("canCopy").equals(ph.getAttributeValue("canCopy"))) {
+							reason = "<ph> element with different value of \"canCopy\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canDelete").equals(ph.getAttributeValue("canDelete"))) {
+							reason = "<ph> element with different value of \"canDelete\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canReorder").equals(ph.getAttributeValue("canReorder"))) {
+							reason = "<ph> element with different value of \"canReorder\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("copyOf").equals(ph.getAttributeValue("copyOf"))) {
+							reason = "<ph> element with different value of \"copyOf\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("dataRef").equals(ph.getAttributeValue("dataRef"))) {
+							reason = "<ph> element with different value of \"dataRef\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("subFlows").equals(ph.getAttributeValue("subFlows"))) {
+							reason = "<ph> element with different value of \"subFlows\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("type").equals(ph.getAttributeValue("type"))) {
+							reason = "<ph> element with different value of \"type\" in <source> and <target>";
+							return false;
+						}
+					}
+				}
+			}
+			if ("pc".equals(tag.getName())) {
+				List<Element> pcList = target.getChildren("pc");
+				for (int i=0 ; i<pcList.size() ; i++) {
+					Element pc = pcList.get(i);
+					if (tag.getAttributeValue("id").equals(pc.getAttributeValue("id"))) {
+						if (!tag.getAttributeValue("canCopy").equals(pc.getAttributeValue("canCopy"))) {
+							reason = "<pc> element with different value of \"canCopy\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canDelete").equals(pc.getAttributeValue("canDelete"))) {
+							reason = "<pc> element with different value of \"canDelete\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canOverlap").equals(pc.getAttributeValue("canOverlap"))) {
+							reason = "<pc> element with different value of \"canOverlap\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canReorder").equals(pc.getAttributeValue("canReorder"))) {
+							reason = "<pc> element with different value of \"canReorder\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("copyOf").equals(pc.getAttributeValue("copyOf"))) {
+							reason = "<pc> element with different value of \"copyOf\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("dataRefStart").equals(pc.getAttributeValue("dataRefStart"))) {
+							reason = "<pc> element with different value of \"dataRefStart\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("dataRefEnd").equals(pc.getAttributeValue("dataRefEnd"))) {
+							reason = "<pc> element with different value of \"dataRefEnd\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("subFlowsStart").equals(pc.getAttributeValue("subFlowsStart"))) {
+							reason = "<pc> element with different value of \"subFlowsStart\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("subFlowsEnd").equals(pc.getAttributeValue("subFlowsEnd"))) {
+							reason = "<pc> element with different value of \"subFlowsEnd\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("type").equals(pc.getAttributeValue("type"))) {
+							reason = "<pc> element with different value of \"type\" in <source> and <target>";
+							return false;
+						}
+					}
+				}
+			}
+			if ("sc".equals(tag.getName())) {
+				List<Element> scList = target.getChildren("sc");
+				for (int i=0 ; i<scList.size() ; i++) {
+					Element sc = scList.get(i);
+					if (tag.getAttributeValue("id").equals(sc.getAttributeValue("id"))) {
+						if (!tag.getAttributeValue("canCopy").equals(sc.getAttributeValue("canCopy"))) {
+							reason = "<sc> element with different value of \"canCopy\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canDelete").equals(sc.getAttributeValue("canDelete"))) {
+							reason = "<sc> element with different value of \"canDelete\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canOverlap").equals(sc.getAttributeValue("canOverlap"))) {
+							reason = "<sc> element with different value of \"canOverlap\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canReorder").equals(sc.getAttributeValue("canReorder"))) {
+							reason = "<sc> element with different value of \"canReorder\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("copyOf").equals(sc.getAttributeValue("copyOf"))) {
+							reason = "<sc> element with different value of \"copyOf\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("dataRef").equals(sc.getAttributeValue("dataRef"))) {
+							reason = "<sc> element with different value of \"dataRef\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("subFlows").equals(sc.getAttributeValue("subFlows"))) {
+							reason = "<sc> element with different value of \"subFlows\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("type").equals(sc.getAttributeValue("type"))) {
+							reason = "<sc> element with different value of \"type\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("isolated", "no").equals(sc.getAttributeValue("isolated", "no"))) {
+							reason = "<sc> element with different value of \"isolated\" in <source> and <target>";
+							return false;
+						}
+					}
+				}
+				boolean isolated = tag.getAttributeValue("isolated", "no").equals("yes");
+				if (!isolated) {
+					List<Element> ecList = target.getChildren("ec");
+					for (int i=0 ; i<ecList.size() ; i++) {
+						Element ec = ecList.get(i);
+						if (tag.getAttributeValue("id").equals(ec.getAttributeValue("startRef"))) {
+							if (!tag.getAttributeValue("canCopy").equals(ec.getAttributeValue("canCopy"))) {
+								reason = "<sc> element with different value of \"canCopy\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("canDelete").equals(ec.getAttributeValue("canDelete"))) {
+								reason = "<sc> element with different value of \"canDelete\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("canOverlap").equals(ec.getAttributeValue("canOverlap"))) {
+								reason = "<sc> element with different value of \"canOverlap\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("canReorder").equals(ec.getAttributeValue("canReorder"))) {
+								reason = "<sc> element with different value of \"canReorder\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("copyOf").equals(ec.getAttributeValue("copyOf"))) {
+								reason = "<sc> element with different value of \"copyOf\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("dataRef").equals(ec.getAttributeValue("dataRef"))) {
+								reason = "<sc> element with different value of \"dataRef\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("subFlows").equals(ec.getAttributeValue("subFlows"))) {
+								reason = "<sc> element with different value of \"subFlows\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("type").equals(ec.getAttributeValue("type"))) {
+								reason = "<sc> element with different value of \"type\" in <source> and <target>";
+								return false;
+							}
+							if (!tag.getAttributeValue("isolated", "no").equals(ec.getAttributeValue("isolated", "no"))) {
+								reason = "<sc> element with different value of \"isolated\" in <source> and <target>";
+								return false;
+							}
+						}
+					}
+				}
+			}
+			if ("ec".equals(tag.getName())) {
+				List<Element> ecList = target.getChildren("sc");
+				for (int i=0 ; i<ecList.size() ; i++) {
+					Element ec = ecList.get(i);
+					if (tag.getAttributeValue("id").equals(ec.getAttributeValue("id"))) {
+						if (!tag.getAttributeValue("canCopy").equals(ec.getAttributeValue("canCopy"))) {
+							reason = "<sc> element with different value of \"canCopy\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canDelete").equals(ec.getAttributeValue("canDelete"))) {
+							reason = "<ec> element with different value of \"canDelete\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canOverlap").equals(ec.getAttributeValue("canOverlap"))) {
+							reason = "<ec> element with different value of \"canOverlap\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("canReorder").equals(ec.getAttributeValue("canReorder"))) {
+							reason = "<ec> element with different value of \"canReorder\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("copyOf").equals(ec.getAttributeValue("copyOf"))) {
+							reason = "<ec> element with different value of \"copyOf\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("startRef").equals(ec.getAttributeValue("startRef"))) {
+							reason = "<ec> element with different value of \"startRef\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("subFlows").equals(ec.getAttributeValue("subFlows"))) {
+							reason = "<ec> element with different value of \"subFlows\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("type").equals(ec.getAttributeValue("type"))) {
+							reason = "<ec> element with different value of \"type\" in <source> and <target>";
+							return false;
+						}
+						if (!tag.getAttributeValue("isolated", "no").equals(ec.getAttributeValue("isolated", "no"))) {
+							reason = "<ec> element with different value of \"isolated\" in <source> and <target>";
+							return false;
+						}
+					}
+				}
+			}
+		}
 		return true;
 	}
 
