@@ -162,7 +162,7 @@ Where:
 ```
 ### XLIFF Validation
 
-The original [XLIFFChecker code](http://sourceforge.net/p/xliffchecker/code/) supports XLIFF 1.0, 1.1 and 1.2. The new version incorporated in Open XIFF Filters also supports XLIFF 2.0.
+The original [XLIFFChecker code](http://sourceforge.net/p/xliffchecker/code/) supports XLIFF 1.0, 1.1 and 1.2. The new version incorporated in Open XLIFF Filters also supports XLIFF 2.0.
 
 Standard XML Schema validation does not detect the use of duplicated 'id' attributes, wrong language codes and other constraints written in the different XLIFF specifications.
 
