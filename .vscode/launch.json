@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - FilterServer",
+            "request": "launch",
+            "mainClass": "xliffFilters/com.maxprograms.server.FilterServer",
+            "projectName": "OpenXLIFF"
+        }
+    ]
+}
