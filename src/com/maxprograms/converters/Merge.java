@@ -11,25 +11,6 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.Vector;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import com.maxprograms.converters.ditamap.Xliff2DitaMap;
 import com.maxprograms.converters.html.Xliff2Html;
 import com.maxprograms.converters.idml.Xliff2Idml;
@@ -52,6 +33,25 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.Vector;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
+
+
+
 
 public class Merge {
 
@@ -117,7 +117,16 @@ public class Merge {
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
-			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
+			if (!catalogFolder.exists()) {
+				LOGGER.log(Level.ERROR, "'catalog' folder not found.");
+				return;
+			}
+			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();			
+		}
+		File catalogFile = new File(catalog);
+		if (!catalogFile.exists()) {
+			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
+			return;
 		}
 		try {
 			merge(xliff, target, catalog, unapproved);

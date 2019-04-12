@@ -11,27 +11,6 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import com.maxprograms.converters.ditamap.DitaMap2Xliff;
 import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.converters.idml.Idml2Xliff;
@@ -55,6 +34,27 @@ import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.Vector;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
+
+
+
 
 public class Convert {
 
@@ -201,6 +201,10 @@ public class Convert {
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			if (!catalogFolder.exists()) {
+				LOGGER.log(Level.ERROR, "'catalog' folder not found.");
+				return;
+			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);

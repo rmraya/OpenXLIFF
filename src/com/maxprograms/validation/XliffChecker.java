@@ -96,6 +96,10 @@ public class XliffChecker {
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			if (!catalogFolder.exists()) {
+				LOGGER.log(Level.ERROR, "'catalog' folder not found.");
+				return;
+			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
