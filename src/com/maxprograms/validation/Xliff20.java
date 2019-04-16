@@ -283,7 +283,7 @@ public class Xliff20 {
 				return false;
 			}
 			unitId.add(id);
-			if (e.getChildren("segment").size() == 0) {
+			if (e.getChildren("segment").isEmpty()) {
 				reason = "<unit> without <segment> child";
 				return false;
 			}

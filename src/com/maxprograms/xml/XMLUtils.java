@@ -17,9 +17,9 @@ import java.nio.charset.Charset;
 
 public class XMLUtils {
 
-	public static final byte[] UTF8BOM = { -17, -69, -65 }; 
-	public static final byte[] UTF816BEBOM  = { -1, -2 };
-	public static final byte[] UTF816LEBOM = { -2, -1 }; 
+	private static final byte[] UTF8BOM = { -17, -69, -65 };
+	// private static final byte[] UTF816BEBOM  = { -1, -2 };
+	// private static final byte[] UTF816LEBOM = { -2, -1 }; 
 
 	private XMLUtils() {
 		// do not instantiate
@@ -82,4 +82,9 @@ public class XMLUtils {
 		result = new File(home, relative);
 		return result.getCanonicalPath();
 	}
+	
+	public static byte[] getUtf8Bom() { 
+		return  UTF8BOM;
+	} 
+
 }
