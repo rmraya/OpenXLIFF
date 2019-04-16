@@ -11,9 +11,12 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -24,6 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -62,7 +66,14 @@ public class TmxExporter {
 		builder.setEntityResolver(new Catalog(catalog));
 		Document doc = builder.build(xliff);
 		Element root = doc.getRootElement();
-
+		if (root.getAttributeValue("version").equals("2.0")) {
+			File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
+			FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
+			doc = builder.build(tmpXliff);
+			root = doc.getRootElement();
+			Files.delete(Paths.get(tmpXliff.toURI()));
+		}
+		
 		try (FileOutputStream output = new FileOutputStream(tmx)) {
 			Element firstFile = root.getChild("file");
 

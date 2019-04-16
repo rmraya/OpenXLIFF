@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - Merge",
+            "request": "launch",
+            "mainClass": "xliffFilters/com.maxprograms.converters.Merge",
+            "projectName": "OpenXLIFF"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - FilterServer",
             "request": "launch",
             "mainClass": "xliffFilters/com.maxprograms.server.FilterServer",

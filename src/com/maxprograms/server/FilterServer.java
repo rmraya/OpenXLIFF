@@ -34,7 +34,7 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -43,7 +43,9 @@ import com.maxprograms.converters.Convert;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Merge;
+import com.maxprograms.converters.TmxExporter;
 import com.maxprograms.languages.Language;
+import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.stats.RepetitionAnalysis;
 import com.maxprograms.validation.XliffChecker;
 import com.maxprograms.xliff2.ToXliff2;
@@ -64,6 +66,7 @@ public class FilterServer implements HttpHandler {
 	private boolean is20;
 	private String target;
 	private boolean unapproved;
+	private boolean exportTmx;
 
 	public static void main(String[] args) {
 		String port = "8000";
@@ -174,10 +177,8 @@ public class FilterServer implements HttpHandler {
 	private String analyseXliff(JSONObject json) {
 		String file = json.getString("file");
 		catalog = "";
-		try {
+		if (json.has("catalog")){
 			catalog = json.getString("catalog");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
@@ -209,10 +210,8 @@ public class FilterServer implements HttpHandler {
 	private String validateXliff(JSONObject json) {
 		String file = json.getString("file");
 		catalog = "";
-		try {
+		if (json.has("catalog")) {
 			catalog = json.getString("catalog");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
@@ -268,36 +267,27 @@ public class FilterServer implements HttpHandler {
 	}
 
 	private static String getCharsets() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("{\"charsets\": [\n");
+		JSONObject result = new JSONObject();
+		JSONArray array = new JSONArray();
+		result.put("charsets", array);
 		TreeMap<String, Charset> charsets = new TreeMap<>(Charset.availableCharsets());
 		Set<String> keys = charsets.keySet();
 		Iterator<String> i = keys.iterator();
-		boolean first = true;
 		while (i.hasNext()) {
 			Charset cset = charsets.get(i.next());
-			if (!first) {
-				builder.append(",\n");
-			} else {
-				first = false;
-			}
-			builder.append("{\"code\":\"");
-			builder.append(cset.name());
-			builder.append("\", \"description\":\"");
-			builder.append(cset.displayName());
-			builder.append("\"}");
+			JSONObject charset = new JSONObject();
+			charset.put("code", cset.name());
+			charset.put("description", cset.displayName());
+			array.put(charset);
 		}
-		builder.append("]}\n");
-		return builder.toString();
+		return result.toString(2);
 	}
 
 	private String getStatus(JSONObject json) {
 		String status = "unknown";
-		try {
+		if (json.has("process")) {
 			String process = json.getString("process");
 			status = running.get(process);
-		} catch (JSONException je) {
-			status = "error";
 		}
 		if (status == null) {
 			status = "Error";
@@ -307,12 +297,11 @@ public class FilterServer implements HttpHandler {
 
 	private String getValidationResult(JSONObject json) {
 		JSONObject result = new JSONObject();
-		try {
+		if (json.has("process")) {
 			String process = json.getString("process");
 			result = validationResults.get(process);
 			validationResults.remove(process);
-		} catch (JSONException je) {
-			LOGGER.log(Level.ERROR, je);
+		} else {
 			result.put("valid", false);
 			result.put("reason", "Error retrieving result from server");
 		}
@@ -321,32 +310,28 @@ public class FilterServer implements HttpHandler {
 
 	private String merge(JSONObject json) {
 		xliff = "";
-		try {
+		if (json.has("xliff")) {
 			xliff = json.getString("xliff");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		target = "";
-		try {
+		if (json.has("target")) {
 			target = json.getString("target");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		catalog = "";
-		try {
+		if (json.has("catalog")) {
 			catalog = json.getString("catalog");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		unapproved = false;
-		try {
+		if (json.has("unapproved")) {
 			unapproved = json.getBoolean("unapproved");
-		} catch (JSONException je) {
-			// do nothing
+		}
+		exportTmx = false;
+		if (json.has("exportTmx")) {
+			exportTmx = json.getBoolean("exportTmx");
 		}
 		String process = "" + System.currentTimeMillis();
 		new Thread(new Runnable() {
@@ -356,6 +341,15 @@ public class FilterServer implements HttpHandler {
 				running.put(process, "running");
 				try {
 					Merge.merge(xliff, target, catalog, unapproved);
+					if (exportTmx) {
+						String tmx = "";
+						if (xliff.toLowerCase().endsWith(".xlf")) {
+							tmx = xliff.substring(0, xliff.lastIndexOf('.')) + ".tmx";
+						} else {
+							tmx = xliff + ".tmx";
+						}
+						TmxExporter.export(xliff, tmx, catalog);
+					}
 					if (running.get(process).equals(("running"))) {
 						LOGGER.log(Level.INFO, "Merge completed");
 						running.put(process, "completed");
@@ -371,44 +365,32 @@ public class FilterServer implements HttpHandler {
 
 	private String convert(JSONObject json) {
 		String source = "";
-		try {
+		if (json.has("file")) {
 			source = json.getString("file");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		String srcLang = "";
-		try {
+		if (json.has("srcLang")) {
 			srcLang = json.getString("srcLang");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		String tgtLang = "";
-		try {
+		if (json.has("tgtLang")) {
 			tgtLang = json.getString("tgtLang");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		xliff = source + ".xlf";
-		try {
+		if (json.has("xliff")) {
 			xliff = json.getString("xliff");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		String skl = source + ".skl";
-		try {
+		if (json.has("skl")) {
 			skl = json.getString("skl");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		String type = "";
-		try {
+		if (json.has("type")) {
 			type = json.getString("type");
 			String fullName = FileFormats.getFullName(type);
 			if (fullName != null) {
 				type = fullName;
 			}
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (type.isEmpty()) {
 			String detected = FileFormats.detectFormat(source);
@@ -420,10 +402,8 @@ public class FilterServer implements HttpHandler {
 			}
 		}
 		String enc = "";
-		try {
+		if (json.has("enc")) {
 			enc = json.getString("enc");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (enc.isEmpty()) {
 			Charset charset = EncodingResolver.getEncoding(source, type);
@@ -435,48 +415,36 @@ public class FilterServer implements HttpHandler {
 			}
 		}
 		String srx = "";
-		try {
+		if (json.has("srx")) {
 			srx = json.getString("srx");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (srx.isEmpty()) {
 			File srxFolder = new File(new File(System.getProperty("user.dir")), "srx");
 			srx = new File(srxFolder, "default.srx").getAbsolutePath();
 		}
 		catalog = "";
-		try {
+		if (json.has("catalog")) {
 			catalog = json.getString("catalog");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		String ditaval = "";
-		try {
+		if (json.has("ditaval") ) {
 			ditaval = json.getString("ditaval");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		embed = false;
-		try {
+		if (json.has("embed")) {
 			embed = json.getBoolean("embed");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		boolean paragraph = false;
-		try {
+		if (json.has("paragraph")) {
 			paragraph = json.getBoolean("paragraph");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		is20 = false;
-		try {
+		if (json.has("is20")) {
 			is20 = json.getBoolean("is20");
-		} catch (JSONException je) {
-			// do nothing
 		}
 		String process = "" + System.currentTimeMillis();
 
@@ -594,7 +562,7 @@ public class FilterServer implements HttpHandler {
 	}
 
 	private static String getLanguages() throws SAXException, IOException, ParserConfigurationException {
-		List<Language> languages = Language.getCommonLanguages();
+		List<Language> languages = LanguageUtils.getCommonLanguages();
 		StringBuilder builder = new StringBuilder();
 		builder.append("{\"languages\": [\n");
 		for (int i = 0; i < languages.size(); i++) {

@@ -65,11 +65,14 @@ public class Merge {
 	private static Document doc;
 	private static Element root;
 
+	
+
 	public static void main(String[] args) {
 		String xliff = "";
 		String target = "";
 		String catalog = "";
 		boolean unapproved = false;
+		boolean exportTMX = false;
 
 		String[] arguments = Utils.fixPath(args);
 		for (int i = 0; i < arguments.length; i++) {
@@ -93,6 +96,9 @@ public class Merge {
 			}
 			if (arg.equals("-unapproved")) {
 				unapproved = true;
+			}
+			if (arg.equals("-export")) {
+				exportTMX = true;
 			}
 		}
 		if (arguments.length < 2) {
@@ -130,6 +136,15 @@ public class Merge {
 		}
 		try {
 			merge(xliff, target, catalog, unapproved);
+			if (exportTMX) {
+				String tmx = "";
+				if (xliff.toLowerCase().endsWith(".xlf")) {
+					tmx = xliff.substring(0, xliff.lastIndexOf('.')) + ".tmx";
+				} else {
+					tmx = xliff + ".tmx";
+				}
+				TmxExporter.export(xliff, tmx, catalog);
+			}
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, e.getMessage(), e);
 		}
@@ -218,7 +233,8 @@ public class Merge {
 				+ "   -xliff:      XLIFF file to merge\n"
 				+ "   -target:     (optional) translated file or folder where to store translated files\n"
 				+ "   -catalog:    (optional) XML catalog to use for processing\n"
-				+ "   -unapproved: (optional) accept translations from unapproved segments\n\n";
+				+ "   -unapproved: (optional) accept translations from unapproved segments\n"
+				+ "   -export:     (optional) generate TMX file from approved segments";
 		System.out.println(help);
 	}
 
