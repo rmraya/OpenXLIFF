@@ -119,7 +119,7 @@ public class Xliff2Office {
 								}
 								out.closeEntry();
 							}
-							Files.delete(Paths.get(tmp.toURI()));
+							tmp.deleteOnExit();
 							File xml = new File(filesTable.get(name) + ".xml");
 							Files.delete(Paths.get(xml.toURI()));
 							File xlf = new File(filesTable.get(name));
