@@ -68,7 +68,7 @@ Open XLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 
 ### Requirements
 
-- JDK 11 or newer.
+- JDK 11 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
 
 ### Building
 
