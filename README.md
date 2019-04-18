@@ -150,7 +150,7 @@ If you use binaries from the command line, running `.\merge.bat` or `./merge.sh`
 ```
 Usage:
 
-   merge.bat [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved]
+   merge.bat [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
 
 Where:
 
