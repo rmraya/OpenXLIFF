@@ -227,7 +227,7 @@ public class Merge {
 			launcher = "   merge.bat ";
 		}
 		String help = "Usage:\n\n" + launcher + "[-help] [-version] -xliff xliffFile -target targetFile "
-				+ "[-catalog catalogFile] [-unapproved]\n\n" + "Where:\n\n"
+				+ "[-catalog catalogFile] [-unapproved] [-export]\n\n" + "Where:\n\n"
 				+ "   -help:       (optional) Display this help information and exit\n"
 				+ "   -version:    (optional) Display version & build information and exit\n"
 				+ "   -xliff:      XLIFF file to merge\n"
