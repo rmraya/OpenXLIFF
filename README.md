@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.3.0 | Added option to export approved XLIFF segments as TMX | April 18, 2019
 1.2.1 | Improved validation of XLIFF 2.0 | April 6, 2019
 1.2.0 | Added Translation Status Analysis | March 3, 2019
 1.1.0 | Incorporated XLIFFChecker code| November 20, 2018
@@ -159,6 +160,7 @@ Where:
    -target:     translated file or folder where to store translated files
    -catalog:    (optional) XML catalog to use for processing
    -unapproved: (optional) accept translations from unapproved segments
+   -export:     (optional) generate TMX file from approved segments
 ```
 ### XLIFF Validation
 
