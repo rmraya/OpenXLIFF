@@ -224,15 +224,21 @@ public class DitaParser {
 			}
 			if (!href.equals("") && !href.equals(parentFile)) {
 				try {
-					Element root = builder.build(href).getRootElement();
-					if (root.getAttributeValue("translate", "yes").equals("yes")) {
-						if (!recursed.contains(href)) {
-							recurse(root, href);
-							filesMap.add(href);
-							recursed.add(href);
+					File file = new File(href);
+					if (file.exists()) {
+						Element root = builder.build(href).getRootElement();
+						if (root.getAttributeValue("translate", "yes").equals("yes")) {
+							if (!recursed.contains(href)) {
+								recurse(root, href);
+								filesMap.add(href);
+								recursed.add(href);
+							}
+						} else {
+							MessageFormat mf = new MessageFormat("Ignored Referenced File: {0}");
+							LOGGER.log(Level.WARNING, mf.format(new Object[] { href }));
 						}
 					} else {
-						MessageFormat mf = new MessageFormat("Ignored Referenced File: {0}");
+						MessageFormat mf = new MessageFormat("Referenced file '{0}' doesn't exist");
 						LOGGER.log(Level.WARNING, mf.format(new Object[] { href }));
 					}
 				} catch (Exception ex) {
