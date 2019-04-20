@@ -66,8 +66,10 @@ public class SAXBuilder {
 			parser.setFeature("http://apache.org/xml/features/validation/schema", true);
 			parser.setFeature("http://apache.org/xml/features/validation/dynamic", true);
 		}
+		boolean clearHandler = false;
 		if (contentHandler == null) {
 			contentHandler = new CustomContentHandler();
+			clearHandler = true;
 		}
 		parser.setContentHandler(contentHandler);
 		if (resolver == null) {
@@ -91,7 +93,9 @@ public class SAXBuilder {
 		if (entities.size() > 0) {
 			doc.setEntities(entities);
 		}
-
+		if (clearHandler) {
+			contentHandler = null;
+		}
 		return doc;
 	}
 
@@ -119,8 +123,10 @@ public class SAXBuilder {
 			parser.setFeature("http://apache.org/xml/features/validation/schema", true);
 			parser.setFeature("http://apache.org/xml/features/validation/dynamic", true);
 		}
+		boolean clearHandler = false;
 		if (contentHandler == null) {
 			contentHandler = new CustomContentHandler();
+			clearHandler = true;
 		}
 		parser.setContentHandler(contentHandler);
 		if (resolver == null) {
@@ -150,6 +156,9 @@ public class SAXBuilder {
 			if (attributes != null && preserveAttributes && hasCustomAttributes(url, doc.getEncoding())) {
 				doc.setAttributes(attributes);
 			}
+		}
+		if (clearHandler) {
+			contentHandler = null;
 		}
 		return doc;
 	}
