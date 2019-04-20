@@ -25,6 +25,7 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -381,6 +382,22 @@ public class FilterServer implements HttpHandler {
 			xliff = json.getString("xliff");
 		}
 		String skl = source + ".skl";
+		if (json.has("sklFolder")) {
+			File sklFolder = new File(json.getString("sklFolder"));
+			if (!sklFolder.exists()) {
+				try {
+					Files.createDirectories(sklFolder.toPath());
+				} catch (IOException e) {
+					LOGGER.log(Level.ERROR, "Unable to create skeleton folder " + json.getString("sklFolder"));
+				}
+			}
+			try {
+				File tmp = File.createTempFile(new File(source).getName(), ".skl", sklFolder);
+				skl = tmp.getAbsolutePath();
+			} catch (IOException e) {
+				LOGGER.log(Level.ERROR, "Error creating skeleton", e);
+			}
+		}
 		if (json.has("skl")) {
 			skl = json.getString("skl");
 		}
