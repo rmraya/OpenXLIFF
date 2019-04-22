@@ -71,6 +71,7 @@ public class DitaMap2Xliff {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
 			Catalog catalog = new Catalog(params.get("catalog"));
+			String mapFile = params.get("source");
 
 			DitaParser parser = new DitaParser();
 			Vector<String> filesMap = parser.run(params);
@@ -167,7 +168,7 @@ public class DitaMap2Xliff {
 
 			for (int i = 0; i < xliffs.size(); i++) {
 				mergedRoot.addContent("\n");
-				addFile(xliffs.get(i));
+				addFile(xliffs.get(i), mapFile);
 			}
 
 			// output final XLIFF
@@ -565,13 +566,16 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static void addFile(String xliff) throws SAXException, IOException, ParserConfigurationException {
+	private static void addFile(String xliff, String mapFile)
+			throws SAXException, IOException, ParserConfigurationException {
 		Document doc = builder.build(xliff);
 		Element root = doc.getRootElement();
 		Element file = root.getChild("file");
 		Element newFile = new Element("file");
 		newFile.clone(file);
 		newFile.setAttribute("datatype", "x-ditamap");
+		String old = file.getAttributeValue("original");
+		newFile.setAttribute("original", Utils.makeRelativePath(mapFile, old));
 		List<PI> encoding = root.getPI("encoding");
 		if (!encoding.isEmpty()) {
 			newFile.addContent(encoding.get(0));
