@@ -111,8 +111,6 @@ public class Idml2Xliff {
 		Element newFile = new Element("file");
 		newFile.clone(file);
 		mergedRoot.addContent(newFile);
-		File f = new File(xliff);
-		Files.delete(Paths.get(f.toURI()));
 	}
 
 	private static void updateXliff(String xliff, String original)

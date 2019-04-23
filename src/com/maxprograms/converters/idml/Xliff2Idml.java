@@ -110,11 +110,11 @@ public class Xliff2Idml {
 								}
 								out.closeEntry();
 							}
-							Files.delete(Paths.get(tmp.toURI()));
 							File xml = new File(filesTable.get(name) + ".xml");
 							Files.delete(Paths.get(xml.toURI()));
 							File xlf = new File(filesTable.get(name));
 							Files.delete(Paths.get(xlf.toURI()));
+							tmp.deleteOnExit();
 						} else {
 							File tmp = File.createTempFile("entry", ".tmp");
 							try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
@@ -136,7 +136,7 @@ public class Xliff2Idml {
 								}
 								out.closeEntry();
 							}
-							Files.delete(Paths.get(tmp.toURI()));
+							tmp.deleteOnExit();
 						}
 					}
 				}
