@@ -57,9 +57,7 @@ public class Comment implements XMLNode, Serializable {
 
 	@Override
 	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
-		output.write(XMLUtils.getBytes("<!-- ", charset));
-		output.write(XMLUtils.getBytes(value, charset));
-		output.write(XMLUtils.getBytes(" -->", charset));
+		output.write(toString().getBytes(charset));
 	}
 
 	@Override

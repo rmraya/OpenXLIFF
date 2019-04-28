@@ -46,9 +46,7 @@ public class PI implements XMLNode, Serializable {
 
 	@Override
 	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
-		output.write(XMLUtils.getBytes("<?" + target + " ", charset));
-		output.write(XMLUtils.getBytes(data, charset));
-		output.write(XMLUtils.getBytes("?>", charset));
+		output.write(toString().getBytes(charset));
 	}
 
 	@Override

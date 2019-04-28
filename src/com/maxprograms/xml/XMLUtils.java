@@ -13,7 +13,6 @@ package com.maxprograms.xml;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 public class XMLUtils {
 
@@ -66,10 +65,6 @@ public class XMLUtils {
 		result = result.replaceAll("&gt;", ">");
 		result = result.replaceAll("&quot;", "\"");
 		return result.replaceAll("&apos;", "\'");
-	}
-
-	public static byte[] getBytes(String string, Charset charset) {
-		return string.getBytes(charset);
 	}
 
 	public static String getAbsolutePath(String homeFile, String relative) throws IOException {

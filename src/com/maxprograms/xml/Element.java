@@ -402,23 +402,7 @@ public class Element implements XMLNode, Serializable {
 
 	@Override
 	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
-		output.write(XMLUtils.getBytes("<" + name, charset));
-		Set<String> keys = attsTable.keySet();
-		Iterator<String> it = keys.iterator();
-		while (it.hasNext()) {
-			Attribute a = attsTable.get(it.next());
-			output.write(XMLUtils.getBytes(" ", charset));
-			a.writeBytes(output, charset);
-		}
-		if (content.isEmpty()) {
-			output.write(XMLUtils.getBytes("/>", charset));
-			return;
-		}
-		output.write(XMLUtils.getBytes(">", charset));
-		for (int i = 0; i < content.size(); i++) {
-			content.get(i).writeBytes(output, charset);
-		}
-		output.write(XMLUtils.getBytes("</" + name + ">", charset));
+		output.write(toString().getBytes(charset));
 	}
 
 	@Override

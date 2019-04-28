@@ -69,8 +69,7 @@ public class Attribute implements XMLNode, Serializable, Comparable<Attribute> {
 
 	@Override
 	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
-		output.write(
-				XMLUtils.getBytes(name + "=\"" + XMLUtils.cleanText(value).replaceAll("\"", "&quot;") + "\"", charset));
+		output.write(toString().getBytes(charset));
 	}
 
 	@Override

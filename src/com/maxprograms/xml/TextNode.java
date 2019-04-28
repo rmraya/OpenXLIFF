@@ -37,7 +37,7 @@ public class TextNode implements XMLNode, Serializable {
 
 	@Override
 	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
-		output.write(XMLUtils.getBytes(XMLUtils.cleanText(text), charset));
+		output.write(toString().getBytes(charset));
 	}
 
 	public String getText() {
