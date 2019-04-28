@@ -87,7 +87,7 @@ public class Indenter {
 				String text = ((TextNode) node).getText();
 				for (int i = 0; i < text.length(); i++) {
 					char c = text.charAt(i);
-					if (!Character.isSpaceChar(c)) {
+					if (!(Character.isSpaceChar(c) || c == '\n')) {
 						return true;
 					}
 				}
