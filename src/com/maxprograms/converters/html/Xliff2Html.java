@@ -59,11 +59,10 @@ public class Xliff2Html {
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
 		encoding = params.get("encoding");
-		String iniFile = params.get("iniFile");
 
 		try {
 			catalog = new Catalog(params.get("catalog"));
-			loadEntities(iniFile);
+			loadEntities();
 			String outputFile = params.get("backfile");
 			File f = new File(outputFile);
 			if (!f.getParentFile().exists()) {
@@ -156,12 +155,9 @@ public class Xliff2Html {
 		return addEntities(result);
 	}
 
-	private static void loadEntities(String iniFile) throws SAXException, IOException, ParserConfigurationException {
+	private static void loadEntities() throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
-		if (catalog != null) {
-			builder.setEntityResolver(catalog);
-		}
-		Document doc = builder.build(iniFile);
+		Document doc = builder.build(Xliff2Html.class.getResource("entities.xml"));
 		Element root = doc.getRootElement();
 
 		entities = new Hashtable<>();
