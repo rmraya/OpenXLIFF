@@ -105,8 +105,8 @@ public class TmxExporter {
 			writeString(output, "<tmx version=\"1.4\">\n");
 			writeString(output,
 					"<header \n" + 
-							"      creationtool=\"OpenXLIFF\" \n" + 
-							"      creationtoolversion=\"" + Constants.VERSION +"\"  \n" + 
+							"      creationtool=\"" + Constants.TOOLID + "\" \n" + 
+							"      creationtoolversion=\"" + Constants.VERSION +"\" \n" + 
 							"      srclang=\"" + sourceLang + "\" \n" + 
 							"      adminlang=\"en\"  \n" + "      datatype=\"xml\" \n" + 
 							"      o-tmf=\"XLIFF\" \n" + 

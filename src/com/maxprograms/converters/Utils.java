@@ -25,6 +25,7 @@ import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.Base64.Encoder;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
@@ -67,17 +68,16 @@ public class Utils {
 		}
 	}
 
-
 	public static String makeRelativePath(String homeFile, String filename) throws IOException {
 		File home = new File(homeFile);
 		// If home is a file, get the parent
 		if (!home.isDirectory()) {
 			if (home.getParent() != null) {
-				home = new File(home.getParent());	
+				home = new File(home.getParent());
 			} else {
-				home = new File(System.getProperty("user.dir")); 
+				home = new File(System.getProperty("user.dir"));
 			}
-			
+
 		}
 		File file = new File(filename);
 		if (!file.isAbsolute()) {
@@ -87,57 +87,54 @@ public class Utils {
 		if (!home.isAbsolute()) {
 			throw new IOException("Path must be absolute.");
 		}
-		Vector<String> homelist;
-		Vector<String> filelist;
 
-		homelist = getPathList(home);
-		filelist = getPathList(file);
+		List<String> homelist = getPathList(home);
+		List<String> filelist = getPathList(file);
 		return matchPathLists(homelist, filelist);
 	}
 
-	private static Vector<String> getPathList(File file) throws IOException{
-		Vector<String> list = new Vector<>();
-		File r;
-		r = file.getCanonicalFile();
-		while(r != null) {
-			list.add(r.getName());
+	private static List<String> getPathList(File file) throws IOException {
+		List<String> result = new Vector<>();
+		File r = file.getCanonicalFile();
+		while (r != null) {
+			result.add(r.getName());
 			r = r.getParentFile();
 		}
-		return list;
+		return result;
 	}
 
-	private static String matchPathLists(Vector<String> r, Vector<String> f) {
-		int i;
-		int j;
-		String s = ""; 
+	private static String matchPathLists(List<String> home, List<String> file) {
+		StringBuilder s = new StringBuilder();
 		// start at the beginning of the lists
 		// iterate while both lists are equal
-		i = r.size()-1;
-		j = f.size()-1;
+		int i = home.size() - 1;
+		int j = file.size() - 1;
 
 		// first eliminate common root
-		while(i >= 0&&j >= 0&&r.get(i).equals(f.get(j))) {
+		while (i >= 0 && j >= 0 && home.get(i).equals(file.get(j))) {
 			i--;
 			j--;
 		}
 
 		// for each remaining level in the home path, add a ..
-		for(;i>=0;i--) {
-			s += ".." + File.separator; 
+		for (; i >= 0; i--) {
+			s.append("..");
+			s.append(File.separator);
 		}
 
 		// for each level in the file path, add the path
-		for(;j>=1;j--) {
-			s += f.get(j) + File.separator;
+		for (; j >= 1; j--) {
+			s.append(file.get(j));
+			s.append(File.separator);
 		}
 
 		// file name
-		if ( j>=0 && j<f.size()) {
-			s += f.get(j);
+		if (j >= 0 && j < file.size()) {
+			s.append(file.get(j));
 		}
-		return s;
+		return s.toString();
 	}
-	
+
 	public static String[] getPageCodes() {
 		TreeMap<String, Charset> charsets = new TreeMap<>(Charset.availableCharsets());
 		Set<String> keys = charsets.keySet();
@@ -200,5 +197,5 @@ public class Utils {
 			result.add(current.trim());
 		}
 		return result.toArray(new String[result.size()]);
-	}	
+	}
 }
