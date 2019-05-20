@@ -66,11 +66,9 @@ public class Xml2Xliff {
 	static final String GAMP = "\u200B\u203A";
 
 	private static String inputFile;
-	private static String xliffFile;
 	private static String skeletonFile;
 	private static String sourceLanguage;
 	private static String srcEncoding;
-	private static FileInputStream input;
 	private static FileOutputStream output;
 	private static FileOutputStream skeleton;
 	private static int segId;
@@ -113,7 +111,7 @@ public class Xml2Xliff {
 		stack = new Stack<>();
 
 		inputFile = params.get("source");
-		xliffFile = params.get("xliff");
+		String xliffFile = params.get("xliff");
 		skeletonFile = params.get("skeleton");
 		sourceLanguage = params.get("srcLang");
 		targetLanguage = params.get("tgtLang");
@@ -183,44 +181,44 @@ public class Xml2Xliff {
 				srcEncoding = detected;
 			}
 
-			input = new FileInputStream(inputFile);
-			skeleton = new FileOutputStream(skeletonFile);
-			output = new FileOutputStream(xliffFile);
-			writeHeader();
+			try (FileInputStream input = new FileInputStream(inputFile)) {
+				skeleton = new FileOutputStream(skeletonFile);
+				output = new FileOutputStream(xliffFile);
+				writeHeader();
 
-			int size = input.available();
-			byte[] array = new byte[size];
-			if (size != input.read(array)) {
-				result.add("1");
-				result.add("Error reading from input file.");
-				return result;
-			}
-			String file = new String(array, srcEncoding);
-			// remove xml declaration and doctype
-			int begin = file.indexOf("<" + rootElement);
-			if (begin != -1) {
-				if (file.charAt(0) == '<') {
-					writeSkeleton(file.substring(0, begin));
-				} else {
-					writeSkeleton(file.substring(1, begin));
+				int size = input.available();
+				byte[] array = new byte[size];
+				if (size != input.read(array)) {
+					result.add("1");
+					result.add("Error reading from input file.");
+					return result;
 				}
+				String file = new String(array, srcEncoding);
+				// remove xml declaration and doctype
+				int begin = file.indexOf("<" + rootElement);
+				if (begin != -1) {
+					if (file.charAt(0) == '<') {
+						writeSkeleton(file.substring(0, begin));
+					} else {
+						writeSkeleton(file.substring(1, begin));
+					}
+				}
+
+				buildTables(iniFile);
+
+				if (autoConfiguration) {
+					Files.delete(Paths.get(f.toURI()));
+				}
+
+				buildList();
+
+				processList();
+
+				skeleton.close();
+				writeString("</body>\n");
+				writeString("</file>\n");
+				writeString("</xliff>");
 			}
-
-			buildTables(iniFile);
-
-			if (autoConfiguration) {
-				Files.delete(Paths.get(f.toURI()));
-			}
-
-			buildList();
-
-			processList();
-
-			skeleton.close();
-			writeString("</body>\n");
-			writeString("</file>\n");
-			writeString("</xliff>");
-			input.close();
 			output.close();
 
 			result.add("0");
