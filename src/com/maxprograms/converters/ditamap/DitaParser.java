@@ -648,7 +648,8 @@ public class DitaParser {
 		return result;
 	}
 
-	private Element locate(Element e, String topicId, String searched) {
+	private Element locate(Element e, String topic, String searched) {
+		String topicId = topic;
 		String id = e.getAttributeValue("id", "");
 		if (searched.equals(topicId + "/" + id)) {
 			return e;
