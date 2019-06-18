@@ -364,57 +364,58 @@ public class Xml2Xliff {
 		return new File(folder, "config_" + rootElement + ".xml").getAbsolutePath();
 	}
 
-	private static String cleanEntity(String s) {
-		int control = s.indexOf('&');
+	private static String cleanEntity(String string) {
+		String result = string;
+		int control = result.indexOf('&');
 		while (control != -1) {
-			int sc = s.indexOf(';', control);
+			int sc = result.indexOf(';', control);
 			if (sc == -1) {
 				// no semicolon, it's not an entity
-				s = s.substring(0, control) + "&amp;" + s.substring(control + 1);
+				result = result.substring(0, control) + "&amp;" + result.substring(control + 1);
 			} else {
 				// may be an entity
-				String candidate = s.substring(control, sc) + ";";
+				String candidate = result.substring(control, sc) + ";";
 				if (!candidate.equals("&amp;")) {
 					String entity = entities.get(candidate);
 					if (entity != null) {
-						s = s.substring(0, control) + entity + s.substring(sc + 1);
+						result = result.substring(0, control) + entity + result.substring(sc + 1);
 					} else if (candidate.startsWith("&#x")) {
 						// it's a character in hexadecimal format
 						int c = Integer.parseInt(candidate.substring(3, candidate.length() - 1), 16);
-						s = s.substring(0, control) + (char) c + s.substring(sc + 1);
+						result = result.substring(0, control) + (char) c + result.substring(sc + 1);
 					} else if (candidate.startsWith("&#")) {
 						// it's a character
 						int c = Integer.parseInt(candidate.substring(2, candidate.length() - 1));
-						s = s.substring(0, control) + (char) c + s.substring(sc + 1);
+						result = result.substring(0, control) + (char) c + result.substring(sc + 1);
 					} else {
-						s = s.substring(0, control) + "&amp;" + s.substring(control + 1);
+						result = result.substring(0, control) + "&amp;" + result.substring(control + 1);
 					}
 				}
 			}
-			if (control < s.length()) {
+			if (control < result.length()) {
 				control++;
 			}
-			control = s.indexOf('&', control);
+			control = result.indexOf('&', control);
 		}
 
-		control = s.indexOf('<');
+		control = result.indexOf('<');
 		while (control != -1) {
-			s = s.substring(0, control) + "&lt;" + s.substring(control + 1);
-			if (control < s.length()) {
+			result = result.substring(0, control) + "&lt;" + result.substring(control + 1);
+			if (control < result.length()) {
 				control++;
 			}
-			control = s.indexOf('<', control);
+			control = result.indexOf('<', control);
 		}
 
-		control = s.indexOf('>');
+		control = result.indexOf('>');
 		while (control != -1) {
-			s = s.substring(0, control) + "&gt;" + s.substring(control + 1);
-			if (control < s.length()) {
+			result = result.substring(0, control) + "&gt;" + result.substring(control + 1);
+			if (control < result.length()) {
 				control++;
 			}
-			control = s.indexOf('>', control);
+			control = result.indexOf('>', control);
 		}
-		return s;
+		return result;
 	}
 
 	private static String getRootElement(String file) {
@@ -509,11 +510,12 @@ public class Xml2Xliff {
 		}
 	}
 
-	private static String prepareG(String txt) {
-		int start = txt.indexOf(STARTG);
+	private static String prepareG(String string) {
+		int start = string.indexOf(STARTG);
 		if (start == -1) {
-			return txt;
+			return string;
 		}
+		String txt = string;
 		String result = txt.substring(0, start);
 		while (start != -1) {
 			txt = txt.substring(start + STARTG.length());
@@ -600,6 +602,9 @@ public class Xml2Xliff {
 					result = result + addEntities(((TextNode) n).getText());
 				}
 				break;
+			default:
+				// ignore
+				break;
 			}
 		}
 		return result;
@@ -632,25 +637,28 @@ public class Xml2Xliff {
 			case XMLNode.TEXT_NODE:
 				content = content + XMLUtils.cleanText(((TextNode) n).getText());
 				break;
+			default:
+				// ignore
+				break;
 			}
 		}
 		return ts + content + "</" + name + ">"; // TODO recurse content
 	}
 
-	private static String restoreChars(String value) {
-		value = value.replaceAll(Xml2Xliff.MATHLT, "<");
-		value = value.replaceAll(Xml2Xliff.MATHGT, ">");
-		value = value.replaceAll(Xml2Xliff.DOUBLEPRIME, "\"");
-		value = value.replaceAll(Xml2Xliff.GAMP, "&");
-		return value;
+	private static String restoreChars(String string) {
+		String result = string.replaceAll(Xml2Xliff.MATHLT, "<");
+		result = result.replaceAll(Xml2Xliff.MATHGT, ">");
+		result = result.replaceAll(Xml2Xliff.DOUBLEPRIME, "\"");
+		result = result.replaceAll(Xml2Xliff.GAMP, "&");
+		return result;
 	}
 
 	private static String addEntities(String string) {
-		string = string.replaceAll("&lt;", "<");
-		string = string.replaceAll("&gt;", ">");
-		string = string.replaceAll("&quot;", "\"");
-		string = string.replaceAll("&amp;", "&");
-		return string;
+		String result = string.replaceAll("&lt;", "<");
+		result = result.replaceAll("&gt;", ">");
+		result = result.replaceAll("&quot;", "\"");
+		result = result.replaceAll("&amp;", "&");
+		return result;
 	}
 
 	private static String tidy(String seg) throws SAXException, IOException, ParserConfigurationException {
@@ -799,7 +807,8 @@ public class Xml2Xliff {
 		return r.toString();
 	}
 
-	private static boolean containsText(String tagged) {
+	private static boolean containsText(String string) {
+		String tagged = string;
 		int start = tagged.indexOf("<mrk ");
 		int end = tagged.indexOf("</mrk>");
 		if (dita_based) {
@@ -861,7 +870,8 @@ public class Xml2Xliff {
 		return rs;
 	}
 
-	private static String addTags(String src) {
+	private static String addTags(String string) {
+		String src = string;
 		String result = "";
 		int start = src.indexOf('<');
 		int end = src.indexOf('>');
@@ -1045,11 +1055,11 @@ public class Xml2Xliff {
 			ctype = " ctype=\"" + ctypes.get(type) + "\"";
 		}
 		String result = "<ph id=\"" + tagId++ + "\"" + ctype + ">";
-		element = cleanString(element);
+		String clean = cleanString(element);
 
 		Vector<String> v = translatableAttributes.get(type);
 
-		StringTokenizer tokenizer = new StringTokenizer(element, "&= \t\n\r\f/", true);
+		StringTokenizer tokenizer = new StringTokenizer(clean, "&= \t\n\r\f/", true);
 
 		while (tokenizer.hasMoreTokens()) {
 			String token = tokenizer.nextToken();
@@ -1366,6 +1376,9 @@ public class Xml2Xliff {
 				}
 			}
 
+			break;
+		default:
+			// ignore
 			break;
 		}
 	}
