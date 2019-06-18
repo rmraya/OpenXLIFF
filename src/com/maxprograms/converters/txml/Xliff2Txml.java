@@ -54,7 +54,7 @@ public class Xliff2Txml {
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -146,7 +146,7 @@ public class Xliff2Txml {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<String, Element>();
+		segments = new Hashtable<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();
