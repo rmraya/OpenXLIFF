@@ -46,7 +46,7 @@ public class AutoConfiguration {
 		builder.setEntityResolver(new Catalog(catalog));
 		Document d = builder.build(input);
 		Element r = d.getRootElement();
-		segment = new Hashtable<String, String>();
+		segment = new Hashtable<>();
 		recurse(r);
 
 		Document doc = new Document(null, "ini-file", "-//Maxprograms//Converters 2.0.0//EN", "configuration.dtd");
