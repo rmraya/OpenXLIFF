@@ -46,7 +46,8 @@ public class Scope {
 		return false;
 	}
 
-	public Key getKey(String key) {
+	public Key getKey(String string) {
+		String key = string;
 		if (keys.containsKey(key)) {
 			Key k = keys.get(key);
 			if (k.getHref() != null) {
