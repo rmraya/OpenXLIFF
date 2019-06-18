@@ -19,7 +19,7 @@ public class RegistryEntry {
 	private Hashtable<String, String> table;
 
 	public RegistryEntry(String entry) {
-		table = new Hashtable<String, String>();
+		table = new Hashtable<>();
 		parseEntry(entry);
 	}
 
