@@ -47,7 +47,7 @@ public class Xliff2Ts {
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		try {
 			xliffFile = params.get("xliff");
 			loadSegments();
@@ -138,7 +138,7 @@ public class Xliff2Ts {
 		SAXBuilder builder = new SAXBuilder();
 		Document sdoc = builder.build(xliffFile);
 		Element root = sdoc.getRootElement();
-		segments = new Hashtable<String, Element>();
+		segments = new Hashtable<>();
 		recurseXliff(root);
 	}
 
