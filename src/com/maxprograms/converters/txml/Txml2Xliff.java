@@ -53,7 +53,7 @@ public class Txml2Xliff {
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		inputFile = params.get("source");
 		xliffFile = params.get("xliff");
 		skeletonFile = params.get("skeleton");
