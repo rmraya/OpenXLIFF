@@ -69,7 +69,7 @@ public class Xliff2Xml {
 
 	public static Vector<String> run(Hashtable<String, String> params) {
 
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -259,6 +259,9 @@ public class Xliff2Xml {
 					result = result + addEntities(text);
 				}
 				break;
+			default:
+				// ignore
+				break;
 			}
 		}
 		return result;
@@ -291,17 +294,20 @@ public class Xliff2Xml {
 			case XMLNode.TEXT_NODE:
 				content = content + addEntities(((TextNode) n).getText());
 				break;
+			default:
+				// ignore
+				break;
 			}
 		}
 		return ts + content + "</" + name + ">"; // TODO recurse content
 	}
 
-	private static String restoreChars(String value) {
-		value = value.replaceAll(Xml2Xliff.MATHLT, "<");
-		value = value.replaceAll(Xml2Xliff.MATHGT, ">");
-		value = value.replaceAll(Xml2Xliff.DOUBLEPRIME, "\"");
-		value = value.replaceAll(Xml2Xliff.GAMP, "&");
-		return value;
+	private static String restoreChars(String string) {
+		String result = string.replaceAll(Xml2Xliff.MATHLT, "<");
+		result = result.replaceAll(Xml2Xliff.MATHGT, ">");
+		result = result.replaceAll(Xml2Xliff.DOUBLEPRIME, "\"");
+		result = result.replaceAll(Xml2Xliff.GAMP, "&");
+		return result;
 	}
 
 	public static String fixEntities(Element element) {
@@ -346,16 +352,17 @@ public class Xliff2Xml {
 		return (result + string).replaceAll("###AMP###", "&amp;");
 	}
 
-	private static String replaceEntities(String string, String token, String entity) {
-		int index = string.indexOf(token);
+	private static String replaceEntities(String original, String token, String entity) {
+		String result = original;
+		int index = result.indexOf(token);
 		while (index != -1) {
-			String before = string.substring(0, index);
-			String after = string.substring(index + token.length());
+			String before = result.substring(0, index);
+			String after = result.substring(index + token.length());
 			// check if we are not inside an entity
 			int amp = before.lastIndexOf('&');
 			if (amp == -1) {
 				// we are not in an entity
-				string = before + entity + after;
+				result = before + entity + after;
 			} else {
 				boolean inEntity = true;
 				for (int i = amp; i < before.length(); i++) {
@@ -370,7 +377,7 @@ public class Xliff2Xml {
 					int colon = after.indexOf(';');
 					if (colon == -1) {
 						// we are not in an entity
-						string = before + entity + after;
+						result = before + entity + after;
 					} else {
 						// verify is there is something that breaks the entity before
 						for (int i = 0; i < colon; i++) {
@@ -382,61 +389,61 @@ public class Xliff2Xml {
 					}
 				} else {
 					// we are not in an entity
-					string = before + entity + after;
+					result = before + entity + after;
 				}
 			}
-			if (index < string.length()) {
-				index = string.indexOf(token, index + 1);
+			if (index < result.length()) {
+				index = result.indexOf(token, index + 1);
 			}
 		}
-		return string;
+		return result;
 	}
 
 	private static String addEntities(String string) {
-
-		int index = string.indexOf('&');
+		String result = string;
+		int index = result.indexOf('&');
 		while (index != -1) {
-			int smcolon = string.indexOf(';', index);
+			int smcolon = result.indexOf(';', index);
 			if (smcolon == -1) {
 				// no semicolon. there is no chance it is an entity
-				string = string.substring(0, index) + "&amp;" + string.substring(index + 1);
+				result = result.substring(0, index) + "&amp;" + result.substring(index + 1);
 				index++;
 			} else {
-				int space = string.indexOf(' ', index);
+				int space = result.indexOf(' ', index);
 				if (space == -1) {
-					String name = string.substring(index + 1, smcolon);
+					String name = result.substring(index + 1, smcolon);
 					if (entities.containsKey(name)) {
 						// it is an entity, jump to the semicolon
 						index = smcolon;
 					} else {
-						string = string.substring(0, index) + "&amp;" + string.substring(index + 1);
+						result = result.substring(0, index) + "&amp;" + result.substring(index + 1);
 						index++;
 					}
 				} else {
 					// check if space appears before the semicolon
 					if (space < smcolon) {
 						// not an entity!
-						string = string.substring(0, index) + "&amp;" + string.substring(index + 1);
+						result = result.substring(0, index) + "&amp;" + result.substring(index + 1);
 						index++;
 					} else {
-						String name = string.substring(index + 1, smcolon);
+						String name = result.substring(index + 1, smcolon);
 						if (entities.containsKey(name)) {
 							// it is a known entity, jump to the semicolon
 							index = smcolon;
 						} else {
-							string = string.substring(0, index) + "&amp;" + string.substring(index + 1);
+							result = result.substring(0, index) + "&amp;" + result.substring(index + 1);
 							index++;
 						}
 					}
 				}
 			}
-			if (index < string.length() && index >= 0) {
-				index = string.indexOf('&', index);
+			if (index < result.length() && index >= 0) {
+				index = result.indexOf('&', index);
 			} else {
 				index = -1;
 			}
 		}
-		StringTokenizer tok = new StringTokenizer(string, "<>", true);
+		StringTokenizer tok = new StringTokenizer(result, "<>", true);
 		StringBuilder buff = new StringBuilder();
 		while (tok.hasMoreElements()) {
 			String str = tok.nextToken();
@@ -448,7 +455,7 @@ public class Xliff2Xml {
 				buff.append(str);
 			}
 		}
-		string = buff.toString();
+		result = buff.toString();
 		// now replace common text with
 		// the entities declared in the DTD
 
@@ -458,10 +465,10 @@ public class Xliff2Xml {
 			String value = entities.get(key);
 			if (!value.equals("") && !key.equals("amp") && !key.equals("lt") && !key.equals("gt") && !key.equals("quot")
 					&& !key.equals("apos")) {
-				string = replaceEntities(string, value, "&" + key + ";");
+				result = replaceEntities(result, value, "&" + key + ";");
 			}
 		}
-		return string;
+		return result;
 	}
 
 	private static void writeString(String string) throws IOException {
@@ -481,7 +488,7 @@ public class Xliff2Xml {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<String, Element>();
+		segments = new Hashtable<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();
@@ -491,7 +498,7 @@ public class Xliff2Xml {
 			segments.put(unit.getAttributeValue("id"), unit);
 		}
 
-		entities = new Hashtable<String, String>();
+		entities = new Hashtable<>();
 
 		Element header = root.getChild("file").getChild("header");
 		List<Element> groups = header.getChildren("prop-group");
@@ -541,11 +548,12 @@ public class Xliff2Xml {
 	}
 
 	protected static String replaceToken(String string, String token, String newText) {
-		int index = string.indexOf(token);
+		String result = string;
+		int index = result.indexOf(token);
 		while (index != -1) {
-			string = string.substring(0, index) + newText + string.substring(index + token.length());
-			index = string.indexOf(token, index + newText.length());
+			result = result.substring(0, index) + newText + result.substring(index + token.length());
+			index = result.indexOf(token, index + newText.length());
 		}
-		return string;
+		return result;
 	}
 }
