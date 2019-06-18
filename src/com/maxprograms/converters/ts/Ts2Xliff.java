@@ -48,7 +48,7 @@ public class Ts2Xliff {
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		segId = 0;
 		inputFile = params.get("source");
 		xliffFile = params.get("xliff");
