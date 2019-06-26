@@ -37,17 +37,14 @@ public class XMLOutputter {
 
 	public void output(Document sdoc, FileOutputStream outputFile) throws IOException {
 		output = outputFile;
-		if (defaultEncoding.name().equalsIgnoreCase("UTF-16LE")) {
-			byte[] feff = { -1, -2 };
-			output.write(feff);
+		if (defaultEncoding.equals(StandardCharsets.UTF_16LE)) {
+			output.write(XMLUtils.UTF16LEBOM);
 		}
-		if (defaultEncoding.name().equalsIgnoreCase("UTF-16BE")) {
-			byte[] fffe = { -2, -1 };
-			output.write(fffe);
+		if (defaultEncoding.equals(StandardCharsets.UTF_16BE)) {
+			output.write(XMLUtils.UTF16BEBOM);
 		}
 		if (writeBOM) {
-			byte[] efbbbf = { -17, -69, -65 }; // UTF-8
-			output.write(efbbbf);
+			output.write(XMLUtils.UTF8BOM);
 		}
 		if (!skipLinefeed) {
 			writeString("<?xml version=\"1.0\" encoding=\"" + defaultEncoding + "\" ?>\n");

@@ -64,7 +64,7 @@ public class FromXliff2 {
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(new File(outputFile))) {
-				out.write(XMLUtils.getUtf8Bom());
+				out.write(XMLUtils.UTF8BOM);
 				outputter.output(xliff12, out);
 			}
 			result.addElement("0");
