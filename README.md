@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.3.2 | Updated for Swordfish 3.4.3 | June 30, 2019
 1.3.1 | Updated for Swordfish 3.4-0 | April 30, 2019
 1.3.0 | Added option to export approved XLIFF segments as TMX | April 18, 2019
 1.2.1 | Improved validation of XLIFF 2.0 | April 6, 2019
