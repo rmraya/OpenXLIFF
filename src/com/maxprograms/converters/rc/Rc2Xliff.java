@@ -43,7 +43,7 @@ public class Rc2Xliff {
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<String>();
+		Vector<String> result = new Vector<>();
 		segId = 0;
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");

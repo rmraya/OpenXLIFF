@@ -182,17 +182,18 @@ public class Properties2Xliff {
 		source = "";
 	}
 
-	private static String fixChars(String line) {
-		int start = line.indexOf("\\u");
+	private static String fixChars(String string) {
+		String result = string;
+		int start = result.indexOf("\\u");
 		while (start != -1) {
-			if (line.substring(start + 2, start + 6).toLowerCase()
+			if (result.substring(start + 2, start + 6).toLowerCase()
 					.matches("[\\dabcdef][\\dabcdef][\\dabcdef][\\dabcdef]")) {
-				line = line.substring(0, start) + toChar(line.substring(start + 2, start + 6))
-						+ line.substring(start + 6);
+				result = result.substring(0, start) + toChar(result.substring(start + 2, start + 6))
+						+ result.substring(start + 6);
 			}
-			start = line.indexOf("\\u", start + 1);
+			start = result.indexOf("\\u", start + 1);
 		}
-		return line;
+		return result;
 	}
 
 	private static String toChar(String string) {
