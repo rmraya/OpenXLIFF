@@ -66,7 +66,6 @@ public class Office2Xliff {
 		inputFile = params.get("source");
 		String xliff = params.get("xliff");
 		skeleton = params.get("skeleton");
-		String encoding = params.get("srcEncoding");
 		String catalog = params.get("catalog");
 
 		try {
@@ -78,8 +77,8 @@ public class Office2Xliff {
 			mergedRoot.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 			mergedRoot.setAttribute("xsi:schemaLocation",
 					"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd");
-			mergedRoot.addContent(new PI("encoding", encoding));
-
+			mergedRoot.addContent("\n");
+			
 			try {
 				out = new ZipOutputStream(new FileOutputStream(skeleton));
 				in = new ZipInputStream(new FileInputStream(inputFile));
@@ -199,6 +198,7 @@ public class Office2Xliff {
 			// output final XLIFF
 
 			XMLOutputter outputter = new XMLOutputter();
+			mergedRoot.addContent("\n");
 			outputter.preserveSpace(true);
 			try (FileOutputStream output = new FileOutputStream(xliff)) {
 				outputter.output(merged, output);
@@ -357,6 +357,11 @@ public class Office2Xliff {
 		Element file = root.getChild("file");
 		Element newFile = new Element("file");
 		newFile.clone(file);
+		List<PI> pi = root.getPI();
+		for (int i=0 ; i<pi.size() ; i++) {
+			newFile.addContent(pi.get(i));
+		}
+		Indenter.indent(newFile, 2, 2);
 		mergedRoot.addContent(newFile);
 	}
 

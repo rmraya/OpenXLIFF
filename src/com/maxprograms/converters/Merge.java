@@ -172,6 +172,9 @@ public class Merge {
 			fileSet.add(file.getAttributeValue("original"));
 		}
 		List<PI> encList = root.getPI("encoding");
+		if (encList.isEmpty()) {
+			encList = files.get(0).getPI("encoding");
+		}
 		if (!encList.isEmpty()) {
 			encoding = encList.get(0).getData();
 		}
@@ -540,7 +543,11 @@ public class Merge {
 				}
 			}
 		} else {
-			target = new File(file).getParentFile().getAbsolutePath() +  System.getProperty("file.separator") + tgtLanguage;
+			File p = new File(file).getParentFile();
+			if (p == null) {
+				p = new File(System.getProperty("user.dir"));
+			}
+			target = new File(p, tgtLanguage).getAbsolutePath();
 		}
 		return target;
 	}

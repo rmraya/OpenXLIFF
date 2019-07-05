@@ -134,8 +134,7 @@ public class FromXliff2 {
 							Element meta = it.next();
 							tool.setAttribute(meta.getAttributeValue("type"), meta.getText());
 						}
-					}
-					if (category.equals("PI")) {
+					} else if (category.equals("PI")) {
 						List<Element> metaList = metaGroup.getChildren("mda:meta");
 						Iterator<Element> it = metaList.iterator();
 						while (it.hasNext()) {
@@ -143,8 +142,7 @@ public class FromXliff2 {
 							PI pi = new PI(meta.getAttributeValue("type"), meta.getText());
 							file.addContent(pi);
 						}
-					}
-					if (category.equals("project-data")) {
+					} else if (category.equals("project-data")) {
 						List<Element> metaList = metaGroup.getChildren("mda:meta");
 						Iterator<Element> it = metaList.iterator();
 						while (it.hasNext()) {
@@ -160,10 +158,23 @@ public class FromXliff2 {
 								file.setAttribute("build-num", meta.getText());
 							}
 						}
-					}
-					if (category.equals("format")) {
+					} else if (category.equals("format")) {
 						Element meta = metaGroup.getChild("mda:meta");
 						file.setAttribute("datatype", meta.getText());
+					} else {
+						Element group = new Element("prop-group");
+						group.setAttribute("name", category);
+						header.addContent(group);
+						
+						List<Element> metaList = metaGroup.getChildren("mda:meta");
+						Iterator<Element> it = metaList.iterator();
+						while (it.hasNext()) {
+							Element meta = it.next();
+							Element prop = new Element("prop");
+							prop.setAttribute("prop-type", meta.getAttributeValue("type"));
+							prop.setContent(meta.getContent());
+							group.addContent(prop);
+						}
 					}
 				}
 			}
