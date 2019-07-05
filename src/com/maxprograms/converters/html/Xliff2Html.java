@@ -65,8 +65,12 @@ public class Xliff2Html {
 			loadEntities();
 			String outputFile = params.get("backfile");
 			File f = new File(outputFile);
-			if (!f.getParentFile().exists()) {
-				f.getParentFile().mkdirs();
+			File p = f.getParentFile();
+			if (p == null) {
+				p = new File(System.getProperty("user.dir"));
+			}
+			if (!p.exists()) {
+				p.mkdirs();
 			}
 			if (!f.exists()) {
 				Files.createFile(Paths.get(f.toURI()));
@@ -132,7 +136,7 @@ public class Xliff2Html {
 			Logger logger = System.getLogger(Xliff2Html.class.getName());
 			logger.log(Level.ERROR, "Error merging HTML file", e);
 			result.add("1");
-			result.add(e.getLocalizedMessage());
+			result.add(e.getMessage());
 			return result;
 		}
 		return result;

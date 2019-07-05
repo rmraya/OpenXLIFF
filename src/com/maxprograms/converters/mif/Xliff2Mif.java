@@ -62,8 +62,12 @@ public class Xliff2Mif {
 
 		try {
 			File f = new File(params.get("backfile"));
-			if (!f.getParentFile().exists()) {
-				f.getParentFile().mkdirs();
+			File p = f.getParentFile();
+			if (p == null) {
+				p = new File(System.getProperty("user.dir"));
+			}
+			if (!p.exists()) {
+				p.mkdirs();
 			}
 			if (!f.exists()) {
 				Files.createFile(Paths.get(f.toURI()));

@@ -93,8 +93,12 @@ public class Xliff2Sdl {
 				outputter.writeBOM(true);
 			}
 			File f = new File(outputFile);
-			if (!f.getParentFile().exists()) {
-				f.getParentFile().mkdirs();
+			File p = f.getParentFile();
+			if (p == null) {
+				p = new File(System.getProperty("user.dir"));
+			}
+			if (!p.exists()) {
+				p.mkdirs();
 			}
 			try (FileOutputStream out = new FileOutputStream(f)) {
 				outputter.output(doc, out);

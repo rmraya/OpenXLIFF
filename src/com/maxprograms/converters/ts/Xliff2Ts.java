@@ -59,8 +59,12 @@ public class Xliff2Ts {
 
 			String outputFile = params.get("backfile");
 			File f = new File(outputFile);
-			if (!f.getParentFile().exists()) {
-				f.getParentFile().mkdirs();
+			File p = f.getParentFile();
+			if (p == null) {
+				p = new File(System.getProperty("user.dir"));
+			}
+			if (!p.exists()) {
+				p.mkdirs();
 			}
 			if (!f.exists()) {
 				Files.createFile(Paths.get(f.toURI()));

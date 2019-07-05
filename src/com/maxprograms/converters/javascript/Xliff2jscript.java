@@ -112,7 +112,7 @@ public class Xliff2jscript {
 			result.add("0");
 		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException e) {
 			result.add("1");
-			result.add(e.getLocalizedMessage());
+			result.add(e.getMessage());
 		}
 
 		return result;

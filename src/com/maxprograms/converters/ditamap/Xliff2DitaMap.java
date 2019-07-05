@@ -78,8 +78,12 @@ public class Xliff2DitaMap {
 				params2.put("xliff", values[0]);
 				params2.put("skeleton", values[1]);
 				File folder = new File(outputFile);
-				if (!folder.getParentFile().exists()) {
-					folder.getParentFile().mkdirs();
+				File p = folder.getParentFile();
+				if (p == null) {
+					p = new File(System.getProperty("user.dir"));
+				}
+				if (!p.exists()) {
+					p.mkdirs();
 				}
 				params2.put("backfile", outputFile);
 				params2.put("encoding", params.get("encoding"));
