@@ -65,7 +65,7 @@ public class Merge {
 	private static Document doc;
 	private static Element root;
 
-	
+
 
 	public static void main(String[] args) {
 		String xliff = "";
@@ -134,8 +134,9 @@ public class Merge {
 			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
 			return;
 		}
-		try {
-			merge(xliff, target, catalog, unapproved);
+
+		Vector<String> result = merge(xliff, target, catalog, unapproved);
+		if (result.get(0).equals("0")) {
 			if (exportTMX) {
 				String tmx = "";
 				if (xliff.toLowerCase().endsWith(".xlf")) {
@@ -143,85 +144,98 @@ public class Merge {
 				} else {
 					tmx = xliff + ".tmx";
 				}
-				TmxExporter.export(xliff, tmx, catalog);
+				try {
+					TmxExporter.export(xliff, tmx, catalog);
+				} catch (SAXException | IOException | ParserConfigurationException e) {
+					LOGGER.log(Level.ERROR, "Error exporting TMX", e);
+				}
 			}
-		} catch (IOException | SAXException | ParserConfigurationException e) {
-			LOGGER.log(Level.ERROR, e.getMessage(), e);
 		}
 	}
 
-	public static void merge(String xliff, String target, String catalog, boolean acceptUnaproved) throws IOException, SAXException, ParserConfigurationException {
-		loadXliff(xliff, catalog);
-		boolean unapproved = acceptUnaproved;
-		if (root.getAttributeValue("version").equals("2.0")) {
-			File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
-			FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
-			loadXliff(tmpXliff.getAbsolutePath(), catalog);
-			Files.delete(Paths.get(tmpXliff.toURI()));
-			unapproved = true;
-		}
-		if (unapproved) {
-			approveAll(root);
-		}
+	public static Vector<String>  merge(String xliff, String target, String catalog, boolean acceptUnaproved) {
+		Vector<String> result = new Vector<>();
+		try {
+			loadXliff(xliff, catalog);
+			boolean unapproved = acceptUnaproved;
+			if (root.getAttributeValue("version").equals("2.0")) {
+				File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
+				FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
+				loadXliff(tmpXliff.getAbsolutePath(), catalog);
+				Files.delete(Paths.get(tmpXliff.toURI()));
+				unapproved = true;
+			}
+			if (unapproved) {
+				approveAll(root);
+			}
 
-		List<Element> files = root.getChildren("file");
-		fileSet = new HashSet<>();
-		Iterator<Element> it = files.iterator();
-		while (it.hasNext()) {
-			Element file = it.next();
-			fileSet.add(file.getAttributeValue("original"));
-		}
-		List<PI> encList = root.getPI("encoding");
-		if (encList.isEmpty()) {
-			encList = files.get(0).getPI("encoding");
-		}
-		if (!encList.isEmpty()) {
-			encoding = encList.get(0).getData();
-		}
-		if (encoding == null) {
-			throw new IOException("Unknown character set");
-		}
-		segments = new Vector<>();
-		createList(root);
+			List<Element> files = root.getChildren("file");
+			fileSet = new HashSet<>();
+			Iterator<Element> it = files.iterator();
+			while (it.hasNext()) {
+				Element file = it.next();
+				fileSet.add(file.getAttributeValue("original"));
+			}
+			List<PI> encList = root.getPI("encoding");
+			if (encList.isEmpty()) {
+				encList = files.get(0).getPI("encoding");
+			}
+			if (!encList.isEmpty()) {
+				encoding = encList.get(0).getData();
+			}
+			if (encoding == null) {
+				throw new IOException("Unknown character set");
+			}
+			segments = new Vector<>();
+			createList(root);
 
-		if (fileSet.size() != 1) {
-			File f = new File(target);
-			if (f.exists()) {
-				if (!f.isDirectory()) {
-					LOGGER.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
-					return;
+			if (fileSet.size() != 1) {
+				File f = new File(target);
+				if (f.exists()) {
+					if (!f.isDirectory()) {
+						LOGGER.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
+						result.add("1");
+						result.add("'" + f.getAbsolutePath() + "' is not a directory");
+						return result;
+					}
+				} else {
+					f.mkdirs();
 				}
-			} else {
-				f.mkdirs();
 			}
-		}
-		Iterator<String> ft = fileSet.iterator();
-		Vector<Hashtable<String, String>> paramsList = new Vector<>();
-		while (ft.hasNext()) {
-			String file = ft.next();
-			File xliffFile = File.createTempFile("temp", ".xlf");
-			saveXliff(file, xliffFile);
-			Hashtable<String, String> params = new Hashtable<>();
-			params.put("xliff", xliffFile.getAbsolutePath());
-			if (fileSet.size() == 1) {
-				params.put("backfile", target);
-			} else {
-				params.put("backfile", Utils.getAbsolutePath(target, file));
+			Iterator<String> ft = fileSet.iterator();
+			Vector<Hashtable<String, String>> paramsList = new Vector<>();
+			while (ft.hasNext()) {
+				String file = ft.next();
+				File xliffFile = File.createTempFile("temp", ".xlf");
+				saveXliff(file, xliffFile);
+				Hashtable<String, String> params = new Hashtable<>();
+				params.put("xliff", xliffFile.getAbsolutePath());
+				if (fileSet.size() == 1) {
+					params.put("backfile", target);
+				} else {
+					params.put("backfile", Utils.getAbsolutePath(target, file));
+				}
+				params.put("encoding", encoding);
+				params.put("catalog", catalog);
+				params.put("format", dataType);
+				paramsList.add(params);
 			}
-			params.put("encoding", encoding);
-			params.put("catalog", catalog);
-			params.put("format", dataType);
-			paramsList.add(params);
-		}
-		for (int i = 0; i < paramsList.size(); i++) {
-			Vector<String> result = run(paramsList.get(i));
-			if (!"0".equals(result.get(0))) {
-				LOGGER.log(Level.ERROR, result.get(1));
-				return;
+			for (int i = 0; i < paramsList.size(); i++) {
+				Vector<String> res = run(paramsList.get(i));
+				File f = new File(paramsList.get(i).get("xliff"));
+				Files.deleteIfExists(Paths.get(f.toURI()));
+				if (!"0".equals(res.get(0))) {
+					LOGGER.log(Level.ERROR, res.get(1));
+					return res;
+				}
 			}
-			File f = new File(paramsList.get(i).get("xliff"));
-			Files.delete(Paths.get(f.toURI()));
+			result.add("0");
+		} catch (IOException | SAXException | ParserConfigurationException ex) {
+			LOGGER.log(Level.ERROR, ex.getMessage(), ex);
+			result.add("1");
+			result.add(ex.getMessage());
 		}
+		return result;
 	}
 
 	private static void help() {
