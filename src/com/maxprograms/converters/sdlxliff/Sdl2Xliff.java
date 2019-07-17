@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -103,11 +104,11 @@ public class Sdl2Xliff {
 			try (FileOutputStream skl = new FileOutputStream(skeletonFile)) {
 				outputter.output(doc, skl);
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Sdl2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting SDLXLIFF file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

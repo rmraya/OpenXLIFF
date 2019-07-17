@@ -61,6 +61,9 @@ public class FilterServer implements HttpHandler {
 	private HttpServer server;
 	private Hashtable<String, String> running;
 	private Hashtable<String, JSONObject> validationResults;
+	private Hashtable<String, JSONObject> conversionResults;
+	private Hashtable<String, JSONObject> mergeResults;
+	private Hashtable<String, JSONObject> analysisResults;
 	private boolean embed;
 	private String xliff;
 	private String catalog;
@@ -92,6 +95,9 @@ public class FilterServer implements HttpHandler {
 	public FilterServer(int port) throws IOException {
 		running = new Hashtable<>();
 		validationResults = new Hashtable<>();
+		conversionResults = new Hashtable<>();
+		mergeResults = new Hashtable<>();
+		analysisResults = new Hashtable<>();
 		server = HttpServer.create(new InetSocketAddress(port), 0);
 		server.createContext("/FilterServer", this);
 		server.setExecutor(null); // creates a default executor
@@ -114,12 +120,16 @@ public class FilterServer implements HttpHandler {
 		String response = "";
 		String command = "version";
 		try {
+			if (uri.toString().endsWith("/stop")) {
+				command = "stop";
+				response = "{\"stopping\": \"now!\"}";
+			}
 			if (!request.isBlank()) {
 				json = new JSONObject(request);
 				command = json.getString("command");
 			}
 			if (command.equals("version")) {
-				response = "{\"tool\":\"Open XLIFF Filters\", \"version\": \"" + Constants.VERSION + "\", \"build\": \""
+				response = "{\"tool\":\"" + Constants.TOOLNAME + "\", \"version\": \"" + Constants.VERSION + "\", \"build\": \""
 						+ Constants.BUILD + "\"}";
 			}
 			if (command.equals("convert")) {
@@ -133,6 +143,15 @@ public class FilterServer implements HttpHandler {
 			}
 			if (command.equals("validationResult")) {
 				response = getValidationResult(json);
+			}
+			if (command.equals("conversionResult")) {
+				response = getConversionResult(json);
+			}
+			if (command.equals("mergeResult")) {
+				response = getMergeResult(json);
+			}
+			if (command.equals("analysisResult")) {
+				response = getAnalysisResult(json);
 			}
 			if (command.equals("getFileType")) {
 				response = getFileType(json);
@@ -166,6 +185,11 @@ public class FilterServer implements HttpHandler {
 					}
 				}
 			}
+			if (command.equals("stop")) {
+				server.removeContext("/FilterServer");
+				LOGGER.log(Level.INFO, "Server closed");
+				System.exit(0);
+			}
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			response = e.getMessage();
 			t.sendResponseHeaders(500, response.length());
@@ -173,6 +197,45 @@ public class FilterServer implements HttpHandler {
 				os.write(response.getBytes());
 			}
 		}
+	}
+
+	private String getAnalysisResult(JSONObject json) {
+		JSONObject result = new JSONObject();
+		if (json.has("process")) {
+			String process = json.getString("process");
+			result = analysisResults.get(process);
+			analysisResults.remove(process);
+		} else {
+			result.put("result", "Failed");
+			result.put("reason", "Error retrieving result from server");
+		}
+		return result.toString(2);
+	}
+
+	private String getMergeResult(JSONObject json) {
+		JSONObject result = new JSONObject();
+		if (json.has("process")) {
+			String process = json.getString("process");
+			result = mergeResults.get(process);
+			mergeResults.remove(process);
+		} else {
+			result.put("result", "Failed");
+			result.put("reason", "Error retrieving result from server");
+		}
+		return result.toString(2);
+	}
+
+	private String getConversionResult(JSONObject json) {
+		JSONObject result = new JSONObject();
+		if (json.has("process")) {
+			String process = json.getString("process");
+			result = conversionResults.get(process);
+			conversionResults.remove(process);
+		} else {
+			result.put("result", "Failed");
+			result.put("reason", "Error retrieving result from server");
+		}
+		return result.toString(2);
 	}
 
 	private String analyseXliff(JSONObject json) {
@@ -192,17 +255,25 @@ public class FilterServer implements HttpHandler {
 			@Override
 			public void run() {
 				running.put(process, "running");
+				Vector<String> result = new Vector<>();
 				try {
 					RepetitionAnalysis instance = new RepetitionAnalysis();
 					instance.analyse(file, catalog);
-					if (running.get(process).equals(("running"))) {
-						LOGGER.log(Level.INFO, "Analysis completed");
-						running.put(process, "completed");
-					}
+					result.add(Constants.SUCCESS);
 				} catch (IOException | SAXException | ParserConfigurationException e) {
 					LOGGER.log(Level.ERROR, "Error analysing file", e);
-					running.put(process, e.getMessage());
+					result.add(Constants.ERROR);
+					result.add(e.getMessage());
 				}
+				JSONObject jsonResult = new JSONObject();
+				if (Constants.SUCCESS.equals(result.get(0))) {
+					jsonResult.put("result", "Success");
+				} else {
+					jsonResult.put("result", "Failed");
+					jsonResult.put("reason", result.get(1));
+				}
+				analysisResults.put(process, jsonResult);
+				running.put(process, "completed");
 			}
 		}).start();
 		return "{\"process\":\"" + process + "\"}";
@@ -252,17 +323,20 @@ public class FilterServer implements HttpHandler {
 	}
 
 	private static String getTargetFile(JSONObject json) {
+		JSONObject result = new JSONObject();
 		String file = json.getString("file");
 		String target = "";
 		try {
 			target = Merge.getTargetFile(file);
+			if (target.isEmpty()) {
+				target = "Unknown";
+			}
+			result.put("result", "Success");
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error getting target file", e);
+			result.put("result", "Failed");
+			result.put("reason", e.getMessage());
 		}
-		if (target.isEmpty()) {
-			target = "Unknown";
-		}
-		JSONObject result = new JSONObject();
 		result.put("target", target);
 		return result.toString();
 	}
@@ -340,24 +414,27 @@ public class FilterServer implements HttpHandler {
 			@Override
 			public void run() {
 				running.put(process, "running");
-				try {
-					Merge.merge(xliff, target, catalog, unapproved);
-					if (exportTmx) {
-						String tmx = "";
-						if (xliff.toLowerCase().endsWith(".xlf")) {
-							tmx = xliff.substring(0, xliff.lastIndexOf('.')) + ".tmx";
-						} else {
-							tmx = xliff + ".tmx";
-						}
-						TmxExporter.export(xliff, tmx, catalog);
+
+				Vector<String> result = Merge.merge(xliff, target, catalog, unapproved);
+				if (exportTmx && Constants.SUCCESS.equals(result.get(0))) {
+					String tmx = "";
+					if (xliff.toLowerCase().endsWith(".xlf")) {
+						tmx = xliff.substring(0, xliff.lastIndexOf('.')) + ".tmx";
+					} else {
+						tmx = xliff + ".tmx";
 					}
-					if (running.get(process).equals(("running"))) {
-						LOGGER.log(Level.INFO, "Merge completed");
-						running.put(process, "completed");
-					}
-				} catch (IOException | SAXException | ParserConfigurationException e) {
-					LOGGER.log(Level.ERROR, "Error merging file", e);
-					running.put(process, e.getMessage());
+					result = TmxExporter.export(xliff, tmx, catalog);
+				}
+				JSONObject jsonResult = new JSONObject();
+				if (Constants.SUCCESS.equals(result.get(0))) {
+					jsonResult.put("result", "Success");
+				} else {
+					jsonResult.put("result", "Failed");
+					jsonResult.put("reason", result.get(1));
+				}
+				mergeResults.put(process, jsonResult);
+				if (running.get(process).equals(("running"))) {
+					running.put(process, "completed");
 				}
 			}
 		}).start();
@@ -488,29 +565,21 @@ public class FilterServer implements HttpHandler {
 			public void run() {
 				running.put(process, "running");
 				Vector<String> result = Convert.run(params);
-				if ("0".equals(result.get(0))) {
-					if (embed) {
-						try {
-							Convert.addSkeleton(xliff, catalog);
-						} catch (SAXException | IOException | ParserConfigurationException e) {
-							LOGGER.log(Level.ERROR, "Error embedding skeleton", e);
-							running.put(process, e.getMessage());
-							is20 = false;
-						}
-					}
-					if (is20) {
-						result = ToXliff2.run(new File(xliff), catalog);
-						if (!"0".equals(result.get(0))) {
-							LOGGER.log(Level.ERROR, result.get(1));
-							running.put(process, result.get(1));
-						}
-					}
-				} else {
-					LOGGER.log(Level.ERROR, result.get(1));
-					running.put(process, result.get(1));
+				if (embed && Constants.SUCCESS.equals(result.get(0))) {
+					result = Convert.addSkeleton(xliff, catalog);
 				}
+				if (is20 && Constants.SUCCESS.equals(result.get(0))) {
+					result = ToXliff2.run(new File(xliff), catalog);
+				}
+				JSONObject jsonResult = new JSONObject();
+				if (Constants.SUCCESS.equals(result.get(0))) {
+					jsonResult.put("result", "Success");
+				} else {
+					jsonResult.put("result", "Failed");
+					jsonResult.put("reason", result.get(1));
+				}
+				conversionResults.put(process, jsonResult);
 				if (running.get(process).equals(("running"))) {
-					LOGGER.log(Level.INFO, "Conversion completed");
 					running.put(process, "completed");
 				}
 			}

@@ -235,23 +235,14 @@ public class Convert {
 			params.put("ditaval", ditaval);
 		}
 		Vector<String> result = run(params);
-		if ("0".equals(result.get(0))) {
-			if (embed) {
-				try {
-					addSkeleton(xliff, catalog);
-				} catch (SAXException | IOException | ParserConfigurationException e) {
-					LOGGER.log(Level.ERROR, "Error embedding skeleton.", e);
-					return;
-				}
-			}
-			if (xliff20) {
-				result = ToXliff2.run(new File(xliff), catalog);
-				if (!"0".equals(result.get(0))) {
-					LOGGER.log(Level.ERROR, result.get(1));
-				}
-			}
-		} else {
-			LOGGER.log(Level.ERROR, result.get(1));
+		if (embed && Constants.SUCCESS.equals(result.get(0))) {
+			addSkeleton(xliff, catalog);
+		}
+		if (xliff20 && Constants.SUCCESS.equals(result.get(0))) {
+			result = ToXliff2.run(new File(xliff), catalog);
+		}
+		if (!Constants.SUCCESS.equals(result.get(0))) {
+			LOGGER.log(Level.ERROR, "Conversion error", result.get(1));
 		}
 	}
 
@@ -303,43 +294,51 @@ public class Convert {
 		System.out.println(help);
 	}
 
-	public static void addSkeleton(String fileName, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
-		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
-		Document doc = builder.build(fileName);
-		Element root = doc.getRootElement();
-		List<Element> files = root.getChildren("file");
-		Iterator<Element> it = files.iterator();
-		Set<String> deleted = new HashSet<>();
-		while (it.hasNext()) {
-			Element file = it.next();
-			Element header = file.getChild("header");
-			Element skl = header.getChild("skl");
-			Element external = skl.getChild("external-file");
-			String sklName = external.getAttributeValue("href");
-			sklName = sklName.replaceAll("&amp;", "&");
-			sklName = sklName.replaceAll("&lt;", "<");
-			sklName = sklName.replaceAll("&gt;", ">");
-			sklName = sklName.replaceAll("&apos;", "\'");
-			sklName = sklName.replaceAll("&quot;", "\"");
-			if (!deleted.contains(sklName)) {
-				File skeleton = new File(sklName);
-				Element internal = new Element("internal-file");
-				internal.setAttribute("form", "base64");
-				internal.addContent(Utils.encodeFromFile(skeleton.getAbsolutePath()));
-				skl.setContent(new Vector<XMLNode>());
-				skl.addContent(internal);
-				Files.delete(Paths.get(skeleton.toURI()));
-				deleted.add(sklName);
+	public static Vector<String> addSkeleton(String fileName, String catalog) {
+		Vector<String> result = new Vector<>();
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			builder.setEntityResolver(new Catalog(catalog));
+			Document doc = builder.build(fileName);
+			Element root = doc.getRootElement();
+			List<Element> files = root.getChildren("file");
+			Iterator<Element> it = files.iterator();
+			Set<String> deleted = new HashSet<>();
+			while (it.hasNext()) {
+				Element file = it.next();
+				Element header = file.getChild("header");
+				Element skl = header.getChild("skl");
+				Element external = skl.getChild("external-file");
+				String sklName = external.getAttributeValue("href");
+				sklName = sklName.replaceAll("&amp;", "&");
+				sklName = sklName.replaceAll("&lt;", "<");
+				sklName = sklName.replaceAll("&gt;", ">");
+				sklName = sklName.replaceAll("&apos;", "\'");
+				sklName = sklName.replaceAll("&quot;", "\"");
+				if (!deleted.contains(sklName)) {
+					File skeleton = new File(sklName);
+					Element internal = new Element("internal-file");
+					internal.setAttribute("form", "base64");
+					internal.addContent(Utils.encodeFromFile(skeleton.getAbsolutePath()));
+					skl.setContent(new Vector<XMLNode>());
+					skl.addContent(internal);
+					Files.delete(Paths.get(skeleton.toURI()));
+					deleted.add(sklName);
+				}
 			}
+			XMLOutputter outputter = new XMLOutputter();
+			Indenter.indent(root, 2);
+			outputter.preserveSpace(true);
+			try (FileOutputStream out = new FileOutputStream(fileName)) {
+				outputter.output(doc, out);
+			}
+			result.add(Constants.SUCCESS);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			LOGGER.log(Level.ERROR, "Error adding skeleton", e);
+			result.add(Constants.ERROR);
+			result.add(e.getMessage());
 		}
-		XMLOutputter outputter = new XMLOutputter();
-		Indenter.indent(root, 2);
-		outputter.preserveSpace(true);
-		try (FileOutputStream out = new FileOutputStream(fileName)) {
-			outputter.output(doc, out);
-		}
+		return result;
 	}
 
 	public static Vector<String> run(Hashtable<String, String> params) {
@@ -384,7 +383,7 @@ public class Convert {
 			params.put("generic", "yes");
 			result = Xml2Xliff.run(params);
 		} else {
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add("Unknown file format.");
 		}
 		return result;

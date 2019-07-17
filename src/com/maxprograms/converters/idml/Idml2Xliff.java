@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -216,7 +217,7 @@ public class Idml2Xliff {
 
 							res = Story2Xliff.run(table);
 
-							if ("0".equals(res.get(0))) {
+							if (Constants.SUCCESS.equals(res.get(0))) {
 								if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {
 									updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
 									addFile(tmp.getAbsolutePath() + ".xlf");
@@ -276,10 +277,10 @@ public class Idml2Xliff {
 			try (FileOutputStream output = new FileOutputStream(xliff)) {
 				outputter.output(merged, output);
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error converting IDML file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

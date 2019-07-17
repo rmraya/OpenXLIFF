@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
@@ -142,11 +143,11 @@ public class Story2Xliff {
 			writeString("</xliff>");
 			output.close();
 
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Story2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting Story", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

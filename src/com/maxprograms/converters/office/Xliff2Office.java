@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -107,7 +108,7 @@ public class Xliff2Office {
 							table.put("skeleton", filesTable.get(name) + ".skl");
 							table.put("encoding", params.get("encoding"));
 							Vector<String> res = Xliff2Xml.run(table);
-							if (!"0".equals(res.get(0))) {
+							if (!Constants.SUCCESS.equals(res.get(0))) {
 								return res;
 							}
 							// adjust the spaces in the file
@@ -157,10 +158,10 @@ public class Xliff2Office {
 				File f1 = new File(skeleton);
 				Files.delete(Paths.get(f1.toURI()));
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			LOGGER.log(Level.ERROR, "Error converting Office file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

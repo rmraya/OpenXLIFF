@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -100,7 +101,7 @@ public class Xliff2Idml {
 							table.put("encoding", params.get("encoding"));
 							table.put("IDML", "true");
 							Vector<String> res = Xliff2Xml.run(table);
-							if (!"0".equals(res.get(0))) {
+							if (!Constants.SUCCESS.equals(res.get(0))) {
 								return res;
 							}
 							ZipEntry content = new ZipEntry(name);
@@ -149,11 +150,11 @@ public class Xliff2Idml {
 				File f1 = new File(skeleton);
 				Files.delete(Paths.get(f1.toURI()));
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Idml.class.getName());
 			logger.log(Level.ERROR, "Error merging IDML file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

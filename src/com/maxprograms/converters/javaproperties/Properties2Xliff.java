@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 
@@ -141,11 +142,11 @@ public class Properties2Xliff {
 			}
 			output.close();
 
-			result.add("0"); // success
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Properties2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting .properties file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 

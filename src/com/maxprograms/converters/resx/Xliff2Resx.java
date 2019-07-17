@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -42,7 +43,7 @@ public class Xliff2Resx {
 		Vector<String> result = new Vector<>();
 		try {
 			result = Xliff2Xml.run(params);
-			if (!"0".equals(result.get(0))) {
+			if (!Constants.SUCCESS.equals(result.get(0))) {
 				return result;
 			}
 			String inputFile = params.get("backfile");
@@ -68,11 +69,11 @@ public class Xliff2Resx {
 			}
 
 			saveXml(xmlResx, inputFile);
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | ParserConfigurationException | SAXException e) {
 			Logger logger = System.getLogger(Xliff2Resx.class.getName());
 			logger.log(Level.ERROR, "Error merging ResX file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

@@ -25,6 +25,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -79,11 +80,11 @@ public class Txml2Xliff {
 				outputter.output(doc, skl);
 			}
 
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Txml2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting TXML file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			if (e.getMessage() != null) {
 				result.add(e.getMessage());
 			} else {

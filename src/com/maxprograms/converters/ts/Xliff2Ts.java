@@ -29,6 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
@@ -77,11 +78,11 @@ public class Xliff2Ts {
 				outputter.setEmptyDoctype(true);
 				outputter.output(doc, output);
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Ts.class.getName());
 			logger.log(Level.ERROR, "Error merging TS file.", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

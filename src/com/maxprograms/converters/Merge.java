@@ -136,20 +136,17 @@ public class Merge {
 		}
 
 		Vector<String> result = merge(xliff, target, catalog, unapproved);
-		if (result.get(0).equals("0")) {
-			if (exportTMX) {
-				String tmx = "";
-				if (xliff.toLowerCase().endsWith(".xlf")) {
-					tmx = xliff.substring(0, xliff.lastIndexOf('.')) + ".tmx";
-				} else {
-					tmx = xliff + ".tmx";
-				}
-				try {
-					TmxExporter.export(xliff, tmx, catalog);
-				} catch (SAXException | IOException | ParserConfigurationException e) {
-					LOGGER.log(Level.ERROR, "Error exporting TMX", e);
-				}
+		if (exportTMX && Constants.SUCCESS.equals(result.get(0))) {
+			String tmx = "";
+			if (xliff.toLowerCase().endsWith(".xlf")) {
+				tmx = xliff.substring(0, xliff.lastIndexOf('.')) + ".tmx";
+			} else {
+				tmx = xliff + ".tmx";
 			}
+			result = TmxExporter.export(xliff, tmx, catalog);
+		}
+		if (!Constants.SUCCESS.equals(result.get(0))) {
+			LOGGER.log(Level.ERROR, "Merge error: " + result.get(1));
 		}
 	}
 
@@ -194,7 +191,7 @@ public class Merge {
 				if (f.exists()) {
 					if (!f.isDirectory()) {
 						LOGGER.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
-						result.add("1");
+						result.add(Constants.ERROR);
 						result.add("'" + f.getAbsolutePath() + "' is not a directory");
 						return result;
 					}
@@ -224,15 +221,15 @@ public class Merge {
 				Vector<String> res = run(paramsList.get(i));
 				File f = new File(paramsList.get(i).get("xliff"));
 				Files.deleteIfExists(Paths.get(f.toURI()));
-				if (!"0".equals(res.get(0))) {
+				if (!Constants.SUCCESS.equals(res.get(0))) {
 					LOGGER.log(Level.ERROR, res.get(1));
 					return res;
 				}
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException ex) {
 			LOGGER.log(Level.ERROR, ex.getMessage(), ex);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
 		}
 		return result;
@@ -380,7 +377,7 @@ public class Merge {
 			} else if (dataType.equals(FileFormats.XML) || dataType.equals("xml")) {
 				result = Xliff2Xml.run(params);
 			} else {
-				result.add("1");
+				result.add(Constants.ERROR);
 				result.add("Unsupported XLIFF file.");
 			}
 			if (temporary != null) {
@@ -389,7 +386,7 @@ public class Merge {
 		} catch (Exception e) {
 			LOGGER.log(Level.ERROR, "Error merging XLIFF", e);
 			result = new Vector<>();
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

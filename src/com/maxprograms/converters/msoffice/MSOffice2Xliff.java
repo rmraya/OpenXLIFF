@@ -28,6 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
@@ -96,11 +97,11 @@ public class MSOffice2Xliff {
 			writeOut("    </body>\n  </file>\n</xliff>");
 			out.close();
 			skel.close();
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(MSOffice2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting MS Office file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 

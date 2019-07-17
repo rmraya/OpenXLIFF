@@ -14,6 +14,8 @@ package com.maxprograms.converters;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,6 +24,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -55,78 +58,86 @@ public class TmxExporter {
 	private TmxExporter() {
 		// do not instantiate this class
 	}
-	
-	public static void export(String xliff, String tmx, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
 
-		today = getTmxDate();
-		filenumbr = 0;
+	public static Vector<String> export(String xliff, String tmx, String catalog) {
+		Vector<String> result = new Vector<>();
+		try {
+			today = getTmxDate();
+			filenumbr = 0;
 
-		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
-		Document doc = builder.build(xliff);
-		Element root = doc.getRootElement();
-		if (root.getAttributeValue("version").equals("2.0")) {
-			File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
-			FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
-			doc = builder.build(tmpXliff);
-			root = doc.getRootElement();
-			Files.delete(Paths.get(tmpXliff.toURI()));
+			SAXBuilder builder = new SAXBuilder();
+			builder.setEntityResolver(new Catalog(catalog));
+			Document doc = builder.build(xliff);
+			Element root = doc.getRootElement();
+			if (root.getAttributeValue("version").equals("2.0")) {
+				File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
+				FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
+				doc = builder.build(tmpXliff);
+				root = doc.getRootElement();
+				Files.delete(Paths.get(tmpXliff.toURI()));
+			}
+
+			try (FileOutputStream output = new FileOutputStream(tmx)) {
+				Element firstFile = root.getChild("file");
+
+				docProperties = new Hashtable<>();
+				List<PI> slist = root.getPI("subject");
+				if (!slist.isEmpty()) {
+					docProperties.put("subject", slist.get(0).getData());
+				} else {
+					docProperties.put("subject", "");
+				}
+				List<PI> plist = root.getPI("project");
+				if (!plist.isEmpty()) {
+					docProperties.put("project", plist.get(0).getData());
+				} else {
+					docProperties.put("project", "");
+				}
+				List<PI> clist = root.getPI("customer");
+				if (!clist.isEmpty()) {
+					docProperties.put("customer", clist.get(0).getData());
+				} else {
+					docProperties.put("customer", "");
+				}
+
+				sourceLang = firstFile.getAttributeValue("source-language");
+
+				writeString(output, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+				writeString(output,
+						"<!DOCTYPE tmx PUBLIC \"-//LISA OSCAR:1998//DTD for Translation Memory eXchange//EN\" \"tmx14.dtd\" >\n");
+				writeString(output, "<tmx version=\"1.4\">\n");
+				writeString(output,
+						"<header \n" + 
+								"      creationtool=\"" + Constants.TOOLID + "\" \n" + 
+								"      creationtoolversion=\"" + Constants.VERSION +"\" \n" + 
+								"      srclang=\"" + sourceLang + "\" \n" + 
+								"      adminlang=\"en\"  \n" + "      datatype=\"xml\" \n" + 
+								"      o-tmf=\"XLIFF\" \n" + 
+								"      segtype=\"block\"\n" + ">\n" + 
+						"</header>\n");
+				writeString(output, "<body>\n");
+
+				List<Element> files = root.getChildren("file");
+				Iterator<Element> fileiterator = files.iterator();
+				while (fileiterator.hasNext()) {
+					Element file = fileiterator.next();
+					sourceLang = file.getAttributeValue("source-language");
+					targetLang = file.getAttributeValue("target-language");
+					original = "" + file.getAttributeValue("original").hashCode();
+					recurse(output, file);
+					filenumbr++;
+				}
+				writeString(output, "</body>\n");
+				writeString(output, "</tmx>");
+			}
+			result.add(Constants.SUCCESS);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			Logger logger = System.getLogger(TmxExporter.class.getName());
+			logger.log(Level.ERROR, e.getMessage(), e);
+			result.add(Constants.ERROR);
+			result.add(e.getMessage());
 		}
-		
-		try (FileOutputStream output = new FileOutputStream(tmx)) {
-			Element firstFile = root.getChild("file");
-
-			docProperties = new Hashtable<>();
-			List<PI> slist = root.getPI("subject");
-			if (!slist.isEmpty()) {
-				docProperties.put("subject", slist.get(0).getData());
-			} else {
-				docProperties.put("subject", "");
-			}
-			List<PI> plist = root.getPI("project");
-			if (!plist.isEmpty()) {
-				docProperties.put("project", plist.get(0).getData());
-			} else {
-				docProperties.put("project", "");
-			}
-			List<PI> clist = root.getPI("customer");
-			if (!clist.isEmpty()) {
-				docProperties.put("customer", clist.get(0).getData());
-			} else {
-				docProperties.put("customer", "");
-			}
-
-			sourceLang = firstFile.getAttributeValue("source-language");
-
-			writeString(output, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-			writeString(output,
-					"<!DOCTYPE tmx PUBLIC \"-//LISA OSCAR:1998//DTD for Translation Memory eXchange//EN\" \"tmx14.dtd\" >\n");
-			writeString(output, "<tmx version=\"1.4\">\n");
-			writeString(output,
-					"<header \n" + 
-							"      creationtool=\"" + Constants.TOOLID + "\" \n" + 
-							"      creationtoolversion=\"" + Constants.VERSION +"\" \n" + 
-							"      srclang=\"" + sourceLang + "\" \n" + 
-							"      adminlang=\"en\"  \n" + "      datatype=\"xml\" \n" + 
-							"      o-tmf=\"XLIFF\" \n" + 
-							"      segtype=\"block\"\n" + ">\n" + 
-							"</header>\n");
-			writeString(output, "<body>\n");
-
-			List<Element> files = root.getChildren("file");
-			Iterator<Element> fileiterator = files.iterator();
-			while (fileiterator.hasNext()) {
-				Element file = fileiterator.next();
-				sourceLang = file.getAttributeValue("source-language");
-				targetLang = file.getAttributeValue("target-language");
-				original = "" + file.getAttributeValue("original").hashCode();
-				recurse(output, file);
-				filenumbr++;
-			}
-			writeString(output, "</body>\n");
-			writeString(output, "</tmx>");
-		}
+		return result;
 	}
 
 	private static void recurse(FileOutputStream output, Element e) throws IOException {
@@ -291,7 +302,7 @@ public class TmxExporter {
 				int i = match;
 				match++;
 				String text = "<bpt type=\"xliff-" + src.getName() + "\" i=\"" + i + "\">" + XMLUtils.cleanText(open)
-						+ "</bpt>";
+				+ "</bpt>";
 				Iterator<XMLNode> k = l.iterator();
 				while (k.hasNext()) {
 					XMLNode n = k.next();
@@ -421,11 +432,11 @@ public class TmxExporter {
 					name = name + ts.charAt(i);
 				}
 				return "<ph type=\"mrk-protected\" " + " x=\"" + XMLUtils.cleanText(src.getAttributeValue("mid", "-"))
-						+ "\"" + ">" + XMLUtils.cleanText(ts) + "</ph>" + XMLUtils.cleanText(src.getText())
-						+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name + ">") + "</ph>";
+				+ "\"" + ">" + XMLUtils.cleanText(ts) + "</ph>" + XMLUtils.cleanText(src.getText())
+				+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name + ">") + "</ph>";
 			}
 			return "<hi type=\"" + src.getAttributeValue("mtype", "xliff-mrk") + "\">"
-					+ XMLUtils.cleanText(src.getText()) + "</hi>";
+			+ XMLUtils.cleanText(src.getText()) + "</hi>";
 		}
 		return null;
 	}

@@ -24,6 +24,7 @@ import java.util.Vector;
 import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 
 public class Po2Xliff {
@@ -255,12 +256,12 @@ public class Po2Xliff {
 					output.close();
 				}
 			}
-			result.add(0, "0"); // success
+			result.add(0, Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Po2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting PO file", e);
-			result.add(0, "1");
-			result.add(1, e.getMessage());
+			result.add(Constants.ERROR);
+			result.add(e.getMessage());
 		}
 
 		return result;

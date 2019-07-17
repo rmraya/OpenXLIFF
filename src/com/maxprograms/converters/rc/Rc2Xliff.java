@@ -24,6 +24,7 @@ import java.util.Vector;
 import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 
 public class Rc2Xliff {
@@ -88,11 +89,11 @@ public class Rc2Xliff {
 				buffer.close();
 			}
 			output.close();
-			result.add("0"); // success
+			result.add(Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Rc2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error convering RC file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

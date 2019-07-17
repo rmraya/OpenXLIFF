@@ -27,6 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -60,7 +61,7 @@ public class ToXliff2 {
 			Document doc = builder.build(sourceFile);
 			Element root = doc.getRootElement();
 			if (!root.getAttributeValue("version", "1.2").equals("1.2")) {
-				result.add("1");
+				result.add(Constants.ERROR);
 				result.add("Wrong XLIFF version.");
 				return result;
 			}
@@ -74,11 +75,11 @@ public class ToXliff2 {
 				out.write(XMLUtils.UTF8BOM);
 				outputter.output(xliff2, out);
 			}
-			result.addElement("0");
+			result.add(Constants.SUCCESS);
 		} catch (SAXException | IOException | ParserConfigurationException ex) {
 			Logger logger = System.getLogger(ToXliff2.class.getName());
 			logger.log(Level.ERROR, "Error generating XLIFF 2.0");
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
 		}
 		return result;

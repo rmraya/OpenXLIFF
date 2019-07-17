@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -110,8 +111,8 @@ public class Xliff2Html {
 									writeString(extractText(source));
 								}
 							} else {
-								result.add(0, "1");
-								result.add(1, "segment " + code + " not found");
+								result.add(Constants.ERROR);
+								result.add("segment " + code + " not found");
 								return result;
 							}
 
@@ -130,14 +131,13 @@ public class Xliff2Html {
 
 				output.close();
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Html.class.getName());
 			logger.log(Level.ERROR, "Error merging HTML file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
-			return result;
 		}
 		return result;
 	}

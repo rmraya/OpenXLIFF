@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -109,9 +110,9 @@ public class Xliff2jscript {
 				}
 			}
 			output.close();
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException e) {
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 

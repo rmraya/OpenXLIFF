@@ -29,6 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Catalog;
@@ -106,7 +107,7 @@ public class Html2Xliff {
 				int size = input.available();
 				byte[] array = new byte[size];
 				if (size != input.read(array)) {
-					result.add("1");
+					result.add(Constants.ERROR);
 					result.add("Error reading from input file.");
 					return result;
 				}
@@ -124,11 +125,11 @@ public class Html2Xliff {
 				writeString("</xliff>");
 				output.close();
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Html2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting HTML file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

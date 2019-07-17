@@ -22,6 +22,7 @@ import java.util.Vector;
 import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 
 public class Jscript2xliff {
@@ -98,8 +99,8 @@ public class Jscript2xliff {
 								if (line.trim().endsWith("/") && !line.trim().endsWith("//")) {
 									String nextLine = buffer.readLine();
 									if (nextLine == null) {
-										result.add(0, "1");
-										result.add(1, "Unexpected end of file.");
+										result.add(Constants.ERROR);
+										result.add("Unexpected end of file.");
 										return result;
 									}
 									comment = findComment(nextLine);
@@ -109,8 +110,8 @@ public class Jscript2xliff {
 									line = line + nextLine;
 									continue;
 								}
-								result.add(0, "1");
-								result.add(1, "Found a string that is not properly closed.");
+								result.add(Constants.ERROR);
+								result.add("Found a string that is not properly closed.");
 								return result;
 							}
 						}
@@ -124,11 +125,11 @@ public class Jscript2xliff {
 				}
 			}
 			output.close();
-			result.add("0"); // success
+			result.add(Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Jscript2xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting JavaScript file.", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

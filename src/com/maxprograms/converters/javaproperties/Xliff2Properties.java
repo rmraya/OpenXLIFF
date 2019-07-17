@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -109,9 +110,9 @@ public class Xliff2Properties {
 									writeString(extractText(source));
 								}
 							} else {
-								result.add(0, "1");
+								result.add(Constants.ERROR);
 								MessageFormat mf = new MessageFormat("Segment {0} not found.");
-								result.add(1, mf.format(new Object[] { code }));
+								result.add(mf.format(new Object[] { code }));
 								return result;
 							}
 
@@ -129,11 +130,11 @@ public class Xliff2Properties {
 				}
 			}
 			output.close();
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Properties.class.getName());
 			logger.log(Level.ERROR, "Error merging .properties file.", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

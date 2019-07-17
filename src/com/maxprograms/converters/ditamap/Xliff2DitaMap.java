@@ -29,6 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.StringConverter;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xliff2Xml;
@@ -90,7 +91,7 @@ public class Xliff2DitaMap {
 				params2.put("catalog", params.get("catalog"));
 				params2.put("dita_based", "yes");
 				Vector<String> res = Xliff2Xml.run(params2);
-				if (!"0".equals(res.get(0))) {
+				if (!Constants.SUCCESS.equals(res.get(0))) {
 					return res;
 				}
 
@@ -114,11 +115,11 @@ public class Xliff2DitaMap {
 				Files.delete(Paths.get(f.toURI()));
 			}
 
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2DitaMap.class.getName());
 			logger.log(Level.ERROR, "Error merging DITA Map", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

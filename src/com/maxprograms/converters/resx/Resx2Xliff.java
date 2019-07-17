@@ -26,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -77,13 +78,13 @@ public class Resx2Xliff {
 			params.put("resx", "yes");
 			result = Xml2Xliff.run(params);
 			Files.delete(Paths.get(tempFile.toURI()));
-			if ("0".equals(result.get(0))) {
+			if (Constants.SUCCESS.equals(result.get(0))) {
 				setOriginal(params.get("xliff"), original);
 			}
 		} catch (IOException | ParserConfigurationException | SAXException e) {
 			Logger logger = System.getLogger(Resx2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting ResX file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -116,11 +117,11 @@ public class Xliff2Mif {
 				}
 			}
 			output.close();
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException e) {
 			Logger logger = System.getLogger(Xliff2Mif.class.getName());
 			logger.log(Level.ERROR, "Error mering MIF file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

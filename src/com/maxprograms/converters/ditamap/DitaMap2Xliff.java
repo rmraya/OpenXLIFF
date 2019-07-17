@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Utils;
@@ -146,7 +147,7 @@ public class DitaMap2Xliff {
 					params2.put("translateComments", tComments);
 				}
 				Vector<String> res = Xml2Xliff.run(params2);
-				if (!"0".equals(res.get(0))) {
+				if (!Constants.SUCCESS.equals(res.get(0))) {
 					return res;
 				}
 				if (!source.equals(filesMap.get(i))) {
@@ -179,10 +180,10 @@ public class DitaMap2Xliff {
 			try (FileOutputStream output = new FileOutputStream(xliffFile)) {
 				outputter.output(merged, output);
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (Exception e) {
 			LOGGER.log(Level.ERROR, "Error converting DITA Map", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
 		return result;

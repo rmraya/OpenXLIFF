@@ -30,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -85,11 +86,11 @@ public class Xliff2Txml {
 			try (FileOutputStream output = new FileOutputStream(f)) {
 				outputter.output(doc, output);
 			}
-			result.add("0");
+			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Txml.class.getName());
 			logger.log(Level.ERROR, "Error merging file", e);
-			result.add("1");
+			result.add(Constants.ERROR);
 			if (e.getMessage() != null) {
 				result.add(e.getMessage());
 			} else {
