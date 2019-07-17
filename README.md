@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.4.0 | Improved report of task results | July 17, 2019
 1.3.3 | Fixed merging of MS Office files from XLIFF 2.0 | July 5, 2019
 1.3.2 | Updated for Swordfish 3.4.3 | June 30, 2019
 1.3.1 | Updated for Swordfish 3.4-0 | April 30, 2019
