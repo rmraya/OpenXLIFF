@@ -2,5 +2,5 @@
 
 cd "$(dirname "$0")/"
 
-bin/java --module-path lib -m xliffFilters/com.maxprograms.stats.RepetitionAnalysis $@
+bin/java --module-path lib -m openxliff/com.maxprograms.stats.RepetitionAnalysis $@
 

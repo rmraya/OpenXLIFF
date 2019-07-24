@@ -2,5 +2,5 @@
 
 cd "$(dirname "$0")/"
 
-bin/java --module-path lib -m xliffFilters/com.maxprograms.server.FilterServer $@
+bin/java --module-path lib -m openxliff/com.maxprograms.server.FilterServer $@
 
