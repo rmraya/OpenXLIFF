@@ -73,12 +73,13 @@ Open XLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 ### Requirements
 
 - JDK 11 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
+- Optional: Apache Ant 1.10.6 or newer
 
 ### Building
 
 - Checkout this repository.
 - Point your JAVA_HOME variable to JDK 11
-- Use `buid.bat` or `build.sh` to generate a binary distribution in `./open_filters`
+- If you have Apache Ant 1.10.6 or newer, run `ant dist`. Otherwise, use `buid.bat` or `build.sh` to generate a binary distribution in `./dist`
 
 ### Converting Documents to XLIFF
 

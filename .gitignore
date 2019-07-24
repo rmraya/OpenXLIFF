@@ -1,5 +1,5 @@
 /bin/
-/open_filters/
+/dist/
 /.DS_Store
 /sonar-project.properties
 /sonarqube.sh

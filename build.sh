@@ -1,16 +1,16 @@
 #!/bin/bash
-rm -rf open_filters
-jlink --module-path "lib:$JAVA_HOME/jmods" --add-modules xliffFilters --output open_filters
-rm open_filters/lib/jrt-fs.jar
+rm -rf dist
+jlink --module-path "lib:$JAVA_HOME/jmods" --add-modules xliffFilters --output dist
+rm dist/lib/jrt-fs.jar
 
-cp -r catalog/ open_filters/catalog
-cp -r xmlfilter/ open_filters/xmlfilter
-cp -r srx/ open_filters/srx
+cp -r catalog/ dist/catalog
+cp -r xmlfilter/ dist/xmlfilter
+cp -r srx/ dist/srx
 
-cp convert.sh open_filters/
-cp merge.sh open_filters/
-cp server.sh open_filters/
-cp xliffchecker.sh open_filters/
-cp analysis.sh open_filters/
-cp LICENSE open_filters/
+cp convert.sh dist/
+cp merge.sh dist/
+cp server.sh dist/
+cp xliffchecker.sh dist/
+cp analysis.sh dist/
+cp LICENSE dist/
 
