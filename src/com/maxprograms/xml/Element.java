@@ -14,14 +14,14 @@ package com.maxprograms.xml;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 
 public class Element implements XMLNode, Serializable {
 
@@ -164,7 +164,14 @@ public class Element implements XMLNode, Serializable {
 			if (n.getNodeType() == XMLNode.TEXT_NODE && !newContent.isEmpty()) {
 				if (newContent.get(newContent.size() - 1).getNodeType() == XMLNode.TEXT_NODE) {
 					TextNode t = (TextNode) newContent.get(newContent.size() - 1);
-					t.setText(t.getText() + ((TextNode) n).getText());
+					StringBuilder buffer = new StringBuilder(t.getText());
+					buffer.append(((TextNode) n).getText());
+					while (i < content.size() - 1 && content.get(i + 1).getNodeType() == XMLNode.TEXT_NODE) {
+						XMLNode next = content.get(i + 1);
+						buffer.append(((TextNode) next).getText());
+						i++;
+					}
+					t.setText(buffer.toString());
 				} else {
 					newContent.add(n);
 				}
