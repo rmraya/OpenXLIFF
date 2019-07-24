@@ -35,7 +35,7 @@
     <target name="link" depends="distclean,compile">
         <description>Build Java binaries</description>
         <link destDir="dist" modulepath="lib:${java.home}/jmods">
-            <module name="xliffFilters"/>
+            <module name="openxliff"/>
         </link>
         <delete file="dist/lib/jrt-fs.jar"/>
     </target>

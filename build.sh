@@ -1,6 +1,6 @@
 #!/bin/bash
 rm -rf dist
-jlink --module-path "lib:$JAVA_HOME/jmods" --add-modules xliffFilters --output dist
+jlink --module-path "lib:$JAVA_HOME/jmods" --add-modules openxliff --output dist
 rm dist/lib/jrt-fs.jar
 
 cp -r catalog/ dist/catalog

@@ -1,5 +1,5 @@
 rmdir /S /Q .\dist\
-jlink --module-path "lib;%JAVA_HOME%\jmods" --add-modules xliffFilters --output dist
+jlink --module-path "lib;%JAVA_HOME%\jmods" --add-modules openxliff --output dist
 del .\dist\lib\jrt-fs.jar
 
 mkdir .\dist\catalog

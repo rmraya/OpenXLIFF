@@ -7,7 +7,7 @@
  *
  * Contributors: Maxprograms - initial API and implementation
  *******************************************************************************/
-module xliffFilters {
+module openxliff {
 	exports com.maxprograms.xml;
 	exports com.maxprograms.converters;
 	exports com.maxprograms.converters.html;
@@ -37,6 +37,7 @@ module xliffFilters {
 	requires dtd;
 	requires json;
 	requires jsoup;
+	requires mapdb;
 	requires java.logging;
 	requires jdk.httpserver;
 	requires java.base;

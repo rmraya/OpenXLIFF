@@ -1,6 +1,6 @@
 {
     "files.exclude": {
-        "**/.classpath": true,
+        "**/.classpath": false,
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
