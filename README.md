@@ -1,14 +1,14 @@
-![alt text](https://maxprograms.com/images/openxliff_s.png "Open XLIFF Filters")
+![alt text](https://maxprograms.com/images/openxliff_s.png "OpenXLIFF Filters")
 
-## Open XLIFF Filters
+## OpenXLIFF Filters
 
 An open source set of Java filters for creating, merging and validating XLIFF 1.2 and 2.0 files.
 
-Source code of Open XLIFF Filters is available under [Eclipse Public License 1.0](https://www.eclipse.org/org/documents/epl-v10.html).
+Source code of OpenXLIFF Filters is available under [Eclipse Public License 1.0](https://www.eclipse.org/org/documents/epl-v10.html).
 
-With Open XLIFF Filters you can create XLIFF files that don't use proprietary markup.
+With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup.
 
-**XLIFFChecker**, an open source XLIFF validation tool, is now part of Open XLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
+**XLIFFChecker**, an open source XLIFF validation tool, is now part of OpenXLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
  - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
  - **[Downloads](https://github.com/rmraya/OpenXLIFF#downloads)**
  - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.4.1 | Improved performance embedding skeleton; added Apache Ant building option; renamed module to 'openxliff' | July 25, 2019
 1.4.0 | Improved report of task results | July 17, 2019
 1.3.3 | Fixed merging of MS Office files from XLIFF 2.0 | July 5, 2019
 1.3.2 | Updated for Swordfish 3.4.3 | June 30, 2019
@@ -42,7 +43,7 @@ If you prefer to use a graphical interface instead of the command line, get inst
 
 ### Supported File Formats
 
-Open XLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
+OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 
 - **General Documentation**
   - Adobe InDesign Interchange (INX)
@@ -148,7 +149,7 @@ Default XML catalog and SRX file are provided. You can also use custom versions 
 
 ### Converting XLIFF to Original Format
 
-You can convert XLIFF files created with Open XLIFF Filters to original format using class `com.maxprograms.converters.Merge` in your Java code.
+You can convert XLIFF files created with OpenXLIFF Filters to original format using class `com.maxprograms.converters.Merge` in your Java code.
 
 If you use binaries from the command line, running `.\merge.bat` or `./merge.sh` without parameters will display the information you need to merge an XLIFF file.
 
@@ -169,7 +170,7 @@ Where:
 ```
 ### XLIFF Validation
 
-The original [XLIFFChecker code](http://sourceforge.net/p/xliffchecker/code/) supports XLIFF 1.0, 1.1 and 1.2. The new version incorporated in Open XLIFF Filters also supports XLIFF 2.0.
+The original [XLIFFChecker code](http://sourceforge.net/p/xliffchecker/code/) supports XLIFF 1.0, 1.1 and 1.2. The new version incorporated in OpenXLIFF Filters also supports XLIFF 2.0.
 
 Standard XML Schema validation does not detect the use of duplicated 'id' attributes, wrong language codes and other constraints written in the different XLIFF specifications.
 
