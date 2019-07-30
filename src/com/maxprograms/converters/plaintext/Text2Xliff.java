@@ -96,11 +96,13 @@ public class Text2Xliff {
 				writeString("<?encoding " + srcEncoding + "?>\n");
 
 				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-						+ "\" datatype=\"plaintext\">\n");
+						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"plaintext\">\n");
 				writeString("<header>\n");
 				writeString("   <skl>\n");
 				writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
 				writeString("   </skl>\n");
+				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 				writeString("</header>\n");
 				writeString("<body>\n");
 

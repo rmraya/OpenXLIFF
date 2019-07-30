@@ -119,11 +119,13 @@ public class MSOffice2Xliff {
 				"<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 		writeOut("  <?encoding " + srcEncoding + "?>\n");
 		writeOut("  <file datatype=\"x-office\" original=\"" + Utils.cleanString(inputFile) + "\" source-language=\""
-				+ sourceLanguage + tgtLang + "\">\n");
+				+ sourceLanguage + tgtLang + "\" tool-id=\"" + Constants.TOOLID + "\">\n");
 		writeOut("    <header>\n");
 		writeOut("      <skl>\n");
 		writeOut("        <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
 		writeOut("      </skl>\n");
+		writeOut("      <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 		writeOut("    </header>\n");
 		writeOut("    <body>\n");
 		writeOut("\n");

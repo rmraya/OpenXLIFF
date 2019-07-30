@@ -71,11 +71,13 @@ public class Ts2Xliff {
 			writeString("<?encoding " + srcEncoding + "?>\n");
 
 			writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-					+ "\" datatype=\"x-ts\">\n");
+					+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"x-ts\">\n");
 			writeString("<header>\n");
 			writeString("   <skl>\n");
 			writeString("      <external-file href=\"" + skeletonFile + "\"/>\n");
 			writeString("   </skl>\n");
+			writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+					+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 			writeString("</header>\n");
 			writeString("<body>\n");
 

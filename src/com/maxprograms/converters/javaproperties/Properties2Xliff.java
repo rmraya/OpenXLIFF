@@ -90,11 +90,13 @@ public class Properties2Xliff {
 				writeString("<?encoding " + srcEncoding + "?>\n");
 
 				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-						+ "\" datatype=\"javapropertyresourcebundle\">\n");
+						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"javapropertyresourcebundle\">\n");
 				writeString("<header>\n");
 				writeString("   <skl>\n");
 				writeString("      <external-file href=\"" + skeletonFile + "\"/>\n");
 				writeString("   </skl>\n");
+				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 				writeString("</header>\n");
 				writeString("<body>\n");
 

@@ -162,7 +162,7 @@ public class Xml2Xliff {
 				MessageFormat mf = new MessageFormat(
 						"Configuration file ''{0}'' not found. \\n\\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
 				throw new IOException(mf.format(new Object[] { f.getName() }));
-				
+
 			}
 
 			if (elementSegmentation == null) {
@@ -455,7 +455,7 @@ public class Xml2Xliff {
 		writeString("<?encoding " + srcEncoding + "?>\n");
 
 		writeString("<file original=\"" + cleanString(inputFile) + "\" source-language=\"" + sourceLanguage + tgtLang
-				+ "\" datatype=\"" + format + "\">\n");
+				+ "\" datatype=\"" + format + "\" tool-id=\"" + Constants.TOOLID + "\">\n");
 		writeString("<header>\n");
 		writeString("   <skl>\n");
 		writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
@@ -463,6 +463,8 @@ public class Xml2Xliff {
 		if (!entitiesMap.equals("")) {
 			writeString("   <prop-group name=\"entities\">\n" + entitiesMap + "   </prop-group>\n");
 		}
+		writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 		writeString("</header>\n");
 		writeString("<body>\n");
 	}
@@ -1492,7 +1494,7 @@ public class Xml2Xliff {
 		if (string.startsWith("<![CDATA[")) {
 			return "![CDATA[";
 		}
-		
+
 		if (string.startsWith("<!--")) {
 			return "!--";
 		}

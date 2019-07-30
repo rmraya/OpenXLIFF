@@ -122,6 +122,7 @@ public class Idml2Xliff {
 		Element file = root.getChild("file");
 		file.setAttribute("datatype", "x-idml");
 		file.setAttribute("original", Utils.cleanString(inputFile));
+		file.setAttribute("tool-id", Constants.TOOLID);
 		Element header = file.getChild("header");
 		Element propGroup = new Element("prop-group");
 		propGroup.setAttribute("name", "document");
@@ -129,12 +130,18 @@ public class Idml2Xliff {
 		prop.setAttribute("prop-type", "original");
 		prop.setText(original);
 		propGroup.addContent(prop);
+		Element tool = new Element("tool");
+		tool.setAttribute("tool-id", Constants.TOOLID);
+		tool.setAttribute("tool-name", Constants.TOOLNAME);
+		tool.setAttribute("tool-version", Constants.VERSION + " " + Constants.BUILD);
+		header.addContent(tool);
 		header.addContent(propGroup);
 
 		Element ext = header.getChild("skl").getChild("external-file");
 		ext.setAttribute("href", Utils.cleanString(skeleton));
 
 		XMLOutputter outputter = new XMLOutputter();
+		outputter.preserveSpace(true);
 		Indenter.indent(root, 2);
 		try (FileOutputStream output = new FileOutputStream(xliff)) {
 			outputter.output(doc, output);

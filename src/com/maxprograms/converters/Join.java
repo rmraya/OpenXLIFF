@@ -79,13 +79,6 @@ public class Join {
 						PI pi = ip.next();
 						file.addContent(new PI(pi.getTarget(), pi.getData()));
 					}
-					file.setAttribute("tool-id", Constants.TOOLID);
-					Element header = file.getChild("header");
-					Element tool = new Element("tool");
-					tool.setAttribute("tool-id", Constants.TOOLID);
-					tool.setAttribute("tool-name", Constants.TOOLNAME);
-					tool.setAttribute("tool-version", Constants.VERSION + " " + Constants.BUILD);
-					header.addContent(tool);
 					Indenter.indent(file, 2, 2);
 					file.writeBytes(output, StandardCharsets.UTF_8);
 

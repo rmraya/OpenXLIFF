@@ -84,11 +84,13 @@ public class Mif2Xliff {
 						+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 				writeString("<?encoding " + encoding + "?>\n");
 				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-						+ "\" datatype=\"mif\">\n");
+						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"mif\">\n");
 				writeString("<header>\n");
 				writeString("   <skl>\n");
 				writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
 				writeString("   </skl>\n");
+				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 				writeString("</header>\n");
 				writeString("<body>\n");
 

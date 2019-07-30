@@ -79,7 +79,7 @@ public class Sdl2Xliff {
 					+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 					+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 			writeStr("<file datatype=\"x-sdlxliff\" original=\"" + Utils.cleanString(params.get("source"))
-					+ "\" source-language=\"" + sourceLanguage + tgtLang + "\" "
+					+ "\" tool-id=\"" + Constants.TOOLID + "\" source-language=\"" + sourceLanguage + tgtLang + "\" "
 					+ "xmlns:sdl=\"http://sdl.com/FileTypes/SdlXliff/1.0\" " + ">\n");
 			writeStr("<?encoding " + doc.getEncoding() + "?>\n");
 
@@ -87,6 +87,8 @@ public class Sdl2Xliff {
 			writeStr("<skl>\n");
 			writeStr("<external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
 			writeStr("</skl>\n");
+			writeStr("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+					+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 			writeStr("</header>\n");
 			writeStr("<body>\n");
 

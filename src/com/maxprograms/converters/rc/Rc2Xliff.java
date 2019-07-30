@@ -69,11 +69,13 @@ public class Rc2Xliff {
 				writeString("<?encoding " + srcEncoding + "?>\n");
 
 				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-						+ "\" datatype=\"winres\">\n");
+						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"winres\">\n");
 				writeString("<header>\n");
 				writeString("   <skl>\n");
 				writeString("      <external-file href=\"" + skeletonFile + "\"/>\n");
 				writeString("   </skl>\n");
+				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 				writeString("</header>\n");
 				writeString("<body>\n");
 

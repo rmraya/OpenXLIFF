@@ -104,12 +104,14 @@ public class Txml2Xliff {
 		writeStr(
 				"<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 		writeStr("<?encoding " + srcEncoding + "?>\n");
-		writeStr("<file datatype=\"x-txml\" original=\"" + Utils.cleanString(source) + "\" source-language=\""
-				+ sourceLanguage + tgtLang + "\">\n");
+		writeStr("<file datatype=\"x-txml\" original=\"" + Utils.cleanString(source) + "\" tool-id=\""
+				+ Constants.TOOLID + "\" source-language=\"" + sourceLanguage + tgtLang + "\">\n");
 		writeStr("<header>\n");
 		writeStr("  <skl>\n");
-		writeStr("   <external-file href=\"" + Utils.cleanString(skeleton) + "\"/>\n");
+		writeStr("    <external-file href=\"" + Utils.cleanString(skeleton) + "\"/>\n");
 		writeStr("  </skl>\n");
+		writeStr("  <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 		writeStr("</header>\n");
 		writeStr("<body>\n");
 	}
