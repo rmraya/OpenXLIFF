@@ -152,15 +152,18 @@ public class Xml2Xliff {
 		try {
 			boolean autoConfiguration = false;
 			String iniFile = getIniFile(inputFile);
+			if (generic) {
+				File temp = File.createTempFile("config_", ".xml");
+				iniFile = temp.getAbsolutePath();
+				AutoConfiguration.run(inputFile, iniFile, catalog);
+				autoConfiguration = true;
+			}
 			File f = new File(iniFile);
 			if (!f.exists()) {
-				if (!generic) {
-					MessageFormat mf = new MessageFormat(
-							"Configuration file ''{0}'' not found. \\n\\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
-					throw new IOException(mf.format(new Object[] { f.getName() }));
-				}
-				AutoConfiguration.run(inputFile, f.getAbsolutePath(), catalog);
-				autoConfiguration = true;
+				MessageFormat mf = new MessageFormat(
+						"Configuration file ''{0}'' not found. \\n\\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
+				throw new IOException(mf.format(new Object[] { f.getName() }));
+				
 			}
 
 			if (elementSegmentation == null) {
@@ -208,7 +211,7 @@ public class Xml2Xliff {
 				buildTables(iniFile);
 
 				if (autoConfiguration) {
-					Files.delete(Paths.get(f.toURI()));
+					Files.delete(new File(iniFile).toPath());
 				}
 
 				buildList();
