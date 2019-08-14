@@ -59,8 +59,6 @@ public class Merge {
 
 	private static Vector<Element> segments;
 	protected static HashSet<String> fileSet;
-	private static String dataType;
-	private static String encoding;
 
 	private static Document doc;
 	private static Element root;
@@ -173,16 +171,6 @@ public class Merge {
 				Element file = it.next();
 				fileSet.add(file.getAttributeValue("original"));
 			}
-			List<PI> encList = root.getPI("encoding");
-			if (encList.isEmpty()) {
-				encList = files.get(0).getPI("encoding");
-			}
-			if (!encList.isEmpty()) {
-				encoding = encList.get(0).getData();
-			}
-			if (encoding == null) {
-				throw new IOException("Unknown character set");
-			}
 			segments = new Vector<>();
 			createList(root);
 
@@ -204,7 +192,20 @@ public class Merge {
 			while (ft.hasNext()) {
 				String file = ft.next();
 				File xliffFile = File.createTempFile("temp", ".xlf");
-				saveXliff(file, xliffFile);
+				String[] pair = saveXliff(file, xliffFile);
+				String encoding = pair[0];
+				if (encoding.isEmpty()) {
+					List<PI> pis = root.getPI();
+					if (pis != null) {
+						Iterator<PI> pt = pis.iterator();
+						while (pt.hasNext()) {
+							PI pi = pt.next();
+							if (pi.getTarget().equals("encoding")) {
+								encoding = pi.getData();
+							}
+						}
+					}
+				}
 				Hashtable<String, String> params = new Hashtable<>();
 				params.put("xliff", xliffFile.getAbsolutePath());
 				if (fileSet.size() == 1) {
@@ -214,7 +215,7 @@ public class Merge {
 				}
 				params.put("encoding", encoding);
 				params.put("catalog", catalog);
-				params.put("format", dataType);
+				params.put("format", pair[1]);
 				paramsList.add(params);
 			}
 			for (int i = 0; i < paramsList.size(); i++) {
@@ -291,32 +292,33 @@ public class Merge {
 		}
 	}
 
-	private static void saveXliff(String fileName, File xliff) throws IOException {
+	private static String[] saveXliff(String fileName, File xliff) throws IOException {
+		String encoding = "";
+		String dataType = "";
 		try (FileOutputStream out = new FileOutputStream(xliff)) {
 			writeStr(out, "<xliff version=\"1.2\">\n");
 			List<Element> files = root.getChildren("file");
 			Iterator<Element> it = files.iterator();
-			List<PI> pis = null;
 			while (it.hasNext()) {
 				Element file = it.next();
 				if (file.getAttributeValue("original").equals(fileName)) {
-					if (pis == null) {
-						pis = file.getPI();
+					dataType = file.getAttributeValue("datatype");
+					List<PI> pis = file.getPI();
+					if (pis != null) {
 						Iterator<PI> pt = pis.iterator();
 						while (pt.hasNext()) {
 							PI pi = pt.next();
 							if (pi.getTarget().equals("encoding")) {
 								encoding = pi.getData();
 							}
-							writeStr(out, pis.get(0).toString());
 						}
-						dataType = file.getAttributeValue("datatype");
 					}
-					file.writeBytes(out, doc.getEncoding());
+					file.writeBytes(out, StandardCharsets.UTF_8);
 				}
 			}
 			writeStr(out, "</xliff>\n");
 		}
+		return new String[] {encoding, dataType};
 	}
 
 	private static void writeStr(FileOutputStream out, String string) throws IOException {
@@ -327,7 +329,7 @@ public class Merge {
 		Vector<String> result = new Vector<>();
 		File temporary = null;
 		try {
-			dataType = params.get("format");
+			String dataType = params.get("format");
 			loadXliff(params.get("xliff"), params.get("catalog"));
 			String skl = getSkeleton();
 			params.put("skeleton", skl);
@@ -397,7 +399,6 @@ public class Merge {
 		Element file = root.getChild("file");
 		Element header = null;
 		if (file != null) {
-			dataType = file.getAttributeValue("datatype");
 			header = file.getChild("header");
 			if (header != null) {
 				Element mskl = header.getChild("skl");
@@ -428,13 +429,6 @@ public class Merge {
 			}
 		} else {
 			return result;
-		}
-
-		if (encoding != null && encoding.equals("")) {
-			List<PI> encList = root.getPI("encoding");
-			if (!encList.isEmpty()) {
-				encoding = encList.get(0).getData();
-			}
 		}
 		return result;
 	}

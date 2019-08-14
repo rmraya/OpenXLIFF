@@ -577,10 +577,6 @@ public class DitaMap2Xliff {
 		newFile.setAttribute("datatype", "x-ditamap");
 		String old = file.getAttributeValue("original");
 		newFile.setAttribute("original", Utils.makeRelativePath(mapFile, old));
-		List<PI> encoding = root.getPI("encoding");
-		if (!encoding.isEmpty()) {
-			newFile.addContent(encoding.get(0));
-		}
 		mergedRoot.addContent(newFile);
 		File f = new File(xliff);
 		Files.delete(Paths.get(f.toURI()));

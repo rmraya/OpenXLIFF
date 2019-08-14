@@ -67,21 +67,14 @@ public class Join {
 
 				Document doc = builder.build(xliff);
 				Element root = doc.getRootElement();
-				List<PI> pis = root.getPI();
 				List<Element> files1 = root.getChildren("file");
 
 				for (int i = 0; i < files1.size(); i++) {
 					Element file = files1.get(i);
 					String original = file.getAttributeValue("original");
 					file.setAttribute("original", Utils.makeRelativePath(treeRoot, original));
-					Iterator<PI> ip = pis.iterator();
-					while (ip.hasNext()) {
-						PI pi = ip.next();
-						file.addContent(new PI(pi.getTarget(), pi.getData()));
-					}
 					Indenter.indent(file, 2, 2);
 					file.writeBytes(output, StandardCharsets.UTF_8);
-
 					writeString(output, "\n");
 				}
 				File f = new File(xliff);
