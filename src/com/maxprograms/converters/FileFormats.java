@@ -18,6 +18,8 @@ import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.maxprograms.xml.SAXBuilder;
+
 public class FileFormats {
 
 	private FileFormats() {
@@ -178,7 +180,12 @@ public class FileFormats {
 					|| string.indexOf("SCROLLBAR") != -1 || string.indexOf("STATE3") != -1) {
 				return RC;
 			}
-
+			if (string.charAt(0) == '<') {
+				SAXBuilder builder = new SAXBuilder();
+				builder.setValidating(false);
+				builder.build(file);
+				return XML;
+			}
 		} catch (Exception e) {
 			// do nothing
 		}
