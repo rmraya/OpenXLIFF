@@ -452,7 +452,7 @@ public class Xml2Xliff {
 		writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 				+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-		writeString("<?encoding " + srcEncoding + "?>\n");
+		
 
 		writeString("<file original=\"" + cleanString(inputFile) + "\" source-language=\"" + sourceLanguage + tgtLang
 				+ "\" datatype=\"" + format + "\" tool-id=\"" + Constants.TOOLID + "\">\n");
@@ -466,6 +466,7 @@ public class Xml2Xliff {
 		writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 		writeString("</header>\n");
+		writeString("<?encoding " + srcEncoding + "?>\n");
 		writeString("<body>\n");
 	}
 
