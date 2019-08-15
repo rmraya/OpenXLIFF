@@ -104,7 +104,7 @@ public class Xliff2DitaMap {
 				if (!ish.isEmpty() || id.startsWith("GUID-")) {
 					restoreGUID(r);
 				}
-
+				cleanAttributes(r);
 				r.setAttribute("xml:lang", tgtlang);
 				Indenter.indent(r, 2);
 				instance.cleanConref(r);
@@ -123,6 +123,16 @@ public class Xliff2DitaMap {
 			result.add(e.getMessage());
 		}
 		return result;
+	}
+
+	private static void cleanAttributes(Element r) {
+		r.removeAttribute("class");
+		r.removeAttribute("ditaarch:DITAArchVersion");
+		r.removeAttribute("domains");
+		List<Element> children = r.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			cleanAttributes(children.get(i));
+		}
 	}
 
 	private static void restoreGUID(Element r) {
@@ -149,9 +159,6 @@ public class Xliff2DitaMap {
 				r.setAttribute("conref", guid);
 			}
 		}
-		r.removeAttribute("class");
-		r.removeAttribute("ditaarch:DITAArchVersion");
-		r.removeAttribute("domains");
 		List<Element> children = r.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			restoreGUID(children.get(i));
