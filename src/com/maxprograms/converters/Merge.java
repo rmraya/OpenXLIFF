@@ -63,8 +63,6 @@ public class Merge {
 	private static Document doc;
 	private static Element root;
 
-
-
 	public static void main(String[] args) {
 		String xliff = "";
 		String target = "";

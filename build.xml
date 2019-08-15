@@ -46,6 +46,7 @@
         <copy file="xliffchecker.bat" todir="dist"/>
         <copy file="analysis.bat" todir="dist"/>
         <copy file="server.bat" todir="dist"/>
+        <copy file="join.bat" todir="dist"/>
     </target>
     <target name="copyShells" unless="isWindows">
         <description>Copy .sh to /dist</description>
@@ -54,6 +55,7 @@
         <copy file="xliffchecker.sh" todir="dist"/>
         <copy file="analysis.sh" todir="dist"/>
         <copy file="server.sh" todir="dist"/>
+        <copy file="join.sh" todir="dist"/>
     </target>
     <target name="dist" depends="link,copyBats,copyShells">
         <description>Prepare distribution</description>
