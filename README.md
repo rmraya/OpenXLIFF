@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.4.2 | Added option to join XLIFF files; Fixed merge errors in XLIFF 2.0; added tool info to XLIFF files; cleaned DITA attributes on merging | August 14, 2019
 1.4.1 | Improved performance embedding skeleton; added Apache Ant building option; renamed module to 'openxliff' | July 25, 2019
 1.4.0 | Improved report of task results | July 17, 2019
 1.3.3 | Fixed merging of MS Office files from XLIFF 2.0 | July 5, 2019
