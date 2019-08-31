@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -99,7 +100,7 @@ public class DitaParser {
 	private static TreeSet<String> imageSet;
 
 	protected Vector<String> run(Hashtable<String, String> params)
-			throws IOException, SAXException, ParserConfigurationException {
+			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
 		Vector<String> result = new Vector<>();
 		filesMap = new TreeSet<>();
 		searchedConref = new TreeSet<>();

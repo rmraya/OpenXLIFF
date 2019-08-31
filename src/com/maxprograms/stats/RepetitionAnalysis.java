@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Collections;
@@ -86,7 +87,7 @@ public class RepetitionAnalysis {
 		try {
 			RepetitionAnalysis instance = new RepetitionAnalysis();
 			instance.analyse(file, catalog);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			LOGGER.log(Level.ERROR, "Error analyzing file", e);
 		}
 	}
@@ -162,7 +163,7 @@ public class RepetitionAnalysis {
 	}
 
 	public void analyse(String fileName, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));

@@ -11,27 +11,18 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class DTDResolver implements EntityResolver {
 
-	@SuppressWarnings("resource")
 	@Override
-	public InputSource resolveEntity(String publicId1, String systemId1) throws SAXException, IOException {
-		URL url = new URL(systemId1);
-		try {
-			return new InputSource(new FileInputStream(new File(url.toURI())));
-		} catch (URISyntaxException e) {
-			throw new IOException(e.getMessage());
-		}
+	public InputSource resolveEntity(String publicId, String systemId) throws IOException  {
+		URL url = new URL(systemId);
+		return new InputSource(url.openStream());
 	}
 
 }

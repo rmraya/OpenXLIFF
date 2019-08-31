@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -226,7 +227,7 @@ public class Merge {
 				}
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException ex) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException ex) {
 			LOGGER.log(Level.ERROR, ex.getMessage(), ex);
 			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
@@ -266,7 +267,7 @@ public class Merge {
 	}
 
 	protected static void loadXliff(String fileName, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		doc = builder.build(fileName);

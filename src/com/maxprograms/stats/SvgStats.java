@@ -12,6 +12,7 @@
 package com.maxprograms.stats;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +75,7 @@ public class SvgStats {
 	private int offset;
 	private String stroke;
 
-	public void analyse(String file, String catalog) throws SAXException, IOException, ParserConfigurationException {
+	public void analyse(String file, String catalog) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document document = builder.build(file);

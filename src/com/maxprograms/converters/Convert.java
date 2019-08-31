@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -333,7 +334,7 @@ public class Convert {
 				outputter.output(doc, out);
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			LOGGER.log(Level.ERROR, "Error adding skeleton", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());

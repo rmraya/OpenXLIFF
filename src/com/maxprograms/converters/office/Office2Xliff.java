@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -205,7 +206,7 @@ public class Office2Xliff {
 				outputter.output(merged, output);
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Office2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting Office file", e);
 			result.add(Constants.ERROR);
@@ -215,7 +216,7 @@ public class Office2Xliff {
 	}
 
 	private static void cleanTags(String file, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document doc = builder.build(file);

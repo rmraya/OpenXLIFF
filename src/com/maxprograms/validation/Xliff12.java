@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -59,7 +60,7 @@ public class Xliff12 {
 				builder.setValidating(true);
 				builder.setEntityResolver(new Catalog(catalog));
 				builder.build(temp);
-			} catch (IOException | SAXException | ParserConfigurationException e) {
+			} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 				LOGGER.log(Level.ERROR, e);
 				reason = e.getMessage();
 				return false;

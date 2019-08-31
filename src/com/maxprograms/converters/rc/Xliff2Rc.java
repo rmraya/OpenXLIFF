@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -129,7 +130,7 @@ public class Xliff2Rc {
 			dlgInitLengths(params);
 			Files.delete(Paths.get(tempFile.toURI()));
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Rc.class.getName());
 			logger.log(Level.ERROR, "Error merging RC file", e);
 			result.add(Constants.ERROR);
@@ -175,7 +176,7 @@ public class Xliff2Rc {
 		return byteWord;
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
+	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));

@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -69,7 +70,7 @@ public class FromXliff2 {
 				outputter.output(xliff12, out);
 			}
 			result.add(Constants.SUCCESS);
-		} catch (SAXException | IOException | ParserConfigurationException ex) {
+		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException ex) {
 			Logger logger = System.getLogger(FromXliff2.class.getName());
 			logger.log(Level.ERROR, "Error processing XLIFF 2.0", ex);
 			result.add(Constants.ERROR);

@@ -13,6 +13,7 @@ package com.maxprograms.converters.sdlxliff;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -61,7 +62,7 @@ public class XliffModel {
 	private Set<String> namespaces;
 
 	public XliffModel(String url, String srx, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		namespaces = new TreeSet<>();
 		original = url;
 		SAXBuilder builder = new SAXBuilder();

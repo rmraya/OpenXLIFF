@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -159,7 +160,7 @@ public class Xliff2Office {
 				Files.delete(Paths.get(f1.toURI()));
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			LOGGER.log(Level.ERROR, "Error converting Office file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
@@ -168,7 +169,7 @@ public class Xliff2Office {
 	}
 
 	private static void fixSpaces(String file, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setValidating(false);
 		Document doc = builder.build(file);

@@ -30,6 +30,7 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -226,7 +227,7 @@ public class Xml2Xliff {
 
 			result.add(Constants.SUCCESS);
 
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			LOGGER.log(Level.ERROR, "Error converting XML file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
@@ -235,7 +236,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	public static String getIniFile(String fileName) throws SAXException, IOException, ParserConfigurationException {
+	public static String getIniFile(String fileName) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		File folder = new File(System.getProperty("user.dir"), "xmlfilter");
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalog);
@@ -1111,7 +1112,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException {
+	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document doc = builder.build(iniFile);

@@ -13,6 +13,7 @@ package com.maxprograms.segmenter;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -45,7 +46,7 @@ public class Segmenter {
 	private int tagId;
 
 	public Segmenter(String srxFile, String srcLanguage, String catalog)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document doc = builder.build(srxFile);

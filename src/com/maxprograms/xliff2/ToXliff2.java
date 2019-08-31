@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -76,7 +77,7 @@ public class ToXliff2 {
 				outputter.output(xliff2, out);
 			}
 			result.add(Constants.SUCCESS);
-		} catch (SAXException | IOException | ParserConfigurationException ex) {
+		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException ex) {
 			Logger logger = System.getLogger(ToXliff2.class.getName());
 			logger.log(Level.ERROR, "Error generating XLIFF 2.0");
 			result.add(Constants.ERROR);

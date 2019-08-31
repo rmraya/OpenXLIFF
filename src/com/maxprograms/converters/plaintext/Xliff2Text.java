@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -128,7 +129,7 @@ public class Xliff2Text {
 			}
 			output.close();
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Text.class.getName());
 			logger.log(Level.ERROR, "Error merging TEXT file", e);
 			result.add(Constants.ERROR);

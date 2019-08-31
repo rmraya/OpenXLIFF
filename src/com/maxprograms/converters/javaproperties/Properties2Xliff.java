@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -145,7 +146,7 @@ public class Properties2Xliff {
 			output.close();
 
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Properties2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting .properties file", e);
 			result.add(Constants.ERROR);

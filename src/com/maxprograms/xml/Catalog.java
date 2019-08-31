@@ -14,14 +14,13 @@ package com.maxprograms.xml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
-import java.text.MessageFormat;
-import java.util.Enumeration;
+import java.net.URISyntaxException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -31,33 +30,42 @@ import org.xml.sax.ext.EntityResolver2;
 
 public class Catalog implements EntityResolver2 {
 
-	private Hashtable<String, Object> catalog;
+	private Hashtable<String, String> systemCatalog;
+	private Hashtable<String, String> publicCatalog;
+	private Hashtable<String, String> uriCatalog;
+	private Vector<String[]> uriRewrites;
+	private Vector<String[]> systemRewrites;
 	private String workDir;
-	private String publicId;
-	private String systemId;
 	private String base = "";
 
-	public Catalog(String catalogFile) throws SAXException, IOException, ParserConfigurationException {
+	public Catalog(String catalogFile)
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		File file = new File(catalogFile);
 		if (!file.isAbsolute()) {
 			String absolute = XMLUtils.getAbsolutePath(System.getProperty("user.dir"), catalogFile);
 			file = new File(absolute);
 		}
 		workDir = file.getParent();
-		if (!workDir.endsWith("\\") && !workDir.endsWith("/")) {
-			workDir = workDir + System.getProperty("file.separator");
+		if (!workDir.endsWith(File.separator)) {
+			workDir = workDir + File.separator;
 		}
 		String[] catalogs = new String[1];
 		catalogs[0] = file.toURI().toURL().toString();
 
-		catalog = new Hashtable<>();
+		systemCatalog = new Hashtable<>();
+		publicCatalog = new Hashtable<>();
+		uriCatalog = new Hashtable<>();
+		uriRewrites = new Vector<>();
+		systemRewrites = new Vector<>();
+
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(catalogFile);
 		Element root = doc.getRootElement();
 		recurse(root);
 	}
 
-	private void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
+	private void recurse(Element root)
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		List<Element> children = root.getChildren();
 		Iterator<Element> i = children.iterator();
 		while (i.hasNext()) {
@@ -68,28 +76,28 @@ public class Catalog implements EntityResolver2 {
 				base = child.getAttributeValue("xml:base");
 			}
 
-			if (child.getName().equals("system") && !catalog.containsKey(child.getAttributeValue("systemId"))) {
-				String uri = makeAbsolute(base + child.getAttributeValue("uri"));
+			if (child.getName().equals("system") && !systemCatalog.containsKey(child.getAttributeValue("systemId"))) {
+				String uri = makeAbsolute(child.getAttributeValue("uri"));
 				if (validate(uri)) {
-					catalog.put(child.getAttributeValue("systemId"), uri);
+					systemCatalog.put(child.getAttributeValue("systemId"), uri);
 				}
 			}
 			if (child.getName().equals("public")) {
-				String publicId1 = child.getAttributeValue("publicId");
-				if (publicId1.startsWith("urn:publicid:")) {
-					publicId1 = unwrapUrn(publicId1);
+				String publicId = child.getAttributeValue("publicId");
+				if (publicId.startsWith("urn:publicid:")) {
+					publicId = unwrapUrn(publicId);
 				}
-				if (!catalog.containsKey(publicId1)) {
-					String uri = makeAbsolute(base + child.getAttributeValue("uri"));
+				if (!publicCatalog.containsKey(publicId)) {
+					String uri = makeAbsolute(child.getAttributeValue("uri"));
 					if (validate(uri)) {
-						catalog.put(publicId1, uri);
+						publicCatalog.put(publicId, uri);
 					}
 				}
 			}
-			if (child.getName().equals("uri") && !catalog.containsKey(child.getAttributeValue("name"))) {
-				String uri = makeAbsolute(base + child.getAttributeValue("uri"));
+			if (child.getName().equals("uri") && !uriCatalog.containsKey(child.getAttributeValue("name"))) {
+				String uri = makeAbsolute(child.getAttributeValue("uri"));
 				if (validate(uri)) {
-					catalog.put(child.getAttributeValue("name"), uri);
+					uriCatalog.put(child.getAttributeValue("name"), uri);
 				}
 			}
 			if (child.getName().equals("nextCatalog")) {
@@ -99,14 +107,60 @@ public class Catalog implements EntityResolver2 {
 					nextCatalog = XMLUtils.getAbsolutePath(workDir, nextCatalog);
 				}
 				Catalog cat = new Catalog(nextCatalog);
-				Hashtable<String, Object> table = cat.getCatalogue();
-				Enumeration<String> keys = table.keys();
-				while (keys.hasMoreElements()) {
-					String key = keys.nextElement();
-					if (!catalog.containsKey(key)) {
-						Object value = table.get(key);
-						catalog.put(key, value);
+				Hashtable<String, String> table = cat.getSystemCatalogue();
+				Iterator<String> it = table.keySet().iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					if (!systemCatalog.containsKey(key)) {
+						String value = table.get(key);
+						systemCatalog.put(key, value);
 					}
+				}
+				table = cat.getPublicCatalogue();
+				it = table.keySet().iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					if (!publicCatalog.containsKey(key)) {
+						String value = table.get(key);
+						publicCatalog.put(key, value);
+					}
+				}
+				table = cat.getUriCatalogue();
+				it = table.keySet().iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					if (!uriCatalog.containsKey(key)) {
+						String value = table.get(key);
+						uriCatalog.put(key, value);
+					}
+				}
+				Vector<String[]> system = cat.getSystemRewrites();
+				for (int h = 0; h < system.size(); h++) {
+					String[] pair = system.get(h);
+					if (!systemRewrites.contains(pair)) {
+						systemRewrites.add(pair);
+					}
+				}
+				Vector<String[]> uris = cat.getUriRewrites();
+				for (int h = 0; h < uris.size(); h++) {
+					String[] pair = uris.get(h);
+					if (!uriRewrites.contains(pair)) {
+						uriRewrites.add(pair);
+					}
+				}
+			}
+			if (child.getName().equals("rewriteSystem")) {
+				String uri = makeAbsolute(child.getAttributeValue("rewritePrefix"));
+				String[] pair = new String[] { child.getAttributeValue("systemIdStartString"), uri };
+				if (!systemRewrites.contains(pair)) {
+					systemRewrites.add(pair);
+				}
+			}
+			if (child.getName().equals("rewriteURI")) {
+				String uri = makeAbsolute(child.getAttributeValue("rewritePrefix"));
+				String[] pair = new String[] { child.getAttributeValue("uriStartString"), uri };
+				if (!uriRewrites.contains(pair)) {
+					uriRewrites.add(pair);
 				}
 			}
 			recurse(child);
@@ -119,77 +173,59 @@ public class Catalog implements EntityResolver2 {
 		return file.exists();
 	}
 
-	private String makeAbsolute(String file) throws IOException {
-		File f = new File(file);
-		if (!f.isAbsolute()) {
-			return XMLUtils.getAbsolutePath(workDir, file);
+	private String makeAbsolute(String uri) throws URISyntaxException {
+		URI b = new URI(base);
+		URI u = b.resolve(uri).normalize();
+		if (!u.isAbsolute()) {
+			URI work = new URI(workDir);
+			if (!base.isEmpty()) {
+				work = work.resolve(base);
+			}
+			u = work.resolve(uri).normalize();
 		}
-		return file;
+		return u.toString();
 	}
 
-	private Hashtable<String, Object> getCatalogue() {
-		return catalog;
+	private Hashtable<String, String> getSystemCatalogue() {
+		return systemCatalog;
 	}
 
-	@SuppressWarnings("resource")
+	private Hashtable<String, String> getPublicCatalogue() {
+		return publicCatalog;
+	}
+
+	private Hashtable<String, String> getUriCatalogue() {
+		return uriCatalog;
+	}
+
+	private Vector<String[]> getSystemRewrites() {
+		return systemRewrites;
+	}
+
+	private Vector<String[]> getUriRewrites() {
+		return uriRewrites;
+	}
+
 	@Override
-	public InputSource resolveEntity(String publicId1, String systemId1) throws SAXException, IOException {
-		this.publicId = publicId1;
-		this.systemId = systemId1;
-
-		if (publicId == null && systemId == null) {
-			return null;
-		}
-
+	public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
 		if (publicId != null) {
-			if (publicId.startsWith("urn:publicid:")) {
-				publicId = unwrapUrn(publicId);
-			}
-			if (catalog.containsKey(publicId)) {
-				String location = (String) catalog.get(publicId);
-				InputStream input = new FileInputStream(location);
-				return new InputSource(input);
+			String location = matchPublic(publicId);
+			if (location != null) {
+				return new InputSource(new FileInputStream(location));
 			}
 		}
-
-		if (systemId != null) {
-			if (catalog.containsKey(systemId)) {
-				String location = (String) catalog.get(systemId);
-				InputStream input = new FileInputStream(location);
-				return new InputSource(input);
-			}
-
-			Enumeration<String> keys = catalog.keys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
-				File f = new File((String) catalog.get(key));
-				String location = f.getName();
-				if (systemId.endsWith(location)) {
-					InputStream input = new FileInputStream((String) catalog.get(key));
-					return new InputSource(input);
-				}
-			}
-
-			// This DTD is not in the catalog,
-			// try to find it in the URL reported
-			// by the document
-			try {
-				URL url = new URL(systemId);
-				InputStream input = url.openStream();
-				return new InputSource(input);
-			} catch (Exception e) {
-				MessageFormat mf = new MessageFormat("Cannot resolve ''{0}''.");
-				throw new IOException(mf.format(new Object[] { systemId }));
-			}
+		String location = matchSystem(null, systemId);
+		if (location != null) {
+			return new InputSource(new FileInputStream(location));
 		}
 		return null;
 	}
 
-	private String unwrapUrn(String urn) {
+	private static String unwrapUrn(String urn) {
 		if (!urn.startsWith("urn:publicid:")) {
 			return urn;
 		}
-		publicId = urn.trim().substring("urn:publicid:".length());
+		String publicId = urn.trim().substring("urn:publicid:".length());
 		publicId = publicId.replaceAll("\\+", " ");
 		publicId = publicId.replaceAll("\\:", "//");
 		publicId = publicId.replaceAll(";", "::");
@@ -204,116 +240,94 @@ public class Catalog implements EntityResolver2 {
 		return publicId;
 	}
 
-	public File getDTD(String publicId1, String systemId1) throws IOException {
-		this.publicId = publicId1;
-		this.systemId = systemId1;
-
-		if (publicId == null && systemId == null) {
-			return null;
-		}
-
-		if (publicId != null) {
-			if (publicId.startsWith("urn:publicid:")) {
-				publicId = unwrapUrn(publicId);
-			}
-			if (catalog.containsKey(publicId)) {
-				return new File((String) catalog.get(publicId));
-			}
-		}
-		if (systemId != null) {
-			if (catalog.containsKey(systemId)) {
-				return new File((String) catalog.get(systemId));
-			}
-
-			if (catalog.containsKey(systemId)) {
-				String location = (String) catalog.get(systemId);
-				return new File(location);
-			}
-
-			Enumeration<String> keys = catalog.keys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
-				String location = key;
-				if (location.indexOf('\\') != -1) {
-					location = location.substring(location.lastIndexOf('\\'));
-				}
-				if (location.indexOf('/') != -1) {
-					location = location.substring(location.lastIndexOf('/'));
-				}
-				if (systemId.endsWith(location)) {
-					return new File((String) catalog.get(key));
-				}
-			}
-
-			// This DTD is not in the catalog,
-			// try to find it in the URL reported
-			// by the document
-			try {
-				URL url = new URL(systemId);
-				File f = new File(url.toString());
-				if (f.exists()) {
-					return f;
-				}
-			} catch (Exception e) {
-				MessageFormat mf = new MessageFormat("Cannot resolve ''{0}''.");
-				throw new IOException(mf.format(new Object[] { systemId }));
-			}
-		}
-		return null;
-	}
-
 	@Override
 	public InputSource getExternalSubset(String name, String baseURI) throws SAXException, IOException {
 		return null;
 	}
 
-	@SuppressWarnings("resource")
 	@Override
-	public InputSource resolveEntity(String name, String publicId1, String baseURI, String systemId1)
+	public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
 			throws SAXException, IOException {
-		this.publicId = publicId1;
-		this.systemId = systemId1;
 		if (publicId != null) {
-			if (publicId.startsWith("urn:publicid:")) {
-				publicId = unwrapUrn(publicId);
-			}
-			if (catalog.containsKey(publicId)) {
-				String location = (String) catalog.get(publicId);
-				InputStream input = new FileInputStream(location);
-				return new InputSource(input);
+			String location = matchPublic(publicId);
+			if (location != null) {
+				return new InputSource(new FileInputStream(location));
 			}
 		}
-		if (systemId == null) {
-			return null;
-		}
-		if (catalog.containsKey(systemId)) {
-			String location = (String) catalog.get(systemId);
-			InputStream input = new FileInputStream(location);
-			return new InputSource(input);
+		String location = matchSystem(baseURI, systemId);
+		if (location != null) {
+			return new InputSource(new FileInputStream(location));
 		}
 
 		// This DTD is not in the catalog,
 		// try to find it in the URL reported
 		// by the document
 		try {
-			URL url;
-			if (baseURI != null) {
-				url = new File(new File(new URI(baseURI)), systemId1).toURI().toURL();
-			} else {
-				url = new URL(systemId);
+			URI uri = new URI(baseURI != null ? baseURI : "").resolve(systemId).normalize();
+			if (uri.toURL().getProtocol() != null) {
+				return new InputSource(uri.toURL().openStream());
 			}
-			InputStream input = url.openStream();
-			return new InputSource(input);
-		} catch (Exception e) {
-			MessageFormat mf = new MessageFormat("Cannot resolve ''{0}''.");
-			throw new IOException(mf.format(new Object[] { systemId }));
+			return new InputSource(new FileInputStream(uri.toURL().toString()));
+		} catch (IOException | URISyntaxException e) {
+			// ignore
 		}
+		return null;
 	}
 
-	public String getLocation(String urn) {
-		String key = urn.startsWith("urn:publicid:") ? unwrapUrn(urn) : urn;
-		if (catalog.containsKey(key)) {
-			return (String) catalog.get(key);
+	public String matchPublic(String publicId) {
+		if (publicId != null) {
+			if (publicId.startsWith("urn:publicid:")) {
+				publicId = unwrapUrn(publicId);
+			}
+			if (publicCatalog.containsKey(publicId)) {
+				return publicCatalog.get(publicId);
+			}
+		}
+		return null;
+	}
+
+	public String matchSystem(String baseURI, String systemId) {
+		if (systemId != null) {
+			for (int i = 0; i < systemRewrites.size(); i++) {
+				String[] pair = systemRewrites.get(i);
+				if (systemId.startsWith(pair[0])) {
+					systemId = pair[1] + systemId.substring(pair[0].length());
+				}
+			}
+			if (systemCatalog.containsKey(systemId)) {
+				return systemCatalog.get(systemId);
+			}
+			// this resource is not in catalog.
+			try {
+				URI u = new URI(baseURI != null ? baseURI : "").resolve(systemId).normalize();
+				File file = new File(u.toURL().toString());
+				if (file.exists()) {
+					return file.getAbsolutePath();
+				}
+			} catch (MalformedURLException | URISyntaxException e) {
+				// ignore
+			}
+		}
+		return null;
+	}
+
+	public String matchURI(String uri) {
+		if (uri != null) {
+			for (int i = 0; i < uriRewrites.size(); i++) {
+				String[] pair = uriRewrites.get(i);
+				if (uri.startsWith(pair[0])) {
+					uri = pair[1] + uri.substring(pair[0].length());
+				}
+			}
+			if (uriCatalog.containsKey(uri)) {
+				return uriCatalog.get(uri);
+			}
+			try {
+				URI u = new URI(uri).normalize();
+				return u.toString();
+			} catch (URISyntaxException e) {
+				// ignore
+			}
 		}
 		return null;
 	}

@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -111,7 +112,7 @@ public class Xliff2jscript {
 			}
 			output.close();
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException | URISyntaxException e) {
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -119,7 +120,7 @@ public class Xliff2jscript {
 		return result;
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
+	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));

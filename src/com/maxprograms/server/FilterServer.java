@@ -23,6 +23,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -260,7 +261,7 @@ public class FilterServer implements HttpHandler {
 					RepetitionAnalysis instance = new RepetitionAnalysis();
 					instance.analyse(file, catalog);
 					result.add(Constants.SUCCESS);
-				} catch (IOException | SAXException | ParserConfigurationException e) {
+				} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 					LOGGER.log(Level.ERROR, "Error analysing file", e);
 					result.add(Constants.ERROR);
 					result.add(e.getMessage());

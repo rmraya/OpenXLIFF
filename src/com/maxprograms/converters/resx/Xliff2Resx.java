@@ -17,6 +17,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -70,7 +71,7 @@ public class Xliff2Resx {
 
 			saveXml(xmlResx, inputFile);
 			result.add(Constants.SUCCESS);
-		} catch (IOException | ParserConfigurationException | SAXException e) {
+		} catch (IOException | ParserConfigurationException | SAXException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Resx.class.getName());
 			logger.log(Level.ERROR, "Error merging ResX file", e);
 			result.add(Constants.ERROR);
@@ -84,7 +85,7 @@ public class Xliff2Resx {
 	}
 
 	static Document openXml(String filename, String catalog)
-			throws ParserConfigurationException, SAXException, IOException {
+			throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		return builder.build(filename);

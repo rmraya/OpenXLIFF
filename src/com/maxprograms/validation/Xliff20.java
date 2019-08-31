@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -100,7 +101,7 @@ public class Xliff20 {
 			Schema schema = schemaFactory.newSchema(schemas);
 			schema.newValidator().validate(source);
 			return validateContent(file);
-		} catch (SAXException | IOException | ParserConfigurationException e) {
+		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {
 			LOGGER.log(Level.ERROR, e);
 			reason = e.getMessage();
 		}
@@ -883,7 +884,7 @@ public class Xliff20 {
 	}
 
 	private Source getSource(String string) {
-		String location = resolver.getLocation(string);
+		String location = resolver.matchPublic(string);
 		Source source = new StreamSource(location);
 		return source;
 	}

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -126,7 +127,7 @@ public class Html2Xliff {
 				output.close();
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Html2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting HTML file", e);
 			result.add(Constants.ERROR);
@@ -799,7 +800,7 @@ public class Html2Xliff {
 		return result;
 	}
 
-	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException {
+	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalog);

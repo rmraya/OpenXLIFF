@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Enumeration;
@@ -205,7 +206,7 @@ public class XliffChecker {
 			createAttributesTable();
 			return recurse(root);
 
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			reason = e.getMessage();
 			return false;
 		}

@@ -20,6 +20,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -81,7 +82,7 @@ public class Resx2Xliff {
 			if (Constants.SUCCESS.equals(result.get(0))) {
 				setOriginal(params.get("xliff"), original);
 			}
-		} catch (IOException | ParserConfigurationException | SAXException e) {
+		} catch (IOException | ParserConfigurationException | SAXException | URISyntaxException e) {
 			Logger logger = System.getLogger(Resx2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting ResX file", e);
 			result.add(Constants.ERROR);
@@ -130,7 +131,7 @@ public class Resx2Xliff {
 	}
 
 	static Document openXml(String filename, String catalog)
-			throws ParserConfigurationException, SAXException, IOException {
+			throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setValidating(false);
 		builder.setEntityResolver(new Catalog(catalog));
