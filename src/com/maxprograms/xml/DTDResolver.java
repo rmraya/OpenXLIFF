@@ -11,8 +11,11 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -20,9 +23,17 @@ import org.xml.sax.InputSource;
 public class DTDResolver implements EntityResolver {
 
 	@Override
-	public InputSource resolveEntity(String publicId, String systemId) throws IOException  {
-		URL url = new URL(systemId);
-		return new InputSource(url.openStream());
+	public InputSource resolveEntity(String publicId, String systemId) throws IOException {
+		try {
+			URI u = new URI("").resolve(systemId).normalize();
+			File file = new File(u.toURL().toString());
+			if (file.exists()) {
+				return new InputSource(new FileInputStream(file));
+			}
+		} catch (URISyntaxException e) {
+			// ignore
+		}
+		return null;
 	}
 
 }
