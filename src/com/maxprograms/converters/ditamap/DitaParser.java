@@ -330,7 +330,7 @@ public class DitaParser {
 						usedKeys.get(k).add(parentFile);
 						if (k.getTopicmeta() != null && e.getContent().isEmpty()) {
 
-							// empty element that reuses from <topicmenta>
+							// empty element that reuses from <topicmeta>
 							Element matched = getMatched(e.getName(), k.getTopicmeta());
 							if (matched != null) {
 								e.setContent(matched.getContent());
