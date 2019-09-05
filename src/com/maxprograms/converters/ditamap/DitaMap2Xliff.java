@@ -54,8 +54,9 @@ public class DitaMap2Xliff {
 	private static Element mergedRoot;
 	private static SAXBuilder builder;
 	private static boolean hasConref;
-	private static Scope rootScope;
+	private static boolean hasXref;
 	private static boolean hasConKeyRef;
+	private static Scope rootScope;
 	private static Hashtable<String, Set<String>> excludeTable;
 	private static Hashtable<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
@@ -112,6 +113,12 @@ public class DitaMap2Xliff {
 				}
 				try {
 					source = checkConKeyRef(source);
+				} catch (Exception sax) {
+					// skip directly referenced images
+					continue;
+				}
+				try {
+					source = checkXref(source);
 				} catch (Exception sax) {
 					// skip directly referenced images
 					continue;
@@ -187,6 +194,93 @@ public class DitaMap2Xliff {
 			result.add(e.getMessage());
 		}
 		return result;
+	}
+
+	private static String checkXref(String source)
+			throws SAXException, IOException, ParserConfigurationException, SkipException {
+		Document doc = builder.build(source);
+		Element root = doc.getRootElement();
+		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
+			throw new SkipException("Untranslatable!");
+		}
+		hasXref = false;
+		fixXref(root, source, doc);
+		if (hasXref) {
+			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
+			File temp = File.createTempFile("temp", ".dita");
+			temp.deleteOnExit();
+			XMLOutputter outputter = new XMLOutputter();
+			outputter.setEncoding(encoding);
+			outputter.preserveSpace(true);
+			try (FileOutputStream out = new FileOutputStream(temp)) {
+				outputter.output(doc, out);
+			}
+			return temp.getAbsolutePath();
+		}
+		return source;
+	}
+
+	private static void fixXref(Element root, String source, Document doc) {
+		if (DitaParser.ditaClass(root, "topic/xref")) {
+			List<XMLNode> content = root.getContent();
+			if (content.isEmpty()) {
+				String href = root.getAttributeValue("href");
+				if (!href.isEmpty()) {
+					try {
+						String file = href;
+						String id = "";
+						if (href.indexOf('#') != -1) {
+							file = href.substring(0, href.indexOf('#'));
+							if (file.length() == 0) {
+								file = source;
+							} else {
+								File f = new File(file);
+								if (!f.isAbsolute()) {
+									file = Utils.getAbsolutePath(source, file);
+								}
+							}
+							id = href.substring(href.indexOf('#') + 1);
+						} else {
+							file = Utils.getAbsolutePath(source, file);
+						}
+						String title = getTitle(file, id);
+						if (title != null) {
+							root.setText(title);
+							hasXref = true;
+							root.setAttribute("status", "removeContent");
+							if (!root.getAttributeValue("translate", "yes").equals("no")) {
+								root.setAttribute("translate", "no");
+								root.setAttribute("removeTranslate", "yes");
+							}
+						}
+					} catch (SAXException | ParserConfigurationException | IOException ex) {
+						// do nothing
+					}
+				}
+			}
+		} else {
+			List<Element> children = root.getChildren();
+			Iterator<Element> it = children.iterator();
+			while (it.hasNext()) {
+				fixXref(it.next(), source, doc);
+			}
+		}
+	}
+
+	private static String getTitle(String file, String id)
+			throws SAXException, IOException, ParserConfigurationException {
+		Element referenced = getReferenced(file, id);
+		if (referenced != null) {
+			List<Element> children = referenced.getChildren();
+			Iterator<Element> it = children.iterator();
+			while (it.hasNext()) {
+				Element child = it.next();
+				if (DitaParser.ditaClass(child, "topic/title")) {
+					return child.getTextNormalize();
+				}
+			}
+		}
+		return null;
 	}
 
 	private static String removeFiltered(String source) throws IOException, SAXException, ParserConfigurationException {
@@ -544,7 +638,7 @@ public class DitaMap2Xliff {
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		String topicId = root.getAttributeValue("id", "");
-		if (topicId.equals(id)) {
+		if (id.isEmpty() || topicId.equals(id)) {
 			return root;
 		}
 		return locate(root, topicId, id);
