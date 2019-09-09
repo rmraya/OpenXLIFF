@@ -28,6 +28,7 @@ module openxliff {
 	exports com.maxprograms.converters.plaintext;
 	exports com.maxprograms.languages;
 	exports com.maxprograms.segmenter;
+	exports com.maxprograms.server;
 	exports com.maxprograms.stats;
 	exports com.maxprograms.xliff2;
 	exports com.maxprograms.validation;
@@ -38,8 +39,8 @@ module openxliff {
 	requires json;
 	requires jsoup;
 	requires mapdb;
-	requires java.logging;
-	requires jdk.httpserver;
 	requires java.base;
+	requires java.logging;
+	requires transitive jdk.httpserver;
 	requires transitive java.xml;
 }
