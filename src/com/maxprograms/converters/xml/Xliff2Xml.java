@@ -305,7 +305,7 @@ public class Xliff2Xml {
 				break;
 			}
 		}
-		return ts + content + "</" + name + ">"; // TODO recurse content
+		return ts + content + "</" + name + ">"; 
 	}
 
 	private static String restoreChars(String string) {

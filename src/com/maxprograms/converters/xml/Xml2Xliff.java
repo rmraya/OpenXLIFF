@@ -236,7 +236,8 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	public static String getIniFile(String fileName) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	public static String getIniFile(String fileName)
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		File folder = new File(System.getProperty("user.dir"), "xmlfilter");
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalog);
@@ -453,7 +454,6 @@ public class Xml2Xliff {
 		writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 				+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-		
 
 		writeString("<file original=\"" + cleanString(inputFile) + "\" source-language=\"" + sourceLanguage + tgtLang
 				+ "\" datatype=\"" + format + "\" tool-id=\"" + Constants.TOOLID + "\">\n");
@@ -649,7 +649,7 @@ public class Xml2Xliff {
 				break;
 			}
 		}
-		return ts + content + "</" + name + ">"; // TODO recurse content
+		return ts + content + "</" + name + ">";
 	}
 
 	private static String restoreChars(String string) {
@@ -1112,7 +1112,8 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void buildTables(String iniFile)
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document doc = builder.build(iniFile);
