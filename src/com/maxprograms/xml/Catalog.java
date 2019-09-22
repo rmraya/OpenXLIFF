@@ -49,8 +49,6 @@ public class Catalog implements EntityResolver2 {
 		if (!workDir.endsWith(File.separator)) {
 			workDir = workDir + File.separator;
 		}
-		String[] catalogs = new String[1];
-		catalogs[0] = file.toURI().toURL().toString();
 
 		systemCatalog = new Hashtable<>();
 		publicCatalog = new Hashtable<>();
@@ -74,6 +72,13 @@ public class Catalog implements EntityResolver2 {
 
 			if (!child.getAttributeValue("xml:base", "").equals("")) {
 				base = child.getAttributeValue("xml:base");
+				File b = new File(base);
+				if (!b.isAbsolute()) {
+					base = XMLUtils.getAbsolutePath(workDir, base);
+					if (!base.endsWith(File.separator)) {
+						base = base + File.separator;
+					}
+				}
 			}
 
 			if (child.getName().equals("system") && !systemCatalog.containsKey(child.getAttributeValue("systemId"))) {
@@ -173,17 +178,16 @@ public class Catalog implements EntityResolver2 {
 		return file.exists();
 	}
 
-	private String makeAbsolute(String uri) throws URISyntaxException {
-		URI b = new URI(base);
-		URI u = b.resolve(uri).normalize();
-		if (!u.isAbsolute()) {
-			URI work = new URI(workDir);
+	private String makeAbsolute(String uri) throws IOException {
+		File f = new File(base + uri);
+		if (!f.isAbsolute()) {
 			if (!base.isEmpty()) {
-				work = work.resolve(base);
+				return XMLUtils.getAbsolutePath(base, uri);
+			} else {				
+				return XMLUtils.getAbsolutePath(workDir, uri);
 			}
-			u = work.resolve(uri).normalize();
 		}
-		return u.toString();
+		return base + uri;
 	}
 
 	private Hashtable<String, String> getSystemCatalogue() {
@@ -324,8 +328,10 @@ public class Catalog implements EntityResolver2 {
 			}
 			try {
 				URI u = new URI(uri).normalize();
-				return u.toString();
-			} catch (URISyntaxException e) {
+				if (u.toURL().getProtocol().startsWith("file")) {
+					return u.toString();
+				}
+			} catch (URISyntaxException | MalformedURLException e) {
 				// ignore
 			}
 		}

@@ -884,7 +884,13 @@ public class Xliff20 {
 	}
 
 	private Source getSource(String string) {
-		String location = resolver.matchPublic(string);
+		String location = resolver.matchURI(string);
+		if (location == null) {
+			location = resolver.matchPublic(string); 
+		}
+		if (location == null) {
+			location = resolver.matchSystem("", string);
+		}
 		Source source = new StreamSource(location);
 		return source;
 	}
