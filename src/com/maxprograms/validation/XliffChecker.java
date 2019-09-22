@@ -1128,7 +1128,6 @@ public class XliffChecker {
 		return true;
 	}
 
-	@SuppressWarnings("unused")
 	private static boolean checkURL(String string) {
 		try {
 			new URL(string);
