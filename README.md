@@ -24,6 +24,7 @@ Project
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.5.1 | Fixed catalog on Windows | September 22, 2019
 1.5.0 | Improved support for empty &lt;xref/> elements in DITA; improved support for XML catalogs | September 5, 2019
 1.4.2 | Added option to join XLIFF files; Fixed merge errors in XLIFF 2.0; added tool info to XLIFF files; cleaned DITA attributes on merging | August 14, 2019
 1.4.1 | Improved performance embedding skeleton; added Apache Ant building option; renamed module to 'openxliff' | July 25, 2019
