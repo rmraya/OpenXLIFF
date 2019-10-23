@@ -63,12 +63,14 @@ public class Language implements Comparable<Language>, Serializable {
 	}
 
 	public boolean isBiDi() {
-		if (code.startsWith("ar") || code.startsWith("fa") || code.startsWith("az") || code.startsWith("ur")
+		return code.startsWith("ar") || code.startsWith("fa") || code.startsWith("az") || code.startsWith("ur")
 				|| code.startsWith("pa-PK") || code.startsWith("ps") || code.startsWith("prs") || code.startsWith("ug")
-				|| code.startsWith("he") || code.startsWith("ji") || code.startsWith("yi")) {
-			return true;
-		}
-		return false;
+				|| code.startsWith("he") || code.startsWith("ji") || code.startsWith("yi");
+	}
+
+	public boolean isCJK() {
+		return code.startsWith("zh") || code.startsWith("ja") || code.startsWith("ko") || code.startsWith("vi")
+				|| code.startsWith("ain") || code.startsWith("aib");
 	}
 
 	@Override
