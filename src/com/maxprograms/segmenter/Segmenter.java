@@ -35,6 +35,7 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 
 public class Segmenter {
 
@@ -360,7 +361,7 @@ public class Segmenter {
 		parts.add(pureText);
 		String[] result = new String[parts.size()];
 		for (int i = 0; i < parts.size(); i++) {
-			result[i] = cleanup(cleanString(parts.get(i)));
+			result[i] = cleanup(XMLUtils.cleanText(parts.get(i)));
 		}
 		if (result.length == 1) {
 			// return a <seg-source> with the content of source
@@ -397,39 +398,6 @@ public class Segmenter {
 			res.addContent("\n");
 		}
 		return res;
-	}
-
-	public static String cleanString(String string) {
-		String result = string.replaceAll("&", "&amp;");
-		result = result.replaceAll("<", "&lt;");
-		result = result.replaceAll(">", "&gt;");
-		return validChars(result);
-	} 
-
-	public static String validChars(String input) {
-		// Valid: #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] |
-		// [#x10000-#x10FFFF]
-		// Discouraged: [#x7F-#x84], [#x86-#x9F], [#xFDD0-#xFDDF]
-		//
-		StringBuilder buffer = new StringBuilder();
-		char c;
-		int length = input.length();
-		for (int i = 0; i < length; i++) {
-			c = input.charAt(i);
-			if (c == '\t' || c == '\n' || c == '\r' || c >= '\u0020' && c <= '\uD7DF'
-					|| c >= '\uE000' && c <= '\uFFFD') {
-				// normal character
-				buffer.append(c);
-			} else if (c >= '\u007F' && c <= '\u0084' || c >= '\u0086' && c <= '\u009F'
-					|| c >= '\uFDD0' && c <= '\uFDDF') {
-				// Control character
-				buffer.append("&#x" + Integer.toHexString(c) + ";");
-			} else if (c >= '\uDC00' && c <= '\uDFFF' || c >= '\uD800' && c <= '\uDBFF') {
-				// Multiplane character
-				buffer.append(input.substring(i, i + 1));
-			}
-		}
-		return buffer.toString();
 	}
 
 	private String pureText(Element e) {
