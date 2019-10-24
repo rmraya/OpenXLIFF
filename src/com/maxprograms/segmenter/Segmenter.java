@@ -20,7 +20,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,7 +75,7 @@ public class Segmenter {
 			return new String[] {};
 		}
 		String pureText = prepareString(string);
-		Vector<String> parts = new Vector<>();
+		List<String> parts = new ArrayList<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));
 			String right = hideTags(pureText.substring(pos));
@@ -305,7 +304,7 @@ public class Segmenter {
 		tags = new Hashtable<>();
 		tagId = 0;
 		String pureText = pureText(source);
-		Vector<String> parts = new Vector<>();
+		List<String> parts = new ArrayList<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));
 			String right = hideTags(pureText.substring(pos));
@@ -401,20 +400,20 @@ public class Segmenter {
 	}
 
 	private String pureText(Element e) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		List<XMLNode> nodes = e.getContent();
 		Iterator<XMLNode> it = nodes.iterator();
 		while (it.hasNext()) {
 			XMLNode n = it.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				result = result + ((TextNode) n).getText();
+				result.append(((TextNode) n).getText());
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element tag = (Element) n;
 				if (tag.getName().equals("ph") || tag.getName().equals("x") || tag.getName().equals("bx")
 						|| tag.getName().equals("bpt") || tag.getName().equals("ept") || tag.getName().equals("it")) {
 					tags.put("" + (char) ('\uE000' + tagId), tag.toString());
-					result = result + (char) ('\uE000' + tagId);
+					result.append((char) ('\uE000' + tagId));
 					tagId++;
 				}
 				if (tag.getName().equals("g") || tag.getName().equals("mrk")) {
@@ -429,24 +428,23 @@ public class Segmenter {
 						}
 						start = start + ">";
 						tags.put("" + (char) ('\uE000' + tagId), start);
-						result = result + (char) ('\uE000' + tagId);
+						result.append((char) ('\uE000' + tagId));
 						tagId++;
 
-						result = result + pureText(tag);
+						result.append(pureText(tag));
 
 						String end = "</" + tag.getName() + ">";
 						tags.put("" + (char) ('\uE000' + tagId), end);
-						result = result + (char) ('\uE000' + tagId);
+						result.append((char) ('\uE000' + tagId));
 						tagId++;
 					} else {
 						tags.put("" + (char) ('\uE000' + tagId), tag.toString());
-						result = result + (char) ('\uE000' + tagId);
+						result.append((char) ('\uE000' + tagId));
 						tagId++;
 					}
 				}
-
 			}
 		}
-		return result;
+		return result.toString();
 	}
 }
