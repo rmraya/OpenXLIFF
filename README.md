@@ -1,4 +1,4 @@
-![alt text](https://maxprograms.com/images/openxliff_s.png "OpenXLIFF Filters")
+![alt text](https://maxprograms.com/images/openxliff_trim.png "OpenXLIFF Filters")
 
 ## OpenXLIFF Filters
 
