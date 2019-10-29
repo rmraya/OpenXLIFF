@@ -4,9 +4,7 @@
 
 An open source set of Java filters for creating, merging and validating XLIFF 1.2 and 2.0 files.
 
-Source code of OpenXLIFF Filters is available under [Eclipse Public License 1.0](https://www.eclipse.org/org/documents/epl-v10.html).
-
-With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup.
+With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup and are compatible with most CAT (Computer Asisted Translation) tools.
 
 **XLIFFChecker**, an open source XLIFF validation tool, is now part of OpenXLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
 
