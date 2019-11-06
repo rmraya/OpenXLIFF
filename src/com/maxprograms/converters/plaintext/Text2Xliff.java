@@ -9,10 +9,6 @@
  * Contributors:
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
-/*
- * Created on Jun 2, 2004
- *
- */
 package com.maxprograms.converters.plaintext;
 
 import java.io.BufferedReader;
