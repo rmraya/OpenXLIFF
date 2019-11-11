@@ -76,13 +76,13 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 ## Requirements
 
 - JDK 11 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
-- Optional: Apache Ant 1.10.6 or newer
+- Apache Ant 1.10.6 or newer
 
 ## Building
 
 - Checkout this repository.
 - Point your JAVA_HOME variable to JDK 11
-- Use Apache Ant 1.10.6 or newer and run `ant dist` to generate a binary distribution in `./dist`
+- Run `ant` to generate a binary distribution in `./dist`
 
 ## Converting Documents to XLIFF
 
@@ -90,7 +90,7 @@ You can use the library in your own Java code. Conversion to XLIFF is handled by
 
 If you use binaries from the command line, running `.\convert.bat` or `./convert.sh` without parameters displays help for XLIFF generation.
 
-```
+```text
 Usage:
 
    convert.bat [-help] [-version] -file sourceFile -srcLang sourceLang [-tgtLang targetLang]
@@ -155,7 +155,7 @@ You can convert XLIFF files created with OpenXLIFF Filters to original format us
 
 If you use binaries from the command line, running `.\merge.bat` or `./merge.sh` without parameters will display the information you need to merge an XLIFF file.
 
-```
+```text
 Usage:
 
    merge.bat [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
@@ -183,7 +183,7 @@ You can validate XLIFF files using your own Java code. Validation of XLIFF files
 
 If you use binaries from the command line, running `.\xliffchecker.bat` or `./xliffchecker.sh` without parameters displays help for XLIFF validation. 
 
-```
+```text
 Usage:
 
    xliffchecker.bat [-help] -file xliffFile [-catalog catalogFile]
@@ -203,7 +203,7 @@ If you use binaries from the command line, running `.\analysis.bat` or `./analys
 
 You can generate statistics using your own Java code. Statistics generation is handled by the class `com.maxprograms.stats.RepetitionAnalysis`.
 
-```
+```text
 Usage:
 
    analysis.sh [-help] -file xliffFile [-catalog catalogFile] 
