@@ -22,6 +22,7 @@ Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements a
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.6.0 | Added support for XLIFF files from WPML WordPress Plugin | December 01, 2019
 1.5.2 | Improved segmenter performance | October 29, 2019
 1.5.1 | Fixed catalog on Windows | September 22, 2019
 1.5.0 | Improved support for empty &lt;xref/> elements in DITA; improved support for XML catalogs | September 5, 2019
@@ -58,6 +59,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - Plain Text
   - SDLXLIFF (Trados Studio)
   - TXML (GlobalLink/Wordfast PRO)
+  - WPML XLIFF (WordPress Multilingual Plugin)
 - **XML Formats**
   - XML (Generic)
   - DITA 1.0, 1.1, 1.2 and 1.3
@@ -135,6 +137,7 @@ Document Types
    TEXT = Plain Text
    TS = TS (Qt Linguist translation source)
    TXML = TXML Document
+   WPML = WPML XLIFF
    XML = XML Document
    XMLG = XML (Generic)
 ```
