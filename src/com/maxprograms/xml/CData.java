@@ -21,11 +21,7 @@ public class CData implements XMLNode, Serializable {
 	private static final long serialVersionUID = 610927332260249086L;
 	private String value;
 
-	protected CData() {
-		value = "";
-	}
-
-	protected CData(String data) {
+	public CData(String data) {
 		value = data;
 	}
 

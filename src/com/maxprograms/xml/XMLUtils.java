@@ -28,9 +28,9 @@ public class XMLUtils {
 		if (string == null) {
 			return null;
 		}
-		String result = string.replaceAll("&", "&amp;");
-		result = result.replaceAll("<", "&lt;");
-		return result.replaceAll(">", "&gt;");
+		String result = string.replace("&", "&amp;");
+		result = result.replace("<", "&lt;");
+		return result.replace(">", "&gt;");
 	}
 
 	public static String validChars(String input) {

@@ -42,11 +42,12 @@ public class FileFormats {
 	public static final String SDLXLIFF = "SDLXLIFF Document";
 	public static final String TS = "TS (Qt Linguist translation source)";
 	public static final String TXML = "TXML Document";
+	public static final String WPML = "WPML XLIFF";
 	public static final String XML = "XML Document";
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
-			SDLXLIFF, TS, TXML, XML, XMLG };
+			SDLXLIFF, TS, TXML, WPML, XML, XMLG };
 
 	public static String detectFormat(String fileName) {
 
@@ -87,6 +88,9 @@ public class FileFormats {
 			if (string.startsWith("<?xml")) {
 				if (string.indexOf("<xliff") != -1 && string.indexOf("xmlns:sdl") != -1) {
 					return SDLXLIFF;
+				}
+				if (string.indexOf("<xliff") != -1 && string.indexOf("<![CDATA[") != -1) {
+					return WPML;
 				}
 				if (string.indexOf("<txml ") != -1) {
 					return TXML;
@@ -250,6 +254,9 @@ public class FileFormats {
 		if (type.equals(TXML)) {
 			return "TXML";
 		}
+		if (type.equals(WPML)) {
+			return "WPML";
+		}
 		if (type.equals(XML)) {
 			return "XML";
 		}
@@ -307,6 +314,9 @@ public class FileFormats {
 		}
 		if (type.equals("TXML")) {
 			return TXML;
+		}
+		if (type.equals("WPML")) {
+			return WPML;
 		}
 		if (type.equals("XML")) {
 			return XML;

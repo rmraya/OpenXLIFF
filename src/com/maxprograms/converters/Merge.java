@@ -25,6 +25,7 @@ import com.maxprograms.converters.resx.Xliff2Resx;
 import com.maxprograms.converters.sdlxliff.Xliff2Sdl;
 import com.maxprograms.converters.ts.Xliff2Ts;
 import com.maxprograms.converters.txml.Xliff2Txml;
+import com.maxprograms.converters.wpml.Xliff2Wpml;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Catalog;
@@ -375,6 +376,8 @@ public class Merge {
 				result = Xliff2Ts.run(params);
 			} else if (dataType.equals(FileFormats.TXML) || dataType.equals("x-txml")) {
 				result = Xliff2Txml.run(params);
+			} else if (dataType.equals(FileFormats.WPML) || dataType.equals("x-wpmlxliff")) {
+				result = Xliff2Wpml.run(params);
 			} else if (dataType.equals(FileFormats.XML) || dataType.equals("xml")) {
 				result = Xliff2Xml.run(params);
 			} else {
@@ -405,11 +408,11 @@ public class Merge {
 					Element external = mskl.getChild("external-file");
 					if (external != null) {
 						result = external.getAttributeValue("href");
-						result = result.replaceAll("&amp;", "&");
-						result = result.replaceAll("&lt;", "<");
-						result = result.replaceAll("&gt;", ">");
-						result = result.replaceAll("&apos;", "\'");
-						result = result.replaceAll("&quot;", "\"");
+						result = result.replace("&amp;", "&");
+						result = result.replace("&lt;", "<");
+						result = result.replace("&gt;", ">");
+						result = result.replace("&apos;", "\'");
+						result = result.replace("&quot;", "\"");
 					} else {
 						Element internal = mskl.getChild("internal-file");
 						if (internal != null) {

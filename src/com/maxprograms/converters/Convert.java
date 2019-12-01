@@ -25,6 +25,7 @@ import com.maxprograms.converters.resx.Resx2Xliff;
 import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
 import com.maxprograms.converters.ts.Ts2Xliff;
 import com.maxprograms.converters.txml.Txml2Xliff;
+import com.maxprograms.converters.wpml.Wpml2Xliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xliff2.ToXliff2;
 import com.maxprograms.xml.Catalog;
@@ -290,6 +291,7 @@ public class Convert {
 				+ "   TEXT = Plain Text\n" 
 				+ "   TS = TS (Qt Linguist translation source)\n"
 				+ "   TXML = TXML Document\n" 
+				+ "   WPML = WPML XLIFF\n" 
 				+ "   XML = XML Document\n" 
 				+ "   XMLG = XML (Generic)\n";
 		System.out.println(help);
@@ -311,11 +313,11 @@ public class Convert {
 				Element skl = header.getChild("skl");
 				Element external = skl.getChild("external-file");
 				String sklName = external.getAttributeValue("href");
-				sklName = sklName.replaceAll("&amp;", "&");
-				sklName = sklName.replaceAll("&lt;", "<");
-				sklName = sklName.replaceAll("&gt;", ">");
-				sklName = sklName.replaceAll("&apos;", "\'");
-				sklName = sklName.replaceAll("&quot;", "\"");
+				sklName = sklName.replace("&amp;", "&");
+				sklName = sklName.replace("&lt;", "<");
+				sklName = sklName.replace("&gt;", ">");
+				sklName = sklName.replace("&apos;", "\'");
+				sklName = sklName.replace("&quot;", "\"");
 				if (!deleted.contains(sklName)) {
 					File skeleton = new File(sklName);
 					Element internal = new Element("internal-file");
@@ -378,6 +380,8 @@ public class Convert {
 			result = Ts2Xliff.run(params);
 		} else if (format.equals(FileFormats.TXML)) {
 			result = Txml2Xliff.run(params);
+		} else if (format.equals(FileFormats.WPML)) {
+			result = Wpml2Xliff.run(params);
 		} else if (format.equals(FileFormats.XML)) {
 			result = Xml2Xliff.run(params);
 		} else if (format.equals(FileFormats.XMLG)) {

@@ -43,9 +43,9 @@ public class Utils {
 	}
 
 	public static String cleanString(String string) {
-		String result = string.replaceAll("&", "&amp;");
-		result = result.replaceAll("<", "&lt;");
-		result = result.replaceAll(">", "&gt;");
+		String result = string.replace("&", "&amp;");
+		result = result.replace("<", "&lt;");
+		result = result.replace(">", "&gt;");
 		return XMLUtils.validChars(result);
 	}
 

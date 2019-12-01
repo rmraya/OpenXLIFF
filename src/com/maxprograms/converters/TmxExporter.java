@@ -443,10 +443,10 @@ public class TmxExporter {
 	}
 
 	private static String restoreChars(String string) {
-		String result = string.replaceAll(MATHLT, "<");
-		result = result.replaceAll(MATHGT, ">");
-		result = result.replaceAll(DOUBLEPRIME, "\"");
-		return result.replaceAll(GAMP, "&");
+		String result = string.replace(MATHLT, "<");
+		result = result.replace(MATHGT, ">");
+		result = result.replace(DOUBLEPRIME, "\"");
+		return result.replace(GAMP, "&");
 	}
 
 	private static void writeString(FileOutputStream output, String input) throws IOException {

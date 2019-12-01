@@ -57,7 +57,8 @@ public class EncodingResolver {
 		} else if (fileType.equals(FileFormats.XML) || fileType.equals(FileFormats.XMLG)
 				|| fileType.equals(FileFormats.TXML) || fileType.equals(FileFormats.RESX)
 				|| fileType.equals(FileFormats.INX) || fileType.equals(FileFormats.TS)
-				|| fileType.equals(FileFormats.DITA) || fileType.equals(FileFormats.SDLXLIFF)) {
+				|| fileType.equals(FileFormats.DITA) || fileType.equals(FileFormats.SDLXLIFF)
+				|| fileType.equals(FileFormats.WPML)) {
 			try {
 				return getXMLEncoding(fileName);
 			} catch (IOException e) {
@@ -141,7 +142,7 @@ public class EncodingResolver {
 			String line = buffer.readLine();
 			if (line.startsWith("<?")) {
 				line = line.substring(2, line.indexOf("?>"));
-				line = line.replaceAll("\'", "\"");
+				line = line.replace("\'", "\"");
 				StringTokenizer tokenizer = new StringTokenizer(line);
 				while (tokenizer.hasMoreTokens()) {
 					String token = tokenizer.nextToken();
