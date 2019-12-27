@@ -534,8 +534,8 @@ public class Html2Xliff {
 			}
 			control = s.indexOf('>', control);
 		}
-		s = s.replaceAll("%%%/ph%%%", "</ph>");
-		s = s.replaceAll("%%%ph", "<ph");
+		s = s.replace("%%%/ph%%%", "</ph>");
+		s = s.replace("%%%ph", "<ph");
 		s = s.replaceAll("\"%%%&amp;", "\">&amp;");
 		return s;
 	}

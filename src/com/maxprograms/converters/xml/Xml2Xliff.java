@@ -490,7 +490,7 @@ public class Xml2Xliff {
 				if (txt.startsWith("c_") && !txt.substring(2).trim().equals("")) {
 					writeSkeleton("c_");
 					txt = txt.substring(2);
-					txt = txt.replaceAll("~sep~", "_");
+					txt = txt.replace("~sep~", "_");
 				} else {
 					writeSkeleton(txt);
 					continue;
@@ -653,18 +653,18 @@ public class Xml2Xliff {
 	}
 
 	private static String restoreChars(String string) {
-		String result = string.replaceAll(Xml2Xliff.MATHLT, "<");
-		result = result.replaceAll(Xml2Xliff.MATHGT, ">");
-		result = result.replaceAll(Xml2Xliff.DOUBLEPRIME, "\"");
-		result = result.replaceAll(Xml2Xliff.GAMP, "&");
+		String result = string.replace(Xml2Xliff.MATHLT, "<");
+		result = result.replace(Xml2Xliff.MATHGT, ">");
+		result = result.replace(Xml2Xliff.DOUBLEPRIME, "\"");
+		result = result.replace(Xml2Xliff.GAMP, "&");
 		return result;
 	}
 
 	private static String addEntities(String string) {
-		String result = string.replaceAll("&lt;", "<");
-		result = result.replaceAll("&gt;", ">");
-		result = result.replaceAll("&quot;", "\"");
-		result = result.replaceAll("&amp;", "&");
+		String result = string.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		result = result.replace("&quot;", "\"");
+		result = result.replace("&amp;", "&");
 		return result;
 	}
 
@@ -913,8 +913,8 @@ public class Xml2Xliff {
 	}
 
 	private static String clean(String string) {
-		String result = string.replaceAll("<", MATHLT);
-		result = result.replaceAll(">", MATHGT);
+		String result = string.replace("<", MATHLT);
+		result = result.replace(">", MATHGT);
 		result = result.replaceAll("\"", DOUBLEPRIME);
 		return replaceAmp(result);
 	}
@@ -999,8 +999,8 @@ public class Xml2Xliff {
 			}
 			control = s.indexOf('>', control);
 		}
-		s = s.replaceAll("%%%/ph%%%", "</ph>");
-		s = s.replaceAll("%%%ph", "<ph");
+		s = s.replace("%%%/ph%%%", "</ph>");
+		s = s.replace("%%%ph", "<ph");
 		s = s.replaceAll("\"%%%&amp;", "\">&amp;");
 		return XMLUtils.validChars(s);
 	}
@@ -1368,8 +1368,8 @@ public class Xml2Xliff {
 			// handling will fail (it searches for initial "<" and closing ">"
 			//
 			// value = value.replaceAll("&","&amp;");
-			value = value.replaceAll("<", "&lt;");
-			value = value.replaceAll(">", "&gt;");
+			value = value.replace("<", "&lt;");
+			value = value.replace(">", "&gt;");
 
 			text = text + value;
 			if (value.trim().length() > 0) {
@@ -1481,12 +1481,12 @@ public class Xml2Xliff {
 		String result = value;
 		if (stack.size() > 1 && !text.startsWith("" + '\u007F' + '\u007F')) {
 			// this is an inline element and will be placed in <ph>
-			result = result.replaceAll("&", "###AMP###");
+			result = result.replace("&", "###AMP###");
 		} else {
-			result = result.replaceAll("&", "&amp;");
+			result = result.replace("&", "&amp;");
 		}
-		result = result.replaceAll(">", "&gt;");
-		result = result.replaceAll("<", "&lt;");
+		result = result.replace(">", "&gt;");
+		result = result.replace("<", "&lt;");
 		result = result.replaceAll("\"", "&quot;");
 		return result;
 	}

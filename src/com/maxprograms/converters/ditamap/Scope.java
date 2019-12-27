@@ -11,6 +11,7 @@
  *******************************************************************************/
 package com.maxprograms.converters.ditamap;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +28,7 @@ public class Scope {
 	public Scope(String name) {
 		names = new TreeSet<>();
 		String[] parts = name.split("\\s");
-		for (int i = 0; i < parts.length; i++) {
-			names.add(parts[i]);
-		}
+		names.addAll(Arrays.asList(parts));
 		children = new Vector<>();
 		keys = new Hashtable<>();
 	}

@@ -224,7 +224,7 @@ public class Xliff2Xml {
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
 				TextNode t = (TextNode) n;
 				if (t.getText().startsWith("c_")) {
-					t.setText("c_" + t.getText().substring(2).replaceAll("_", "~sep~"));
+					t.setText("c_" + t.getText().substring(2).replace("_", "~sep~"));
 				}
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
@@ -309,10 +309,10 @@ public class Xliff2Xml {
 	}
 
 	private static String restoreChars(String string) {
-		String result = string.replaceAll(Xml2Xliff.MATHLT, "<");
-		result = result.replaceAll(Xml2Xliff.MATHGT, ">");
-		result = result.replaceAll(Xml2Xliff.DOUBLEPRIME, "\"");
-		result = result.replaceAll(Xml2Xliff.GAMP, "&");
+		String result = string.replace(Xml2Xliff.MATHLT, "<");
+		result = result.replace(Xml2Xliff.MATHGT, ">");
+		result = result.replace(Xml2Xliff.DOUBLEPRIME, "\"");
+		result = result.replace(Xml2Xliff.GAMP, "&");
 		return result;
 	}
 
@@ -355,7 +355,7 @@ public class Xliff2Xml {
 			}
 		}
 
-		return (result + string).replaceAll("###AMP###", "&amp;");
+		return (result + string).replace("###AMP###", "&amp;");
 	}
 
 	private static String replaceEntities(String original, String token, String entity) {

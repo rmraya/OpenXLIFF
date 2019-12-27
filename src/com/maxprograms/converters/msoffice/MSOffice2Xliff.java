@@ -326,8 +326,8 @@ public class MSOffice2Xliff {
 			}
 		}
 
-		text = text.replaceAll("</ph><ph>", "");
-		if (!text.equals("")) {
+		text = text.replace("</ph><ph>", "");
+		if (!text.isEmpty()) {
 			if (segByElement) {
 				writeSegment(text);
 			} else {
@@ -419,7 +419,7 @@ public class MSOffice2Xliff {
 				recursePhrase(content.get(i));
 			}
 		}
-		text = text.replaceAll("</ph><ph>", "");
+		text = text.replace("</ph><ph>", "");
 		if (!text.equals("")) {
 			if (segByElement == true) {
 				writeSegment(text);
@@ -539,7 +539,7 @@ public class MSOffice2Xliff {
 	private static void cleanLinks(Element e) {
 		if (e.getName().matches("[a-z]:instrText")) {
 			if (e.getText().indexOf("HYPERLINK") != -1) {
-				String newLink = e.getText().replaceAll("&", "&amp;");
+				String newLink = e.getText().replace("&", "&amp;");
 				e.setText(newLink);
 			}
 			return;
@@ -598,9 +598,9 @@ public class MSOffice2Xliff {
 	}
 
 	private static String cleanAttribute(String value) {
-		value = value.replaceAll("&", "&amp;amp;");
-		value = value.replaceAll("<", "&amp;lt;");
-		value = value.replaceAll(">", "&amp;gt;");
+		value = value.replace("&", "&amp;amp;");
+		value = value.replace("<", "&amp;lt;");
+		value = value.replace(">", "&amp;gt;");
 		value = value.replaceAll("\"", "&quot;");
 		return value;
 	}

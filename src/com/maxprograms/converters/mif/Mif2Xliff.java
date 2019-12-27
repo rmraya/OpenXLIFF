@@ -245,9 +245,9 @@ public class Mif2Xliff {
 	 * XLIFF file *
 	 */
 	private static String cleanTag(String line) {
-		String s = line.replaceAll("&", "&amp;");
-		s = s.replaceAll("<", "&lt;");
-		s = s.replaceAll(">", "&gt;");
+		String s = line.replace("&", "&amp;");
+		s = s.replace("<", "&lt;");
+		s = s.replace(">", "&gt;");
 		return s;
 	}
 
