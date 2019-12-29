@@ -15,20 +15,18 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -39,6 +37,8 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+
+import org.xml.sax.SAXException;
 
 public class Html2Xliff {
 
@@ -54,11 +54,11 @@ public class Html2Xliff {
 	private static int tagId;
 
 	private static List<String> segments;
-	private static Hashtable<String, String> startsSegment;
-	private static Hashtable<String, Vector<String>> translatableAttributes;
-	private static Hashtable<String, String> entities;
-	private static Hashtable<String, String> ctypes;
-	private static Hashtable<String, String> keepFormating;
+	private static Map<String, String> startsSegment;
+	private static Map<String, List<String>> translatableAttributes;
+	private static Map<String, String> entities;
+	private static Map<String, String> ctypes;
+	private static Map<String, String> keepFormating;
 
 	private static boolean segByElement;
 	private static boolean keepFormat;
@@ -74,8 +74,8 @@ public class Html2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -83,7 +83,6 @@ public class Html2Xliff {
 		sourceLanguage = params.get("srcLang");
 		targetLanguage = params.get("tgtLang");
 		srcEncoding = params.get("srcEncoding");
-		String iniFile = params.get("iniFile");
 		catalog = params.get("catalog");
 		String paragraphSegmentation = params.get("paragraph");
 		if (paragraphSegmentation == null) {
@@ -114,7 +113,7 @@ public class Html2Xliff {
 				}
 				String file = new String(array, srcEncoding);
 				array = null;
-				buildTables(iniFile);
+				buildTables();
 				buildList(file);
 				file = null;
 
@@ -137,7 +136,6 @@ public class Html2Xliff {
 	}
 
 	private static void writeHeader() throws IOException {
-
 		String tgtLang = "";
 		if (targetLanguage != null) {
 			tgtLang = "\" target-language=\"" + targetLanguage;
@@ -268,7 +266,6 @@ public class Html2Xliff {
 	}
 
 	private static void writeSegment(String segment) throws IOException, SAXException, ParserConfigurationException {
-
 		segment = segment.replaceAll("\u2029", "");
 		String pure = removePH(segment);
 		if (pure.trim().equals("")) {
@@ -748,7 +745,6 @@ public class Html2Xliff {
 	}
 
 	private static String extractAttributes(String type, String element) {
-
 		String ctype = "";
 		if (ctypes.containsKey(type)) {
 			ctype = " ctype=\"" + ctypes.get(type) + "\"";
@@ -756,7 +752,7 @@ public class Html2Xliff {
 		String result = "<ph id=\"" + tagId++ + "\"" + ctype + ">";
 		element = cleanString(element);
 
-		Vector<String> v = translatableAttributes.get(type);
+		List<String> v = translatableAttributes.get(type);
 
 		StringTokenizer tokenizer = new StringTokenizer(element, "&= \t\n\r\f/", true);
 		while (tokenizer.hasMoreTokens()) {
@@ -800,20 +796,21 @@ public class Html2Xliff {
 		return result;
 	}
 
-	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void buildTables()
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalog);
 		builder.setEntityResolver(cat);
-		Document doc = builder.build(iniFile);
+		Document doc = builder.build(Html2Xliff.class.getResource("init_html.xml"));
 		Element root = doc.getRootElement();
 		List<Element> tags = root.getChildren("tag");
 
-		startsSegment = new Hashtable<>();
-		translatableAttributes = new Hashtable<>();
-		entities = new Hashtable<>();
-		ctypes = new Hashtable<>();
-		keepFormating = new Hashtable<>();
+		startsSegment = new HashMap<>();
+		translatableAttributes = new HashMap<>();
+		entities = new HashMap<>();
+		ctypes = new HashMap<>();
+		keepFormating = new HashMap<>();
 
 		Iterator<Element> i = tags.iterator();
 		while (i.hasNext()) {
@@ -828,7 +825,7 @@ public class Html2Xliff {
 			if (!attributes.equals("")) {
 				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
 				int count = tokenizer.countTokens();
-				Vector<String> v = new Vector<>(count);
+				List<String> v = new ArrayList<>(count);
 				for (int j = 0; j < count; j++) {
 					v.add(tokenizer.nextToken());
 				}

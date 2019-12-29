@@ -20,6 +20,7 @@ import java.lang.System.Logger.Level;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Base64.Decoder;
@@ -28,7 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import com.maxprograms.languages.RegistryParser;
 import com.maxprograms.xml.XMLUtils;
@@ -94,7 +94,7 @@ public class Utils {
 	}
 
 	private static List<String> getPathList(File file) throws IOException {
-		List<String> result = new Vector<>();
+		List<String> result = new ArrayList<>();
 		File r = file.getCanonicalFile();
 		while (r != null) {
 			result.add(r.getName());
@@ -179,7 +179,7 @@ public class Utils {
 	}
 
 	public static String[] fixPath(String[] args) {
-		Vector<String> result = new Vector<>();
+		List<String> result = new ArrayList<>();
 		String current = "";
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];

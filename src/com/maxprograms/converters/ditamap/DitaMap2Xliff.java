@@ -14,22 +14,21 @@ package com.maxprograms.converters.ditamap;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
@@ -47,6 +46,8 @@ import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class DitaMap2Xliff {
 
 	private static final Logger LOGGER = System.getLogger(DitaMap2Xliff.class.getName());
@@ -57,8 +58,8 @@ public class DitaMap2Xliff {
 	private static boolean hasXref;
 	private static boolean hasConKeyRef;
 	private static Scope rootScope;
-	private static Hashtable<String, Set<String>> excludeTable;
-	private static Hashtable<String, Set<String>> includeTable;
+	private static Map<String, Set<String>> excludeTable;
+	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
 	private static boolean elementsExcluded;
 
@@ -67,8 +68,8 @@ public class DitaMap2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		try {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
@@ -76,7 +77,7 @@ public class DitaMap2Xliff {
 			String mapFile = params.get("source");
 
 			DitaParser parser = new DitaParser();
-			Vector<String> filesMap = parser.run(params);
+			List<String> filesMap = parser.run(params);
 			rootScope = parser.getScope();
 
 			builder = new SAXBuilder();
@@ -84,8 +85,8 @@ public class DitaMap2Xliff {
 			builder.preserveCustomAttributes(true);
 			builder.setErrorHandler(new SilentErrorHandler());
 
-			Vector<String> xliffs = new Vector<>();
-			Vector<String> skels = new Vector<>();
+			List<String> xliffs = new ArrayList<>();
+			List<String> skels = new ArrayList<>();
 
 			String ditaval = params.get("ditaval");
 			if (ditaval != null) {
@@ -135,7 +136,7 @@ public class DitaMap2Xliff {
 				xliffs.add(xlf.getAbsolutePath());
 
 				Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
-				Hashtable<String, String> params2 = new Hashtable<>();
+				Map<String, String> params2 = new HashMap<>();
 				params2.put("source", source);
 				params2.put("xliff", xlf.getAbsolutePath());
 				params2.put("skeleton", skl.getAbsolutePath());
@@ -153,7 +154,7 @@ public class DitaMap2Xliff {
 				if (tComments != null) {
 					params2.put("translateComments", tComments);
 				}
-				Vector<String> res = Xml2Xliff.run(params2);
+				List<String> res = Xml2Xliff.run(params2);
 				if (!Constants.SUCCESS.equals(res.get(0))) {
 					return res;
 				}
@@ -161,7 +162,6 @@ public class DitaMap2Xliff {
 					// original has conref
 					fixSource(xlf.getAbsolutePath(), filesMap.get(i));
 				}
-
 			}
 
 			Document merged = new Document(null, "xliff", null, null);
@@ -685,8 +685,8 @@ public class DitaMap2Xliff {
 		if (root.getName().equals("val")) {
 			List<Element> props = root.getChildren("prop");
 			Iterator<Element> it = props.iterator();
-			excludeTable = new Hashtable<>();
-			includeTable = new Hashtable<>();
+			excludeTable = new HashMap<>();
+			includeTable = new HashMap<>();
 			while (it.hasNext()) {
 				Element prop = it.next();
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
@@ -739,7 +739,7 @@ public class DitaMap2Xliff {
 						}
 					}
 					StringTokenizer tokenizer = new StringTokenizer(a.getValue());
-					Vector<String> tokens = new Vector<>();
+					List<String> tokens = new ArrayList<>();
 					while (tokenizer.hasMoreTokens()) {
 						tokens.add(tokenizer.nextToken());
 					}

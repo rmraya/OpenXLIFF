@@ -15,21 +15,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xml.Xliff2Xml;
@@ -38,9 +37,11 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Idml {
 
-	private static Hashtable<String, String> filesTable;
+	private static Map<String, String> filesTable;
 	private static boolean isEmbedded;
 
 	private Xliff2Idml() {
@@ -48,11 +49,11 @@ public class Xliff2Idml {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		String xliffFile = params.get("xliff");
 		String outputFile = params.get("backfile");
-		filesTable = new Hashtable<>();
+		filesTable = new HashMap<>();
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			Document doc = builder.build(xliffFile);
@@ -93,14 +94,14 @@ public class Xliff2Idml {
 									output.write(buf, 0, len);
 								}
 							}
-							Hashtable<String, String> table = new Hashtable<>();
+							Map<String, String> table = new HashMap<>();
 							table.put("xliff", filesTable.get(name));
 							table.put("backfile", filesTable.get(name) + ".xml");
 							table.put("catalog", params.get("catalog"));
 							table.put("skeleton", filesTable.get(name) + ".skl");
 							table.put("encoding", params.get("encoding"));
 							table.put("IDML", "true");
-							Vector<String> res = Xliff2Xml.run(table);
+							List<String> res = Xliff2Xml.run(table);
 							if (!Constants.SUCCESS.equals(res.get(0))) {
 								return res;
 							}

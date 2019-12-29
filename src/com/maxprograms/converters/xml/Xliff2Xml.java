@@ -17,23 +17,22 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
@@ -44,20 +43,17 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Xml {
 
 	private static final Logger LOGGER = System.getLogger(Xliff2Xml.class.getName());
 
-	private static InputStreamReader input;
-	private static BufferedReader buffer;
-	private static String sklFile;
 	private static String xliffFile;
-	private static String line;
-	private static Hashtable<String, Element> segments;
-	private static FileOutputStream output;
+	private static Map<String, Element> segments;
 	private static String encoding;
 	private static Catalog catalog;
-	private static Hashtable<String, String> entities;
+	private static Map<String, String> entities;
 	private static boolean inDesign = false;
 	private static boolean inAttribute;
 	private static boolean inCData;
@@ -69,11 +65,10 @@ public class Xliff2Xml {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
-		Vector<String> result = new Vector<>();
-
-		sklFile = params.get("skeleton");
+		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
 		encoding = params.get("encoding");
 		String isInDesign = params.get("InDesign");
@@ -102,62 +97,61 @@ public class Xliff2Xml {
 			if (!f.exists()) {
 				Files.createFile(Paths.get(f.toURI()));
 			}
-			output = new FileOutputStream(f);
-			loadSegments();
-			input = new InputStreamReader(new FileInputStream(sklFile), StandardCharsets.UTF_8);
-			buffer = new BufferedReader(input);
-			line = buffer.readLine();
-			while (line != null) {
-				line = line + "\n";
-				if (line.indexOf("%%%") != -1) {
-					//
-					// contains translatable text
-					//
-					int index = line.indexOf("%%%");
-					while (index != -1) {
-						String start = line.substring(0, index);
-						writeString(start);
-						line = line.substring(index + 3);
-						String code = line.substring(0, line.indexOf("%%%"));
-						line = line.substring(line.indexOf("%%%\n") + 4);
-						Element segment = segments.get(code);
-						if (segment != null) {
-							inAttribute = segment.getAttributeValue("restype", "").equals("x-attribute");
-							inCData = segment.getAttributeValue("restype", "").equals("x-cdata");
-							Element target = segment.getChild("target");
-							Element source = segment.getChild("source");
-							if (target != null) {
-								if (segment.getAttributeValue("approved", "no").equals("yes")) {
-									writeString(extractText(target));
+			try (FileOutputStream output = new FileOutputStream(f)) {
+				loadSegments();
+				InputStreamReader input = new InputStreamReader(new FileInputStream(sklFile), StandardCharsets.UTF_8);
+				try (BufferedReader buffer = new BufferedReader(input)) {
+					String line = buffer.readLine();
+					while (line != null) {
+						line = line + "\n";
+						if (line.indexOf("%%%") != -1) {
+							//
+							// contains translatable text
+							//
+							int index = line.indexOf("%%%");
+							while (index != -1) {
+								String start = line.substring(0, index);
+								writeString(output, start);
+								line = line.substring(index + 3);
+								String code = line.substring(0, line.indexOf("%%%"));
+								line = line.substring(line.indexOf("%%%\n") + 4);
+								Element segment = segments.get(code);
+								if (segment != null) {
+									inAttribute = segment.getAttributeValue("restype", "").equals("x-attribute");
+									inCData = segment.getAttributeValue("restype", "").equals("x-cdata");
+									Element target = segment.getChild("target");
+									Element source = segment.getChild("source");
+									if (target != null) {
+										if (segment.getAttributeValue("approved", "no").equals("yes")) {
+											writeString(output, extractText(target));
+										} else {
+											writeString(output, extractText(source));
+										}
+									} else {
+										writeString(output, extractText(source));
+									}
 								} else {
-									writeString(extractText(source));
+									result.add(Constants.ERROR);
+									MessageFormat mf = new MessageFormat("Segment {0} not found.");
+									result.add(mf.format(new Object[] { code }));
+									return result;
 								}
-							} else {
-								writeString(extractText(source));
-							}
+
+								index = line.indexOf("%%%");
+								if (index == -1) {
+									writeString(output, line);
+								}
+							} // end while
 						} else {
-							result.add(Constants.ERROR);
-							MessageFormat mf = new MessageFormat("Segment {0} not found.");
-							result.add(mf.format(new Object[] { code }));
-							return result;
+							//
+							// non translatable portion
+							//
+							writeString(output, line);
 						}
-
-						index = line.indexOf("%%%");
-						if (index == -1) {
-							writeString(line);
-						}
-					} // end while
-				} else {
-					//
-					// non translatable portion
-					//
-					writeString(line);
+						line = buffer.readLine();
+					}
 				}
-				line = buffer.readLine();
 			}
-
-			output.close();
-			output = null;
 			if (dita_based) {
 				try {
 					removeTranslate(outputFile);
@@ -305,7 +299,7 @@ public class Xliff2Xml {
 				break;
 			}
 		}
-		return ts + content + "</" + name + ">"; 
+		return ts + content + "</" + name + ">";
 	}
 
 	private static String restoreChars(String string) {
@@ -465,9 +459,10 @@ public class Xliff2Xml {
 		// now replace common text with
 		// the entities declared in the DTD
 
-		Enumeration<String> enu = entities.keys();
-		while (enu.hasMoreElements()) {
-			String key = enu.nextElement();
+		Set<String> enu = entities.keySet();
+		Iterator<String> it = enu.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
 			String value = entities.get(key);
 			if (!value.equals("") && !key.equals("amp") && !key.equals("lt") && !key.equals("gt") && !key.equals("quot")
 					&& !key.equals("apos")) {
@@ -477,12 +472,11 @@ public class Xliff2Xml {
 		return result;
 	}
 
-	private static void writeString(String string) throws IOException {
+	private static void writeString(FileOutputStream output, String string) throws IOException {
 		output.write(string.getBytes(encoding));
 	}
 
 	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
-
 		SAXBuilder builder = new SAXBuilder();
 		if (catalog != null) {
 			builder.setEntityResolver(catalog);
@@ -494,7 +488,7 @@ public class Xliff2Xml {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();
@@ -504,7 +498,7 @@ public class Xliff2Xml {
 			segments.put(unit.getAttributeValue("id"), unit);
 		}
 
-		entities = new Hashtable<>();
+		entities = new HashMap<>();
 
 		Element header = root.getChild("file").getChild("header");
 		List<Element> groups = header.getChildren("prop-group");

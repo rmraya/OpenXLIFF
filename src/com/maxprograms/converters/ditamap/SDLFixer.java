@@ -15,14 +15,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -31,10 +30,12 @@ import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class SDLFixer {
 
 	private static String baseURL;
-	private static Hashtable<String, String> table;
+	private static Map<String, String> table;
 	private static boolean changes;
 
 	private SDLFixer() {
@@ -46,7 +47,7 @@ public class SDLFixer {
 			throws IOException, SAXException, ParserConfigurationException {
 		baseURL = folder.toURI().toURL().toString();
 		String[] files = folder.list();
-		table = new Hashtable<>();
+		table = new HashMap<>();
 		for (int i = 0; i < files.length; i++) {
 			String file = files[i];
 			if (file.endsWith(".xlf") || file.endsWith(".tmx") || file.endsWith(".autosave")) {
@@ -85,7 +86,7 @@ public class SDLFixer {
 	}
 
 	private static void recurse(Element root, File folder) throws MalformedURLException {
-		String href = root.getAttributeValue("href", "");
+		String href = root.getAttributeValue("href");
 		if (!href.isEmpty()) {
 			String file = table.get(href);
 			if (file != null) {
@@ -95,7 +96,7 @@ public class SDLFixer {
 				changes = true;
 			}
 		}
-		String conref = root.getAttributeValue("conref", "");
+		String conref = root.getAttributeValue("conref");
 		int index = conref.indexOf('=');
 		if (!conref.isEmpty() && conref.startsWith("GUID-") && index != -1) {
 			String guid = conref.substring(0, index);
@@ -116,9 +117,9 @@ public class SDLFixer {
 			}
 		}
 
-		String lang = root.getAttributeValue("xml:lang", "");
+		String lang = root.getAttributeValue("xml:lang");
 		if ((!lang.isEmpty())) {
-			lang = lang.replaceAll("_", "-");
+			lang = lang.replace("_", "-");
 			root.setAttribute("xml:lang", lang);
 		}
 		root.removeAttribute("class");

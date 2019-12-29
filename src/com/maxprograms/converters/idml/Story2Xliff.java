@@ -13,19 +13,16 @@ package com.maxprograms.converters.idml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -37,6 +34,8 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+
+import org.xml.sax.SAXException;
 
 public class Story2Xliff {
 	private static String inputFile;
@@ -54,8 +53,8 @@ public class Story2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		id = 1;
 		inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -155,7 +154,7 @@ public class Story2Xliff {
 	}
 
 	private static void removeChangeTracking(Element root) {
-		Vector<XMLNode> newContent = new Vector<>();
+		List<XMLNode> newContent = new ArrayList<>();
 		List<XMLNode> nodes = root.getContent();
 		Iterator<XMLNode> it = nodes.iterator();
 		boolean changed = false;
@@ -189,7 +188,7 @@ public class Story2Xliff {
 	}
 
 	private static void mergeContent(Element e) {
-		Vector<XMLNode> newContent = new Vector<>();
+		List<XMLNode> newContent = new ArrayList<>();
 		Element current = null;
 		List<XMLNode> content = e.getContent();
 		Iterator<XMLNode> it = content.iterator();
@@ -460,7 +459,7 @@ public class Story2Xliff {
 		if (index == -1 && string.indexOf("<Br") == -1) {
 			return new String[] { string };
 		}
-		Vector<String> v = new Vector<>();
+		List<String> v = new ArrayList<>();
 		while (index != -1) {
 			v.add(string.substring(0, index) + "</ph>");
 			string = "<ph>" + string.substring(index);
@@ -468,7 +467,7 @@ public class Story2Xliff {
 		}
 		v.add(string);
 		// split at <Br
-		Vector<String> v2 = new Vector<>();
+		List<String> v2 = new ArrayList<>();
 		for (int i = 0; i < v.size(); i++) {
 			String s = v.get(i);
 			int index2 = s.indexOf("<Br");

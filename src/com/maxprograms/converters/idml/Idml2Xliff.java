@@ -15,21 +15,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -41,6 +40,8 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Idml2Xliff {
 
 	private static final Logger LOGGER = System.getLogger(Idml2Xliff.class.getName());
@@ -49,7 +50,7 @@ public class Idml2Xliff {
 	private static String inputFile;
 	private static String skeleton;
 	private static ZipOutputStream out;
-	private static Vector<String> used = null;
+	private static List<String> used = null;
 
 	private Idml2Xliff() {
 		// do not instantiate this class
@@ -59,12 +60,12 @@ public class Idml2Xliff {
 	private static void sortStories() {
 		List<Element> files = mergedRoot.getChildren("file");
 		List<PI> instructions = mergedRoot.getPI();
-		Hashtable<String, Integer> table = new Hashtable<>();
+		Map<String, Integer> table = new HashMap<>();
 		for (int i = 0; i < files.size(); i++) {
 			String key = getKey(files.get(i));
 			table.put(key, i);
 		}
-		Vector<XMLNode> v = new Vector<>();
+		List<XMLNode> v = new ArrayList<>();
 		Iterator<String> it = used.iterator();
 		while (it.hasNext()) {
 			String key = it.next();
@@ -90,9 +91,9 @@ public class Idml2Xliff {
 		return null;
 	}
 
-	private static Vector<String> getStories(String map)
+	private static List<String> getStories(String map)
 			throws SAXException, IOException, ParserConfigurationException {
-		Vector<String> result = new Vector<>();
+		List<String> result = new ArrayList<>();
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(map);
 		Element root = doc.getRootElement();
@@ -169,8 +170,8 @@ public class Idml2Xliff {
 		}
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		inputFile = params.get("source");
 		String xliff = params.get("xliff");
@@ -206,7 +207,7 @@ public class Idml2Xliff {
 							}
 						}
 						try {
-							Hashtable<String, String> table = new Hashtable<>();
+							Map<String, String> table = new HashMap<>();
 							table.put("source", tmp.getAbsolutePath());
 							table.put("xliff", tmp.getAbsolutePath() + ".xlf");
 							table.put("skeleton", tmp.getAbsolutePath() + ".skl");
@@ -220,9 +221,7 @@ public class Idml2Xliff {
 							table.put("paragraph", params.get("paragraph"));
 							table.put("srxFile", params.get("srxFile"));
 							table.put("format", params.get("format"));
-							Vector<String> res = null;
-
-							res = Story2Xliff.run(table);
+							List<String> res = Story2Xliff.run(table);
 
 							if (Constants.SUCCESS.equals(res.get(0))) {
 								if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {

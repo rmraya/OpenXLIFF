@@ -17,21 +17,20 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
@@ -39,10 +38,12 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Po {
 
 	private static String xliffFile;
-	private static Hashtable<String, Element> segments;
+	private static Map<String, Element> segments;
 	private static FileOutputStream output;
 	private static String encoding;
 
@@ -51,9 +52,8 @@ public class Xliff2Po {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -292,7 +292,7 @@ public class Xliff2Po {
 				while (h.hasNext()) {
 					Element context = h.next();
 					if (context.getAttributeValue("context-type", "").equals("x-po-autocomment")) {
-						Vector<String> comments = splitLines(context.getText());
+						List<String> comments = splitLines(context.getText());
 						for (int j = 0; j < comments.size(); j++) {
 							String comment = comments.get(j);
 							if (!comment.trim().equals("")) {
@@ -315,7 +315,7 @@ public class Xliff2Po {
 			if (note.getAttributeValue("annotates", "general").equals("source")) {
 				continue;
 			}
-			Vector<String> lines = splitLines(note.getText());
+			List<String> lines = splitLines(note.getText());
 			Iterator<String> h = lines.iterator();
 			while (h.hasNext()) {
 				String comment = h.next();
@@ -324,8 +324,8 @@ public class Xliff2Po {
 		}
 	}
 
-	private static Vector<String> splitLines(String text) {
-		Vector<String> result = new Vector<>();
+	private static List<String> splitLines(String text) {
+		List<String> result = new ArrayList<>();
 		StringTokenizer tokenizer = new StringTokenizer(text, "\n");
 		if (text.startsWith("\n\n")) {
 			result.add("");
@@ -349,7 +349,7 @@ public class Xliff2Po {
 
 		Document doc = builder.build(xliffFile);
 		Element root = doc.getRootElement();
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 
 		recurse(root);
 

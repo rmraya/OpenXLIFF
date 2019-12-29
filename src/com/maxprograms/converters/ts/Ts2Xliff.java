@@ -13,17 +13,15 @@ package com.maxprograms.converters.ts;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -33,29 +31,26 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Ts2Xliff {
 	private static String sourceLanguage;
-	private static String targetLanguage;
-	private static String skeletonFile;
-	private static String xliffFile;
-	private static String inputFile;
 	private static int segId;
 	private static FileOutputStream output;
-	private static Document doc;
-
+	
 	private Ts2Xliff() {
 		// do not instantiate this class
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		segId = 0;
-		inputFile = params.get("source");
-		xliffFile = params.get("xliff");
-		skeletonFile = params.get("skeleton");
+		String inputFile = params.get("source");
+		String xliffFile = params.get("xliff");
+		String skeletonFile = params.get("skeleton");
 		sourceLanguage = params.get("srcLang");
-		targetLanguage = params.get("tgtLang");
+		String targetLanguage = params.get("tgtLang");
 		String srcEncoding = params.get("srcEncoding");
 		String tgtLang = "";
 		if (targetLanguage != null) {
@@ -82,7 +77,7 @@ public class Ts2Xliff {
 			writeString("<body>\n");
 
 			SAXBuilder builder = new SAXBuilder();
-			doc = builder.build(inputFile);
+			Document doc = builder.build(inputFile);
 			recurse(doc.getRootElement());
 
 			try (FileOutputStream skl = new FileOutputStream(skeletonFile)) {
@@ -134,7 +129,7 @@ public class Ts2Xliff {
 
 	private static String getTarget(Element target) {
 		List<Element> numerusforms = target.getChildren("numerusform");
-		if (numerusforms.size() > 0) {
+		if (!numerusforms.isEmpty()) {
 			return getText(numerusforms.get(0));
 		}
 		return getText(target);

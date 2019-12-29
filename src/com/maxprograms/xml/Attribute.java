@@ -14,10 +14,9 @@ package com.maxprograms.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
-public class Attribute implements XMLNode, Serializable, Comparable<Attribute> {
+public class Attribute implements XMLNode, Comparable<Attribute> {
 
 	private static final long serialVersionUID = -859299907013846457L;
 	private String name;

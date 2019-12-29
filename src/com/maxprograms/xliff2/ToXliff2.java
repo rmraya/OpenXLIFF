@@ -14,19 +14,17 @@ package com.maxprograms.xliff2;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
@@ -39,6 +37,8 @@ import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 import com.maxprograms.xml.XMLUtils;
 
+import org.xml.sax.SAXException;
+
 public class ToXliff2 {
 
 	private static Element root2;
@@ -49,12 +49,12 @@ public class ToXliff2 {
 		// use run method instead
 	}
 
-	public static Vector<String> run(File xliffFile, String catalog) {
+	public static List<String> run(File xliffFile, String catalog) {
 		return run(xliffFile.getAbsolutePath(), xliffFile.getAbsolutePath(), catalog);
 	}
 
-	public static Vector<String> run(String sourceFile, String outputFile, String catalog) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(String sourceFile, String outputFile, String catalog) {
+		List<String> result = new ArrayList<>();
 		fileId = 1;
 		try {
 			SAXBuilder builder = new SAXBuilder();

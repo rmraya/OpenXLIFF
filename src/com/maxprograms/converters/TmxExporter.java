@@ -20,16 +20,15 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Attribute;
@@ -41,6 +40,8 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
 
+import org.xml.sax.SAXException;
+
 public class TmxExporter {
 
 	public static final String DOUBLEPRIME = "\u2033";
@@ -48,7 +49,7 @@ public class TmxExporter {
 	public static final String MATHGT = "\u200B\u203A";
 	public static final String GAMP = "\u200B\u203A";
 
-	static Hashtable<String, String> docProperties;
+	static Map<String, String> docProperties;
 	private static String sourceLang;
 	private static String targetLang;
 	private static String today;
@@ -60,8 +61,8 @@ public class TmxExporter {
 		// do not instantiate this class
 	}
 
-	public static Vector<String> export(String xliff, String tmx, String catalog) {
-		Vector<String> result = new Vector<>();
+	public static List<String> export(String xliff, String tmx, String catalog) {
+		List<String> result = new ArrayList<>();
 		try {
 			today = getTmxDate();
 			filenumbr = 0;
@@ -81,7 +82,7 @@ public class TmxExporter {
 			try (FileOutputStream output = new FileOutputStream(tmx)) {
 				Element firstFile = root.getChild("file");
 
-				docProperties = new Hashtable<>();
+				docProperties = new HashMap<>();
 				List<PI> slist = root.getPI("subject");
 				if (!slist.isEmpty()) {
 					docProperties.put("subject", slist.get(0).getData());

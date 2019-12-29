@@ -13,14 +13,6 @@ package com.maxprograms.languages;
 
 public class Variant implements Comparable<Variant> {
 
-	public String getCode() {
-		return code;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
 	private String code;
 	private String description;
 	private String prefix;
@@ -29,6 +21,14 @@ public class Variant implements Comparable<Variant> {
 		this.code = code;
 		this.description = description;
 		this.prefix = prefix;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public String getPrefix() {
@@ -40,4 +40,20 @@ public class Variant implements Comparable<Variant> {
 		return description.compareTo(arg0.getDescription());
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Variant) {
+			Variant s = (Variant) obj;
+			return code.equals(s.getCode()) && description.equals(s.getDescription()) && prefix.equals(s.getPrefix());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return code.hashCode();
+	}
 }

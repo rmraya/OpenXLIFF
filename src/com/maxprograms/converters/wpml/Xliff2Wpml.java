@@ -18,10 +18,10 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -41,15 +41,15 @@ public class Xliff2Wpml {
 
     private static Catalog catalog;
     private static Document skeleton;
-    private static Hashtable<String, Element> segments;
+    private static Map<String, Element> segments;
 
     private Xliff2Wpml() {
         // do not instantiate this class
         // use run method instead
     }
 
-    public static Vector<String> run(Hashtable<String, String> params) {
-        Vector<String> result = new Vector<>();
+    public static List<String> run(Map<String, String> params) {
+        List<String> result = new ArrayList<>();
 
         String xliffFile = params.get("xliff");
         String sklFile = params.get("skeleton");
@@ -135,7 +135,7 @@ public class Xliff2Wpml {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
         Document xliff = builder.build(xliffFile);
-        segments = new Hashtable<>();
+        segments = new HashMap<>();
         recurseXliff(xliff.getRootElement());
     }
 

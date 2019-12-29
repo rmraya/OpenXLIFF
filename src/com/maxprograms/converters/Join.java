@@ -142,9 +142,9 @@ public class Join {
 						spaces.put(a.getName(), a);
 					}
 				}
-				List<Element> list = root.getChildren("file");
-				for (int j = 0; j < list.size(); j++) {
-					Element file = list.get(j);
+				List<Element> fileList = root.getChildren("file");
+				for (int j = 0; j < fileList.size(); j++) {
+					Element file = fileList.get(j);
 					String original = file.getAttributeValue("original");
 					set.add(original);
 				}

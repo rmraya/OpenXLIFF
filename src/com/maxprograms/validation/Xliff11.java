@@ -31,7 +31,7 @@ import com.maxprograms.xml.XMLOutputter;
 
 public class Xliff11 {
 
-	private static Logger LOGGER = System.getLogger(Xliff11.class.getName());
+	private static final Logger LOGGER = System.getLogger(Xliff11.class.getName());
 	private String reason = "";
 
 	public boolean validate(Document document, String catalog) {

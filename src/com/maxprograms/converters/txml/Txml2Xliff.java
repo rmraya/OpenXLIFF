@@ -13,18 +13,16 @@ package com.maxprograms.converters.txml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -35,18 +33,15 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Txml2Xliff {
 
-	private static String inputFile;
-	private static String xliffFile;
-	private static String skeletonFile;
 	private static String sourceLanguage;
 	private static String targetLanguage;
-	private static String catalog;
 	private static FileOutputStream output;
 	private static int tagId;
 	private static int segNum;
-	private static Document doc;
 	private static String srcEncoding;
 
 	private Txml2Xliff() {
@@ -54,20 +49,20 @@ public class Txml2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
-		inputFile = params.get("source");
-		xliffFile = params.get("xliff");
-		skeletonFile = params.get("skeleton");
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
+		String inputFile = params.get("source");
+		String xliffFile = params.get("xliff");
+		String skeletonFile = params.get("skeleton");
 		sourceLanguage = params.get("srcLang");
 		targetLanguage = params.get("tgtLang");
-		catalog = params.get("catalog");
+		String catalog = params.get("catalog");
 		srcEncoding = params.get("srcEncoding");
 
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			builder.setEntityResolver(new Catalog(catalog));
-			doc = builder.build(inputFile);
+			Document doc = builder.build(inputFile);
 			Element root = doc.getRootElement();
 
 			output = new FileOutputStream(xliffFile);
@@ -167,7 +162,7 @@ public class Txml2Xliff {
 		}
 		result.append("</" + ele.getName() + ">");
 		if (ele.getName().equals("target")) {
-			ele.setContent(new Vector<XMLNode>());
+			ele.setContent(new ArrayList<XMLNode>());
 			ele.setText("%%%" + segNum + "%%%");
 		}
 		return result.toString();

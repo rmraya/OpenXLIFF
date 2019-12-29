@@ -15,17 +15,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
@@ -39,19 +38,21 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class XliffModel {
 
 	private Document doc;
 	private Element root;
 	private Charset encoding;
 	private String version;
-	private Vector<String> ids;
-	private Hashtable<String, Element> sources;
-	private Hashtable<String, Element> targets;
-	private Hashtable<String, List<Element>> matches;
-	private Hashtable<String, List<Element>> notes;
-	private Hashtable<String, Boolean> translatable;
-	private Hashtable<String, Boolean> approved;
+	private List<String> ids;
+	private Map<String, Element> sources;
+	private Map<String, Element> targets;
+	private Map<String, List<Element>> matches;
+	private Map<String, List<Element>> notes;
+	private Map<String, Boolean> translatable;
+	private Map<String, Boolean> approved;
 	private Segmenter segmenter;
 	private FileOutputStream out;
 	private String original;
@@ -75,13 +76,13 @@ public class XliffModel {
 		if (version.equals("1.2") && srx != null) {
 			segmenter = new Segmenter(srx, srclang, catalog);
 		}
-		ids = new Vector<>();
-		sources = new Hashtable<>();
-		targets = new Hashtable<>();
-		matches = new Hashtable<>();
-		notes = new Hashtable<>();
-		translatable = new Hashtable<>();
-		approved = new Hashtable<>();
+		ids = new ArrayList<>();
+		sources = new HashMap<>();
+		targets = new HashMap<>();
+		matches = new HashMap<>();
+		notes = new HashMap<>();
+		translatable = new HashMap<>();
+		approved = new HashMap<>();
 		List<Attribute> atts = root.getAttributes();
 		Iterator<Attribute> it = atts.iterator();
 		while (it.hasNext()) {
@@ -111,7 +112,7 @@ public class XliffModel {
 					segSource = segmenter.segment(e.getChild("source"));
 					// insert segSource in the unit
 					List<XMLNode> content = e.getContent();
-					Vector<XMLNode> newContent = new Vector<>();
+					List<XMLNode> newContent = new ArrayList<>();
 					for (int i = 0; i < content.size(); i++) {
 						XMLNode n = content.get(i);
 						newContent.add(n);
@@ -133,7 +134,7 @@ public class XliffModel {
 						mrk.setAttribute("mid", "0");
 						mrk.setAttribute("mtype", "seg");
 						mrk.setText(segSource.getText());
-						segSource.setContent(new Vector<>());
+						segSource.setContent(new ArrayList<>());
 						segSource.addContent(mrk);
 						segments.add(mrk);
 						modified = true;
@@ -152,7 +153,7 @@ public class XliffModel {
 							mrk.setAttribute("mid", "0");
 							mrk.setAttribute("mtype", "seg");
 							mrk.setText(target.getText());
-							target.setContent(new Vector<>());
+							target.setContent(new ArrayList<>());
 							target.addContent(mrk);
 							translations.add(mrk);
 							modified = true;
@@ -277,7 +278,7 @@ public class XliffModel {
 	}
 
 	private void writeStr(String string) throws IOException {
-		out.write(string.getBytes("UTF-8"));
+		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
 	public void normalize(String output, String skeletonFile) throws IOException {
@@ -327,7 +328,7 @@ public class XliffModel {
 			Element target = root1.getChild("target");
 			if (segSource != null) {
 				if (containsText(segSource)) {
-					Hashtable<String, Element> targets1 = new Hashtable<>();
+					Map<String, Element> targets1 = new HashMap<>();
 					if (target != null) {
 						List<Element> tmarks = getSegments(target);
 						Iterator<Element> tt = tmarks.iterator();
@@ -395,7 +396,7 @@ public class XliffModel {
 	}
 
 	private List<Element> getSegments(Element e) {
-		List<Element> result = new Vector<>();
+		List<Element> result = new ArrayList<>();
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {

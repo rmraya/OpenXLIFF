@@ -16,20 +16,21 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+
+import org.xml.sax.SAXException;
 
 public class Text2Xliff {
 
@@ -46,8 +47,8 @@ public class Text2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		segId = 0;
 
 		String inputFile = params.get("source");

@@ -15,19 +15,18 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Document;
@@ -36,26 +35,27 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Ts {
 
-	private static Hashtable<String, Element> segments;
+	private static Map<String, Element> segments;
 	private static String xliffFile;
-	private static Document doc;
 
 	private Xliff2Ts() {
 		// do not instantiate this class
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		try {
 			xliffFile = params.get("xliff");
 			loadSegments();
 
 			String sklFile = params.get("skeleton");
 			SAXBuilder builder = new SAXBuilder();
-			doc = builder.build(sklFile);
+			Document doc = builder.build(sklFile);
 			recurseSkl(doc.getRootElement());
 
 			String outputFile = params.get("backfile");
@@ -143,7 +143,7 @@ public class Xliff2Ts {
 		SAXBuilder builder = new SAXBuilder();
 		Document sdoc = builder.build(xliffFile);
 		Element root = sdoc.getRootElement();
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 		recurseXliff(root);
 	}
 

@@ -13,14 +13,6 @@ package com.maxprograms.languages;
 
 public class Script implements Comparable<Script> {
 
-	public String getCode() {
-		return code;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
 	private String code;
 	private String description;
 
@@ -29,9 +21,33 @@ public class Script implements Comparable<Script> {
 		this.description = description;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
 	@Override
 	public int compareTo(Script arg0) {
 		return description.compareTo(arg0.getDescription());
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Script) {
+			Script s = (Script) obj;
+			return code.equals(s.getCode()) && description.equals(s.getDescription());
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return code.hashCode();
+	}
 }

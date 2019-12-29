@@ -11,15 +11,16 @@
  *******************************************************************************/
 package com.maxprograms.languages;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class RegistryEntry {
 
-	private Hashtable<String, String> table;
+	private Map<String, String> table;
 
 	public RegistryEntry(String entry) {
-		table = new Hashtable<>();
+		table = new HashMap<>();
 		parseEntry(entry);
 	}
 

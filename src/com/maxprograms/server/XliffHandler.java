@@ -26,12 +26,13 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -55,15 +56,15 @@ import org.xml.sax.SAXException;
 
 public class XliffHandler implements HttpHandler {
 
-    private static Logger LOGGER = System.getLogger(XliffHandler.class.getName());
+    private static final Logger LOGGER = System.getLogger(XliffHandler.class.getName());
 
     private IServer server;
 
-    private Hashtable<String, String> running;
-	private Hashtable<String, JSONObject> validationResults;
-	private Hashtable<String, JSONObject> conversionResults;
-	private Hashtable<String, JSONObject> mergeResults;
-	private Hashtable<String, JSONObject> analysisResults;
+    private Map<String, String> running;
+	private Map<String, JSONObject> validationResults;
+	private Map<String, JSONObject> conversionResults;
+	private Map<String, JSONObject> mergeResults;
+	private Map<String, JSONObject> analysisResults;
 	private boolean embed;
 	private String xliff;
 	private String catalog;
@@ -74,11 +75,11 @@ public class XliffHandler implements HttpHandler {
     
     public XliffHandler(IServer server) {
         this.server = server;
-        running = new Hashtable<>();
-		validationResults = new Hashtable<>();
-		conversionResults = new Hashtable<>();
-		mergeResults = new Hashtable<>();
-		analysisResults = new Hashtable<>();
+        running = new HashMap<>();
+		validationResults = new HashMap<>();
+		conversionResults = new HashMap<>();
+		mergeResults = new HashMap<>();
+		analysisResults = new HashMap<>();
     }
 
     @Override
@@ -214,7 +215,7 @@ public class XliffHandler implements HttpHandler {
 			public void run() {
 				running.put(process, "running");
 
-				Vector<String> result = Merge.merge(xliff, target, catalog, unapproved);
+				List<String> result = Merge.merge(xliff, target, catalog, unapproved);
 				if (exportTmx && Constants.SUCCESS.equals(result.get(0))) {
 					String tmx = "";
 					if (xliff.toLowerCase().endsWith(".xlf")) {
@@ -341,7 +342,7 @@ public class XliffHandler implements HttpHandler {
 		}
 		String process = "" + System.currentTimeMillis();
 
-		Hashtable<String, String> params = new Hashtable<>();
+		Map<String, String> params = new HashMap<>();
 		params.put("source", source);
 		params.put("srcLang", srcLang);
 		params.put("xliff", xliff);
@@ -363,7 +364,7 @@ public class XliffHandler implements HttpHandler {
 			@Override
 			public void run() {
 				running.put(process, "running");
-				Vector<String> result = Convert.run(params);
+				List<String> result = Convert.run(params);
 				if (embed && Constants.SUCCESS.equals(result.get(0))) {
 					result = Convert.addSkeleton(xliff, catalog);
 				}
@@ -510,7 +511,7 @@ public class XliffHandler implements HttpHandler {
 			@Override
 			public void run() {
 				running.put(process, "running");
-				Vector<String> result = new Vector<>();
+				List<String> result = new ArrayList<>();
 				try {
 					RepetitionAnalysis instance = new RepetitionAnalysis();
 					instance.analyse(file, catalog);

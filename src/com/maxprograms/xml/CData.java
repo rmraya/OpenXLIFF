@@ -13,10 +13,9 @@ package com.maxprograms.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.nio.charset.Charset;
 
-public class CData implements XMLNode, Serializable {
+public class CData implements XMLNode {
 
 	private static final long serialVersionUID = 610927332260249086L;
 	private String value;

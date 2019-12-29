@@ -19,15 +19,14 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
 import com.maxprograms.languages.RegistryParser;
@@ -36,6 +35,8 @@ import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
+
+import org.xml.sax.SAXException;
 
 public class XliffChecker {
 
@@ -46,22 +47,22 @@ public class XliffChecker {
 	private RegistryParser registry;
 	
 	private HashSet<String> xliffNamespaces;
-	private Hashtable<String, Set<String>> attributesTable;
-	private Hashtable<String, String> altSrcItTable;
-	private Hashtable<String, String> altTgtItTable;
-	private Hashtable<String, String> tgtItTable;
-	private Hashtable<String, String> phasesTable;
-	private Hashtable<String, String> xids;
-	private Hashtable<String, String> groupIds;
-	private Hashtable<String, String> srcItTable;
-	private Hashtable<String, String> toolsTable;
-	private Hashtable<String, String> ids;
-	private Hashtable<String, String> midTable;
-	private Hashtable<String, String> bxTable;
-	private Hashtable<String, String> exTable;
-	private Hashtable<String, String> bptTable;
-	private Hashtable<String, String> eptTable;
-	private Hashtable<String, String> inlineIds;
+	private Map<String, Set<String>> attributesTable;
+	private Map<String, String> altSrcItTable;
+	private Map<String, String> altTgtItTable;
+	private Map<String, String> tgtItTable;
+	private Map<String, String> phasesTable;
+	private Map<String, String> xids;
+	private Map<String, String> groupIds;
+	private Map<String, String> srcItTable;
+	private Map<String, String> toolsTable;
+	private Map<String, String> ids;
+	private Map<String, String> midTable;
+	private Map<String, String> bxTable;
+	private Map<String, String> exTable;
+	private Map<String, String> bptTable;
+	private Map<String, String> eptTable;
+	private Map<String, String> inlineIds;
 	private String sourceLanguage;
 	private String targetLanguage;
 	private boolean inSegSource;
@@ -217,7 +218,7 @@ public class XliffChecker {
 	}
 
 	private void createAttributesTable() {
-		attributesTable = new Hashtable<>();
+		attributesTable = new HashMap<>();
 
 		Set<String> xliffSet = new HashSet<>();
 		xliffSet.add("version");
@@ -639,19 +640,19 @@ public class XliffChecker {
 
 		if (e.getLocalName().equals("file")) {
 			// create tables to make sure that "id" attributes are unique within the <file>
-			ids = new Hashtable<>();
-			groupIds = new Hashtable<>();
+			ids = new HashMap<>();
+			groupIds = new HashMap<>();
 
 			// create tables to check that <it> tags have both start and end positions
-			srcItTable = new Hashtable<>();
-			tgtItTable = new Hashtable<>();
+			srcItTable = new HashMap<>();
+			tgtItTable = new HashMap<>();
 
 			// create table to check if "xid" points to valid <trans-unit>
-			xids = new Hashtable<>();
+			xids = new HashMap<>();
 
 			// check <phase> and <tool> elements
-			phasesTable = new Hashtable<>();
-			toolsTable = new Hashtable<>();
+			phasesTable = new HashMap<>();
+			toolsTable = new HashMap<>();
 
 			// check language codes used
 			sourceLanguage = e.getAttributeValue("source-language");
@@ -720,8 +721,8 @@ public class XliffChecker {
 				}
 			}
 			// create tables to check if <it> tags are duplicated
-			altSrcItTable = new Hashtable<>();
-			altTgtItTable = new Hashtable<>();
+			altSrcItTable = new HashMap<>();
+			altTgtItTable = new HashMap<>();
 		}
 
 		// validate "phase-name" attribute
@@ -773,7 +774,7 @@ public class XliffChecker {
 
 		// initialize table for checking "mid" attribute in <alt-trans>
 		if (e.getLocalName().equals("trans-unit")) {
-			midTable = new Hashtable<>();
+			midTable = new HashMap<>();
 		}
 
 		if (e.getLocalName().equals("seg-source")) {
@@ -818,18 +819,18 @@ public class XliffChecker {
 		// initialize tables for checking matched pairs of inline elements
 		if (e.getLocalName().equals("source") || e.getLocalName().equals("seg-source")
 				|| e.getLocalName().equals("target")) {
-			bxTable = new Hashtable<>();
-			exTable = new Hashtable<>();
-			bptTable = new Hashtable<>();
-			eptTable = new Hashtable<>();
-			inlineIds = new Hashtable<>();
+			bxTable = new HashMap<>();
+			exTable = new HashMap<>();
+			bptTable = new HashMap<>();
+			eptTable = new HashMap<>();
+			inlineIds = new HashMap<>();
 		}
 
 		// check for unique id at <source>, <seg-source> and <target> level
 		if (e.getLocalName().equals("bx") || e.getLocalName().equals("ex") || e.getLocalName().equals("bpt")
 				|| e.getLocalName().equals("ept") || e.getLocalName().equals("ph")) {
 			String id = e.getAttributeValue("id");
-			if (!inlineIds.contains(e.getLocalName() + id)) {
+			if (!inlineIds.containsKey(e.getLocalName() + id)) {
 				inlineIds.put(e.getLocalName() + id, "");
 			} else {
 				MessageFormat mf = new MessageFormat("Found <{0}> with duplicated \"id\".");
@@ -955,7 +956,7 @@ public class XliffChecker {
 		List<Element> children = e.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			boolean result = recurse(children.get(i));
-			if (result == false) {
+			if (!result) {
 				return false;
 			}
 		}
@@ -963,9 +964,10 @@ public class XliffChecker {
 		// check if inline tags are paired at <source>, <seg-source> and <target>
 		if (e.getLocalName().equals("source") || e.getLocalName().equals("seg-source")
 				|| e.getLocalName().equals("target")) {
-			Enumeration<String> keys = bxTable.keys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
+			Set<String> keys = bxTable.keySet();
+			Iterator<String> it = keys.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
 				if (exTable.containsKey(key)) {
 					exTable.remove(key);
 					bxTable.remove(key);
@@ -977,9 +979,10 @@ public class XliffChecker {
 				reason = mf.format(new Object[] { e.getLocalName() });
 				return false;
 			}
-			keys = bptTable.keys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
+			keys = bptTable.keySet();
+			it = keys.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
 				if (eptTable.containsKey(key)) {
 					eptTable.remove(key);
 					bptTable.remove(key);
@@ -1001,9 +1004,10 @@ public class XliffChecker {
 
 		// check for missing <trans-unite> referenced in <sub>
 		if (e.getLocalName().equals("file")) {
-			Enumeration<String> keys = xids.keys();
-			while (keys.hasMoreElements()) {
-				if (!ids.containsKey(keys.nextElement())) {
+			Set<String> keys = xids.keySet();
+			Iterator<String> it = keys.iterator();
+			while (it.hasNext()) {
+				if (!ids.containsKey(it.next())) {
 					reason = "Incorrect segment referenced in \"xid\" attribute.";
 					return false;
 				}

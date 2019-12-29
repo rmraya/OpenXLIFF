@@ -18,8 +18,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -89,7 +89,7 @@ public class SAXBuilder {
 		parser.parse(new InputSource(stream));
 		Document doc = contentHandler.getDocument();
 
-		Hashtable<String, String> entities = declhandler.getEntities();
+		Map<String, String> entities = declhandler.getEntities();
 		if (entities.size() > 0) {
 			doc.setEntities(entities);
 		}
@@ -148,11 +148,11 @@ public class SAXBuilder {
 		parser.parse(new InputSource(url.openStream()));
 		Document doc = contentHandler.getDocument();
 		if (doc != null) {
-			Hashtable<String, String> entities = declhandler.getEntities();
+			Map<String, String> entities = declhandler.getEntities();
 			if (entities != null && entities.size() > 0) {
 				doc.setEntities(entities);
 			}
-			Vector<String> attributes = declhandler.getAttributes();
+			List<String> attributes = declhandler.getAttributes();
 			if (attributes != null && preserveAttributes && hasCustomAttributes(url, doc.getEncoding())) {
 				doc.setAttributes(attributes);
 			}

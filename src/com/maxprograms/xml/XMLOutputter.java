@@ -13,21 +13,22 @@ package com.maxprograms.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Vector;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class XMLOutputter {
 
 	private FileOutputStream output = null;
 	private Charset defaultEncoding = StandardCharsets.UTF_8;
 	private boolean preserve = false;
-	private Hashtable<String, String> entities = null;
+	private Map<String, String> entities = null;
 	private boolean escape = false;
 	private boolean emptyDoctype = false;
 	private boolean skipLinefeed;
@@ -55,7 +56,7 @@ public class XMLOutputter {
 		String publicId = sdoc.getPublicId();
 		String systemId = sdoc.getSystemId();
 		String internalSubset = sdoc.getInternalSubset();
-		Vector<String> customAttributes = sdoc.getAttributes();
+		List<String> customAttributes = sdoc.getAttributes();
 		if (customAttributes != null) {
 			if (internalSubset == null) {
 				internalSubset = "";
@@ -89,7 +90,7 @@ public class XMLOutputter {
 		}
 		entities = sdoc.getEntities();
 		if (entities == null) {
-			entities = new Hashtable<>();
+			entities = new HashMap<>();
 			entities.put("lt", "&#38;#60;");
 			entities.put("gt", "&#62;");
 			entities.put("amp", "&#38;#38;");
@@ -210,16 +211,17 @@ public class XMLOutputter {
 		if (string == null) {
 			return null;
 		}
-		String result = string.replaceAll("&", "&amp;");
-		result = result.replaceAll("<", "&lt;");
-		result = result.replaceAll(">", "&gt;");
+		String result = string.replace("&", "&amp;");
+		result = result.replace("<", "&lt;");
+		result = result.replace(">", "&gt;");
 
 		// now replace common text with
 		// the entities declared in the DTD
 
-		Enumeration<String> enu = entities.keys();
-		while (enu.hasMoreElements()) {
-			String key = enu.nextElement();
+		Set<String> keys = entities.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
 			String value = entities.get(key);
 			if (!value.equals("") && !key.equals("amp") && !key.equals("lt") && !key.equals("gt")
 					&& !key.equals("quot")) {

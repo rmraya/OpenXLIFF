@@ -14,14 +14,13 @@ package com.maxprograms.converters.xml;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -32,9 +31,11 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class AutoConfiguration {
 
-	private static Hashtable<String, String> segment;
+	private static Map<String, String> segment;
 
 	private AutoConfiguration() {
 		// do not instantiate this class
@@ -47,15 +48,16 @@ public class AutoConfiguration {
 		builder.setEntityResolver(new Catalog(catalog));
 		Document d = builder.build(input);
 		Element r = d.getRootElement();
-		segment = new Hashtable<>();
+		segment = new HashMap<>();
 		recurse(r);
 
 		Document doc = new Document(null, "ini-file", "-//Maxprograms//Converters 2.0.0//EN", "configuration.dtd");
 		Element root = doc.getRootElement();
-		Enumeration<String> keys = segment.keys();
-		while (keys.hasMoreElements()) {
+		Set<String> keys = segment.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
 			Element e = new Element("tag");
-			String key = keys.nextElement();
+			String key = it.next();
 			e.setText(key);
 			e.setAttribute("hard-break", "segment");
 			root.addContent(e);
@@ -82,7 +84,7 @@ public class AutoConfiguration {
 				recurse(e);
 			}
 		}
-		if (!text.equals("") && !segment.contains(r.getName())) {
+		if (!text.equals("") && !segment.containsKey(r.getName())) {
 			segment.put(r.getName(), r.getName());
 		}
 	}

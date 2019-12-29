@@ -17,21 +17,19 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
@@ -40,15 +38,17 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Rc {
 
 	private static String sklFile;
 	private static String xliffFile;
 
-	private static Hashtable<String, Element> segments;
+	private static Map<String, Element> segments;
 	private static FileOutputStream output;
 	private static String catalog;
-	private static Hashtable<String, Object> dlgText;
+	private static Map<String, Object> dlgText;
 	private static String destTemp;
 	private static String encoding;
 
@@ -57,11 +57,10 @@ public class Xliff2Rc {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
-		Vector<String> result = new Vector<>();
-
-		dlgText = new Hashtable<>();
+		dlgText = new HashMap<>();
 
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -139,16 +138,16 @@ public class Xliff2Rc {
 		return result;
 	}
 
-	private static String converDlgInit(String word, String code) throws UnsupportedEncodingException {
+	private static String converDlgInit(String word, String code) {
 		if (dlgText.containsKey(code)) {
 			return decode(word, code);
 		}
 		return "\"" + word + "\"";
 	}
 
-	private static String decode(String word, String code) throws UnsupportedEncodingException {
+	private static String decode(String word, String code) {
 		dlgText.remove(code);
-		byte[] bytes = word.getBytes("UTF-8");
+		byte[] bytes = word.getBytes(StandardCharsets.UTF_8);
 		String byteWord = "";
 		Byte par = Byte.valueOf("00");
 		int length = bytes.length;
@@ -187,7 +186,7 @@ public class Xliff2Rc {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();
@@ -203,7 +202,7 @@ public class Xliff2Rc {
 		output.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void dlgInitExists(Hashtable<String, String> params) throws IOException, UnexistentSegmentException {
+	private static void dlgInitExists(Map<String, String> params) throws IOException, UnexistentSegmentException {
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
 		catalog = params.get("catalog");
@@ -231,7 +230,7 @@ public class Xliff2Rc {
 		}
 	}
 
-	private static void dlgInitLengths(Hashtable<String, String> params) throws IOException {
+	private static void dlgInitLengths(Map<String, String> params) throws IOException {
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
 		catalog = params.get("catalog");

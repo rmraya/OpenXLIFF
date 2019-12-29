@@ -15,23 +15,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.FileFormats;
@@ -48,6 +47,8 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Office2Xliff {
 
 	private static Element mergedRoot;
@@ -62,8 +63,8 @@ public class Office2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		inputFile = params.get("source");
 		String xliff = params.get("xliff");
@@ -80,7 +81,7 @@ public class Office2Xliff {
 			mergedRoot.setAttribute("xsi:schemaLocation",
 					"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd");
 			mergedRoot.addContent("\n");
-			
+
 			try {
 				out = new ZipOutputStream(new FileOutputStream(skeleton));
 				in = new ZipInputStream(new FileInputStream(inputFile));
@@ -112,7 +113,7 @@ public class Office2Xliff {
 						cleanTags(tmp.getAbsolutePath(), catalog);
 					}
 					try {
-						Hashtable<String, String> table = new Hashtable<>();
+						Map<String, String> table = new HashMap<>();
 						table.put("source", tmp.getAbsolutePath());
 						table.put("xliff", tmp.getAbsolutePath() + ".xlf");
 						table.put("skeleton", tmp.getAbsolutePath() + ".skl");
@@ -126,7 +127,7 @@ public class Office2Xliff {
 						table.put("paragraph", params.get("paragraph"));
 						table.put("srxFile", params.get("srxFile"));
 						table.put("format", params.get("format"));
-						Vector<String> res = null;
+						List<String> res = null;
 						if (params.get("format").equals(FileFormats.OFF)) {
 							res = MSOffice2Xliff.run(table);
 							if (tmp.getName().indexOf("slide") != -1) {
@@ -230,7 +231,7 @@ public class Office2Xliff {
 
 	private static void recurseCleaning(Element e) {
 		if (!e.getChildren("text:s").isEmpty()) {
-			Vector<XMLNode> newContent = new Vector<>();
+			List<XMLNode> newContent = new ArrayList<>();
 			List<XMLNode> content = e.getContent();
 			Iterator<XMLNode> it = content.iterator();
 			while (it.hasNext()) {
@@ -259,14 +260,14 @@ public class Office2Xliff {
 	private static void sortSlides() {
 		List<Element> files = mergedRoot.getChildren("file");
 		List<PI> instructions = mergedRoot.getPI();
-		Hashtable<String, String> table = new Hashtable<>();
+		Map<String, String> table = new HashMap<>();
 		TreeSet<String> tree = new TreeSet<>();
 		for (int i = 0; i < files.size(); i++) {
 			String key = padKey(getKey(files.get(i)));
 			tree.add(key);
 			table.put(key, "" + i);
 		}
-		Vector<XMLNode> v = new Vector<>();
+		List<XMLNode> v = new ArrayList<>();
 		Iterator<String> it = tree.iterator();
 		while (it.hasNext()) {
 			String key = it.next();
@@ -360,7 +361,7 @@ public class Office2Xliff {
 		Element newFile = new Element("file");
 		newFile.clone(file);
 		List<PI> pi = root.getPI();
-		for (int i=0 ; i<pi.size() ; i++) {
+		for (int i = 0; i < pi.size(); i++) {
 			newFile.addContent(pi.get(i));
 		}
 		Indenter.indent(newFile, 2, 2);

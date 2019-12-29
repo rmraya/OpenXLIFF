@@ -13,25 +13,26 @@ package com.maxprograms.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class Document implements XMLNode {
 
+	private static final long serialVersionUID = 948309694968187118L;
 	private String systemId;
 	private String publicId;
-	private Vector<XMLNode> content;
+	private List<XMLNode> content;
 	private Element root;
 	private String internalSubset;
 	private Charset encoding;
-	private Hashtable<String, String> entities;
-	private Vector<String> attributes;
+	private Map<String, String> entities;
+	private List<String> attributes;
 
 	private static final Logger LOGGER = System.getLogger(Document.class.getName());
 
@@ -43,7 +44,7 @@ public class Document implements XMLNode {
 	public Document(String namespaceURI, String qualifiedName, String publicId, String systemId) {
 		this.publicId = publicId;
 		this.systemId = systemId;
-		content = new Vector<>();
+		content = new ArrayList<>();
 		root = new Element(qualifiedName);
 		content.add(root);
 		if (namespaceURI != null && !namespaceURI.isEmpty()) {
@@ -58,7 +59,7 @@ public class Document implements XMLNode {
 
 	public Document(String namespaceURI, String qualifiedName, String internalSubset) {
 		this.internalSubset = internalSubset;
-		content = new Vector<>();
+		content = new ArrayList<>();
 		root = new Element(qualifiedName);
 		content.add(root);
 
@@ -72,8 +73,8 @@ public class Document implements XMLNode {
 		}
 	}
 
-	protected Document(String namespaceURI, String qualifiedName, Vector<XMLNode> prolog) {
-		content = new Vector<>();
+	protected Document(String namespaceURI, String qualifiedName, List<XMLNode> prolog) {
+		content = new ArrayList<>();
 		if (prolog != null) {
 			Iterator<XMLNode> it = prolog.iterator();
 			while (it.hasNext()) {
@@ -149,7 +150,7 @@ public class Document implements XMLNode {
 	}
 
 	public List<PI> getPI() {
-		Vector<PI> result = new Vector<>();
+		List<PI> result = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
@@ -160,7 +161,7 @@ public class Document implements XMLNode {
 	}
 
 	public List<PI> getPI(String target) {
-		Vector<PI> result = new Vector<>();
+		List<PI> result = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE && ((PI) n).getTarget().equals(target)) {
@@ -248,7 +249,7 @@ public class Document implements XMLNode {
 		content.add(node);
 	}
 
-	protected void setProlog(Vector<XMLNode> prolog) {
+	protected void setProlog(List<XMLNode> prolog) {
 		Iterator<XMLNode> it = prolog.iterator();
 		while (it.hasNext()) {
 			XMLNode node = it.next();
@@ -266,11 +267,11 @@ public class Document implements XMLNode {
 		}
 	}
 
-	public void setEntities(Hashtable<String, String> table) {
+	public void setEntities(Map<String, String> table) {
 		entities = table;
 	}
 
-	public Hashtable<String, String> getEntities() {
+	public Map<String, String> getEntities() {
 		return entities;
 	}
 
@@ -281,11 +282,11 @@ public class Document implements XMLNode {
 		outputter.output(this, output);
 	}
 
-	public void setAttributes(Vector<String> attributes) {
+	public void setAttributes(List<String> attributes) {
 		this.attributes = attributes;
 	}
 
-	public Vector<String> getAttributes() {
+	public List<String> getAttributes() {
 		return attributes;
 	}
 

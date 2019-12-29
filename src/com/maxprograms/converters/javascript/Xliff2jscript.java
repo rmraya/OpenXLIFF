@@ -18,14 +18,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
@@ -34,10 +33,12 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2jscript {
 
 	private static String xliffFile;
-	private static Hashtable<String, Element> segments;
+	private static Map<String, Element> segments;
 	private static FileOutputStream output;
 	private static String catalog;
 	private static String encoding;
@@ -47,9 +48,8 @@ public class Xliff2jscript {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -131,7 +131,7 @@ public class Xliff2jscript {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();

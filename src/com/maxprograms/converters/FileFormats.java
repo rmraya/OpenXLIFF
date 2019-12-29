@@ -15,6 +15,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -48,6 +51,16 @@ public class FileFormats {
 
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
 			SDLXLIFF, TS, TXML, WPML, XML, XMLG };
+
+	private static Set<String> bilingualFormats;
+
+	public static boolean isBilingual(String type) {
+		if (bilingualFormats == null) {
+			bilingualFormats = new TreeSet<>();
+			bilingualFormats.addAll(Arrays.asList(PO, SDLXLIFF, TS, TXML, WPML));
+		}
+		return bilingualFormats.contains(type);
+	}
 
 	public static String detectFormat(String fileName) {
 

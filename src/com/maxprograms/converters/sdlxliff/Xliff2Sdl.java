@@ -14,18 +14,17 @@ package com.maxprograms.converters.sdlxliff;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
@@ -36,11 +35,13 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Sdl {
 
 	private static String sklFile;
 	private static String xliffFile;
-	private static Hashtable<String, Element> segments;
+	private static Map<String, Element> segments;
 	private static Document doc;
 	private static Element root;
 	private static String catalog;
@@ -50,8 +51,8 @@ public class Xliff2Sdl {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -67,9 +68,10 @@ public class Xliff2Sdl {
 			loadSegments();
 			loadSkeleton();
 
-			Enumeration<String> keys = segments.keys();
-			while (keys.hasMoreElements()) {
-				String key = keys.nextElement();
+			Set<String> keys = segments.keySet();
+			Iterator<String> it =keys.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
 				Element unit = segments.get(key);
 				if (type.equals("sdlxliff")) {
 					if (!unit.getAttributeValue("translate", "yes").equals("no")) {
@@ -136,7 +138,7 @@ public class Xliff2Sdl {
 			mrk.setAttribute("mid", mrkId);
 			target.addContent(mrk);
 		}
-		mrk.setContent(new Vector<>());
+		mrk.setContent(new ArrayList<>());
 		List<XMLNode> content = translated.getContent();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
@@ -175,7 +177,7 @@ public class Xliff2Sdl {
 
 	private static void addTarget(Element unit, Element target) {
 		List<XMLNode> content = unit.getContent();
-		List<XMLNode> newContent = new Vector<>();
+		List<XMLNode> newContent = new ArrayList<>();
 		Iterator<XMLNode> it = content.iterator();
 		while (it.hasNext()) {
 			XMLNode node = it.next();
@@ -237,7 +239,7 @@ public class Xliff2Sdl {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();

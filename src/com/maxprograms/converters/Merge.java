@@ -11,6 +11,25 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import com.maxprograms.converters.ditamap.Xliff2DitaMap;
 import com.maxprograms.converters.html.Xliff2Html;
 import com.maxprograms.converters.idml.Xliff2Idml;
@@ -34,22 +53,7 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.Vector;
-import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 
 
@@ -59,7 +63,7 @@ public class Merge {
 
 	private static final Logger LOGGER = System.getLogger(Merge.class.getName());
 
-	private static Vector<Element> segments;
+	private static List<Element> segments;
 	protected static HashSet<String> fileSet;
 
 	private static Document doc;
@@ -133,7 +137,7 @@ public class Merge {
 			return;
 		}
 
-		Vector<String> result = merge(xliff, target, catalog, unapproved);
+		List<String> result = merge(xliff, target, catalog, unapproved);
 		if (exportTMX && Constants.SUCCESS.equals(result.get(0))) {
 			String tmx = "";
 			if (xliff.toLowerCase().endsWith(".xlf")) {
@@ -148,8 +152,8 @@ public class Merge {
 		}
 	}
 
-	public static Vector<String>  merge(String xliff, String target, String catalog, boolean acceptUnaproved) {
-		Vector<String> result = new Vector<>();
+	public static List<String>  merge(String xliff, String target, String catalog, boolean acceptUnaproved) {
+		List<String> result = new ArrayList<>();
 		try {
 			loadXliff(xliff, catalog);
 			boolean unapproved = acceptUnaproved;
@@ -171,7 +175,7 @@ public class Merge {
 				Element file = it.next();
 				fileSet.add(file.getAttributeValue("original"));
 			}
-			segments = new Vector<>();
+			segments = new ArrayList<>();
 			createList(root);
 
 			if (fileSet.size() != 1) {
@@ -188,7 +192,7 @@ public class Merge {
 				}
 			}
 			Iterator<String> ft = fileSet.iterator();
-			Vector<Hashtable<String, String>> paramsList = new Vector<>();
+			List<Map<String, String>> paramsList = new ArrayList<>();
 			while (ft.hasNext()) {
 				String file = ft.next();
 				File xliffFile = File.createTempFile("temp", ".xlf");
@@ -206,7 +210,7 @@ public class Merge {
 						}
 					}
 				}
-				Hashtable<String, String> params = new Hashtable<>();
+				Map<String, String> params = new HashMap<>();
 				params.put("xliff", xliffFile.getAbsolutePath());
 				if (fileSet.size() == 1) {
 					params.put("backfile", target);
@@ -219,7 +223,7 @@ public class Merge {
 				paramsList.add(params);
 			}
 			for (int i = 0; i < paramsList.size(); i++) {
-				Vector<String> res = run(paramsList.get(i));
+				List<String> res = run(paramsList.get(i));
 				File f = new File(paramsList.get(i).get("xliff"));
 				Files.deleteIfExists(Paths.get(f.toURI()));
 				if (!Constants.SUCCESS.equals(res.get(0))) {
@@ -325,8 +329,8 @@ public class Merge {
 		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	private static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		File temporary = null;
 		try {
 			String dataType = params.get("format");
@@ -389,7 +393,7 @@ public class Merge {
 			}
 		} catch (Exception e) {
 			LOGGER.log(Level.ERROR, "Error merging XLIFF", e);
-			result = new Vector<>();
+			result = new ArrayList<>();
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

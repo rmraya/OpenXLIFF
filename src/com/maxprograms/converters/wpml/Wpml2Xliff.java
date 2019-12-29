@@ -13,10 +13,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,8 +54,8 @@ public class Wpml2Xliff {
         // use run method instead
     }
 
-    public static Vector<String> run(Hashtable<String, String> params) {
-        Vector<String> result = new Vector<>();
+    public static List<String> run(Map<String, String> params) {
+        List<String> result = new ArrayList<>();
         inputFile = params.get("source");
         String xliffFile = params.get("xliff");
         skeletonFile = params.get("skeleton");
@@ -297,7 +296,7 @@ public class Wpml2Xliff {
 
         Matcher matcher = pattern.matcher(e);
         if (matcher.find()) {
-            List<XMLNode> newContent = new Vector<>();
+            List<XMLNode> newContent = new ArrayList<>();
             List<XMLNode> content = src.getContent();
             Iterator<XMLNode> it = content.iterator();
             while (it.hasNext()) {
@@ -336,7 +335,7 @@ public class Wpml2Xliff {
         }
         matcher = endPattern.matcher(e);
         if (matcher.find()) {
-            List<XMLNode> newContent = new Vector<>();
+            List<XMLNode> newContent = new ArrayList<>();
             List<XMLNode> content = src.getContent();
             Iterator<XMLNode> it = content.iterator();
             while (it.hasNext()) {

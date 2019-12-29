@@ -11,11 +11,13 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
+import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -26,15 +28,14 @@ class CustomContentHandler implements IContentHandler {
 	private Document doc;
 	private Element current;
 	Stack<Element> stack;
-	private Vector<XMLNode> prolog;
+	private List<XMLNode> prolog;
 	private boolean inDocument;
 	private boolean inCDATA = false;
 	private StringBuffer cdata;
-	private Vector<String[]> namespaces;
-	private Hashtable<String, String> namespacesInUse;
-	private Hashtable<String, String> pendingNamespaces;
+	private List<String[]> namespaces;
+	private Map<String, String> namespacesInUse;
+	private Map<String, String> pendingNamespaces;
 	private String systemId;
-	private String publicId;
 	private String encoding;
 
 	public CustomContentHandler() {
@@ -49,7 +50,7 @@ class CustomContentHandler implements IContentHandler {
 				current.addContent(new String(ch, start, length));
 			} else {
 				if (prolog == null) {
-					prolog = new Vector<>();
+					prolog = new ArrayList<>();
 				}
 				prolog.add(new TextNode(new String(ch, start, length)));
 			}
@@ -86,7 +87,7 @@ class CustomContentHandler implements IContentHandler {
 			current.addContent(new String(ch, start, length));
 		} else {
 			if (prolog == null) {
-				prolog = new Vector<>();
+				prolog = new ArrayList<>();
 			}
 			prolog.add(new TextNode(new String(ch, start, length)));
 		}
@@ -95,7 +96,7 @@ class CustomContentHandler implements IContentHandler {
 	@Override
 	public void processingInstruction(String target, String data) throws SAXException {
 		if (target.equals("xml-model")) {
-			Vector<Attribute> atts = getPseudoAttributes(data);
+			List<Attribute> atts = getPseudoAttributes(data);
 			Iterator<Attribute> it = atts.iterator();
 			while (it.hasNext()) {
 				Attribute a = it.next();
@@ -112,16 +113,16 @@ class CustomContentHandler implements IContentHandler {
 			}
 		} else {
 			if (prolog == null) {
-				prolog = new Vector<>();
+				prolog = new ArrayList<>();
 			}
 			PI pi = new PI(target, data);
 			prolog.add(pi);
 		}
 	}
 
-	protected static Vector<Attribute> getPseudoAttributes(String string) {
+	protected static List<Attribute> getPseudoAttributes(String string) {
 		String data = string.trim();
-		Vector<Attribute> result = new Vector<>();
+		List<Attribute> result = new ArrayList<>();
 		String name = "";
 		String value = "";
 		boolean inName = true;
@@ -178,7 +179,7 @@ class CustomContentHandler implements IContentHandler {
 	@Override
 	public void startDocument() throws SAXException {
 		inDocument = true;
-		namespacesInUse = new Hashtable<>();
+		namespacesInUse = new HashMap<>();
 	}
 
 	@Override
@@ -211,7 +212,7 @@ class CustomContentHandler implements IContentHandler {
 			String prefix = getPrefixPart(qName);
 			if (!prefix.equals("") && !namespacesInUse.containsKey(prefix)) {
 				if (pendingNamespaces == null) {
-					pendingNamespaces = new Hashtable<>();
+					pendingNamespaces = new HashMap<>();
 				}
 				if (pendingNamespaces.containsKey(prefix)) {
 					namespacesInUse.put(prefix, pendingNamespaces.get(prefix));
@@ -243,18 +244,18 @@ class CustomContentHandler implements IContentHandler {
 		if (!prefix.equals("") && inDocument) {
 			if (current != null) {
 				if (namespacesInUse == null) {
-					namespacesInUse = new Hashtable<>();
+					namespacesInUse = new HashMap<>();
 				}
 				if (!namespacesInUse.containsKey(prefix)) {
 					if (pendingNamespaces == null) {
-						pendingNamespaces = new Hashtable<>();
+						pendingNamespaces = new HashMap<>();
 					}
 					pendingNamespaces.put(prefix, uri);
 				}
 			} else {
 				if (doc == null) {
 					if (namespaces == null) {
-						namespaces = new Vector<>();
+						namespaces = new ArrayList<>();
 					}
 					String[] pair = { prefix, uri };
 					namespaces.add(pair);
@@ -275,7 +276,7 @@ class CustomContentHandler implements IContentHandler {
 		}
 		if (current == null) {
 			if (prolog == null) {
-				prolog = new Vector<>();
+				prolog = new ArrayList<>();
 			}
 			prolog.add(new Comment(new String(ch, start, length)));
 		} else {
@@ -317,10 +318,9 @@ class CustomContentHandler implements IContentHandler {
 	}
 
 	@Override
-	public void startDTD(String name, String publicId1, String systemId1) throws SAXException {
+	public void startDTD(String name, String publicId, String systemId1) throws SAXException {
 		if (doc == null) {
-			systemId = systemId1;
-			publicId = publicId1;
+			this.systemId = systemId1;
 			doc = new Document(null, name, publicId, systemId);
 			if (encoding != null) {
 				doc.setEncoding(encoding);

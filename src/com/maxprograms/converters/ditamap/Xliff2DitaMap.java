@@ -14,21 +14,20 @@ package com.maxprograms.converters.ditamap;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.StringConverter;
@@ -45,18 +44,20 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2DitaMap {
 
-	private static Hashtable<String, String[]> filesTable;
+	private static Map<String, String[]> filesTable;
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		String xliffFile = "";
 		Xliff2DitaMap instance = new Xliff2DitaMap();
 		try {
 			xliffFile = params.get("xliff");
 			String outputFile = params.get("backfile");
-			filesTable = new Hashtable<>();
+			filesTable = new HashMap<>();
 			String catalog = params.get("catalog");
 			SAXBuilder builder = new SAXBuilder();
 			builder.preserveCustomAttributes(true);
@@ -70,13 +71,14 @@ public class Xliff2DitaMap {
 			}
 			String tgtlang = files.get(0).getAttributeValue("target-language",
 					files.get(0).getAttributeValue("source-language"));
-			Enumeration<String> keys = filesTable.keys();
+			Set<String> keys = filesTable.keySet();
+			Iterator<String> kt = keys.iterator();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);
-			while (keys.hasMoreElements()) {
-				String topicFile = keys.nextElement();
+			while (kt.hasNext()) {
+				String topicFile = kt.next();
 				String[] values = filesTable.get(topicFile);
-				Hashtable<String, String> params2 = new Hashtable<>();
+				Map<String, String> params2 = new HashMap<>();
 				params2.put("xliff", values[0]);
 				params2.put("skeleton", values[1]);
 				File folder = new File(outputFile);
@@ -91,7 +93,7 @@ public class Xliff2DitaMap {
 				params2.put("encoding", params.get("encoding"));
 				params2.put("catalog", params.get("catalog"));
 				params2.put("dita_based", "yes");
-				Vector<String> res = Xliff2Xml.run(params2);
+				List<String> res = Xliff2Xml.run(params2);
 				if (!Constants.SUCCESS.equals(res.get(0))) {
 					return res;
 				}
@@ -172,7 +174,7 @@ public class Xliff2DitaMap {
 		}
 		if (!e.getAttributeValue("keyref", "").equals("")
 				&& e.getAttributeValue("status", "").equals("removeContent")) { //$NON-NLS-3$
-			e.setContent(new Vector<>());
+			e.setContent(new ArrayList<>());
 			e.removeAttribute("status");
 		}
 		if (!e.getAttributeValue("conref", "").equals("") && e.getAttributeValue("conaction", "").equals("")) { //$NON-NLS-6$
@@ -182,7 +184,7 @@ public class Xliff2DitaMap {
 			emptyElement(e);
 		}
 		if (e.getAttributeValue("status", "").equals("removeContent")) {
-			e.setContent(new Vector<>());
+			e.setContent(new ArrayList<>());
 			e.removeAttribute("status");
 		}
 		List<Element> list = e.getChildren();
@@ -194,10 +196,10 @@ public class Xliff2DitaMap {
 	private void emptyElement(Element e) {
 		List<Element> children = e.getChildren();
 		if (children.isEmpty()) {
-			e.setContent(new Vector<>());
+			e.setContent(new ArrayList<>());
 		} else {
 			List<XMLNode> content = e.getContent();
-			Vector<XMLNode> newContent = new Vector<>();
+			List<XMLNode> newContent = new ArrayList<>();
 			Iterator<XMLNode> it = content.iterator();
 			while (it.hasNext()) {
 				XMLNode n = it.next();

@@ -16,16 +16,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
@@ -36,13 +35,15 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
 
+import org.xml.sax.SAXException;
+
 public class Segmenter {
 
 	private Element root;
 	private boolean cascade;
 	private List<String> maps;
 	private List<Element> rules;
-	private Hashtable<String, String> tags;
+	private Map<String, String> tags;
 	private int tagId;
 
 	public Segmenter(String srxFile, String srcLanguage, String catalog)
@@ -138,9 +139,10 @@ public class Segmenter {
 
 	private String hideTags(String string) {
 		String result = string;
-		Enumeration<String> keys = tags.keys();
-		while (keys.hasMoreElements()) {
-			String key = keys.nextElement();
+		Set<String> keys = tags.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
 			int index = result.indexOf(key);
 			if (index != -1) {
 				result = result.substring(0, index) + result.substring(index + 1);
@@ -157,39 +159,27 @@ public class Segmenter {
 				String ends = string
 						.substring(string.lastIndexOf(parts[parts.length - 1]) + parts[parts.length - 1].length());
 				Matcher m = p.matcher(ends);
-				if (m.lookingAt()) {
-					return true;
-				}
-				return false;
+				return m.lookingAt();
 			}
 			Matcher m = p.matcher(parts[parts.length - 1]);
-			if (m.lookingAt()) {
-				return true;
-			}
-			return false;
+			return m.lookingAt();
 		}
 		// split() did not return any part (everything was removed from the returned
 		// result).
 		// perhaps the whole text matches
 		Matcher m = p.matcher(string);
-		if (m.matches()) {
-			return true;
-		}
-		return false;
+		return m.matches();
 	}
 
 	private static boolean startsWith(String string, String exp) {
 		Pattern p = Pattern.compile(exp);
 		Matcher m = p.matcher(string);
-		if (m.lookingAt()) {
-			return true;
-		}
-		return false;
+		return m.lookingAt();
 	}
 
 	private String prepareString(String raw) {
 		String string = raw;
-		tags = new Hashtable<>();
+		tags = new HashMap<>();
 		int k = 0;
 		int start = string.indexOf("<mrk ");
 		int end = string.indexOf("</mrk>");
@@ -256,9 +246,10 @@ public class Segmenter {
 
 	private String cleanup(String string) {
 		String result = string;
-		Enumeration<String> keys = tags.keys();
-		while (keys.hasMoreElements()) {
-			String key = keys.nextElement();
+		Set<String> keys = tags.keySet();
+		Iterator<String> it = keys.iterator();
+		while (it.hasNext()) {
+			String key = it.next();
 			int index = result.indexOf(key);
 			if (index != -1) {
 				result = result.substring(0, index) + tags.get(key) + result.substring(index + 1);
@@ -301,7 +292,7 @@ public class Segmenter {
 	}
 
 	public Element segment(Element source) throws SAXException, IOException, ParserConfigurationException {
-		tags = new Hashtable<>();
+		tags = new HashMap<>();
 		tagId = 0;
 		String pureText = pureText(source);
 		List<String> parts = new ArrayList<>();

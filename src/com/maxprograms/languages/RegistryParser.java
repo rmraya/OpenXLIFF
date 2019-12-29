@@ -15,22 +15,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class RegistryParser {
 
 	private List<RegistryEntry> entries;
-	private Hashtable<String, Language> languages;
-	private Hashtable<String, Region> regions;
-	private Hashtable<String, Script> scripts;
-	private Hashtable<String, Variant> variants;
+	private Map<String, Language> languages;
+	private Map<String, Region> regions;
+	private Map<String, Script> scripts;
+	private Map<String, Variant> variants;
 
 	private void parseRegistry(URL url) throws IOException {
 		InputStream input = url.openStream();
@@ -47,10 +47,10 @@ public class RegistryParser {
 				}
 			}
 		}
-		languages = new Hashtable<>();
-		regions = new Hashtable<>();
-		scripts = new Hashtable<>();
-		variants = new Hashtable<>();
+		languages = new HashMap<>();
+		regions = new HashMap<>();
+		scripts = new HashMap<>();
+		variants = new HashMap<>();
 		Iterator<RegistryEntry> it = entries.iterator();
 		while (it.hasNext()) {
 			RegistryEntry entry = it.next();
@@ -132,7 +132,7 @@ public class RegistryParser {
 		return null;
 	}
 
-	public RegistryParser(URL url) throws MalformedURLException, IOException {
+	public RegistryParser(URL url) throws IOException {
 		parseRegistry(url);
 	}
 

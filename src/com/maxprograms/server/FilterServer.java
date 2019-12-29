@@ -24,7 +24,7 @@ import com.sun.net.httpserver.HttpServer;
 
 public class FilterServer implements IServer {
 
-	private static Logger LOGGER = System.getLogger(FilterServer.class.getName());
+	private static final Logger LOGGER = System.getLogger(FilterServer.class.getName());
 
 	private HttpServer server;
 	private File workDir;

@@ -14,18 +14,17 @@ package com.maxprograms.converters.sdlxliff;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -36,6 +35,8 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.xml.sax.SAXException;
+
 public class Sdl2Xliff {
 
 	private static FileOutputStream out;
@@ -45,8 +46,8 @@ public class Sdl2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		try {
 			String original = params.get("source");
@@ -128,7 +129,7 @@ public class Sdl2Xliff {
 			Element target = root.getChild("target");
 			if (segSource != null) {
 				if (containsText(segSource)) {
-					Hashtable<String, Element> targets = new Hashtable<>();
+					Map<String, Element> targets = new HashMap<>();
 					if (target != null) {
 						List<Element> tmarks = getSegments(target);
 						Iterator<Element> tt = tmarks.iterator();
@@ -237,7 +238,7 @@ public class Sdl2Xliff {
 	}
 
 	private static List<Element> getSegments(Element e) {
-		List<Element> result = new Vector<>();
+		List<Element> result = new ArrayList<>();
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {

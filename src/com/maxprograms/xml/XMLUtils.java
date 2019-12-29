@@ -60,11 +60,11 @@ public class XMLUtils {
 	}
 
 	public static String uncleanText(String string) {
-		String result = string.replaceAll("&amp;", "&");
-		result = result.replaceAll("&lt;", "<");
-		result = result.replaceAll("&gt;", ">");
-		result = result.replaceAll("&quot;", "\"");
-		return result.replaceAll("&apos;", "\'");
+		String result = string.replace("&amp;", "&");
+		result = result.replace("&lt;", "<");
+		result = result.replace("&gt;", ">");
+		result = result.replace("&quot;", "\"");
+		return result.replace("&apos;", "\'");
 	}
 
 	public static String getAbsolutePath(String homeFile, String relative) throws IOException {

@@ -13,9 +13,10 @@ package com.maxprograms.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 
-public interface XMLNode {
+public interface XMLNode extends Serializable {
 
 	public final short DOCUMENT_NODE = 0;
 	public final short ELEMENT_NODE = 1;

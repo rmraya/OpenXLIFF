@@ -14,20 +14,19 @@ package com.maxprograms.converters.msoffice;
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -38,6 +37,8 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+
+import org.xml.sax.SAXException;
 
 public class MSOffice2Xliff {
 
@@ -60,8 +61,8 @@ public class MSOffice2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -290,8 +291,8 @@ public class MSOffice2Xliff {
 	}
 
 	private static void recurseVisioElement(Element e) throws IOException, SAXException, ParserConfigurationException {
-		if (!text.equals("")) {
-			if (segByElement == true) {
+		if (!text.isEmpty()) {
+			if (segByElement) {
 				writeSegment(text);
 			} else {
 				String[] segs = segmenter.segment(text);
@@ -420,8 +421,8 @@ public class MSOffice2Xliff {
 			}
 		}
 		text = text.replace("</ph><ph>", "");
-		if (!text.equals("")) {
-			if (segByElement == true) {
+		if (!text.isEmpty()) {
+			if (segByElement) {
 				writeSegment(text);
 			} else {
 				String[] segs = segmenter.segment(text);
@@ -471,14 +472,15 @@ public class MSOffice2Xliff {
 					merge = false;
 					continue;
 				}
-				Hashtable<String, Element> currProps = buildProps(currRegion);
-				Hashtable<String, Element> nextProps = buildProps(nextRegion);
+				Map<String, Element> currProps = buildProps(currRegion);
+				Map<String, Element> nextProps = buildProps(nextRegion);
 				if (currProps.size() != nextProps.size()) {
 					merge = false;
 				} else {
-					Enumeration<String> keys = currProps.keys();
-					while (keys.hasMoreElements()) {
-						String key = keys.nextElement();
+					Set<String> keys = currProps.keySet();
+					Iterator<String> it = keys.iterator();
+					while (it.hasNext()) {
+						String key = it.next();
 						if (!nextProps.containsKey(key)) {
 							merge = false;
 							break;
@@ -499,8 +501,8 @@ public class MSOffice2Xliff {
 		}
 	}
 
-	private static Hashtable<String, Element> buildProps(Element region) {
-		Hashtable<String, Element> result = new Hashtable<>();
+	private static Map<String, Element> buildProps(Element region) {
+		Map<String, Element> result = new HashMap<>();
 		Element regionProps = region.getChild("w:rPr");
 		if (regionProps != null) {
 			Iterator<Element> it = regionProps.getChildren().iterator();
@@ -519,7 +521,7 @@ public class MSOffice2Xliff {
 			Element region = r.next();
 			List<Element> regionProps = region.getChildren("w:rPr");
 			Iterator<Element> it = regionProps.iterator();
-			Vector<Element> remove = new Vector<>();
+			List<Element> remove = new ArrayList<>();
 			while (it.hasNext()) {
 				Element props = it.next();
 				Element prop = props.getChild(name);

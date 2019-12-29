@@ -30,7 +30,7 @@ import com.maxprograms.xml.XMLOutputter;
 
 public class Xliff10 {
 
-	private static Logger LOGGER = System.getLogger(Xliff10.class.getName());
+	private static final Logger LOGGER = System.getLogger(Xliff10.class.getName());
 	private String reason = "";
 
 	public boolean validate(Document document, String catalog) {

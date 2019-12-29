@@ -18,24 +18,22 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -53,6 +51,8 @@ import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
 import com.wutka.dtd.DTD;
 import com.wutka.dtd.DTDParser;
+
+import org.xml.sax.SAXException;
 
 public class Xml2Xliff {
 
@@ -75,24 +75,23 @@ public class Xml2Xliff {
 	private static int segId;
 	private static int tagId;
 	private static List<String> segments;
-	private static Hashtable<String, String> startsSegment;
-	private static Hashtable<String, Vector<String>> translatableAttributes;
-	private static Hashtable<String, String> inline;
-	private static Hashtable<String, String> ctypes;
-	private static Hashtable<String, String> keepFormating;
+	private static Map<String, String> startsSegment;
+	private static Map<String, List<String>> translatableAttributes;
+	private static Map<String, String> inline;
+	private static Map<String, String> ctypes;
+	private static Map<String, String> keepFormating;
 	private static boolean segByElement;
 	private static Segmenter segmenter;
 	private static String catalog;
 	private static String rootElement;
-	private static Hashtable<String, String> entities;
+	private static Map<String, String> entities;
 	private static String entitiesMap;
 	private static Element root;
 	private static String text;
 	private static Stack<String> stack;
 	private static String translatable = "";
 	private static boolean inDesign = false;
-	private static Hashtable<String, String> ignore;
-	private static boolean generic;
+	private static Map<String, String> ignore;
 	private static boolean resx;
 	private static String startText;
 	private static String endText;
@@ -106,8 +105,8 @@ public class Xml2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		segId = 1;
 		stack = new Stack<>();
 
@@ -137,11 +136,10 @@ public class Xml2Xliff {
 			dita_based = dita.equalsIgnoreCase("yes");
 		}
 
+		boolean generic = false;
 		String isGeneric = params.get("generic");
 		if (isGeneric != null && isGeneric.equals("yes")) {
 			generic = true;
-		} else {
-			generic = false;
 		}
 
 		String comments = params.get("translateComments");
@@ -176,7 +174,7 @@ public class Xml2Xliff {
 				}
 			}
 
-			if (segByElement == false) {
+			if (!segByElement) {
 				segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
 			}
 
@@ -251,15 +249,16 @@ public class Xml2Xliff {
 		 */
 		// builder.expandEntities(false);
 		Document doc = builder.build(fileName);
-		entities = new Hashtable<>();
+		entities = new HashMap<>();
 
-		Hashtable<String, String> map = doc.getEntities();
+		Map<String, String> map = doc.getEntities();
 
 		entitiesMap = "";
 		if (map != null) {
-			Enumeration<String> en = entities.keys();
-			while (en.hasMoreElements()) {
-				String key = en.nextElement();
+			Set<String> en = entities.keySet();
+			Iterator<String> it = en.iterator();
+			while (it.hasNext()) {
+				String key = it.next();
 				entitiesMap = entitiesMap + "      <prop prop-type=\"" + key.substring(1, key.length() - 1) + "\">"
 						+ cleanEntity(entities.get(key)) + "</prop>\n";
 			}
@@ -282,7 +281,7 @@ public class Xml2Xliff {
 		// this requires a fixed ini name
 		if (root.getName().equals("root")) {
 			List<Element> dataElements = root.getChildren("data");
-			if (dataElements.size() > 0) {
+			if (!dataElements.isEmpty()) {
 				boolean isResx = false;
 				for (int i = 0; i < dataElements.size(); i++) {
 					Element g = (dataElements.get(i)).getChild("translate");
@@ -501,7 +500,7 @@ public class Xml2Xliff {
 				txt = prepareG(txt);
 			}
 			txt = addTags(txt);
-			if (segByElement == true) {
+			if (segByElement) {
 				writeSegment(txt);
 			} else {
 				String[] segs = segmenter.segment(txt);
@@ -675,7 +674,7 @@ public class Xml2Xliff {
 		Document d = b.build(new ByteArrayInputStream(seg.getBytes(StandardCharsets.UTF_8)));
 		Element r = d.getRootElement();
 		Element s = r.getChild("source");
-		if (s.getChildren().size() == 0) {
+		if (s.getChildren().isEmpty()) {
 			return seg;
 		}
 		List<XMLNode> start = new ArrayList<>();
@@ -684,8 +683,8 @@ public class Xml2Xliff {
 
 		List<XMLNode> content = s.getContent();
 
-		Vector<XMLNode> startTags = new Vector<>();
-		Vector<XMLNode> endTags = new Vector<>();
+		List<XMLNode> startTags = new ArrayList<>();
+		List<XMLNode> endTags = new ArrayList<>();
 
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
@@ -702,7 +701,7 @@ public class Xml2Xliff {
 			start.add(n);
 		}
 
-		if (startTags.size() == 0) {
+		if (startTags.isEmpty()) {
 			start.clear();
 		}
 		for (int i = content.size() - 1; i >= 0; i--) {
@@ -719,7 +718,7 @@ public class Xml2Xliff {
 			}
 			end.add(0, n);
 		}
-		if (endTags.size() == 0) {
+		if (endTags.isEmpty()) {
 			end.clear();
 		}
 
@@ -1064,7 +1063,7 @@ public class Xml2Xliff {
 		String result = "<ph id=\"" + tagId++ + "\"" + ctype + ">";
 		String clean = cleanString(element);
 
-		Vector<String> v = translatableAttributes.get(type);
+		List<String> v = translatableAttributes.get(type);
 
 		StringTokenizer tokenizer = new StringTokenizer(clean, "&= \t\n\r\f/", true);
 
@@ -1120,12 +1119,12 @@ public class Xml2Xliff {
 		Element rt = doc.getRootElement();
 		List<Element> tags = rt.getChildren("tag");
 
-		startsSegment = new Hashtable<>();
-		translatableAttributes = new Hashtable<>();
-		ignore = new Hashtable<>();
-		ctypes = new Hashtable<>();
-		keepFormating = new Hashtable<>();
-		inline = new Hashtable<>();
+		startsSegment = new HashMap<>();
+		translatableAttributes = new HashMap<>();
+		ignore = new HashMap<>();
+		ctypes = new HashMap<>();
+		keepFormating = new HashMap<>();
+		inline = new HashMap<>();
 
 		Iterator<Element> i = tags.iterator();
 		while (i.hasNext()) {
@@ -1146,7 +1145,7 @@ public class Xml2Xliff {
 			if (!attributes.equals("")) {
 				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
 				int count = tokenizer.countTokens();
-				Vector<String> v = new Vector<>(count);
+				List<String> v = new ArrayList<>(count);
 				for (int j = 0; j < count; j++) {
 					v.add(tokenizer.nextToken());
 				}
@@ -1274,7 +1273,7 @@ public class Xml2Xliff {
 				stack = new Stack<>();
 				return;
 			}
-			if (stack.size() == 0 && e.getChildren().size() == 0 && !translatableAttributes.containsKey(e.getName())) {
+			if (stack.isEmpty() && e.getChildren().isEmpty() && !translatableAttributes.containsKey(e.getName())) {
 				if (inline.containsKey(e.getName()) && !e.getText().equals("")) {
 					if (text.startsWith('\u007F' + "" + '\u007F')) {
 						segments.add(text);
@@ -1296,19 +1295,19 @@ public class Xml2Xliff {
 					break;
 				}
 			}
-			if (stack.size() > 0 && !startsSegment.containsKey(e.getName())) {
+			if (!stack.isEmpty() && !startsSegment.containsKey(e.getName())) {
 				stack.push(e.getName());
 			}
 			List<Attribute> attributes = e.getAttributes();
 			text = text + "<" + e.getName();
-			if (attributes.size() > 0) {
+			if (!attributes.isEmpty()) {
 				for (int i = 0; i < attributes.size(); i++) {
 					Attribute a = attributes.get(i);
 					text = text + " " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"";
 				}
 			}
 			List<XMLNode> content = e.getContent();
-			if (content.size() == 0) {
+			if (content.isEmpty()) {
 				if (text.equals("")) {
 					text = "" + '\u007F' + '\u007F' + "/>";
 				} else {
@@ -1345,7 +1344,7 @@ public class Xml2Xliff {
 					segments.add("" + '\u007F' + '\u007F' + "</" + e.getName() + ">");
 				}
 			}
-			if (stack.size() > 0) {
+			if (!stack.isEmpty()) {
 				stack.pop();
 			}
 
@@ -1404,7 +1403,7 @@ public class Xml2Xliff {
 				if (startsSegment.containsKey(ancestor)) {
 					startsSegment.put(e.getName(), startsSegment.get(ancestor));
 				}
-				if (inline.contains(ancestor)) {
+				if (inline.containsKey(ancestor)) {
 					inline.put(e.getName(), inline.get(ancestor));
 				}
 				if (ignore.containsKey(ancestor)) {
@@ -1457,7 +1456,7 @@ public class Xml2Xliff {
 	private static void normalizeElement(Element e) {
 		List<XMLNode> l = e.getContent();
 		Iterator<XMLNode> i = l.iterator();
-		List<XMLNode> normal = new Vector<>();
+		List<XMLNode> normal = new ArrayList<>();
 		while (i.hasNext()) {
 			XMLNode n = i.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {

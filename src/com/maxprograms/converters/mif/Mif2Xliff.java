@@ -15,25 +15,25 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
+
+import org.xml.sax.SAXException;
 
 public class Mif2Xliff {
 
@@ -43,16 +43,16 @@ public class Mif2Xliff {
 	private static ArrayList<String> translatable;
 	private static String segment;
 	private static int segId;
-	private static Hashtable<String, String> charmap;
+	private static Map<String, String> charmap;
 
 	private Mif2Xliff() {
 		// do not instantiate this class
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
+	public static List<String> run(Map<String, String> params) {
 
-		Vector<String> result = new Vector<>();
+		List<String> result = new ArrayList<>();
 
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -371,8 +371,8 @@ public class Mif2Xliff {
 
 	private static void loadCharMap() throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder cbuilder = new SAXBuilder();
-		Document cdoc = cbuilder.build("xmlfilter/init_mif.xml");
-		charmap = new Hashtable<>();
+		Document cdoc = cbuilder.build(Mif2Xliff.class.getResource("init_mif.xml"));
+		charmap = new HashMap<>();
 		Element croot = cdoc.getRootElement();
 		List<Element> codes = croot.getChildren("char");
 		Iterator<Element> it = codes.iterator();

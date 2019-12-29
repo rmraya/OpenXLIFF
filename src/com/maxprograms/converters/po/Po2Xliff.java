@@ -17,12 +17,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Hashtable;
-import java.util.StringTokenizer;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -47,7 +48,7 @@ public class Po2Xliff {
 	private static int contextId = 1;
 	private static int refId = 1;
 	private static String newContext;
-	private static Vector<String> pluralTargets;
+	private static List<String> pluralTargets;
 	private static int plurals;
 	private static String plural_source;
 
@@ -56,8 +57,8 @@ public class Po2Xliff {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -72,7 +73,7 @@ public class Po2Xliff {
 
 		source = "";
 		plural_source = "";
-		pluralTargets = new Vector<>();
+		pluralTargets = new ArrayList<>();
 		target = "";
 		comment = "";
 		context = "";
@@ -258,7 +259,7 @@ public class Po2Xliff {
 					output.close();
 				}
 			}
-			result.add(0, Constants.SUCCESS);
+			result.add(Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Po2Xliff.class.getName());
 			logger.log(Level.ERROR, "Error converting PO file", e);
@@ -418,7 +419,7 @@ public class Po2Xliff {
 
 		source = "";
 		plural_source = "";
-		pluralTargets.removeAllElements();
+		pluralTargets.clear();
 		target = "";
 		comment = "";
 		context = "";

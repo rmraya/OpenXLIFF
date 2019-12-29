@@ -13,21 +13,20 @@ package com.maxprograms.converters.ditamap;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Vector;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
@@ -36,6 +35,8 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.xml.sax.SAXException;
+
 public class ScopeBuilder {
 
 	private static final Logger LOGGER = System.getLogger(ScopeBuilder.class.getName());
@@ -43,8 +44,8 @@ public class ScopeBuilder {
 	private SAXBuilder builder;
 	private Scope currentScope;
 	private Set<String> recursed;
-	private static Hashtable<String, Set<String>> excludeTable;
-	private static Hashtable<String, Set<String>> includeTable;
+	private static Map<String, Set<String>> excludeTable;
+	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
 
 	public Scope buildScope(String inputFile, String ditavalFile, Catalog catalog)
@@ -166,8 +167,8 @@ public class ScopeBuilder {
 		if (root.getName().equals("val")) {
 			List<Element> props = root.getChildren("prop");
 			Iterator<Element> it = props.iterator();
-			excludeTable = new Hashtable<>();
-			includeTable = new Hashtable<>();
+			excludeTable = new HashMap<>();
+			includeTable = new HashMap<>();
 			while (it.hasNext()) {
 				Element prop = it.next();
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
@@ -220,7 +221,7 @@ public class ScopeBuilder {
 						}
 					}
 					StringTokenizer tokenizer = new StringTokenizer(a.getValue());
-					Vector<String> tokens = new Vector<>();
+					List<String> tokens = new ArrayList<>();
 					while (tokenizer.hasMoreTokens()) {
 						tokens.add(tokenizer.nextToken());
 					}

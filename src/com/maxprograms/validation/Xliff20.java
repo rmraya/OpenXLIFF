@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,8 +29,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.languages.RegistryParser;
 import com.maxprograms.xml.Attribute;
@@ -39,6 +38,8 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
+
+import org.xml.sax.SAXException;
 
 public class Xliff20 {
 
@@ -59,7 +60,7 @@ public class Xliff20 {
 
 	private RegistryParser registry;
 
-	private Hashtable<String, String> declaredNamespaces;
+	private Map<String, String> declaredNamespaces;
 	private String srcLang;
 	private String trgLang;
 	private HashSet<String> fileId;
@@ -113,12 +114,11 @@ public class Xliff20 {
 		builder.setValidating(true);
 		builder.setEntityResolver(resolver);
 		Document document = builder.build(file);
-		declaredNamespaces = new Hashtable<>();
+		declaredNamespaces = new HashMap<>();
 		return recurse(document.getRootElement());
 	}
 
 	private boolean recurse(Element e) {
-
 		String namespace = e.getNamespace();
 		if (!namespace.isEmpty()) {
 
@@ -891,8 +891,7 @@ public class Xliff20 {
 		if (location == null) {
 			location = resolver.matchSystem("", string);
 		}
-		Source source = new StreamSource(location);
-		return source;
+		return new StreamSource(location);
 	}
 
 	public String getReason() {

@@ -19,17 +19,16 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xliff2.FromXliff2;
@@ -39,14 +38,16 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 
+import org.xml.sax.SAXException;
+
 public class RepetitionAnalysis {
 
 	private static final Logger LOGGER = System.getLogger(RepetitionAnalysis.class.getName());
 
 	private String srcLang;
-	private Hashtable<String, Vector<Element>> segments;
-	private Vector<Element> sources;
-	private Vector<String> files;
+	private Map<String, List<Element>> segments;
+	private List<Element> sources;
+	private List<String> files;
 
 	public static void main(String[] args) {
 
@@ -113,7 +114,7 @@ public class RepetitionAnalysis {
 				String originalFile = el.getAttributeValue("original");
 				srcLang = el.getAttributeValue("source-language", "");
 				if (!segments.containsKey(originalFile)) {
-					sources = new Vector<>();
+					sources = new ArrayList<>();
 					segments.put(originalFile, sources);
 					files.add(originalFile);
 				} else {
@@ -183,8 +184,8 @@ public class RepetitionAnalysis {
 		} else {
 			svgStats.analyse(fileName, catalog);
 		}
-		segments = new Hashtable<>();
-		files = new Vector<>();
+		segments = new HashMap<>();
+		files = new ArrayList<>();
 
 		createList(root);
 
@@ -795,11 +796,11 @@ public class RepetitionAnalysis {
 		rootClone.clone(doc.getRootElement());
 		srcLang = rootClone.getChild("file").getAttributeValue("source-language");
 
-		Vector<Element> segs = new Vector<>();
+		List<Element> segs = new ArrayList<>();
 		createList(rootClone, segs);
 
 		it = segs.iterator();
-		Vector<Element> srcs = new Vector<>();
+		List<Element> srcs = new ArrayList<>();
 		while (it.hasNext()) {
 			Element e = it.next();
 			String approved = e.getAttributeValue("approved", "no");
@@ -930,7 +931,7 @@ public class RepetitionAnalysis {
 		return result;
 	}
 
-	private static void createList(Element root, Vector<Element> segs) {
+	private static void createList(Element root, List<Element> segs) {
 		List<Element> elements = root.getChildren();
 		Iterator<Element> it = elements.iterator();
 		while (it.hasNext()) {

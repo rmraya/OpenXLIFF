@@ -14,17 +14,16 @@ package com.maxprograms.xliff2;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
@@ -37,6 +36,8 @@ import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 import com.maxprograms.xml.XMLUtils;
 
+import org.xml.sax.SAXException;
+
 public class FromXliff2 {
 
 	private static String srcLang;
@@ -47,8 +48,8 @@ public class FromXliff2 {
 		// use run method instead
 	}
 
-	public static Vector<String> run(String sourceFile, String outputFile, String catalog) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(String sourceFile, String outputFile, String catalog) {
+		List<String> result = new ArrayList<>();
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			builder.setEntityResolver(new Catalog(catalog));
@@ -221,7 +222,7 @@ public class FromXliff2 {
 			if (src2.getAttributeValue("xml:space", "default").equals("preserve")) {
 				transUnit.setAttribute("xml:space", "preserve");
 			}
-			Hashtable<String, String> tags = new Hashtable<>();
+			Map<String, String> tags = new HashMap<>();
 			Element originalData = source.getChild("originalData");
 			if (originalData != null) {
 				List<Element> dataList = originalData.getChildren("data");

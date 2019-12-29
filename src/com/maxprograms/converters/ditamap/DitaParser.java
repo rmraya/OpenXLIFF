@@ -13,22 +13,21 @@ package com.maxprograms.converters.ditamap;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
@@ -37,6 +36,8 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
+
+import org.xml.sax.SAXException;
 
 public class DitaParser {
 
@@ -84,13 +85,13 @@ public class DitaParser {
 
 	private Set<String> filesMap;
 	private SAXBuilder builder;
-	private Hashtable<String, Set<String>> excludeTable;
-	private Hashtable<String, Set<String>> includeTable;
+	private Map<String, Set<String>> excludeTable;
+	private Map<String, Set<String>> includeTable;
 	private boolean filterAttributes;
 	private Scope rootScope;
 
 	private Set<StringArray> searchedConref;
-	Hashtable<Key, Set<String>> usedKeys;
+	private Map<Key, Set<String>> usedKeys;
 	private Set<String> recursed;
 	private Set<String> pendingRecurse;
 	private TreeSet<String> topicrefSet;
@@ -99,12 +100,12 @@ public class DitaParser {
 	private static TreeSet<String> linkSet;
 	private static TreeSet<String> imageSet;
 
-	protected Vector<String> run(Hashtable<String, String> params)
+	protected List<String> run(Map<String, String> params)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
-		Vector<String> result = new Vector<>();
+		List<String> result = new ArrayList<>();
 		filesMap = new TreeSet<>();
 		searchedConref = new TreeSet<>();
-		usedKeys = new Hashtable<>();
+		usedKeys = new HashMap<>();
 		recursed = new TreeSet<>();
 		pendingRecurse = new TreeSet<>();
 
@@ -151,7 +152,7 @@ public class DitaParser {
 
 		int count = 0;
 		do {
-			Vector<String> files = new Vector<>();
+			List<String> files = new ArrayList<>();
 			files.addAll(pendingRecurse);
 			pendingRecurse.clear();
 			Iterator<String> st = files.iterator();
@@ -551,8 +552,8 @@ public class DitaParser {
 		if (root.getName().equals("val")) {
 			List<Element> props = root.getChildren("prop");
 			Iterator<Element> it = props.iterator();
-			excludeTable = new Hashtable<>();
-			includeTable = new Hashtable<>();
+			excludeTable = new HashMap<>();
+			includeTable = new HashMap<>();
 			while (it.hasNext()) {
 				Element prop = it.next();
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
@@ -605,7 +606,7 @@ public class DitaParser {
 						}
 					}
 					StringTokenizer tokenizer = new StringTokenizer(a.getValue());
-					Vector<String> tokens = new Vector<>();
+					List<String> tokens = new ArrayList<>();
 					while (tokenizer.hasMoreTokens()) {
 						tokens.add(tokenizer.nextToken());
 					}

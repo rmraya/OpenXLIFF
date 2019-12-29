@@ -17,20 +17,19 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.lang.System.Logger;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
@@ -40,11 +39,13 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
+import org.xml.sax.SAXException;
+
 public class Xliff2Text {
 
 	private static String xliffFile;
 	private static String encoding;
-	private static Hashtable<String, Element> segments;
+	private static Map<String, Element> segments;
 	private static Catalog catalog;
 	private static FileOutputStream output;
 
@@ -53,9 +54,8 @@ public class Xliff2Text {
 		// use run method instead
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -168,7 +168,7 @@ public class Xliff2Text {
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
-		segments = new Hashtable<>();
+		segments = new HashMap<>();
 
 		while (i.hasNext()) {
 			Element unit = i.next();

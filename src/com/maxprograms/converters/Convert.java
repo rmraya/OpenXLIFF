@@ -11,6 +11,27 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import com.maxprograms.converters.ditamap.DitaMap2Xliff;
 import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.converters.idml.Idml2Xliff;
@@ -35,28 +56,8 @@ import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.Vector;
-import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
-
-
-
 
 public class Convert {
 
@@ -220,7 +221,7 @@ public class Convert {
 		if (xliff.isEmpty()) {
 			xliff = sourceFile.getAbsolutePath() + ".xlf";
 		}
-		Hashtable<String, String> params = new Hashtable<>();
+		Map<String, String> params = new HashMap<>();
 		params.put("source", source);
 		params.put("xliff", xliff);
 		params.put("skeleton", skl);
@@ -236,7 +237,7 @@ public class Convert {
 		if (type.equals(FileFormats.getShortName(FileFormats.DITA)) && !ditaval.isEmpty()) {
 			params.put("ditaval", ditaval);
 		}
-		Vector<String> result = run(params);
+		List<String> result = run(params);
 		if (embed && Constants.SUCCESS.equals(result.get(0))) {
 			addSkeleton(xliff, catalog);
 		}
@@ -297,8 +298,8 @@ public class Convert {
 		System.out.println(help);
 	}
 
-	public static Vector<String> addSkeleton(String fileName, String catalog) {
-		Vector<String> result = new Vector<>();
+	public static List<String> addSkeleton(String fileName, String catalog) {
+		List<String> result = new ArrayList<>();
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			builder.setEntityResolver(new Catalog(catalog));
@@ -323,7 +324,7 @@ public class Convert {
 					Element internal = new Element("internal-file");
 					internal.setAttribute("form", "base64");
 					internal.addContent(Utils.encodeFromFile(skeleton.getAbsolutePath()));
-					skl.setContent(new Vector<XMLNode>());
+					skl.setContent(new ArrayList<XMLNode>());
 					skl.addContent(internal);
 					Files.delete(Paths.get(skeleton.toURI()));
 					deleted.add(sklName);
@@ -344,8 +345,8 @@ public class Convert {
 		return result;
 	}
 
-	public static Vector<String> run(Hashtable<String, String> params) {
-		Vector<String> result = new Vector<>();
+	public static List<String> run(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		String format = params.get("format");
 		if (format.equals(FileFormats.INX)) {
 			params.put("InDesign", "yes");
@@ -355,8 +356,6 @@ public class Convert {
 		} else if (format.equals(FileFormats.DITA)) {
 			result = DitaMap2Xliff.run(params);
 		} else if (format.equals(FileFormats.HTML)) {
-			File folder = new File(System.getProperty("user.dir"), "xmlfilter");
-			params.put("iniFile", new File(folder, "init_html.xml").getAbsolutePath());
 			result = Html2Xliff.run(params);
 		} else if (format.equals(FileFormats.JS)) {
 			result = Jscript2xliff.run(params);

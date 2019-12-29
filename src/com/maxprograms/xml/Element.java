@@ -13,36 +13,36 @@ package com.maxprograms.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
-public class Element implements XMLNode, Serializable {
+public class Element implements XMLNode {
 
 	private static final long serialVersionUID = 3004362075586010085L;
 
 	private String name;
-	private Vector<XMLNode> content;
-	private Hashtable<String, Attribute> attsTable;
+	private List<XMLNode> content;
+	private Map<String, Attribute> attsTable;
 
 	private static final Logger LOGGER = System.getLogger(Element.class.getName());
 
 	public Element() {
 		name = "";
-		attsTable = new Hashtable<>();
-		content = new Vector<>();
+		attsTable = new HashMap<>();
+		content = new ArrayList<>();
 	}
 
 	public Element(String name) {
 		this.name = name;
-		attsTable = new Hashtable<>();
-		content = new Vector<>();
+		attsTable = new HashMap<>();
+		content = new ArrayList<>();
 	}
 
 	public void addContent(XMLNode n) {
@@ -75,7 +75,7 @@ public class Element implements XMLNode, Serializable {
 
 	public void clone(Element src) {
 		name = src.getName();
-		attsTable = new Hashtable<>();
+		attsTable = new HashMap<>();
 		List<Attribute> atts = src.getAttributes();
 		Iterator<Attribute> it = atts.iterator();
 		while (it.hasNext()) {
@@ -83,7 +83,7 @@ public class Element implements XMLNode, Serializable {
 			Attribute n = new Attribute(a.getName(), a.getValue());
 			attsTable.put(n.getName(), n);
 		}
-		content = new Vector<>();
+		content = new ArrayList<>();
 		List<XMLNode> cont = src.getContent();
 		Iterator<XMLNode> ic = cont.iterator();
 		while (ic.hasNext()) {
@@ -158,7 +158,7 @@ public class Element implements XMLNode, Serializable {
 		if (content.size() < 2) {
 			return;
 		}
-		Vector<XMLNode> newContent = new Vector<>();
+		List<XMLNode> newContent = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.TEXT_NODE && !newContent.isEmpty()) {
@@ -187,7 +187,7 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public List<Attribute> getAttributes() {
-		List<Attribute> result = new Vector<>();
+		List<Attribute> result = new ArrayList<>();
 		result.addAll(attsTable.values());
 		return result;
 	}
@@ -213,7 +213,7 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public List<Element> getChildren() {
-		List<Element> result = new Vector<>();
+		List<Element> result = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode node = content.get(i);
 			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
@@ -224,7 +224,7 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public List<Element> getChildren(String tagname) {
-		List<Element> result = new Vector<>();
+		List<Element> result = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode node = content.get(i);
 			if (node.getNodeType() == XMLNode.ELEMENT_NODE && ((Element) node).getName().equals(tagname)) {
@@ -311,14 +311,11 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public void setContent(List<XMLNode> c) {
-		content = new Vector<>();
-		for (int i = 0; i < c.size(); i++) {
-			content.add(c.get(i));
-		}
+		content = c;
 	}
 
 	public void setText(String text) {
-		content = new Vector<>();
+		content = new ArrayList<>();
 		content.add(new TextNode(text));
 	}
 
@@ -344,7 +341,7 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public List<PI> getPI() {
-		Vector<PI> result = new Vector<>();
+		List<PI> result = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
@@ -355,7 +352,7 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public List<PI> getPI(String target) {
-		Vector<PI> result = new Vector<>();
+		List<PI> result = new ArrayList<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE && ((PI) n).getTarget().equals(target)) {
@@ -391,9 +388,9 @@ public class Element implements XMLNode, Serializable {
 		}
 	}
 
-	public void setAttributes(List<Attribute> vector) {
+	public void setAttributes(List<Attribute> list) {
 		attsTable.clear();
-		Iterator<Attribute> it = vector.iterator();
+		Iterator<Attribute> it = list.iterator();
 		while (it.hasNext()) {
 			Attribute a = it.next();
 			setAttribute(a.getName(), a.getValue());
@@ -401,7 +398,7 @@ public class Element implements XMLNode, Serializable {
 	}
 
 	public void setChildren(List<Element> c) {
-		content = new Vector<>();
+		content = new ArrayList<>();
 		for (int i = 0; i < c.size(); i++) {
 			content.add(c.get(i));
 		}

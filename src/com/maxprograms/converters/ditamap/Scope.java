@@ -11,26 +11,27 @@
  *******************************************************************************/
 package com.maxprograms.converters.ditamap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 
 public class Scope {
 
 	private Set<String> names;
 	private List<Scope> children;
-	private Hashtable<String, Key> keys;
+	private Map<String, Key> keys;
 
 	public Scope(String name) {
 		names = new TreeSet<>();
 		String[] parts = name.split("\\s");
 		names.addAll(Arrays.asList(parts));
-		children = new Vector<>();
-		keys = new Hashtable<>();
+		children = new ArrayList<>();
+		keys = new HashMap<>();
 	}
 
 	public void addScope(Scope scope) {
@@ -78,8 +79,8 @@ public class Scope {
 		return names.contains(name);
 	}
 
-	public Hashtable<String, Key> getKeys() {
-		Hashtable<String, Key> result = new Hashtable<>();
+	public Map<String, Key> getKeys() {
+		Map<String, Key> result = new HashMap<>();
 		Iterator<String> it = names.iterator();
 		while (it.hasNext()) {
 			String name = it.next();
@@ -95,7 +96,7 @@ public class Scope {
 			}
 			Iterator<Scope> sc = children.iterator();
 			while (sc.hasNext()) {
-				Hashtable<String, Key> table = sc.next().getKeys();
+				Map<String, Key> table = sc.next().getKeys();
 				Set<String> set = table.keySet();
 				Iterator<String> st = set.iterator();
 				while (st.hasNext()) {

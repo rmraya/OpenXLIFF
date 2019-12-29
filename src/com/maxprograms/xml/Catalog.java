@@ -17,10 +17,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -30,11 +31,11 @@ import org.xml.sax.ext.EntityResolver2;
 
 public class Catalog implements EntityResolver2 {
 
-	private Hashtable<String, String> systemCatalog;
-	private Hashtable<String, String> publicCatalog;
-	private Hashtable<String, String> uriCatalog;
-	private Vector<String[]> uriRewrites;
-	private Vector<String[]> systemRewrites;
+	private Map<String, String> systemCatalog;
+	private Map<String, String> publicCatalog;
+	private Map<String, String> uriCatalog;
+	private List<String[]> uriRewrites;
+	private List<String[]> systemRewrites;
 	private String workDir;
 	private String base = "";
 
@@ -50,11 +51,11 @@ public class Catalog implements EntityResolver2 {
 			workDir = workDir + File.separator;
 		}
 
-		systemCatalog = new Hashtable<>();
-		publicCatalog = new Hashtable<>();
-		uriCatalog = new Hashtable<>();
-		uriRewrites = new Vector<>();
-		systemRewrites = new Vector<>();
+		systemCatalog = new HashMap<>();
+		publicCatalog = new HashMap<>();
+		uriCatalog = new HashMap<>();
+		uriRewrites = new ArrayList<>();
+		systemRewrites = new ArrayList<>();
 
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(catalogFile);
@@ -112,7 +113,7 @@ public class Catalog implements EntityResolver2 {
 					nextCatalog = XMLUtils.getAbsolutePath(workDir, nextCatalog);
 				}
 				Catalog cat = new Catalog(nextCatalog);
-				Hashtable<String, String> table = cat.getSystemCatalogue();
+				Map<String, String> table = cat.getSystemCatalogue();
 				Iterator<String> it = table.keySet().iterator();
 				while (it.hasNext()) {
 					String key = it.next();
@@ -139,14 +140,14 @@ public class Catalog implements EntityResolver2 {
 						uriCatalog.put(key, value);
 					}
 				}
-				Vector<String[]> system = cat.getSystemRewrites();
+				List<String[]> system = cat.getSystemRewrites();
 				for (int h = 0; h < system.size(); h++) {
 					String[] pair = system.get(h);
 					if (!systemRewrites.contains(pair)) {
 						systemRewrites.add(pair);
 					}
 				}
-				Vector<String[]> uris = cat.getUriRewrites();
+				List<String[]> uris = cat.getUriRewrites();
 				for (int h = 0; h < uris.size(); h++) {
 					String[] pair = uris.get(h);
 					if (!uriRewrites.contains(pair)) {
@@ -183,30 +184,29 @@ public class Catalog implements EntityResolver2 {
 		if (!f.isAbsolute()) {
 			if (!base.isEmpty()) {
 				return XMLUtils.getAbsolutePath(base, uri);
-			} else {				
-				return XMLUtils.getAbsolutePath(workDir, uri);
 			}
+			return XMLUtils.getAbsolutePath(workDir, uri);
 		}
 		return base + uri;
 	}
 
-	private Hashtable<String, String> getSystemCatalogue() {
+	private Map<String, String> getSystemCatalogue() {
 		return systemCatalog;
 	}
 
-	private Hashtable<String, String> getPublicCatalogue() {
+	private Map<String, String> getPublicCatalogue() {
 		return publicCatalog;
 	}
 
-	private Hashtable<String, String> getUriCatalogue() {
+	private Map<String, String> getUriCatalogue() {
 		return uriCatalog;
 	}
 
-	private Vector<String[]> getSystemRewrites() {
+	private List<String[]> getSystemRewrites() {
 		return systemRewrites;
 	}
 
-	private Vector<String[]> getUriRewrites() {
+	private List<String[]> getUriRewrites() {
 		return uriRewrites;
 	}
 
@@ -232,15 +232,15 @@ public class Catalog implements EntityResolver2 {
 		String publicId = urn.trim().substring("urn:publicid:".length());
 		publicId = publicId.replaceAll("\\+", " ");
 		publicId = publicId.replaceAll("\\:", "//");
-		publicId = publicId.replaceAll(";", "::");
-		publicId = publicId.replaceAll("%2B", "+");
-		publicId = publicId.replaceAll("%3A", ":");
-		publicId = publicId.replaceAll("%2F", "/");
-		publicId = publicId.replaceAll("%3B", ";");
-		publicId = publicId.replaceAll("%27", "'");
-		publicId = publicId.replaceAll("%3F", "?");
-		publicId = publicId.replaceAll("%23", "#");
-		publicId = publicId.replaceAll("%25", "%");
+		publicId = publicId.replace(";", "::");
+		publicId = publicId.replace("%2B", "+");
+		publicId = publicId.replace("%3A", ":");
+		publicId = publicId.replace("%2F", "/");
+		publicId = publicId.replace("%3B", ";");
+		publicId = publicId.replace("%27", "'");
+		publicId = publicId.replace("%3F", "?");
+		publicId = publicId.replace("%23", "#");
+		publicId = publicId.replace("%25", "%");
 		return publicId;
 	}
 
