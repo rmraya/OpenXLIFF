@@ -101,6 +101,19 @@ public class EncodingResolver {
 				}
 			}
 		}
+		list = doc.getElementsByAttribute("charset");
+		if (list != null) {
+			for (int i = 0; i < list.size(); i++) {
+				Element e = list.get(i);
+				String charset = e.attr("charset");
+				String[] pageCodes = getPageCodes();
+				for (int h = 0; h < pageCodes.length; h++) {
+					if (pageCodes[h].equalsIgnoreCase(charset)) {
+						return Charset.forName(pageCodes[h]);
+					}
+				}
+			}
+		}
 		return null;
 	}
 
