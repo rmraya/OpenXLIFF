@@ -112,11 +112,8 @@ public class Html2Xliff {
 					return result;
 				}
 				String file = new String(array, srcEncoding);
-				array = null;
 				buildTables();
 				buildList(file);
-				file = null;
-
 				processList();
 
 				skeleton.close();
