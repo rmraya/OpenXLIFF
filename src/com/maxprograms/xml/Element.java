@@ -399,9 +399,7 @@ public class Element implements XMLNode {
 
 	public void setChildren(List<Element> c) {
 		content = new ArrayList<>();
-		for (int i = 0; i < c.size(); i++) {
-			content.add(c.get(i));
-		}
+		content.addAll(c);
 	}
 
 	@Override
@@ -412,6 +410,10 @@ public class Element implements XMLNode {
 	@Override
 	public int hashCode() {
 		return toString().hashCode();
+	}
+
+	public void addContent(List<XMLNode> list) {
+		content.addAll(list);
 	}
 
 }

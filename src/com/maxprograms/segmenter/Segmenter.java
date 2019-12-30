@@ -356,36 +356,20 @@ public class Segmenter {
 		if (result.length == 1) {
 			// return a <seg-source> with the content of source
 			Element res = new Element("seg-source");
-			res.addContent("\n");
 			Element mrk = new Element("mrk");
 			mrk.setAttribute("mtype", "seg");
 			mrk.setAttribute("mid", "1");
 			res.addContent(mrk);
-			List<XMLNode> content = source.getContent();
-			Iterator<XMLNode> it = content.iterator();
-			while (it.hasNext()) {
-				XMLNode n = it.next();
-				if (n.getNodeType() == XMLNode.TEXT_NODE) {
-					mrk.addContent(n);
-				}
-				if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-					mrk.addContent(n);
-				}
-				res.addContent("\n");
-			}
+			mrk.addContent(source.getContent());
 			return res;
 		}
 		// generate segments
 		Element res = new Element("seg-source");
-		res.addContent("\n");
 		SAXBuilder b = new SAXBuilder();
 		for (int i = 0; i < result.length; i++) {
 			String seg = "<mrk mtype=\"seg\" mid=\"" + (i + 1) + "\">" + result[i] + "</mrk>";
 			Document docu = b.build(new ByteArrayInputStream(seg.getBytes(StandardCharsets.UTF_8)));
-			Element mrk = new Element("mrk");
-			mrk.clone(docu.getRootElement());
-			res.addContent(mrk);
-			res.addContent("\n");
+			res.addContent(docu.getRootElement());
 		}
 		return res;
 	}

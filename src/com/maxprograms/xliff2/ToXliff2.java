@@ -110,7 +110,6 @@ public class ToXliff2 {
 			Element file = new Element("file");
 			file.setAttribute("id", "" + fileId++);
 			file.setAttribute("original", source.getAttributeValue("original"));
-			file.setAttribute("canResegment", "no");
 
 			Element fileMetadata = new Element("mda:metadata");
 			Element typeGroup = new Element("mda:metaGroup");
@@ -264,7 +263,6 @@ public class ToXliff2 {
 		if (source.getName().equals("trans-unit")) {
 			Element unit = new Element("unit");
 			unit.setAttribute("id", source.getAttributeValue("id"));
-			unit.setAttribute("canResegment", "no");
 			if (source.getAttributeValue("translate", "yes").equals("no")) {
 				unit.setAttribute("translate", "no");
 			}
@@ -302,7 +300,6 @@ public class ToXliff2 {
 			
 			Element segment = new Element("segment");
 			segment.setAttribute("id", source.getAttributeValue("id"));
-			segment.setAttribute("canResegment", "no");
 			unit.addContent(segment);
 			if (source.getAttributeValue("approved", "no").equals("yes")) {
 				segment.setAttribute("state", "final");

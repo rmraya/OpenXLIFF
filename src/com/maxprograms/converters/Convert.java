@@ -48,6 +48,7 @@ import com.maxprograms.converters.ts.Ts2Xliff;
 import com.maxprograms.converters.txml.Txml2Xliff;
 import com.maxprograms.converters.wpml.Wpml2Xliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
+import com.maxprograms.xliff2.Resegmenter;
 import com.maxprograms.xliff2.ToXliff2;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -80,6 +81,7 @@ public class Convert {
 		boolean embed = false;
 		boolean paragraph = false;
 		boolean xliff20 = false;
+		boolean mustResegment = false;
 
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
@@ -221,6 +223,11 @@ public class Convert {
 		if (xliff.isEmpty()) {
 			xliff = sourceFile.getAbsolutePath() + ".xlf";
 		}
+
+		if (xliff20 && !paragraph && !FileFormats.isBilingual(type)) {
+			mustResegment = true;
+			paragraph = true;
+		}
 		Map<String, String> params = new HashMap<>();
 		params.put("source", source);
 		params.put("xliff", xliff);
@@ -243,6 +250,9 @@ public class Convert {
 		}
 		if (xliff20 && Constants.SUCCESS.equals(result.get(0))) {
 			result = ToXliff2.run(new File(xliff), catalog);
+			if (mustResegment && Constants.SUCCESS.equals(result.get(0))) {
+				result = Resegmenter.run(xliff, srx, srcLang, catalog);
+			}
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
 			LOGGER.log(Level.ERROR, "Conversion error", result.get(1));
@@ -258,15 +268,12 @@ public class Convert {
 				+ "[-help] [-version] -file sourceFile -srcLang sourceLang [-tgtLang targetLang] "
 				+ "[-skl skeletonFile] [-xliff xliffFile] " + "[-type fileType] [-enc encoding] [-srx srxFile] "
 				+ "[-catalog catalogFile] [-divatal ditaval] " + "[-embed] [-paragraph] [-2.0] [-charsets]\n\n"
-				+ "Where:\n\n" 
-				+ "   -help:      (optional) Display this help information and exit\n"
+				+ "Where:\n\n" + "   -help:      (optional) Display this help information and exit\n"
 				+ "   -version:   (optional) Display version & build information and exit\n"
-				+ "   -file:      source file to convert\n" 
-				+ "   -srgLang:   source language code\n"
+				+ "   -file:      source file to convert\n" + "   -srgLang:   source language code\n"
 				+ "   -tgtLang:   (optional) target language code\n"
 				+ "   -xliff:     (optional) XLIFF file to generate\n"
-				+ "   -skl:       (optional) skeleton file to generate\n" 
-				+ "   -type:      (optional) document type\n"
+				+ "   -skl:       (optional) skeleton file to generate\n" + "   -type:      (optional) document type\n"
 				+ "   -enc:       (optional) character set code for the source file\n"
 				+ "   -srx:       (optional) SRX file to use for segmentation\n"
 				+ "   -catalog:   (optional) XML catalog to use for processing\n"
@@ -275,25 +282,14 @@ public class Convert {
 				+ "   -paragraph: (optional) use paragraph segmentation\n"
 				+ "   -2.0:       (optional) generate XLIFF 2.0\n"
 				+ "   -charsets:  (optional) display a list of available character sets and exit\n\n"
-				+ "Document Types\n\n" 
-				+ "   INX = Adobe InDesign Interchange\n" 
-				+ "   IDML = Adobe InDesign IDML\n"
-				+ "   DITA = DITA Map\n" 
-				+ "   HTML = HTML Page\n" 
-				+ "   JS = JavaScript\n"
-				+ "   JAVA = Java Properties\n" 
-				+ "   MIF = MIF (Maker Interchange Format)\n"
-				+ "   OFF = Microsoft Office 2007 Document\n" 
-				+ "   OO = OpenOffice Document\n"
-				+ "   PO = PO (Portable Objects)\n" 
-				+ "   RC = RC (Windows C/C++ Resources)\n"
-				+ "   RESX = ResX (Windows .NET Resources)\n" 
-				+ "   SDLXLIFF = SDLXLIFF Document\n"
-				+ "   TEXT = Plain Text\n" 
-				+ "   TS = TS (Qt Linguist translation source)\n"
-				+ "   TXML = TXML Document\n" 
-				+ "   WPML = WPML XLIFF\n" 
-				+ "   XML = XML Document\n" 
+				+ "Document Types\n\n" + "   INX = Adobe InDesign Interchange\n" + "   IDML = Adobe InDesign IDML\n"
+				+ "   DITA = DITA Map\n" + "   HTML = HTML Page\n" + "   JS = JavaScript\n"
+				+ "   JAVA = Java Properties\n" + "   MIF = MIF (Maker Interchange Format)\n"
+				+ "   OFF = Microsoft Office 2007 Document\n" + "   OO = OpenOffice Document\n"
+				+ "   PO = PO (Portable Objects)\n" + "   RC = RC (Windows C/C++ Resources)\n"
+				+ "   RESX = ResX (Windows .NET Resources)\n" + "   SDLXLIFF = SDLXLIFF Document\n"
+				+ "   TEXT = Plain Text\n" + "   TS = TS (Qt Linguist translation source)\n"
+				+ "   TXML = TXML Document\n" + "   WPML = WPML XLIFF\n" + "   XML = XML Document\n"
 				+ "   XMLG = XML (Generic)\n";
 		System.out.println(help);
 	}

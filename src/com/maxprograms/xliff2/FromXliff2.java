@@ -168,7 +168,7 @@ public class FromXliff2 {
 						Element group = new Element("prop-group");
 						group.setAttribute("name", category);
 						header.addContent(group);
-						
+
 						List<Element> metaList = metaGroup.getChildren("mda:meta");
 						Iterator<Element> it = metaList.iterator();
 						while (it.hasNext()) {
@@ -209,19 +209,12 @@ public class FromXliff2 {
 			target.addContent(group);
 			target = group;
 		}
+
 		if (source.getName().equals("unit")) {
 			Element transUnit = new Element("trans-unit");
 			transUnit.setAttribute("id", source.getAttributeValue("id"));
 			target.addContent(transUnit);
-			Element segment = source.getChild("segment");
-			String state = segment.getAttributeValue("state");
-			if (state.equals("final")) {
-				transUnit.setAttribute("approved", "yes");
-			}
-			Element src2 = segment.getChild("source");
-			if (src2.getAttributeValue("xml:space", "default").equals("preserve")) {
-				transUnit.setAttribute("xml:space", "preserve");
-			}
+
 			Map<String, String> tags = new HashMap<>();
 			Element originalData = source.getChild("originalData");
 			if (originalData != null) {
@@ -232,8 +225,36 @@ public class FromXliff2 {
 					tags.put(data.getAttributeValue("id"), data.getText());
 				}
 			}
+
+			Element joinedSource = new Element("source");
+			Element joinedTarget = new Element("target");
+			boolean approved = true;
+
+			List<Element> children = source.getChildren();
+			Iterator<Element> et = children.iterator();
+			while (et.hasNext()) {
+				Element child = et.next();
+				if (child.getName().equals("segment") || child.getName().equals("ignorable")) {
+					Element src = child.getChild("source");
+					joinedSource.addContent(src.getContent());
+					Element tgt = child.getChild("target");
+					if (tgt != null) {
+						joinedTarget.addContent(tgt.getContent());
+					}
+					if (child.getName().equals("segment")) {
+						String state = child.getAttributeValue("state");
+						if (!state.equals("final")) {
+							approved = false;
+						}
+					}
+				}
+			}
+			if (approved) {
+				transUnit.setAttribute("approved", "yes");
+			}
+
 			Element src = new Element("source");
-			List<XMLNode> nodes = src2.getContent();
+			List<XMLNode> nodes = joinedSource.getContent();
 			Iterator<XMLNode> it = nodes.iterator();
 			while (it.hasNext()) {
 				XMLNode node = it.next();
@@ -263,10 +284,10 @@ public class FromXliff2 {
 				}
 			}
 			transUnit.addContent(src);
-			Element tgt2 = segment.getChild("target");
-			if (tgt2 != null) {
+
+			if (!joinedTarget.getContent().isEmpty()) {
 				Element tgt = new Element("target");
-				nodes = tgt2.getContent();
+				nodes = joinedTarget.getContent();
 				it = nodes.iterator();
 				while (it.hasNext()) {
 					XMLNode node = it.next();
@@ -297,7 +318,7 @@ public class FromXliff2 {
 				}
 				transUnit.addContent(tgt);
 			}
-			
+
 			Element notes = source.getChild("notes");
 			if (notes != null) {
 				List<Element> notesList = notes.getChildren("note");
