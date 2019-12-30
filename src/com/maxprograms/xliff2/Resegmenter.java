@@ -76,16 +76,13 @@ public class Resegmenter {
 
                 while (it.hasNext()) {
                     XMLNode n = it.next();
-                    switch (n.getNodeType()) {
-                    case XMLNode.TEXT_NODE:
-                        TextNode text = (TextNode) n;
-                        System.out.println("Text node found: \\" + text.toString() + "\\");
-                        break;
-                    case XMLNode.ELEMENT_NODE:
+                    if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
                         Element e = (Element) n;
-                        if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))
-                                && !e.getContent().isEmpty()) {
+                        if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
                             Element newSeg = new Element("segment");
+                            if (!hasText(e)) {
+                                newSeg = new Element("ignorable");
+                            }
                             newSeg.setAttribute("id", root.getAttributeValue("id") + '-' + e.getAttributeValue("mid"));
                             root.addContent(newSeg);
                             Element newSource = new Element("source");
@@ -95,9 +92,6 @@ public class Resegmenter {
                         } else {
                             throw new SAXException("Unexpected element found: " + e.toString());
                         }
-                        break;
-                    default:
-                        // ignore
                     }
                 }
             }
@@ -108,5 +102,20 @@ public class Resegmenter {
                 recurse(it.next());
             }
         }
+    }
+
+    private static boolean hasText(Element e) {
+        List<XMLNode> content = e.getContent();
+        Iterator<XMLNode> it = content.iterator();
+        while (it.hasNext()) {
+            XMLNode node = it.next();
+            if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                TextNode t = (TextNode) node;
+                if (!t.getText().isBlank()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
