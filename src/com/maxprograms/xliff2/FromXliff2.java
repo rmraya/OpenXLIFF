@@ -229,6 +229,7 @@ public class FromXliff2 {
 			Element joinedSource = new Element("source");
 			Element joinedTarget = new Element("target");
 			boolean approved = true;
+			boolean preserve = false;
 
 			List<Element> children = source.getChildren();
 			Iterator<Element> et = children.iterator();
@@ -236,6 +237,9 @@ public class FromXliff2 {
 				Element child = et.next();
 				if (child.getName().equals("segment") || child.getName().equals("ignorable")) {
 					Element src = child.getChild("source");
+					if (src.getAttributeValue("xml:space","default").equals("preserve")) {
+						preserve = true;
+					}
 					joinedSource.addContent(src.getContent());
 					Element tgt = child.getChild("target");
 					if (tgt != null) {
@@ -251,6 +255,9 @@ public class FromXliff2 {
 			}
 			if (approved) {
 				transUnit.setAttribute("approved", "yes");
+			}
+			if (preserve) {
+				transUnit.setAttribute("xml:space", "preserve");
 			}
 
 			Element src = new Element("source");
