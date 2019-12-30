@@ -672,6 +672,10 @@ public class XliffChecker {
 		}
 
 		if (e.getLocalName().equals("source")) {
+			if (e.getContent().isEmpty()) {
+				reason = "Empty <source> element";
+				return false;
+			}
 			inSource = true;
 		}
 

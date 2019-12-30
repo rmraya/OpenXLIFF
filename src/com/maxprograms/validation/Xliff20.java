@@ -337,6 +337,10 @@ public class Xliff20 {
 				reason = "Different \"xml:lang\" in <source>";
 				return false;
 			}
+			if (e.getContent().isEmpty()) {
+				reason = "Empty <source> element";
+				return false;
+			}
 			sourceId = new HashSet<>();
 			cantDelete = new HashSet<>();
 			inSource = true;
