@@ -27,15 +27,18 @@ import com.maxprograms.xml.SAXBuilder;
 public class LanguageUtils {
 
 	private static List<Language> languages;
+	private static RegistryParser registry;
 
 	private LanguageUtils() {
 		// do not instantiate
 	}
 
 	public static List<Language> getCommonLanguages() throws SAXException, IOException, ParserConfigurationException {
+		if (registry == null) {
+			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
+        }
 		if (languages == null) {
 			languages = new ArrayList<>();
-			RegistryParser registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
 			SAXBuilder builder = new SAXBuilder();
 			Element root = builder.build(Language.class.getResource("languageList.xml")).getRootElement();
 			List<Element> children = root.getChildren();
@@ -50,4 +53,15 @@ public class LanguageUtils {
 		}
 		return languages;
 	}
+
+	public static Language getLanguage(String code) throws IOException {
+		if (registry == null) {
+			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
+        }
+        String description = registry.getTagDescription(code);
+        if (description != null) {
+            return new Language(code, description);
+        }
+        return null;
+    }
 }
