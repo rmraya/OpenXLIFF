@@ -42,6 +42,7 @@ public class FileFormats {
 	public static final String PO = "PO (Portable Objects)";
 	public static final String RC = "RC (Windows C/C++ Resources)";
 	public static final String RESX = "ResX (Windows .NET Resources)";
+	public static final String SDLPPX = "Trados Studio Package";
 	public static final String SDLXLIFF = "SDLXLIFF Document";
 	public static final String TS = "TS (Qt Linguist translation source)";
 	public static final String TXML = "TXML Document";
@@ -50,14 +51,14 @@ public class FileFormats {
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
-			SDLXLIFF, TS, TXML, WPML, XML, XMLG };
+		SDLPPX, SDLXLIFF, TS, TXML, WPML, XML, XMLG };
 
 	private static Set<String> bilingualFormats;
 
 	public static boolean isBilingual(String type) {
 		if (bilingualFormats == null) {
 			bilingualFormats = new TreeSet<>();
-			bilingualFormats.addAll(Arrays.asList(PO, SDLXLIFF, TS, TXML, WPML));
+			bilingualFormats.addAll(Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML));
 		}
 		return bilingualFormats.contains(type);
 	}
@@ -157,6 +158,7 @@ public class FileFormats {
 				boolean openOffice = false;
 				boolean hasXML = false;
 				boolean idml = false;
+				boolean sdlppx = false; 
 				try (ZipInputStream in = new ZipInputStream(new FileInputStream(file))) {
 					ZipEntry entry = null;
 					while ((entry = in.getNextEntry()) != null) {
@@ -166,6 +168,10 @@ public class FileFormats {
 						}
 						if (entry.getName().equals("designmap.xml")) {
 							idml = true;
+							break;
+						}
+						if (entry.getName().endsWith((".sdlproj"))) {
+							sdlppx = true;
 							break;
 						}
 						if (entry.getName().matches(".*\\.xml")) {
@@ -178,6 +184,9 @@ public class FileFormats {
 				}
 				if (openOffice) {
 					return OO;
+				}
+				if (sdlppx) {
+					return SDLPPX;
 				}
 				if (hasXML) {
 					return OFF;
@@ -258,6 +267,9 @@ public class FileFormats {
 		if (type.equals(RESX)) {
 			return "RESX";
 		}
+		if (type.equals(SDLPPX)) {
+			return "SDLXPPX";
+		}
 		if (type.equals(SDLXLIFF)) {
 			return "SDLXLIFF";
 		}
@@ -318,6 +330,9 @@ public class FileFormats {
 		}
 		if (type.equals("RESX")) {
 			return RESX;
+		}
+		if (type.equals("SDLPPX")) {
+			return SDLPPX;
 		}
 		if (type.equals("SDLXLIFF")) {
 			return SDLXLIFF;

@@ -41,6 +41,7 @@ import com.maxprograms.converters.plaintext.Xliff2Text;
 import com.maxprograms.converters.po.Xliff2Po;
 import com.maxprograms.converters.rc.Xliff2Rc;
 import com.maxprograms.converters.resx.Xliff2Resx;
+import com.maxprograms.converters.sdlppx.Xliff2Sdlrpx;
 import com.maxprograms.converters.sdlxliff.Xliff2Sdl;
 import com.maxprograms.converters.ts.Xliff2Ts;
 import com.maxprograms.converters.txml.Xliff2Txml;
@@ -372,6 +373,8 @@ public class Merge {
 				result = Xliff2Rc.run(params);
 			} else if (dataType.equals(FileFormats.RESX) || dataType.equals("resx")) {
 				result = Xliff2Resx.run(params);
+			} else if (dataType.equals(FileFormats.SDLPPX) || dataType.equals("x-sdlpackage")) {
+				result = Xliff2Sdlrpx.run(params);
 			} else if (dataType.equals(FileFormats.SDLXLIFF) || dataType.equals("x-sdlxliff")) {
 				result = Xliff2Sdl.run(params);
 			} else if (dataType.equals(FileFormats.TEXT) || dataType.equals("plaintext")) {

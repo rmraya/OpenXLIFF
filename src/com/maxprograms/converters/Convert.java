@@ -43,6 +43,7 @@ import com.maxprograms.converters.plaintext.Text2Xliff;
 import com.maxprograms.converters.po.Po2Xliff;
 import com.maxprograms.converters.rc.Rc2Xliff;
 import com.maxprograms.converters.resx.Resx2Xliff;
+import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
 import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
 import com.maxprograms.converters.ts.Ts2Xliff;
 import com.maxprograms.converters.txml.Txml2Xliff;
@@ -282,14 +283,26 @@ public class Convert {
 				+ "   -paragraph: (optional) use paragraph segmentation\n"
 				+ "   -2.0:       (optional) generate XLIFF 2.0\n"
 				+ "   -charsets:  (optional) display a list of available character sets and exit\n\n"
-				+ "Document Types\n\n" + "   INX = Adobe InDesign Interchange\n" + "   IDML = Adobe InDesign IDML\n"
-				+ "   DITA = DITA Map\n" + "   HTML = HTML Page\n" + "   JS = JavaScript\n"
-				+ "   JAVA = Java Properties\n" + "   MIF = MIF (Maker Interchange Format)\n"
-				+ "   OFF = Microsoft Office 2007 Document\n" + "   OO = OpenOffice Document\n"
-				+ "   PO = PO (Portable Objects)\n" + "   RC = RC (Windows C/C++ Resources)\n"
-				+ "   RESX = ResX (Windows .NET Resources)\n" + "   SDLXLIFF = SDLXLIFF Document\n"
-				+ "   TEXT = Plain Text\n" + "   TS = TS (Qt Linguist translation source)\n"
-				+ "   TXML = TXML Document\n" + "   WPML = WPML XLIFF\n" + "   XML = XML Document\n"
+				+ "Document Types\n\n" 
+				+ "   INX = Adobe InDesign Interchange\n" 
+				+ "   IDML = Adobe InDesign IDML\n"
+				+ "   DITA = DITA Map\n" 
+				+ "   HTML = HTML Page\n" 
+				+ "   JS = JavaScript\n"
+				+ "   JAVA = Java Properties\n" 
+				+ "   MIF = MIF (Maker Interchange Format)\n"
+				+ "   OFF = Microsoft Office 2007 Document\n" 
+				+ "   OO = OpenOffice Document\n"
+				+ "   PO = PO (Portable Objects)\n" 
+				+ "   RC = RC (Windows C/C++ Resources)\n"
+				+ "   RESX = ResX (Windows .NET Resources)\n" 
+				+ "   SDLPPX = Trados Studio Package\n"
+				+ "   SDLXLIFF = SDLXLIFF Document\n"
+				+ "   TEXT = Plain Text\n" 
+				+ "   TS = TS (Qt Linguist translation source)\n"
+				+ "   TXML = TXML Document\n" 
+				+ "   WPML = WPML XLIFF\n" 
+				+ "   XML = XML Document\n"
 				+ "   XMLG = XML (Generic)\n";
 		System.out.println(help);
 	}
@@ -367,6 +380,8 @@ public class Convert {
 			result = Rc2Xliff.run(params);
 		} else if (format.equals(FileFormats.RESX)) {
 			result = Resx2Xliff.run(params);
+		} else if (format.equals(FileFormats.SDLPPX)) {
+			result = Sdlppx2Xliff.run(params);
 		} else if (format.equals(FileFormats.SDLXLIFF)) {
 			result = Sdl2Xliff.run(params);
 		} else if (format.equals(FileFormats.TEXT)) {

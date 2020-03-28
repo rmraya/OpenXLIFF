@@ -42,6 +42,7 @@ import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Merge;
 import com.maxprograms.converters.TmxExporter;
+import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
 import com.maxprograms.languages.Language;
 import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.stats.RepetitionAnalysis;
@@ -51,16 +52,17 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 public class XliffHandler implements HttpHandler {
 
-    private static final Logger LOGGER = System.getLogger(XliffHandler.class.getName());
+	private static final Logger LOGGER = System.getLogger(XliffHandler.class.getName());
 
-    private IServer server;
+	private IServer server;
 
-    private Map<String, String> running;
+	private Map<String, String> running;
 	private Map<String, JSONObject> validationResults;
 	private Map<String, JSONObject> conversionResults;
 	private Map<String, JSONObject> mergeResults;
@@ -71,19 +73,19 @@ public class XliffHandler implements HttpHandler {
 	private boolean is20;
 	private String target;
 	private boolean unapproved;
-    private boolean exportTmx;
-    
-    public XliffHandler(IServer server) {
-        this.server = server;
-        running = new HashMap<>();
+	private boolean exportTmx;
+
+	public XliffHandler(IServer server) {
+		this.server = server;
+		running = new HashMap<>();
 		validationResults = new HashMap<>();
 		conversionResults = new HashMap<>();
 		mergeResults = new HashMap<>();
 		analysisResults = new HashMap<>();
-    }
+	}
 
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
+	@Override
+	public void handle(HttpExchange exchange) throws IOException {
 		URI uri = exchange.getRequestURI();
 		String request = "";
 		try (InputStream is = exchange.getRequestBody()) {
@@ -103,8 +105,8 @@ public class XliffHandler implements HttpHandler {
 				command = json.getString("command");
 			}
 			if (command.equals("version")) {
-				response = "{\"tool\":\"" + Constants.TOOLNAME + "\", \"version\": \"" + Constants.VERSION + "\", \"build\": \""
-						+ Constants.BUILD + "\"}";
+				response = "{\"tool\":\"" + Constants.TOOLNAME + "\", \"version\": \"" + Constants.VERSION
+						+ "\", \"build\": \"" + Constants.BUILD + "\"}";
 			}
 			if (command.equals("convert")) {
 				response = convert(json);
@@ -148,6 +150,9 @@ public class XliffHandler implements HttpHandler {
 			if (command.equals("getLanguages") || uri.toString().endsWith("/getLanguages")) {
 				response = getLanguages();
 			}
+			if (command.equals("getPackageLangs")) {
+				response = getPackageLangs(json);
+			}
 			exchange.getResponseHeaders().add("content-type", "application/json");
 			exchange.sendResponseHeaders(200, response.length());
 			try (BufferedReader reader = new BufferedReader(
@@ -171,7 +176,18 @@ public class XliffHandler implements HttpHandler {
 		}
 	}
 
-    private static String readRequestBody(InputStream is) throws IOException {
+	private static String getPackageLangs(JSONObject json) {
+		try {
+			return Sdlppx2Xliff.getPackageLanguages(json.getString("package")).toString();
+		} catch (JSONException | IOException | SAXException | ParserConfigurationException e) {
+			JSONObject error = new JSONObject();
+			error.put("result", "Failed");
+			error.put("reason", e.getMessage());
+			return error.toString();
+		}
+	}
+
+	private static String readRequestBody(InputStream is) throws IOException {
 		StringBuilder request = new StringBuilder();
 		try (BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 			String line;

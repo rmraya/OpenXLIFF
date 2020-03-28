@@ -65,6 +65,7 @@ public class Xliff2Sdl {
 		}
 
 		try {
+			
 			loadSegments();
 			loadSkeleton();
 

@@ -47,7 +47,11 @@ public class SAXBuilder {
 	}
 
 	public Document build(String filename) throws SAXException, IOException, ParserConfigurationException {
-		return build(new File(filename).toURI().toURL());
+		File f = new File(filename);
+		if (!f.exists()) {
+			throw new IOException("File '" + filename + "' does not exist.");
+		}
+		return build(f.toURI().toURL());
 	}
 
 	public Document build(URI uri) throws SAXException, IOException, ParserConfigurationException {
@@ -55,6 +59,10 @@ public class SAXBuilder {
 	}
 
 	public Document build(File file) throws SAXException, IOException, ParserConfigurationException {
+		if (!file.exists()) {
+			throw new IOException("File '" + file.getAbsolutePath() + "' does not exist.");
+		}
+		
 		return build(file.toURI().toURL());
 	}
 
