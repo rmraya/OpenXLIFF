@@ -15,6 +15,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
+- **[Joining multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#joining-multiple-xliff-files)**
 
 Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment. 
 
@@ -22,6 +23,7 @@ Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements a
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.8.0 | Implemented support fro Trados Studio packages | March 29, 2020
 1.7.0 | Major code cleanup; Changed segmentation model for XLIFF 2.0 | January 01, 2020
 1.6.0 | Added support for XLIFF files from WPML WordPress Plugin | December 01, 2019
 1.5.2 | Improved segmenter performance | October 29, 2019
@@ -222,3 +224,22 @@ Where:
 ```
 
 The HTML report is generated in the folder where the XLIFF file is located and its name is the name of the XLIFF plus `.log.html`.
+
+## Joining multiple XLIFF files
+
+You can combine several XLIFF files into a larger one using the class `com.maxprograms.converters.Join` from your Java code or using the provided scripts.
+
+Running `.\join.bat` or `./join.sh` without parameters displays help for joining files.
+
+```text
+Usage:
+
+   join.sh [-help] -target targetFile -files file1,file2,file3... 
+
+ Where:
+
+   -help:     (optional) Display this help information and exit
+   -target:   combined output XLIFF file
+```
+
+The merge process automatically splits the files when converting back to original format.
