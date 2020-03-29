@@ -556,6 +556,9 @@ public class Merge {
 							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));  
 				}
 			}
+			if (target.endsWith(".sdlppx")) { 
+				target = target.substring(0, target.length() - ".sdlppx".length()) + ".sdlrpx";
+			}
 		} else {
 			File p = new File(file).getParentFile();
 			if (p == null) {

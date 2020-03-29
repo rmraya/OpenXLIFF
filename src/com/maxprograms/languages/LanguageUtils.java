@@ -63,5 +63,12 @@ public class LanguageUtils {
             return new Language(code, description);
         }
         return null;
-    }
+	}
+	
+	public static String normalizeCode(String code) throws IOException {
+		if (registry == null) {
+			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
+        }
+		return registry.normalizeCode(code);
+	}
 }

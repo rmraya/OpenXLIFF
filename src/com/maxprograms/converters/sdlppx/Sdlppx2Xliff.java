@@ -34,12 +34,15 @@ import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Join;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
+import com.maxprograms.languages.Language;
+import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
@@ -74,15 +77,6 @@ public class Sdlppx2Xliff {
 			}
 
 			if (!tgtLangs.contains(targetLanguage)) {
-				for (int i = 0; i < tgtLangs.size(); i++) {
-					String lang = tgtLangs.get(i);
-					if (lang.equalsIgnoreCase(targetLanguage)) {
-						targetLanguage = lang;
-						break;
-					}
-				}
-			}
-			if (!tgtLangs.contains(targetLanguage)) {
 				result.add(Constants.ERROR);
 				StringBuilder string = new StringBuilder("Incorrect target language. Valid options:");
 				for (int i = 0; i < tgtLangs.size(); i++) {
@@ -93,15 +87,6 @@ public class Sdlppx2Xliff {
 				return result;
 			}
 
-			if (!srcLangs.contains(sourceLanguage)) {
-				for (int i = 0; i < srcLangs.size(); i++) {
-					String lang = srcLangs.get(i);
-					if (lang.equalsIgnoreCase(sourceLanguage)) {
-						sourceLanguage = lang;
-						break;
-					}
-				}
-			}
 			if (!srcLangs.contains(sourceLanguage)) {
 				result.add(Constants.ERROR);
 				StringBuilder string = new StringBuilder("Incorrect source language. Valid options:");
@@ -290,18 +275,34 @@ public class Sdlppx2Xliff {
 		Iterator<Element> it = directionsList.iterator();
 		while (it.hasNext()) {
 			Element direction = it.next();
-			String sourceLanguageCode = direction.getAttributeValue("SourceLanguageCode");
+			String sourceLanguageCode = LanguageUtils.normalizeCode(direction.getAttributeValue("SourceLanguageCode"));
 			if (!srcLangs.contains(sourceLanguageCode)) {
 				srcLangs.add(sourceLanguageCode);
 			}
-			String targetLanguageCode = direction.getAttributeValue("TargetLanguageCode");
+			String targetLanguageCode = LanguageUtils.normalizeCode(direction.getAttributeValue("TargetLanguageCode"));
 			if (!tgtLangs.contains(targetLanguageCode)) {
 				tgtLangs.add(targetLanguageCode);
 			}
 		}
 		Files.delete(project.toPath());
-		result.put("srcLangs", srcLangs);
-		result.put("tgtLangs", tgtLangs);
+		JSONArray srcArray = new JSONArray();
+		for (int i = 0; i < srcLangs.size(); i++) {
+			Language lang = LanguageUtils.getLanguage(srcLangs.get(i));
+			JSONObject obj = new JSONObject();
+			obj.put("code", lang.getCode());
+			obj.put("description", lang.getDescription());
+			srcArray.put(obj);
+		}
+		JSONArray tgtArray = new JSONArray();
+		for (int i = 0; i < tgtLangs.size(); i++) {
+			Language lang = LanguageUtils.getLanguage(tgtLangs.get(i));
+			JSONObject obj = new JSONObject();
+			obj.put("code", lang.getCode());
+			obj.put("description", lang.getDescription());
+			tgtArray.put(obj);
+		}
+		result.put("srcLangs", srcArray);
+		result.put("tgtLangs", tgtArray);
 		return result;
 	}
 }

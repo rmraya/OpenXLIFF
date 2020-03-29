@@ -235,4 +235,95 @@ public class RegistryParser {
 		return "";
 	}
 
+	public String normalizeCode(String code) {
+		String[] parts = code.split("-");
+		if (parts.length == 1) {
+			// language part only
+			if (languages.containsKey(code.toLowerCase())) {
+				return code.toLowerCase();
+			}
+		} else if (parts.length == 2) {
+			// contains either script or region
+			if (!languages.containsKey(parts[0].toLowerCase())) {
+				return "";
+			}
+			Language lang = languages.get(parts[0].toLowerCase());
+			if (parts[1].length() == 2) {
+				// could be a country code
+				if (regions.containsKey(parts[1].toUpperCase())) {
+					return parts[0].toLowerCase() + "-" + parts[1].toUpperCase();
+				}
+			}
+			if (parts[1].length() == 3) {
+				// could be a UN region code
+				if (regions.containsKey(parts[1])) {
+					return parts[0].toLowerCase() + "-" + parts[1];
+				}
+			}
+			if (parts[1].length() == 4) {
+				// could have script
+				String script = parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1).toLowerCase();
+				if (script.equals(lang.getSuppresedScript())) {
+					return "";
+				}
+				if (scripts.containsKey(script)) {
+					return parts[0].toLowerCase() + "-" + script;
+				}
+			}
+			// try with a variant
+			if (variants.containsKey(parts[1].toLowerCase())) {
+				Variant var = variants.get(parts[1].toLowerCase());
+				if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+					// variant is valid for the language code
+					return parts[0].toLowerCase() + "-" + var.getCode();
+				}
+			}
+		} else if (parts.length == 3) {
+			if (!languages.containsKey(parts[0].toLowerCase())) {
+				return "";
+			}
+			Language lang = languages.get(parts[0].toLowerCase());
+			if (parts[1].length() == 4) {
+				// could be script + region or variant
+				String script = parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1).toLowerCase();
+				if (script.equals(lang.getSuppresedScript())) {
+					return "";
+				}
+				if (scripts.containsKey(script)) {
+					Script scr = scripts.get(script);
+					// check if next part is a region or variant
+					if (regions.containsKey(parts[2].toUpperCase())) {
+						// check if next part is a variant
+						Region reg = regions.get(parts[2].toUpperCase());
+						return lang.getCode() + "-" + scr.getCode() + "-" + reg.getCode();
+					}
+					if (variants.containsKey(parts[2].toLowerCase())) {
+						Variant var = variants.get(parts[2].toLowerCase());
+						if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+							// variant is valid for the language code
+							return lang.getCode() + "-" + scr.getCode() + "-" + var.getCode();
+						}
+					}
+				}
+			} else {
+				// could be region + variant
+				if (parts[1].length() == 2 || parts[1].length() == 3) {
+					// could be a region code
+					if (regions.containsKey(parts[1].toUpperCase())) {
+						// check if next part is a variant
+						Region reg = regions.get(parts[1].toUpperCase());
+						if (variants.containsKey(parts[2].toLowerCase())) {
+							Variant var = variants.get(parts[2].toLowerCase());
+							if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+								// variant is valid for the language code
+								return lang.getCode() + "-" + reg.getCode() + "-" + var.getCode();
+							}
+						}
+					}
+				}
+			}
+		}
+		return "";
+	}
+
 }
