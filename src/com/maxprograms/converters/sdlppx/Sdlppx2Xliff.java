@@ -40,6 +40,7 @@ import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -67,7 +68,10 @@ public class Sdlppx2Xliff {
 		String targetLanguage = params.get("tgtLang");
 
 		try {
-			getPackageLanguages(inputFile);
+			JSONObject json = getPackageLanguages(inputFile);
+			if (json.has("reason")) {
+				throw new JSONException(json.getString("reason"));
+			}
 
 			if (!tgtLangs.contains(targetLanguage)) {
 				for (int i = 0; i < tgtLangs.size(); i++) {
@@ -276,6 +280,11 @@ public class Sdlppx2Xliff {
 		SAXBuilder builder = new SAXBuilder();
 		Document proj = builder.build(project);
 		Element projectRoot = proj.getRootElement();
+		if (!"ProjectPackage".equals(projectRoot.getAttributeValue("PackageType"))) {
+			result.put("result", "Failed");
+			result.put("reason", "Selected file is a return package");
+			return result;
+		}
 		Element directions = projectRoot.getChild("LanguageDirections");
 		List<Element> directionsList = directions.getChildren("LanguageDirection");
 		Iterator<Element> it = directionsList.iterator();

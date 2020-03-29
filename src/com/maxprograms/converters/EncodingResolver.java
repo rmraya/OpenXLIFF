@@ -64,6 +64,8 @@ public class EncodingResolver {
 			} catch (IOException e) {
 				LOGGER.log(Level.ERROR, "Error detecting XML encoding", e);
 			}
+		} else if (fileType.equals(FileFormats.SDLPPX)) {
+			return StandardCharsets.UTF_8;
 		} else if (fileType.equals(FileFormats.RC)) {
 			try {
 				return getRCEncoding(fileName);

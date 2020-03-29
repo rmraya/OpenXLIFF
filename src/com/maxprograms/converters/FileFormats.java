@@ -64,7 +64,6 @@ public class FileFormats {
 	}
 
 	public static String detectFormat(String fileName) {
-
 		File file = new File(fileName);
 		if (!file.exists()) {
 			return null;
@@ -268,7 +267,7 @@ public class FileFormats {
 			return "RESX";
 		}
 		if (type.equals(SDLPPX)) {
-			return "SDLXPPX";
+			return "SDLPPX";
 		}
 		if (type.equals(SDLXLIFF)) {
 			return "SDLXLIFF";
