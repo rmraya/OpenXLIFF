@@ -106,7 +106,7 @@ public class Sdlppx2Xliff {
 			ZipEntry entry = null;
 			while ((entry = in.getNextEntry()) != null) {
 				File f = new File(entry.getName());
-				if (targetLanguage.equals(f.getParent()) && f.getName().endsWith(".sdlxliff")) {
+				if (targetLanguage.equalsIgnoreCase(f.getParent()) && f.getName().endsWith(".sdlxliff")) {
 					// it is sdlxliff from target folder
 					String name = f.getName();
 					File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".sdlxliff");
@@ -154,7 +154,7 @@ public class Sdlppx2Xliff {
 						saveEntry(entry, tmp.getAbsolutePath());
 					}
 					Files.delete(tmp.toPath());
-				} else if (sourceLanguage.equals(f.getParent()) || f.getName().endsWith(".sdlproj")) {
+				} else if (sourceLanguage.equalsIgnoreCase(f.getParent()) || f.getName().endsWith(".sdlproj")) {
 					// preserve source files and project
 					File tmp = File.createTempFile("zip", ".tmp");
 					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {

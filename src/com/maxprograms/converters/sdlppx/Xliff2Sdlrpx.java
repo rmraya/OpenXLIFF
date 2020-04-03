@@ -19,7 +19,9 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +48,9 @@ public class Xliff2Sdlrpx {
     private static ZipInputStream in;
     private static ZipOutputStream out;
 
+    private static String srcLang;
+    private static String tgtLang;
+
     private Xliff2Sdlrpx() {
         // do not instantiate this class
         // use run method instead
@@ -53,7 +58,8 @@ public class Xliff2Sdlrpx {
 
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
-
+        srcLang = "";
+        tgtLang = "";
         Map<String, String> filesMap = new HashMap<>();
 
         String sklFile = params.get("skeleton");
@@ -100,6 +106,12 @@ public class Xliff2Sdlrpx {
                 }
                 if (sdlxliffFile.isEmpty()) {
                     throw new SAXException("Missing sdlxliff file name");
+                }
+                if (tgtLang.isEmpty()) {
+                    tgtLang = file.getAttributeValue("target-language");
+                }
+                if (srcLang.isEmpty()) {
+                    srcLang = file.getAttributeValue("source-language");
                 }
                 Document d = new Document(null, "xliff", null, null);
                 Element r = d.getRootElement();
@@ -152,7 +164,7 @@ public class Xliff2Sdlrpx {
                 } else if (name.endsWith(".sdlproj")) {
                     // update project
                     updateProjectFile(tmp);
-                    saveEntry(entry.getName(), tmp.getAbsolutePath());
+                    saveEntry(updateProjectName(entry.getName()), tmp.getAbsolutePath());
                 } else {
                     // store as is
                     saveEntry(entry.getName(), tmp.getAbsolutePath());
@@ -180,6 +192,25 @@ public class Xliff2Sdlrpx {
         return result;
     }
 
+    private static String updateProjectName(String string) {
+        String name = string;
+        if (name.endsWith(".sdlproj")) {
+            name = name.substring(0, name.length() - ".sdlproj".length());
+            int last = name.lastIndexOf('-');
+            if (last != -1) {
+                name = name.substring(0, last);
+                last = name.lastIndexOf('-');
+                if (last != -1) {
+                    name = name.substring(0, last);
+                    Date now = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'-'HH'h'mm'm'ss's'");
+                    return name + '-' + sdf.format(now) + ".sdlproj";
+                }
+            }
+        }
+        return string;
+    }
+
     private static void updateProjectFile(File tmp) throws SAXException, IOException, ParserConfigurationException {
         SAXBuilder builder = new SAXBuilder();
         Document doc = builder.build(tmp);
@@ -197,11 +228,44 @@ public class Xliff2Sdlrpx {
                 tasks.removeChild(automatic);
             }
         }
+        recurseProject(root);
         XMLOutputter outputter = new XMLOutputter();
         outputter.preserveSpace(true);
         try (FileOutputStream output = new FileOutputStream(tmp)) {
             outputter.output(doc, output);
         }
+    }
+
+    private static void recurseProject(Element node) {
+        List<Element> children = node.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            Element child = it.next();
+            if (child.getName().equals("Reports")) {
+                child.setContent(new ArrayList<>());
+            }
+            if (child.getName().equals("LanguageFile")) {
+                if (child.getAttributeValue("LanguageCode").equalsIgnoreCase(tgtLang)) {
+                    Element versions = child.getChild("FileVersions");
+                    List<Element> files = versions.getChildren("FileVersion");
+                    Iterator<Element> ft = files.iterator();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'0000Z'");
+                    while (ft.hasNext()) {
+                        Element file = ft.next();
+                        Date now = new Date();
+                        file.setAttribute("FileTimeStamp", sdf.format(now));
+                    }
+                } else if (child.getAttributeValue("LanguageCode").equalsIgnoreCase(srcLang)) {
+                    // leave source files unchanged
+                } else {
+                    // remove any other language
+                    node.removeChild(child);
+                }
+            } else {
+                recurseProject(child);
+            }
+        }
+
     }
 
     private static void saveEntry(String name, String file) throws IOException {
