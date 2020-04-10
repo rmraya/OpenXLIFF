@@ -17,7 +17,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +90,7 @@ public class XMLOutputter {
 		}
 		entities = sdoc.getEntities();
 		if (entities == null) {
-			entities = new HashMap<>();
+			entities = new Hashtable<>();
 			entities.put("lt", "&#38;#60;");
 			entities.put("gt", "&#62;");
 			entities.put("amp", "&#38;#38;");

@@ -17,10 +17,10 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class Document implements XMLNode {
 
@@ -44,7 +44,7 @@ public class Document implements XMLNode {
 	public Document(String namespaceURI, String qualifiedName, String publicId, String systemId) {
 		this.publicId = publicId;
 		this.systemId = systemId;
-		content = new ArrayList<>();
+		content = new Vector<>();
 		root = new Element(qualifiedName);
 		content.add(root);
 		if (namespaceURI != null && !namespaceURI.isEmpty()) {
@@ -59,7 +59,7 @@ public class Document implements XMLNode {
 
 	public Document(String namespaceURI, String qualifiedName, String internalSubset) {
 		this.internalSubset = internalSubset;
-		content = new ArrayList<>();
+		content = new Vector<>();
 		root = new Element(qualifiedName);
 		content.add(root);
 
@@ -74,7 +74,7 @@ public class Document implements XMLNode {
 	}
 
 	protected Document(String namespaceURI, String qualifiedName, List<XMLNode> prolog) {
-		content = new ArrayList<>();
+		content = new Vector<>();
 		if (prolog != null) {
 			Iterator<XMLNode> it = prolog.iterator();
 			while (it.hasNext()) {
@@ -150,7 +150,7 @@ public class Document implements XMLNode {
 	}
 
 	public List<PI> getPI() {
-		List<PI> result = new ArrayList<>();
+		List<PI> result = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
@@ -161,7 +161,7 @@ public class Document implements XMLNode {
 	}
 
 	public List<PI> getPI(String target) {
-		List<PI> result = new ArrayList<>();
+		List<PI> result = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE && ((PI) n).getTarget().equals(target)) {

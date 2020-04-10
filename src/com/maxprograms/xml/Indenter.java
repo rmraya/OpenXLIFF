@@ -11,9 +11,9 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 public class Indenter {
 
@@ -62,7 +62,7 @@ public class Indenter {
 		for (int i = 0; i < ((level - 1) * numSpaces); i++) {
 			end.append(' ');
 		}
-		List<XMLNode> content = new ArrayList<>();
+		List<XMLNode> content = new Vector<>();
 		List<XMLNode> nodes = e.getContent();
 		Iterator<XMLNode> it = nodes.iterator();
 		while (it.hasNext()) {

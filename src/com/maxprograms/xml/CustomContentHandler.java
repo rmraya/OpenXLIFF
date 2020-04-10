@@ -11,9 +11,9 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.EmptyStackException;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,7 @@ class CustomContentHandler implements IContentHandler {
 				current.addContent(new String(ch, start, length));
 			} else {
 				if (prolog == null) {
-					prolog = new ArrayList<>();
+					prolog = new Vector<>();
 				}
 				prolog.add(new TextNode(new String(ch, start, length)));
 			}
@@ -87,7 +87,7 @@ class CustomContentHandler implements IContentHandler {
 			current.addContent(new String(ch, start, length));
 		} else {
 			if (prolog == null) {
-				prolog = new ArrayList<>();
+				prolog = new Vector<>();
 			}
 			prolog.add(new TextNode(new String(ch, start, length)));
 		}
@@ -113,7 +113,7 @@ class CustomContentHandler implements IContentHandler {
 			}
 		} else {
 			if (prolog == null) {
-				prolog = new ArrayList<>();
+				prolog = new Vector<>();
 			}
 			PI pi = new PI(target, data);
 			prolog.add(pi);
@@ -122,7 +122,7 @@ class CustomContentHandler implements IContentHandler {
 
 	protected static List<Attribute> getPseudoAttributes(String string) {
 		String data = string.trim();
-		List<Attribute> result = new ArrayList<>();
+		List<Attribute> result = new Vector<>();
 		String name = "";
 		String value = "";
 		boolean inName = true;
@@ -179,7 +179,7 @@ class CustomContentHandler implements IContentHandler {
 	@Override
 	public void startDocument() throws SAXException {
 		inDocument = true;
-		namespacesInUse = new HashMap<>();
+		namespacesInUse = new Hashtable<>();
 	}
 
 	@Override
@@ -212,7 +212,7 @@ class CustomContentHandler implements IContentHandler {
 			String prefix = getPrefixPart(qName);
 			if (!prefix.equals("") && !namespacesInUse.containsKey(prefix)) {
 				if (pendingNamespaces == null) {
-					pendingNamespaces = new HashMap<>();
+					pendingNamespaces = new Hashtable<>();
 				}
 				if (pendingNamespaces.containsKey(prefix)) {
 					namespacesInUse.put(prefix, pendingNamespaces.get(prefix));
@@ -244,18 +244,18 @@ class CustomContentHandler implements IContentHandler {
 		if (!prefix.equals("") && inDocument) {
 			if (current != null) {
 				if (namespacesInUse == null) {
-					namespacesInUse = new HashMap<>();
+					namespacesInUse = new Hashtable<>();
 				}
 				if (!namespacesInUse.containsKey(prefix)) {
 					if (pendingNamespaces == null) {
-						pendingNamespaces = new HashMap<>();
+						pendingNamespaces = new Hashtable<>();
 					}
 					pendingNamespaces.put(prefix, uri);
 				}
 			} else {
 				if (doc == null) {
 					if (namespaces == null) {
-						namespaces = new ArrayList<>();
+						namespaces = new Vector<>();
 					}
 					String[] pair = { prefix, uri };
 					namespaces.add(pair);
@@ -276,7 +276,7 @@ class CustomContentHandler implements IContentHandler {
 		}
 		if (current == null) {
 			if (prolog == null) {
-				prolog = new ArrayList<>();
+				prolog = new Vector<>();
 			}
 			prolog.add(new Comment(new String(ch, start, length)));
 		} else {

@@ -11,10 +11,10 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
@@ -26,7 +26,7 @@ public class EntityHandler extends DefaultHandler2 {
 
 	public EntityHandler() {
 		super();
-		entities = new HashMap<>();
+		entities = new Hashtable<>();
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class EntityHandler extends DefaultHandler2 {
 			return;
 		}
 		if (attributes == null) {
-			attributes = new ArrayList<>();
+			attributes = new Vector<>();
 		}
 		if (value != null) {
 			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + " " + value + ">"); 

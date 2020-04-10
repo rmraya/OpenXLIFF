@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 public class Element implements XMLNode {
 
@@ -35,14 +35,14 @@ public class Element implements XMLNode {
 
 	public Element() {
 		name = "";
-		attsTable = new HashMap<>();
-		content = new ArrayList<>();
+		attsTable = new Hashtable<>();
+		content = new Vector<>();
 	}
 
 	public Element(String name) {
 		this.name = name;
-		attsTable = new HashMap<>();
-		content = new ArrayList<>();
+		attsTable = new Hashtable<>();
+		content = new Vector<>();
 	}
 
 	public void addContent(XMLNode n) {
@@ -75,7 +75,7 @@ public class Element implements XMLNode {
 
 	public void clone(Element src) {
 		name = src.getName();
-		attsTable = new HashMap<>();
+		attsTable = new Hashtable<>();
 		List<Attribute> atts = src.getAttributes();
 		Iterator<Attribute> it = atts.iterator();
 		while (it.hasNext()) {
@@ -83,7 +83,7 @@ public class Element implements XMLNode {
 			Attribute n = new Attribute(a.getName(), a.getValue());
 			attsTable.put(n.getName(), n);
 		}
-		content = new ArrayList<>();
+		content = new Vector<>();
 		List<XMLNode> cont = src.getContent();
 		Iterator<XMLNode> ic = cont.iterator();
 		while (ic.hasNext()) {
@@ -158,7 +158,7 @@ public class Element implements XMLNode {
 		if (content.size() < 2) {
 			return;
 		}
-		List<XMLNode> newContent = new ArrayList<>();
+		List<XMLNode> newContent = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.TEXT_NODE && !newContent.isEmpty()) {
@@ -187,7 +187,7 @@ public class Element implements XMLNode {
 	}
 
 	public List<Attribute> getAttributes() {
-		List<Attribute> result = new ArrayList<>();
+		List<Attribute> result = new Vector<>();
 		result.addAll(attsTable.values());
 		return result;
 	}
@@ -213,7 +213,7 @@ public class Element implements XMLNode {
 	}
 
 	public List<Element> getChildren() {
-		List<Element> result = new ArrayList<>();
+		List<Element> result = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode node = content.get(i);
 			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
@@ -224,7 +224,7 @@ public class Element implements XMLNode {
 	}
 
 	public List<Element> getChildren(String tagname) {
-		List<Element> result = new ArrayList<>();
+		List<Element> result = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode node = content.get(i);
 			if (node.getNodeType() == XMLNode.ELEMENT_NODE && ((Element) node).getName().equals(tagname)) {
@@ -315,7 +315,7 @@ public class Element implements XMLNode {
 	}
 
 	public void setText(String text) {
-		content = new ArrayList<>();
+		content = new Vector<>();
 		content.add(new TextNode(text));
 	}
 
@@ -341,7 +341,7 @@ public class Element implements XMLNode {
 	}
 
 	public List<PI> getPI() {
-		List<PI> result = new ArrayList<>();
+		List<PI> result = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
@@ -352,7 +352,7 @@ public class Element implements XMLNode {
 	}
 
 	public List<PI> getPI(String target) {
-		List<PI> result = new ArrayList<>();
+		List<PI> result = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE && ((PI) n).getTarget().equals(target)) {
@@ -398,7 +398,7 @@ public class Element implements XMLNode {
 	}
 
 	public void setChildren(List<Element> c) {
-		content = new ArrayList<>();
+		content = new Vector<>();
 		content.addAll(c);
 	}
 

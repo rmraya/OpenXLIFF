@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Vector;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +51,11 @@ public class Catalog implements EntityResolver2 {
 			workDir = workDir + File.separator;
 		}
 
-		systemCatalog = new HashMap<>();
-		publicCatalog = new HashMap<>();
-		uriCatalog = new HashMap<>();
-		uriRewrites = new ArrayList<>();
-		systemRewrites = new ArrayList<>();
+		systemCatalog = new Hashtable<>();
+		publicCatalog = new Hashtable<>();
+		uriCatalog = new Hashtable<>();
+		uriRewrites = new Vector<>();
+		systemRewrites = new Vector<>();
 
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(catalogFile);
