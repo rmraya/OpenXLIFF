@@ -133,18 +133,13 @@ public class RepetitionAnalysis {
 				if (target != null && !target.getText().isEmpty()) {
 					translated = "yes";
 				}
-				List<Element> altTrans = el.getChildren("alt-trans");
 				String type = "";
 				int[] count = getCount(el);
-				if (!altTrans.isEmpty()) {
-					type = getMatch(el);
+				if (approved.equalsIgnoreCase("yes") && target != null
+						&& target.getAttributeValue("state-qualifier", "").equals("leveraged-inherited")) {
+					type = "ice";
 				} else {
-					if (approved.equalsIgnoreCase("yes") && target != null
-							&& target.getAttributeValue("state-qualifier", "").equals("leveraged-inherited")) {
-						type = "ice";
-					} else {
-						type = "new";
-					}
+					type = getMatch(el);
 				}
 				if (el.getAttributeValue("translate", "yes").equals("yes")) {
 					src.setAttribute("words", "" + count[0]);
@@ -631,10 +626,10 @@ public class RepetitionAnalysis {
 	}
 
 	private static String getMatch(Element e) {
-		List<Element> transUnits = e.getChildren("alt-trans");
+		List<Element> altTrans = e.getChildren("alt-trans");
 		int max = 0;
 		String type = "";
-		Iterator<Element> i = transUnits.iterator();
+		Iterator<Element> i = altTrans.iterator();
 		while (i.hasNext()) {
 			Element trans = i.next();
 			String quality = trans.getAttributeValue("match-quality");
@@ -813,18 +808,13 @@ public class RepetitionAnalysis {
 				translated = "yes";
 			}
 
-			List<Element> transUnits = e.getChildren("alt-trans");
 			String type = "";
 			int[] count = getCount(e);
-			if (!transUnits.isEmpty()) {
-				type = getMatch(e);
+			if (approved.equalsIgnoreCase("yes") && target != null
+					&& target.getAttributeValue("state-qualifier", "").equals("leveraged-inherited")) {
+				type = "ice";
 			} else {
-				if (approved.equalsIgnoreCase("yes") && target != null
-						&& target.getAttributeValue("state-qualifier", "").equals("leveraged-inherited")) {
-					type = "ice";
-				} else {
-					type = "new";
-				}
+				type = getMatch(e);
 			}
 			src.setAttribute("words", "" + count[0]);
 			src.setAttribute("untranslatable", "" + count[1]);
