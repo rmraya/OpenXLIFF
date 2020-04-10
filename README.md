@@ -23,6 +23,7 @@ Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements a
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.8.2 | Switched to synchronized classes in XML package | April 10, 2020
 1.8.1 | Improved support for Trados Studio packages | April 3, 2020
 1.8.0 | Implemented support for Trados Studio packages | March 29, 2020
 1.7.0 | Major code cleanup; Changed segmentation model for XLIFF 2.0 | January 01, 2020
