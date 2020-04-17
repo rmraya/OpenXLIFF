@@ -23,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -110,8 +109,8 @@ public class Po2Xliff {
 
 					skeleton = new FileOutputStream(skeletonFile);
 
-					String line;
-					while ((line = buffer.readLine()) != null) {
+					String line = buffer.readLine();
+					while (line != null) {
 						line = line + "\n";
 
 						if (line.trim().length() == 0) {
@@ -246,6 +245,7 @@ public class Po2Xliff {
 								writeSkeleton(line);
 							}
 						}
+						line = buffer.readLine();
 					}
 
 					skeleton.close();
@@ -466,27 +466,13 @@ public class Po2Xliff {
 		if (ref.trim().equals("")) {
 			return;
 		}
-		if (ref.indexOf(':') != -1) {
-			// regular reference
-			StringTokenizer tokenizer = new StringTokenizer(ref.trim());
-			while (tokenizer.hasMoreTokens()) {
-				writeString("      <context-group name=\"x-po-reference#" + refId++ + "\" purpose=\"location\">\n");
-				String token = tokenizer.nextToken();
-				if (token.indexOf(':') != -1) {
-					writeString("         <context context-type=\"sourcefile\">"
-							+ token.substring(0, token.indexOf(':')) + "</context>\n");
-					writeString("         <context context-type=\"linenumber\">"
-							+ token.substring(token.indexOf(':') + 1) + "</context>\n");
-				}
-				writeString("      </context-group>\n");
-			}
-		} else {
-			// strange thing, may be from .properties file
-			writeString("      <context-group name=\"x-po-reference#" + refId++ + "\" purpose=\"x-unknown\">\n");
-			writeString(
-					"         <context context-type=\"x-unknown\">" + Utils.cleanString(ref).trim() + "</context>\n");
-			writeString("      </context-group>\n");
+		writeString("      <context-group name=\"x-po-reference#" + refId++ + "\" purpose=\"x-unknown\">\n");
+		String[] lines = ref.split("\\n");
+		for (int i = 0; i < lines.length; i++) {
+			writeString("         <context context-type=\"x-unknown\">" + Utils.cleanString(lines[i]).trim()
+					+ "</context>\n");
 		}
+		writeString("      </context-group>\n");
 	}
 
 }

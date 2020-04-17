@@ -21,7 +21,6 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,17 +69,16 @@ public class Xliff2Po {
 				p.mkdirs();
 			}
 			if (!f.exists()) {
-				Files.createFile(Paths.get(f.toURI()));
+				Files.createFile(f.toPath());
 			}
 			output = new FileOutputStream(f);
 			loadSegments();
 			try (InputStreamReader input = new InputStreamReader(new FileInputStream(sklFile),
 					StandardCharsets.UTF_8)) {
 				BufferedReader buffer = new BufferedReader(input);
-				String line;
-				while ((line = buffer.readLine()) != null) {
+				String line = buffer.readLine();
+				while (line != null) {
 					line = line + "\n";
-
 					if (line.indexOf("%%%") != -1) {
 						//
 						// contains translatable text
@@ -111,6 +109,8 @@ public class Xliff2Po {
 						//
 						writeString(line);
 					}
+
+					line = buffer.readLine();
 				}
 			}
 			output.close();
@@ -252,7 +252,9 @@ public class Xliff2Po {
 				if (test.substring(test.lastIndexOf("#:")).length() > 80) {
 					reference = reference + "\n#:";
 				}
-				reference = reference + " " + file + ":" + linenumber;
+				if (!file.isEmpty() && !linenumber.isEmpty()) {
+					reference = reference + " " + file + ":" + linenumber;
+				}
 			}
 			if (group.getAttributeValue("name", "").startsWith("x-po-reference")
 					&& group.getAttributeValue("purpose").equals("x-unknown")) {
@@ -260,7 +262,11 @@ public class Xliff2Po {
 				Iterator<Element> h = contexts.iterator();
 				while (h.hasNext()) {
 					Element context = h.next();
-					reference = reference + " " + context.getText();
+					if (reference.equals("#:")) {
+						reference = reference + " " + context.getText();
+					} else {
+						reference = reference + "\n#: " + context.getText();
+					}
 				}
 			}
 			if (group.getAttributeValue("name", "").startsWith("x-po-msgctxt")) {
@@ -272,7 +278,7 @@ public class Xliff2Po {
 				}
 			}
 		}
-		if (!reference.equals("#:")) {
+		if (!reference.trim().equals("#:")) {
 			writeString(reference + "\n");
 		}
 		if (!newContext.equals("msgctxt \"")) {
