@@ -17,12 +17,13 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Joining multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#joining-multiple-xliff-files)**
 
-Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment. 
+Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment.
 
 ## Releases
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.8.3 | Fixed conversion of PO files | April 17, 2020
 1.8.2 | Switched to synchronized classes in XML package | April 10, 2020
 1.8.1 | Improved support for Trados Studio packages | April 3, 2020
 1.8.0 | Implemented support for Trados Studio packages | March 29, 2020
@@ -191,7 +192,7 @@ All XLIFF 2.0 modules are validated using XML Schema validation in a first pass.
 
 You can validate XLIFF files using your own Java code. Validation of XLIFF files is handled by the class `com.maxprograms.validation.XliffChecker`.
 
-If you use binaries from the command line, running `.\xliffchecker.bat` or `./xliffchecker.sh` without parameters displays help for XLIFF validation. 
+If you use binaries from the command line, running `.\xliffchecker.bat` or `./xliffchecker.sh` without parameters displays help for XLIFF validation.
 
 ```text
 Usage:
@@ -216,7 +217,7 @@ You can generate statistics using your own Java code. Statistics generation is h
 ```text
 Usage:
 
-   analysis.sh [-help] -file xliffFile [-catalog catalogFile] 
+   analysis.sh [-help] -file xliffFile [-catalog catalogFile]
 
 Where:
 
@@ -236,7 +237,7 @@ Running `.\join.bat` or `./join.sh` without parameters displays help for joining
 ```text
 Usage:
 
-   join.sh [-help] -target targetFile -files file1,file2,file3... 
+   join.sh [-help] -target targetFile -files file1,file2,file3...
 
  Where:
 
