@@ -58,7 +58,7 @@ public class FileFormats {
 	public static boolean isBilingual(String type) {
 		if (bilingualFormats == null) {
 			bilingualFormats = new TreeSet<>();
-			bilingualFormats.addAll(Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML));
+			bilingualFormats.addAll(Arrays.asList(PO, SDLPPX, SDLPPX, SDLXLIFF, TS, TXML, WPML));
 		}
 		return bilingualFormats.contains(type);
 	}
