@@ -21,7 +21,12 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import com.maxprograms.xml.Document;
 import com.maxprograms.xml.SAXBuilder;
+
+import org.xml.sax.SAXException;
 
 public class FileFormats {
 
@@ -47,18 +52,19 @@ public class FileFormats {
 	public static final String TS = "TS (Qt Linguist translation source)";
 	public static final String TXML = "TXML Document";
 	public static final String WPML = "WPML XLIFF";
+	public static final String XLIFF = "XLIFF Document";
 	public static final String XML = "XML Document";
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
-		SDLPPX, SDLXLIFF, TS, TXML, WPML, XML, XMLG };
+			SDLPPX, SDLXLIFF, TS, TXML, WPML, XML, XMLG };
 
 	private static Set<String> bilingualFormats;
 
 	public static boolean isBilingual(String type) {
 		if (bilingualFormats == null) {
 			bilingualFormats = new TreeSet<>();
-			bilingualFormats.addAll(Arrays.asList(PO, SDLPPX, SDLPPX, SDLXLIFF, TS, TXML, WPML));
+			bilingualFormats.addAll(Arrays.asList(PO, SDLPPX, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF));
 		}
 		return bilingualFormats.contains(type);
 	}
@@ -99,11 +105,14 @@ public class FileFormats {
 			}
 
 			if (string.startsWith("<?xml")) {
-				if (string.indexOf("<xliff") != -1 && string.indexOf("xmlns:sdl") != -1) {
+				if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:sdl") != -1) {
 					return SDLXLIFF;
 				}
-				if (string.indexOf("<xliff") != -1 && string.indexOf("<![CDATA[") != -1) {
+				if (string.indexOf("<xliff ") != -1 && string.indexOf("<![CDATA[") != -1) {
 					return WPML;
+				}
+				if (string.indexOf("<xliff ") != -1 && parseXliff(fileName)) {
+					return XLIFF;
 				}
 				if (string.indexOf("<txml ") != -1) {
 					return TXML;
@@ -157,7 +166,7 @@ public class FileFormats {
 				boolean openOffice = false;
 				boolean hasXML = false;
 				boolean idml = false;
-				boolean sdlppx = false; 
+				boolean sdlppx = false;
 				try (ZipInputStream in = new ZipInputStream(new FileInputStream(file))) {
 					ZipEntry entry = null;
 					while ((entry = in.getNextEntry()) != null) {
@@ -281,6 +290,9 @@ public class FileFormats {
 		if (type.equals(WPML)) {
 			return "WPML";
 		}
+		if (type.equals(XLIFF)) {
+			return "XLIFF";
+		}
 		if (type.equals(XML)) {
 			return "XML";
 		}
@@ -345,6 +357,9 @@ public class FileFormats {
 		if (type.equals("WPML")) {
 			return WPML;
 		}
+		if (type.equals("XLIFF")) {
+			return XLIFF;
+		}
 		if (type.equals("XML")) {
 			return XML;
 		}
@@ -352,6 +367,16 @@ public class FileFormats {
 			return XMLG;
 		}
 		return null;
+	}
+
+	private static boolean parseXliff(String file) {
+		try {
+			SAXBuilder builder = new SAXBuilder();
+			Document doc = builder.build(file);
+			return doc.getRootElement().getName().equals("xliff");
+		} catch (SAXException | IOException | ParserConfigurationException e) {
+			return false;
+		}
 	}
 
 	public static String[] getFormats() {
