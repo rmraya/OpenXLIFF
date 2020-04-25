@@ -23,6 +23,7 @@ Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements a
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.8.4 | Minor fixes and improvements | April 25. 2020
 1.8.3 | Fixed conversion of PO files | April 17, 2020
 1.8.2 | Switched to synchronized classes in XML package | April 10, 2020
 1.8.1 | Improved support for Trados Studio packages | April 3, 2020
