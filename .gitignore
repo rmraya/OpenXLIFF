@@ -1,6 +1,6 @@
+.DS_Store
 /bin/
 /dist/
-/.DS_Store
 /sonar-project.properties
 /sonarqube.sh
 /.scannerwork/

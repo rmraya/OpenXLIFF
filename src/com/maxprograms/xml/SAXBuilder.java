@@ -62,7 +62,6 @@ public class SAXBuilder {
 		if (!file.exists()) {
 			throw new IOException("File '" + file.getAbsolutePath() + "' does not exist.");
 		}
-		
 		return build(file.toURI().toURL());
 	}
 
@@ -124,6 +123,16 @@ public class SAXBuilder {
 	}
 
 	public Document build(URL url) throws SAXException, IOException, ParserConfigurationException {
+		if ("file".equals(url.getProtocol())) {
+			if (resolver != null && resolver instanceof Catalog) {
+				File f = new File(url.toString());
+				String parent = f.getParentFile().getAbsolutePath();
+				if (parent.lastIndexOf("file:") != -1) {
+					parent = parent.substring(parent.lastIndexOf("file:") + 5);
+				}
+				((Catalog) resolver).currentDocumentBase(parent);
+			}
+		}
 		XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
 		parser.setFeature("http://xml.org/sax/features/namespaces", true);
 		if (validating) {

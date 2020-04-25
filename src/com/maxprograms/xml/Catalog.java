@@ -38,6 +38,7 @@ public class Catalog implements EntityResolver2 {
 	private List<String[]> systemRewrites;
 	private String workDir;
 	private String base = "";
+	private String documentParent = "";
 
 	public Catalog(String catalogFile)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
@@ -302,17 +303,35 @@ public class Catalog implements EntityResolver2 {
 				return systemCatalog.get(systemId);
 			}
 			// this resource is not in catalog.
+
+			if (!documentParent.isEmpty()) {
+				// try to find the file in parent folder
+				File f = new File(systemId);
+				String name = f.getAbsolutePath();
+				if (!f.isAbsolute()) {
+					File currentFolder = new File(System.getProperty("user.dir"));
+					name = name.substring(currentFolder.getAbsolutePath().length());
+				}
+				File parent = new File(documentParent);
+				File file = new File(parent, name);
+				if (file.exists()) {
+					return file.getAbsolutePath();
+				}
+			}
 			try {
-				URI u = new URI(baseURI != null ? baseURI : "").resolve(systemId).normalize();
+				URI u = new URI(baseURI != null ? baseURI : documentParent).resolve(systemId).normalize();
 				File file = new File(u.toURL().toString());
 				if (file.exists()) {
 					return file.getAbsolutePath();
 				}
+			} catch (IllegalArgumentException e) {
+				throw new IllegalArgumentException(e.getMessage() + " systemId: " + systemId);
 			} catch (MalformedURLException | URISyntaxException e) {
 				// ignore
 			}
 		}
 		return null;
+
 	}
 
 	public String matchURI(String uri) {
@@ -338,4 +357,7 @@ public class Catalog implements EntityResolver2 {
 		return null;
 	}
 
+	public void currentDocumentBase(String parentFile) {
+		documentParent = parentFile;
+	}
 }
