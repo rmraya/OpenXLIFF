@@ -225,17 +225,16 @@ public class Xml2Xliff {
 
 			result.add(Constants.SUCCESS);
 
-		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException | IllegalArgumentException e) {
 			LOGGER.log(Level.ERROR, "Error converting XML file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
-
 		return result;
 	}
 
 	public static String getIniFile(String fileName)
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException, IllegalArgumentException {
 		File folder = new File(System.getProperty("user.dir"), "xmlfilter");
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalog);
