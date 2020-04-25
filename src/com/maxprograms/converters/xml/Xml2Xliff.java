@@ -159,7 +159,7 @@ public class Xml2Xliff {
 			File f = new File(iniFile);
 			if (!f.exists()) {
 				MessageFormat mf = new MessageFormat(
-						"Configuration file ''{0}'' not found. \\n\\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
+						"Configuration file ''{0}'' not found. \n\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
 				throw new IOException(mf.format(new Object[] { f.getName() }));
 
 			}
