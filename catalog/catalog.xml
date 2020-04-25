@@ -11,6 +11,8 @@
 	<system systemId="http://www.w3.org/1999/XSL/Transform" uri="xml/transform.xsd"/>
 	<public publicId="-//W3C//DTD XMLSCHEMA 200102//EN" uri="xml/XMLSchema.dtd"/>
 	<public publicId="datatypes" uri="xml/datatypes.dtd"/>
+	<system systemId="http://www.w3.org/2001/XInclude" uri="xinclude/xinclude.xsd"/>
+	<system systemId="xinclude.mod" uri="xinclude/xinclude.mod"/>
 	
 	<public publicId="-//XLIFF//DTD XLIFF//EN" uri="xliff/xliff.dtd"/>
 	<system systemId="xliff.dtd" uri="xliff/xliff.dtd"/>
