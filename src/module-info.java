@@ -41,6 +41,7 @@ module openxliff {
 	requires mapdb;
 	requires java.base;
 	requires java.logging;
+	requires java.net.http;
 	requires transitive jdk.httpserver;
 	requires transitive java.xml;
 }
