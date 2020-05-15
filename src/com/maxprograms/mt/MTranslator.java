@@ -13,16 +13,14 @@
 package com.maxprograms.mt;
 
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Element;
-import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
 
 public class MTranslator {
 
@@ -49,30 +47,24 @@ public class MTranslator {
         this.engines = engines;
     }
 
-    public boolean translate(Element segment) throws IOException, InterruptedException {
-        if (engines.isEmpty()) {
-            return false;
-        }
-        try {
-            String source = extractSource(segment);
-            Iterator<MTEngine> it = engines.iterator();
-            while (it.hasNext()) {
-                MTEngine engine = it.next();
-                String target = engine.translate(source);
-                if (target != null && !target.isEmpty()) {
-                    addTranslation(segment, source, target, engine.getSourceLanguage(), engine.getTargetLanguage(),
-                            engine.getName());
-                }
-            }
-        } catch (IOException e) {
-            Logger logger = System.getLogger(MTranslator.class.getName());
-            logger.log(Level.ERROR, e);
-            return false;
-        }
-        return true;
+    public void translate(Element segment) throws IOException, InterruptedException {
+    	if (engines.isEmpty()) {
+    		return;
+    	}
+
+    	String source = extractSource(segment);
+    	Iterator<MTEngine> it = engines.iterator();
+    	while (it.hasNext()) {
+    		MTEngine engine = it.next();
+    		String target = engine.translate(source);
+    		if (target != null && !target.isEmpty()) {
+    			addTranslation(segment, source, target, engine.getSourceLanguage(), engine.getTargetLanguage(),
+    					engine.getName());
+    		}
+    	}
     }
 
-    private String extractSource(Element segment) throws IOException {
+    private static String extractSource(Element segment) throws IOException {
         if ("trans-unit".equals(segment.getName())) {
             return unclean(pureText(segment.getChild("source")));
         } 
