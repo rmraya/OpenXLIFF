@@ -49,7 +49,7 @@ public class YandexTranslator implements MTEngine {
     @Override
     public List<Language> getSourceLanguages() throws IOException, InterruptedException {
         if (languages == null) {
-            getDirections();
+            getLanguages();
         }
         return languages;
     }
@@ -57,12 +57,12 @@ public class YandexTranslator implements MTEngine {
     @Override
     public List<Language> getTargetLanguages() throws IOException, InterruptedException {
         if (languages == null) {
-            getDirections();
+            getLanguages();
         }
         return languages;
     }
 
-    private void getDirections() throws IOException, InterruptedException {
+    private void getLanguages() throws IOException, InterruptedException {
         HttpClient httpclient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=" + apiKey + "&ui=en"))
@@ -86,6 +86,13 @@ public class YandexTranslator implements MTEngine {
                 }
             }
         }
+    }
+
+    public List<String> getDirections() throws IOException, InterruptedException {
+        if (directions == null) {
+            getLanguages();
+        }
+        return directions;
     }
 
     @Override
@@ -125,7 +132,7 @@ public class YandexTranslator implements MTEngine {
                 }
                 if (code == 501) {
                     if (directions == null) {
-                        getDirections();
+                        getLanguages();
                     }
                     if (!directions.contains(srcLang + "-" + tgtLang)) {
                         throw new IOException("The specified translation direction is not supported");

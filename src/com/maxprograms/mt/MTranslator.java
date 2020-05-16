@@ -95,7 +95,7 @@ public class MTranslator {
         return result.replaceAll("&amp;", "&");
     }
 
-    public static String pureText(Element seg) {
+    private static String pureText(Element seg) {
         List<XMLNode> l = seg.getContent();
         Iterator<XMLNode> i = l.iterator();
         StringBuilder text = new StringBuilder();
