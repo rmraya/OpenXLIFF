@@ -122,13 +122,19 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	@Override
-	public boolean equals(MTEngine obj) {
+	public boolean equals(Object obj) {
 		if (obj instanceof DeepLTranslator) {
-			return srcLang.equals(obj.getSourceLanguage()) && tgtLang.equals(obj.getTargetLanguage());
+			DeepLTranslator dl = (DeepLTranslator) obj;
+			return srcLang.equals(dl.getSourceLanguage()) && tgtLang.equals(dl.getTargetLanguage());
 		}
 		return false;
 	}
 
+	@Override
+    public int hashCode() {
+        return DeepLTranslator.class.getName().hashCode();
+    }
+    
 	@Override
 	public String getSourceLanguage() {
 		return srcLang;

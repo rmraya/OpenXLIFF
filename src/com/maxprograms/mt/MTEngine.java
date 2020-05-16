@@ -38,6 +38,4 @@ public interface MTEngine {
     public String getTargetLanguage();
 
     public String translate(String source) throws IOException, InterruptedException;
-
-    boolean equals(MTEngine obj);
 }

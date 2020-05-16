@@ -68,7 +68,7 @@ public class AzureTranslator implements MTEngine {
         JSONObject translation = json.getJSONObject("translation");
         String[] codes = JSONObject.getNames(translation);
         languages = new ArrayList<>();
-        for (int i=0 ; i<codes.length ; i++) {
+        for (int i = 0; i < codes.length; i++) {
             languages.add(LanguageUtils.getLanguage(codes[i]));
         }
     }
@@ -126,13 +126,20 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
-    public boolean equals(MTEngine obj) {
+    public boolean equals(Object obj) {
         if (obj instanceof AzureTranslator) {
-            return srcLang.equals(obj.getSourceLanguage()) && tgtLang.equals(obj.getTargetLanguage());
+            AzureTranslator az = (AzureTranslator) obj;
+            return srcLang.equals(az.getSourceLanguage()) && tgtLang.equals(az.getTargetLanguage());
         }
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return AzureTranslator.class.getName().hashCode();
+    }
+    
+    
     @Override
     public String getSourceLanguage() {
         return srcLang;

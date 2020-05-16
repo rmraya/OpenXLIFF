@@ -104,7 +104,7 @@ public class GoogleTranslator implements MTEngine {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.googleapis.com/language/translate/v2?key=" + apiKey + "&q="
                         + URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source=" + srcLang + "&target="
-                        + tgtLang  + "&model=" + (neural ? "nmt" : "base")))
+                        + tgtLang + "&model=" + (neural ? "nmt" : "base")))
                 .build();
         HttpResponse<String> response = httpclient.send(request, BodyHandlers.ofString());
 
@@ -139,13 +139,19 @@ public class GoogleTranslator implements MTEngine {
     }
 
     @Override
-    public boolean equals(MTEngine obj) {
+    public boolean equals(Object obj) {
         if (obj instanceof GoogleTranslator) {
-            return srcLang.equals(obj.getSourceLanguage()) && tgtLang.equals(obj.getTargetLanguage());
+            GoogleTranslator gt = (GoogleTranslator) obj;
+            return srcLang.equals(gt.getSourceLanguage()) && tgtLang.equals(gt.getTargetLanguage());
         }
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        return GoogleTranslator.class.getName().hashCode();
+    }
+    
     @Override
     public String getSourceLanguage() {
         return srcLang;
