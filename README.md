@@ -23,7 +23,7 @@ Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements a
 
 Version | Comment | Release Date
 --------|---------|-------------
-1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | Not released yet
+1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | May 18, 2020
 1.8.4 | Improved catalog and other minor fixes | April 25. 2020
 1.8.3 | Fixed conversion of PO files | April 17, 2020
 1.8.2 | Switched to synchronized classes in XML package | April 10, 2020
