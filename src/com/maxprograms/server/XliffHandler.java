@@ -105,8 +105,11 @@ public class XliffHandler implements HttpHandler {
 				command = json.getString("command");
 			}
 			if (command.equals("version")) {
-				response = "{\"tool\":\"" + Constants.TOOLNAME + "\", \"version\": \"" + Constants.VERSION
-						+ "\", \"build\": \"" + Constants.BUILD + "\"}";
+				json = new JSONObject();
+				json.put("tool",Constants.TOOLNAME );
+				json.put("version", Constants.VERSION);
+				json.put("build", Constants.BUILD);
+				response =json.toString(2);
 			}
 			if (command.equals("convert")) {
 				response = convert(json);
