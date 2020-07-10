@@ -43,6 +43,8 @@ public class ToXliff2 {
 
 	private static Element root2;
 	private static int fileId;
+	private static String fileSrcLang;
+	private static String fileTgtLang;
 
 	private ToXliff2() {
 		// do not instantiate this class
@@ -102,10 +104,11 @@ public class ToXliff2 {
 		}
 
 		if (source.getName().equals("file")) {
-			root2.setAttribute("srcLang", source.getAttributeValue("source-language"));
-			String tgtLang = source.getAttributeValue("target-language", "");
-			if (!tgtLang.equals("")) {
-				root2.setAttribute("trgLang", tgtLang);
+			fileSrcLang = source.getAttributeValue("source-language");
+			root2.setAttribute("srcLang", fileSrcLang);
+			fileTgtLang = source.getAttributeValue("target-language", "");
+			if (!fileTgtLang.equals("")) {
+				root2.setAttribute("trgLang", fileTgtLang);
 			}
 			Element file = new Element("file");
 			file.setAttribute("id", "" + fileId++);
@@ -308,6 +311,7 @@ public class ToXliff2 {
 			if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
 				src2.setAttribute("xml:space", "preserve");
 			}
+			src2.setAttribute("xml:lang", fileSrcLang);
 			segment.addContent(src2);
 			List<XMLNode> srcContent = src.getContent();
 			Iterator<XMLNode> nodes = srcContent.iterator();
@@ -342,6 +346,9 @@ public class ToXliff2 {
 				Element tgt2 = new Element("target");
 				if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
 					tgt2.setAttribute("xml:space", "preserve");
+				}
+				if (fileTgtLang != null && !fileTgtLang.isEmpty()) {
+					tgt2.setAttribute("xml:lang", fileTgtLang);
 				}
 				List<XMLNode> tgtContent = tgt.getContent();
 				nodes = tgtContent.iterator();

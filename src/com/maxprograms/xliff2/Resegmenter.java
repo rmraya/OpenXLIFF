@@ -38,7 +38,8 @@ import org.xml.sax.SAXException;
 public class Resegmenter {
 
     private static Segmenter segmenter;
-
+    private static String fileSrcLang;
+    
     public static List<String> run(String xliff, String srx, String srcLang, String catalog) {
         List<String> result = new ArrayList<>();
         try {
@@ -64,6 +65,9 @@ public class Resegmenter {
     }
 
     private static void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
+        if ("file".equals(root.getName())) {
+            fileSrcLang = root.getAttributeValue("source-language");
+        }
         if ("unit".equals(root.getName())) {
             root.removeAttribute("canResegment");
             Element segment = root.getChild("segment");
@@ -87,6 +91,7 @@ public class Resegmenter {
                             root.addContent(newSeg);
                             Element newSource = new Element("source");
                             newSource.setAttribute("xml:space", source.getAttributeValue("xml:space", "default"));
+                            newSource.setAttribute("xml:lang", fileSrcLang);
                             newSeg.addContent(newSource);
                             newSource.addContent(e.getContent());
                         } else {
