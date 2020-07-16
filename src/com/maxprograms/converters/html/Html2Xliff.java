@@ -498,6 +498,8 @@ public class Html2Xliff {
 							s = s.substring(0, control) + (char) ch + s.substring(sc + 1);
 						} else if (candidate.equals("&nbsp;")) {
 							s = s.substring(0, control) + "\u00A0" + s.substring(sc + 1);
+						} else if (candidate.equals("&copy;")) {
+							s = s.substring(0, control) + "\u00A9" + s.substring(sc + 1);
 						} else {
 							// ugly, this should never happen
 							s = s.substring(0, control) + "%%%ph id=\"" + tagId++ + "\"%%%&amp;"
