@@ -36,7 +36,7 @@ public class LanguageUtils {
 	public static List<Language> getCommonLanguages() throws SAXException, IOException, ParserConfigurationException {
 		if (registry == null) {
 			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
-        }
+		}
 		if (languages == null) {
 			languages = new ArrayList<>();
 			SAXBuilder builder = new SAXBuilder();
@@ -57,18 +57,30 @@ public class LanguageUtils {
 	public static Language getLanguage(String code) throws IOException {
 		if (registry == null) {
 			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
-        }
-        String description = registry.getTagDescription(code);
-        if (description != null) {
-            return new Language(code, description);
-        }
-        return null;
+		}
+		String description = registry.getTagDescription(code);
+		if (description != null) {
+			return new Language(code, description);
+		}
+		return null;
 	}
-	
+
 	public static String normalizeCode(String code) throws IOException {
 		if (registry == null) {
 			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
-        }
+		}
 		return registry.normalizeCode(code);
+	}
+
+	public static boolean isBiDi(String code)  {
+		return code.startsWith("ar") || code.startsWith("fa") || code.startsWith("az") || code.startsWith("ur")
+				|| code.startsWith("pa-PK") || code.startsWith("ps") || code.startsWith("prs") || code.startsWith("ug")
+				|| code.startsWith("he") || code.startsWith("ji") || code.startsWith("yi");
+
+	}
+
+	public static boolean isCJK(String code) {
+		return code.startsWith("zh") || code.startsWith("ja") || code.startsWith("ko") || code.startsWith("vi")
+				|| code.startsWith("ain") || code.startsWith("aib");
 	}
 }
