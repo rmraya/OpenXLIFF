@@ -69,6 +69,8 @@ public class Html2Xliff {
 	private static String last;
 	private static String targetLanguage;
 
+	private static SAXBuilder builder;
+
 	private Html2Xliff() {
 		// do not instantiate this class
 		// use run method instead
@@ -297,8 +299,7 @@ public class Html2Xliff {
 			throws SAXException, IOException, ParserConfigurationException {
 		ByteArrayInputStream stream = new ByteArrayInputStream(
 				("<x>" + segment + "</x>").getBytes(StandardCharsets.UTF_8));
-		SAXBuilder b = new SAXBuilder();
-		Document d = b.build(stream);
+		Document d = builder.build(stream);
 		Element e = d.getRootElement();
 		List<XMLNode> content = e.getContent();
 		Iterator<XMLNode> it = content.iterator();
@@ -342,8 +343,7 @@ public class Html2Xliff {
 	private static String phContent(String segment) throws SAXException, IOException, ParserConfigurationException {
 		ByteArrayInputStream stream = new ByteArrayInputStream(
 				("<x>" + segment + "</x>").getBytes(StandardCharsets.UTF_8));
-		SAXBuilder b = new SAXBuilder();
-		Document d = b.build(stream);
+		Document d = builder.build(stream);
 		Element e = d.getRootElement();
 		List<XMLNode> content = e.getContent();
 		Iterator<XMLNode> it = content.iterator();
@@ -363,8 +363,7 @@ public class Html2Xliff {
 	private static String removePH(String segment) throws SAXException, IOException, ParserConfigurationException {
 		ByteArrayInputStream stream = new ByteArrayInputStream(
 				("<x>" + segment + "</x>").getBytes(StandardCharsets.UTF_8));
-		SAXBuilder b = new SAXBuilder();
-		Document d = b.build(stream);
+		Document d = builder.build(stream);
 		Element e = d.getRootElement();
 		List<XMLNode> content = e.getContent();
 		Iterator<XMLNode> it = content.iterator();
@@ -497,6 +496,8 @@ public class Html2Xliff {
 							// numeric entity in decimal
 							int ch = Integer.parseInt(candidate.substring(2, candidate.indexOf(';')));
 							s = s.substring(0, control) + (char) ch + s.substring(sc + 1);
+						} else if (candidate.equals("&nbsp;")) {
+							s = s.substring(0, control) + "\u00A0" + s.substring(sc + 1);
 						} else {
 							// ugly, this should never happen
 							s = s.substring(0, control) + "%%%ph id=\"" + tagId++ + "\"%%%&amp;"
@@ -796,7 +797,9 @@ public class Html2Xliff {
 	private static void buildTables()
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
-		SAXBuilder builder = new SAXBuilder();
+		if (builder == null) {
+			builder = new SAXBuilder();
+		}
 		Catalog cat = new Catalog(catalog);
 		builder.setEntityResolver(cat);
 		Document doc = builder.build(Html2Xliff.class.getResource("init_html.xml"));
