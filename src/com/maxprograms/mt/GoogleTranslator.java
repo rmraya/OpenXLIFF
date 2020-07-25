@@ -50,6 +50,11 @@ public class GoogleTranslator implements MTEngine {
     }
 
     @Override
+    public String getShortName() {
+        return "Google";
+    }
+
+    @Override
     public List<Language> getSourceLanguages() throws IOException, InterruptedException {
         if (languages == null) {
             getLanguages();

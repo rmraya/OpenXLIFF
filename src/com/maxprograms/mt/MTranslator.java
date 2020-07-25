@@ -23,6 +23,8 @@ import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
+import org.json.JSONObject;
+
 public class MTranslator {
 
     private List<MTEngine> engines;
@@ -46,6 +48,34 @@ public class MTranslator {
 
     public void setEngines(List<MTEngine> engines) {
         this.engines = engines;
+    }
+
+    public boolean hasEngines() {
+        return !engines.isEmpty();
+    }
+
+    public List<JSONObject> translate(String text) throws IOException, InterruptedException {
+        List<JSONObject> result = new Vector<>();
+        if (text.isBlank()) {
+            return result;
+        }
+        Iterator<MTEngine> it = engines.iterator();
+        while (it.hasNext()) {
+            MTEngine engine = it.next();
+            String target = engine.translate(text);
+            if (target != null && !target.isEmpty()) {
+                JSONObject json = new JSONObject();
+                json.put("key", engine.getShortName());
+                json.put("engine", engine.getName());
+                json.put("target", target);
+                json.put("srcLang", engine.getSourceLanguage());
+                json.put("tgtLang", engine.getTargetLanguage());
+                result.add(json);
+            } else {
+                throw new IOException("Empty or null translation received from " + engine.getName());
+            }
+        }
+        return result;
     }
 
     public void translate(Element segment) throws IOException, InterruptedException {

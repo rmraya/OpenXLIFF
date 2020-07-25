@@ -46,6 +46,11 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
+    public String getShortName() {
+        return "Azure";
+    }
+
+    @Override
     public List<Language> getSourceLanguages() throws IOException {
         if (languages == null) {
             getLanguages();

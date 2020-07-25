@@ -47,6 +47,11 @@ public class YandexTranslator implements MTEngine {
     }
 
     @Override
+    public String getShortName() {
+        return "Yandex";
+    }
+
+    @Override
     public List<Language> getSourceLanguages() throws IOException, InterruptedException {
         if (languages == null) {
             getLanguages();

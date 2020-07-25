@@ -46,6 +46,11 @@ public class MyMemoryTranslator implements MTEngine {
     }
 
     @Override
+    public String getShortName() {
+        return "MyMemory";
+    }
+
+    @Override
     public List<Language> getSourceLanguages()
             throws IOException, InterruptedException, SAXException, ParserConfigurationException {
         return LanguageUtils.getCommonLanguages();

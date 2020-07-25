@@ -25,6 +25,8 @@ public interface MTEngine {
 
     public String getName();
 
+    public String getShortName();
+
     public List<Language> getSourceLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException;
 
     public List<Language> getTargetLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException;

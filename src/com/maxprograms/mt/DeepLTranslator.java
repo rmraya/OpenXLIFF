@@ -48,6 +48,11 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	@Override
+	public String getShortName() {
+		return "DeepL";
+	}
+
+	@Override
 	public List<Language> getSourceLanguages() throws IOException {
 		if (srcLanguages == null) {
 			srcLanguages = new ArrayList<>();
@@ -131,10 +136,10 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	@Override
-    public int hashCode() {
-        return DeepLTranslator.class.getName().hashCode();
-    }
-    
+	public int hashCode() {
+		return DeepLTranslator.class.getName().hashCode();
+	}
+
 	@Override
 	public String getSourceLanguage() {
 		return srcLang;

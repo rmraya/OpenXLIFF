@@ -32,16 +32,17 @@ module openxliff {
 	exports com.maxprograms.stats;
 	exports com.maxprograms.xliff2;
 	exports com.maxprograms.validation;
-
+	exports com.maxprograms.mt;
+	
 	opens com.maxprograms.xml to mapdb;	
 
 	requires dtd;
-	requires json;
 	requires jsoup;
 	requires mapdb;
 	requires java.base;
 	requires java.logging;
 	requires java.net.http;
+	requires transitive json;
 	requires transitive jdk.httpserver;
 	requires transitive java.xml;
 }
