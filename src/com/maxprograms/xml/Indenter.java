@@ -84,11 +84,14 @@ public class Indenter {
 		while (it.hasNext()) {
 			XMLNode node = it.next();
 			if (node.getNodeType() == XMLNode.TEXT_NODE) {
-				String text = ((TextNode) node).getText();
-				for (int i = 0; i < text.length(); i++) {
-					char c = text.charAt(i);
-					if (!(Character.isSpaceChar(c) || c == '\n')) {
-						return true;
+				TextNode t = (TextNode) node;
+				String text = t.getText();
+				if (text != null) {
+					for (int i = 0; i < text.length(); i++) {
+						char c = text.charAt(i);
+						if (!(Character.isSpaceChar(c) || c == '\n')) {
+							return true;
+						}
 					}
 				}
 			}

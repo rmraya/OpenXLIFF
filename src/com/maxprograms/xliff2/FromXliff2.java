@@ -237,7 +237,7 @@ public class FromXliff2 {
 				Element child = et.next();
 				if (child.getName().equals("segment") || child.getName().equals("ignorable")) {
 					Element src = child.getChild("source");
-					if (src.getAttributeValue("xml:space","default").equals("preserve")) {
+					if (src.getAttributeValue("xml:space", "default").equals("preserve")) {
 						preserve = true;
 					}
 					joinedSource.addContent(src.getContent());
@@ -290,6 +290,9 @@ public class FromXliff2 {
 					}
 				}
 			}
+			if (preserve) {
+				transUnit.addContent("\n        ");
+			}
 			transUnit.addContent(src);
 
 			if (!joinedTarget.getContent().isEmpty()) {
@@ -323,6 +326,9 @@ public class FromXliff2 {
 						}
 					}
 				}
+				if (preserve) {
+					transUnit.addContent("\n        ");
+				}
 				transUnit.addContent(tgt);
 			}
 
@@ -337,6 +343,9 @@ public class FromXliff2 {
 						n.setAttribute("annotates", appliesTo);
 					}
 					n.addContent(note.getText());
+					if (preserve) {
+						transUnit.addContent("\n        ");
+					}
 					transUnit.addContent(n);
 				}
 			}
@@ -426,8 +435,14 @@ public class FromXliff2 {
 						}
 					}
 					altTrans.addContent(t);
+					if (preserve) {
+						transUnit.addContent("\n        ");
+					}
 					transUnit.addContent(altTrans);
 				}
+			}
+			if (preserve) {
+				transUnit.addContent("\n      ");
 			}
 			Indenter.indent(transUnit, 2);
 		}
