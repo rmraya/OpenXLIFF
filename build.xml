@@ -6,7 +6,7 @@
     <path id="OpenXLIFF.classpath">
         <pathelement location="lib/dtd.jar"/>
         <pathelement location="lib/json.jar"/>
-        <pathelement location="lib/jsoup-1.11.3.jar"/>
+        <pathelement location="lib/jsoup.jar"/>
         <pathelement location="lib/mapdb.jar"/>
     </path>
     <condition property="isWindows"> 

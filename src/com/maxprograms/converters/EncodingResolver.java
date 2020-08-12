@@ -31,6 +31,7 @@ import java.lang.System.Logger;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.DocumentType;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -115,6 +116,15 @@ public class EncodingResolver {
 					}
 				}
 			}
+		}
+		DocumentType type = doc.documentType();
+		if (type != null) {
+			if ("html".equals(type.name()) && type.systemId().isEmpty() && type.publicId().isEmpty()) {
+				// HTML5
+				return StandardCharsets.UTF_8;
+			}
+			// HTML 4 or older
+			return StandardCharsets.ISO_8859_1;
 		}
 		return null;
 	}
