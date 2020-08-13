@@ -22,7 +22,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 - **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use free UI for creating, merging and validating XLIFF files in a graphical environment.
 - **[Swordfish IV](https://github.com/rmraya/Swordfish)** uses OpenXLIFF Filters to extract translatable text from supported formats and manage XML documents.
-- **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF filters for extracting the text to aligin from supported monolingual documents.
+- **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF filters for extracting the text to align from supported monolingual documents.
 - **[TMXEditor](https://github.com/rmraya/TMXEditor)** relies on OpenXLIFF Filters XML support for processing TMX files.
 
 ## Releases
