@@ -9,6 +9,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 **XLIFFChecker**, an open source XLIFF validation tool, is now part of OpenXLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
 
 - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
+- **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Downloads](https://github.com/rmraya/OpenXLIFF#downloads)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
 - **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
@@ -17,12 +18,18 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Joining multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#joining-multiple-xliff-files)**
 
-Project **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use UI for creating, merging and validating XLIFF files in a graphical environment.
+## Related Projects
+
+- **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use free UI for creating, merging and validating XLIFF files in a graphical environment.
+- **[Swordfish IV](https://github.com/rmraya/Swordfish)** uses OpenXLIFF Filters to extract translatable text from supported formats and manage XML documents.
+- **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF filters for extracting the text to aligin from supported monolingual documents.
+- **[TMXEditor](https://github.com/rmraya/TMXEditor)** relies on OpenXLIFF Filters XML support for processing TMX files.
 
 ## Releases
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.9.1 | Added improvements required by [Swordfish IV](https://github.com/rmraya/Swordfish). | August 13, 2020
 1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | May 18, 2020
 1.8.4 | Improved catalog and other minor fixes | April 25. 2020
 1.8.3 | Fixed conversion of PO files | April 17, 2020
