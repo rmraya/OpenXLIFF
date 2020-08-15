@@ -95,7 +95,7 @@ public class Xml2Xliff {
 	private static boolean resx;
 	private static String startText;
 	private static String endText;
-	private static boolean dita_based;
+	private static boolean ditaBased;
 	private static String targetLanguage;
 	private static boolean inCData;
 	private static boolean translateComments;
@@ -133,7 +133,7 @@ public class Xml2Xliff {
 		}
 		String dita = params.get("dita_based");
 		if (dita != null) {
-			dita_based = dita.equalsIgnoreCase("yes");
+			ditaBased = dita.equalsIgnoreCase("yes");
 		}
 
 		boolean generic = false;
@@ -225,7 +225,8 @@ public class Xml2Xliff {
 
 			result.add(Constants.SUCCESS);
 
-		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException | IllegalArgumentException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException
+				| IllegalArgumentException e) {
 			LOGGER.log(Level.ERROR, "Error converting XML file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
@@ -234,19 +235,13 @@ public class Xml2Xliff {
 	}
 
 	public static String getIniFile(String fileName)
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException, IllegalArgumentException {
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		File folder = new File(System.getProperty("user.dir"), "xmlfilter");
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalog);
 		builder.setEntityResolver(cat);
 		builder.setValidating(false);
 		builder.setErrorHandler(new SilentErrorHandler());
-		/*
-		 * set expandEntities to false if automatic inclusion of referenced documents is
-		 * not desired. It is enabled by default, but may change later upon request.
-		 *
-		 */
-		// builder.expandEntities(false);
 		Document doc = builder.build(fileName);
 		entities = new HashMap<>();
 
@@ -272,8 +267,8 @@ public class Xml2Xliff {
 
 		root = doc.getRootElement();
 		rootElement = root.getName();
-		if (dita_based && rootElement.equals("svg")) {
-			dita_based = false;
+		if (ditaBased && rootElement.equals("svg")) {
+			ditaBased = false;
 		}
 
 		// check for ResX before anything else
@@ -338,7 +333,7 @@ public class Xml2Xliff {
 		}
 
 		File f = new File(folder, "config_" + rootElement + ".xml");
-		if (!f.exists() && dita_based) {
+		if (!f.exists() && ditaBased) {
 			File base = new File(folder, "config_dita.xml");
 			Document dd = builder.build(base);
 			List<Element> list = dd.getRootElement().getChildren();
@@ -495,7 +490,7 @@ public class Xml2Xliff {
 				}
 			}
 			tagId = 0;
-			if (dita_based) {
+			if (ditaBased) {
 				txt = prepareG(txt);
 			}
 			txt = addTags(txt);
@@ -578,7 +573,7 @@ public class Xml2Xliff {
 		if (element.getName().equals("ph")) {
 			return Xliff2Xml.fixEntities(element);
 		}
-		if (dita_based && element.getName().equals("g")) {
+		if (ditaBased && element.getName().equals("g")) {
 			return cleanMrk(element);
 		}
 
@@ -588,28 +583,28 @@ public class Xml2Xliff {
 		while (i.hasNext()) {
 			XMLNode n = i.next();
 			switch (n.getNodeType()) {
-			case XMLNode.ELEMENT_NODE:
-				Element e = (Element) n;
-				if (e.getName().equals("ph")) {
-					String ph = extractText(e);
-					result = result + ph;
-				} else if (e.getName().equals("mrk")) {
-					String mrk = cleanMrk(e);
-					result = result + mrk;
-				} else {
-					throw new SAXException("broken tagged text");
-				}
-				break;
-			case XMLNode.TEXT_NODE:
-				if (inCData) {
-					result = result + ((TextNode) n).getText();
-				} else {
-					result = result + addEntities(((TextNode) n).getText());
-				}
-				break;
-			default:
-				// ignore
-				break;
+				case XMLNode.ELEMENT_NODE:
+					Element e = (Element) n;
+					if (e.getName().equals("ph")) {
+						String ph = extractText(e);
+						result = result + ph;
+					} else if (e.getName().equals("mrk")) {
+						String mrk = cleanMrk(e);
+						result = result + mrk;
+					} else {
+						throw new SAXException("broken tagged text");
+					}
+					break;
+				case XMLNode.TEXT_NODE:
+					if (inCData) {
+						result = result + ((TextNode) n).getText();
+					} else {
+						result = result + addEntities(((TextNode) n).getText());
+					}
+					break;
+				default:
+					// ignore
+					break;
 			}
 		}
 		return result;
@@ -634,17 +629,17 @@ public class Xml2Xliff {
 		while (it.hasNext()) {
 			XMLNode n = it.next();
 			switch (n.getNodeType()) {
-			case XMLNode.ELEMENT_NODE:
-				Element e = (Element) n;
-				String ph = extractText(e);
-				content = content + ph;
-				break;
-			case XMLNode.TEXT_NODE:
-				content = content + XMLUtils.cleanText(((TextNode) n).getText());
-				break;
-			default:
-				// ignore
-				break;
+				case XMLNode.ELEMENT_NODE:
+					Element e = (Element) n;
+					String ph = extractText(e);
+					content = content + ph;
+					break;
+				case XMLNode.TEXT_NODE:
+					content = content + XMLUtils.cleanText(((TextNode) n).getText());
+					break;
+				default:
+					// ignore
+					break;
 			}
 		}
 		return ts + content + "</" + name + ">";
@@ -723,7 +718,7 @@ public class Xml2Xliff {
 
 		int trimmed = 0;
 
-		if (startTags.size() > 0 && endTags.size() > 0) {
+		if (!startTags.isEmpty() && !endTags.isEmpty()) {
 			for (int i = 0; i < startTags.size() && i < endTags.size(); i++) {
 				Element f = (Element) startTags.get(i);
 				Element l = (Element) endTags.get(endTags.size() - 1 - i);
@@ -816,7 +811,7 @@ public class Xml2Xliff {
 		String tagged = string;
 		int start = tagged.indexOf("<mrk ");
 		int end = tagged.indexOf("</mrk>");
-		if (dita_based) {
+		if (ditaBased) {
 			while (start != -1 && end != -1) {
 				tagged = tagged.substring(0, start) + tagged.substring(end + 6);
 				start = tagged.indexOf("<mrk ");
@@ -890,7 +885,7 @@ public class Xml2Xliff {
 			}
 			String element = src.substring(start, end + 1);
 			src = src.substring(end + 1);
-			if (dita_based) {
+			if (ditaBased) {
 				if (!(element.startsWith("<mrk ") || element.equals("</mrk>"))) {
 					result = result + tag(element);
 				} else {
@@ -1166,48 +1161,84 @@ public class Xml2Xliff {
 
 	private static void parseNode(XMLNode n) throws SAXException, IOException {
 		switch (n.getNodeType()) {
-		case XMLNode.ATTRIBUTE_NODE:
-			throw new SAXException("Parsed undeclared attribute node." + n);
-		case XMLNode.CDATA_SECTION_NODE:
-			String name = stack.peek();
-			if (startsSegment.containsKey(name)) {
-				segments.add(text);
-				segments.add("" + '\u007F' + '\u007F' + "<![CDATA[");
-				CData data = (CData) n;
-				segments.add("" + '\u0081' + data.getData());
-				segments.add("" + '\u007F' + '\u007F' + "]]>");
-			} else {
-				segments.add(text);
-				segments.add("" + '\u007F' + '\u007F' + n.toString());
-			}
-			translatable = "";
-			text = "";
-			break;
-		case XMLNode.COMMENT_NODE:
-			segments.add(text);
-			if (translateComments) {
-				segments.add("" + '\u007F' + '\u007F' + "<!--");
-				segments.add(((Comment) n).getText());
-				segments.add("" + '\u007F' + '\u007F' + "-->");
-			} else {
-				segments.add("" + '\u007F' + '\u007F' + n.toString());
-			}
-			translatable = "";
-			text = "";
-			break;
-		case XMLNode.ELEMENT_NODE:
-			Element e = (Element) n;
-			if (dita_based && !isKnownElement(e.getName())) {
-				configureElement(e);
-			}
-			if (dita_based && e.getAttributeValue("translate", "yes").equals("no")) {
-
-				if (startsSegment.containsKey(e.getName())) {
-					// treat as element to ignore, send to skeleton
+			case XMLNode.ATTRIBUTE_NODE:
+				throw new SAXException("Parsed undeclared attribute node." + n);
+			case XMLNode.CDATA_SECTION_NODE:
+				String name = stack.peek();
+				if (startsSegment.containsKey(name)) {
 					segments.add(text);
-					if (e.getAttributeValue("removeTranslate", "no").equals("yes")) {
-						e.removeAttribute("translate");
+					segments.add("" + '\u007F' + '\u007F' + "<![CDATA[");
+					CData data = (CData) n;
+					segments.add("" + '\u0081' + data.getData());
+					segments.add("" + '\u007F' + '\u007F' + "]]>");
+				} else {
+					segments.add(text);
+					segments.add("" + '\u007F' + '\u007F' + n.toString());
+				}
+				translatable = "";
+				text = "";
+				break;
+			case XMLNode.COMMENT_NODE:
+				segments.add(text);
+				if (translateComments) {
+					segments.add("" + '\u007F' + '\u007F' + "<!--");
+					segments.add(((Comment) n).getText());
+					segments.add("" + '\u007F' + '\u007F' + "-->");
+				} else {
+					segments.add("" + '\u007F' + '\u007F' + n.toString());
+				}
+				translatable = "";
+				text = "";
+				break;
+			case XMLNode.ELEMENT_NODE:
+				Element e = (Element) n;
+				if (ditaBased && !isKnownElement(e.getName())) {
+					configureElement(e);
+				}
+				if (ditaBased && e.getAttributeValue("translate", "yes").equals("no")) {
+
+					if (startsSegment.containsKey(e.getName())) {
+						// treat as element to ignore, send to skeleton
+						segments.add(text);
+						if (e.getAttributeValue("removeTranslate", "no").equals("yes")) {
+							e.removeAttribute("translate");
+						}
+						segments.add("" + '\u007F' + "" + '\u007F' + e.toString());
+						text = "";
+						translatable = "";
+						stack = null;
+						stack = new Stack<>();
+						return;
 					}
+
+					removeComments(e);
+
+					text = text + STARTG;
+					text = text + "<" + e.getName();
+					List<Attribute> attributes = e.getAttributes();
+					for (int i = 0; i < attributes.size(); i++) {
+						Attribute a = attributes.get(i);
+						text = text + " " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"";
+					}
+					text = text + ">" + STARTG;
+					List<XMLNode> content = e.getContent();
+					for (int i = 0; i < content.size(); i++) {
+						XMLNode node = content.get(i);
+						if (node.getNodeType() == XMLNode.TEXT_NODE) {
+							TextNode tn = (TextNode) node;
+							text = text + cleanString(tn.getText());
+						} else {
+							Element el = (Element) node;
+							text = text + el.toString();
+						}
+					}
+					text = text + ENDG + "</" + e.getName() + ">" + ENDG;
+
+					return;
+				}
+				if (ditaBased && e.getAttributeValue("fluentaIgnore", "no").equals("yes")) {
+					e.removeAttribute("fluentaIgnore");
+					segments.add(text);
 					segments.add("" + '\u007F' + "" + '\u007F' + e.toString());
 					text = "";
 					translatable = "";
@@ -1215,177 +1246,141 @@ public class Xml2Xliff {
 					stack = new Stack<>();
 					return;
 				}
-
-				removeComments(e);
-
-				text = text + STARTG;
-				text = text + "<" + e.getName();
-				List<Attribute> attributes = e.getAttributes();
-				for (int i = 0; i < attributes.size(); i++) {
-					Attribute a = attributes.get(i);
-					text = text + " " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"";
-				}
-				text = text + ">" + STARTG;
-				List<XMLNode> content = e.getContent();
-				for (int i = 0; i < content.size(); i++) {
-					XMLNode node = content.get(i);
-					if (node.getNodeType() == XMLNode.TEXT_NODE) {
-						TextNode tn = (TextNode) node;
-						text = text + cleanString(tn.getText());
-					} else {
-						Element el = (Element) node;
-						text = text + el.toString();
-					}
-				}
-				text = text + ENDG + "</" + e.getName() + ">" + ENDG;
-
-				return;
-			}
-			if (dita_based && e.getAttributeValue("fluentaIgnore", "no").equals("yes")) {
-				e.removeAttribute("fluentaIgnore");
-				segments.add(text);
-				segments.add("" + '\u007F' + "" + '\u007F' + e.toString());
-				text = "";
-				translatable = "";
-				stack = null;
-				stack = new Stack<>();
-				return;
-			}
-			if (startsSegment.containsKey(e.getName())) {
-				segments.add(text);
-				text = "";
-				translatable = "";
-				stack = null;
-				stack = new Stack<>();
-				stack.push(e.getName());
-				if (!keepFormating.containsKey(e.getName())
-						&& !e.getAttributeValue("xml:space", "default").equals("preserve")) {
-					normalizeElement(e);
-				}
-			}
-			if (ignore.containsKey(e.getName())) {
-				segments.add(text);
-				segments.add("" + '\u007F' + "" + '\u007F' + e.toString());
-				text = "";
-				translatable = "";
-				stack = null;
-				stack = new Stack<>();
-				return;
-			}
-			if (stack.isEmpty() && e.getChildren().isEmpty() && !translatableAttributes.containsKey(e.getName())) {
-				if (inline.containsKey(e.getName()) && !e.getText().equals("")) {
-					if (text.startsWith('\u007F' + "" + '\u007F')) {
-						segments.add(text);
-						text = "";
-						translatable = "";
-						stack = null;
-						stack = new Stack<>();
-					}
+				if (startsSegment.containsKey(e.getName())) {
+					segments.add(text);
+					text = "";
+					translatable = "";
+					stack = null;
+					stack = new Stack<>();
 					stack.push(e.getName());
 					if (!keepFormating.containsKey(e.getName())
 							&& !e.getAttributeValue("xml:space", "default").equals("preserve")) {
 						normalizeElement(e);
 					}
-				} else {
+				}
+				if (ignore.containsKey(e.getName())) {
 					segments.add(text);
+					segments.add("" + '\u007F' + "" + '\u007F' + e.toString());
 					text = "";
 					translatable = "";
-					segments.add('\u007F' + "" + '\u007F' + e.toString());
-					break;
+					stack = null;
+					stack = new Stack<>();
+					return;
 				}
-			}
-			if (!stack.isEmpty() && !startsSegment.containsKey(e.getName())) {
-				stack.push(e.getName());
-			}
-			List<Attribute> attributes = e.getAttributes();
-			text = text + "<" + e.getName();
-			if (!attributes.isEmpty()) {
-				for (int i = 0; i < attributes.size(); i++) {
-					Attribute a = attributes.get(i);
-					text = text + " " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"";
-				}
-			}
-			List<XMLNode> content = e.getContent();
-			if (content.isEmpty()) {
-				if (text.equals("")) {
-					text = "" + '\u007F' + '\u007F' + "/>";
-				} else {
-					text = text + "/>";
-				}
-			} else {
-				if (!inline.containsKey(e.getName())) {
-					if (!text.equals("")) {
-						segments.add(text + ">");
+				if (stack.isEmpty() && e.getChildren().isEmpty() && !translatableAttributes.containsKey(e.getName())) {
+					if (inline.containsKey(e.getName()) && !e.getText().equals("")) {
+						if (text.startsWith('\u007F' + "" + '\u007F')) {
+							segments.add(text);
+							text = "";
+							translatable = "";
+							stack = null;
+							stack = new Stack<>();
+						}
+						stack.push(e.getName());
+						if (!keepFormating.containsKey(e.getName())
+								&& !e.getAttributeValue("xml:space", "default").equals("preserve")) {
+							normalizeElement(e);
+						}
+					} else {
+						segments.add(text);
 						text = "";
-					} else {
-						segments.add("" + '\u007F' + '\u007F' + ">");
-					}
-					translatable = "";
-				} else {
-					if (!text.equals("")) {
-						text = text + ">";
-					} else {
-						segments.add("" + '\u007F' + '\u007F' + ">");
 						translatable = "";
-					}
-				}
-				for (int i = 0; i < content.size(); i++) {
-					parseNode(content.get(i));
-				}
-				if (startsSegment.containsKey(e.getName())) {
-					segments.add(text);
-					text = "";
-					translatable = "";
-				}
-				if (!text.equals("")) {
-					text = text + "</" + e.getName() + ">";
-				} else {
-					segments.add("" + '\u007F' + '\u007F' + "</" + e.getName() + ">");
-				}
-			}
-			if (!stack.isEmpty()) {
-				stack.pop();
-			}
-
-			break;
-		case XMLNode.PROCESSING_INSTRUCTION_NODE:
-			if (inDesign && !translatable.trim().equals("")) {
-				text = text + n.toString();
-			} else {
-				segments.add(text);
-				segments.add("" + '\u007F' + '\u007F' + n.toString());
-				text = "";
-				translatable = "";
-			}
-			break;
-		case XMLNode.TEXT_NODE:
-			String value = ((TextNode) n).getText();
-			//
-			// Don't enable replacement of "&". Replacement of "<" and ">" is needed because
-			// otherwise tag
-			// handling will fail (it searches for initial "<" and closing ">"
-			//
-			// value = value.replaceAll("&","&amp;");
-			value = value.replace("<", "&lt;");
-			value = value.replace(">", "&gt;");
-
-			text = text + value;
-			if (value.trim().length() > 0) {
-				translatable = translatable + value;
-			}
-			if (value.trim().length() > 0 && text.startsWith("" + '\u007F' + '\u007F')) {
-				for (int j = 0; j < stack.size(); j++) {
-					if (startsSegment.containsKey(stack.get(j))) {
-						text = text.substring(2);
+						segments.add('\u007F' + "" + '\u007F' + e.toString());
 						break;
 					}
 				}
-			}
+				if (!stack.isEmpty() && !startsSegment.containsKey(e.getName())) {
+					stack.push(e.getName());
+				}
+				List<Attribute> attributes = e.getAttributes();
+				text = text + "<" + e.getName();
+				if (!attributes.isEmpty()) {
+					for (int i = 0; i < attributes.size(); i++) {
+						Attribute a = attributes.get(i);
+						text = text + " " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"";
+					}
+				}
+				List<XMLNode> content = e.getContent();
+				if (content.isEmpty()) {
+					if (text.equals("")) {
+						text = "" + '\u007F' + '\u007F' + "/>";
+					} else {
+						text = text + "/>";
+					}
+				} else {
+					if (!inline.containsKey(e.getName())) {
+						if (!text.equals("")) {
+							segments.add(text + ">");
+							text = "";
+						} else {
+							segments.add("" + '\u007F' + '\u007F' + ">");
+						}
+						translatable = "";
+					} else {
+						if (!text.equals("")) {
+							text = text + ">";
+						} else {
+							segments.add("" + '\u007F' + '\u007F' + ">");
+							translatable = "";
+						}
+					}
+					for (int i = 0; i < content.size(); i++) {
+						parseNode(content.get(i));
+					}
+					if (startsSegment.containsKey(e.getName())) {
+						segments.add(text);
+						text = "";
+						translatable = "";
+					}
+					if (!text.equals("")) {
+						text = text + "</" + e.getName() + ">";
+					} else {
+						segments.add("" + '\u007F' + '\u007F' + "</" + e.getName() + ">");
+					}
+				}
+				if (!stack.isEmpty()) {
+					stack.pop();
+				}
 
-			break;
-		default:
-			// ignore
-			break;
+				break;
+			case XMLNode.PROCESSING_INSTRUCTION_NODE:
+				if (inDesign && !translatable.trim().equals("")) {
+					text = text + n.toString();
+				} else {
+					segments.add(text);
+					segments.add("" + '\u007F' + '\u007F' + n.toString());
+					text = "";
+					translatable = "";
+				}
+				break;
+			case XMLNode.TEXT_NODE:
+				String value = ((TextNode) n).getText();
+				//
+				// Don't enable replacement of "&". Replacement of "<" and ">" is needed because
+				// otherwise tag
+				// handling will fail (it searches for initial "<" and closing ">"
+				//
+				// value = value.replaceAll("&","&amp;");
+				value = value.replace("<", "&lt;");
+				value = value.replace(">", "&gt;");
+
+				text = text + value;
+				if (value.trim().length() > 0) {
+					translatable = translatable + value;
+				}
+				if (value.trim().length() > 0 && text.startsWith("" + '\u007F' + '\u007F')) {
+					for (int j = 0; j < stack.size(); j++) {
+						if (startsSegment.containsKey(stack.get(j))) {
+							text = text.substring(2);
+							break;
+						}
+					}
+				}
+
+				break;
+			default:
+				// ignore
+				break;
 		}
 	}
 

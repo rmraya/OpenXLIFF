@@ -101,8 +101,7 @@ public class DeepLTranslator implements MTEngine {
 			if (body != null) {
 				JSONObject json = new JSONObject(body);
 				JSONArray array = json.getJSONArray("translations");
-				String target = array.getJSONObject(0).getString("text");
-				return target;
+				return array.getJSONObject(0).getString("text");
 			}
 			throw new IOException("Null response received");
 		}

@@ -114,7 +114,7 @@ public class Xliff2Wpml {
             }
             target.setContent(content);
             text = Wpml2Xliff.getText(target);
-            target.setContent(new ArrayList<XMLNode>());
+            target.setContent(new ArrayList<>());
             target.addContent(new CData(text));
         } else {
             List<Element> children = e.getChildren();

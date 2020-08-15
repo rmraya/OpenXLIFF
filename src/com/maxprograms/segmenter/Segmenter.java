@@ -41,7 +41,6 @@ public class Segmenter {
 
 	private Element root;
 	private boolean cascade;
-	private List<String> maps;
 	private List<Element> rules;
 	private Map<String, String> tags;
 	private int tagId;
@@ -259,7 +258,7 @@ public class Segmenter {
 	}
 
 	private void buildRulesList(String srcLanguage) {
-		maps = new ArrayList<>();
+		List<String> maps = new ArrayList<>();
 		List<Element> allMaps = root.getChild("body").getChild("maprules").getChildren("languagemap");
 		Iterator<Element> it = allMaps.iterator();
 		while (it.hasNext()) {

@@ -40,6 +40,11 @@ public class Resegmenter {
     private static Segmenter segmenter;
     private static String srcLang;
     
+    private Resegmenter() {
+		// do not instantiate this class
+		// use run method instead
+    }
+    
     public static List<String> run(String xliff, String srx, String srcLang, String catalog) {
         List<String> result = new ArrayList<>();
         try {

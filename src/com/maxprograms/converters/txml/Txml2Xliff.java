@@ -162,7 +162,7 @@ public class Txml2Xliff {
 		}
 		result.append("</" + ele.getName() + ">");
 		if (ele.getName().equals("target")) {
-			ele.setContent(new ArrayList<XMLNode>());
+			ele.setContent(new ArrayList<>());
 			ele.setText("%%%" + segNum + "%%%");
 		}
 		return result.toString();

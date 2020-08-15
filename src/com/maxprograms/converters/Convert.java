@@ -56,7 +56,6 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
-import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
 import org.xml.sax.SAXException;
@@ -333,7 +332,7 @@ public class Convert {
 					Element internal = new Element("internal-file");
 					internal.setAttribute("form", "base64");
 					internal.addContent(Utils.encodeFromFile(skeleton.getAbsolutePath()));
-					skl.setContent(new ArrayList<XMLNode>());
+					skl.setContent(new ArrayList<>());
 					skl.addContent(internal);
 					Files.delete(Paths.get(skeleton.toURI()));
 					deleted.add(sklName);

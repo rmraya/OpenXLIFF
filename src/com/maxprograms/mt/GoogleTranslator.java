@@ -119,8 +119,7 @@ public class GoogleTranslator implements MTEngine {
                 JSONObject json = new JSONObject(body);
                 JSONObject data = json.getJSONObject("data");
                 JSONArray array = data.getJSONArray("translations");
-                String target = removeEntities(array.getJSONObject(0).getString("translatedText"));
-                return target;
+                return removeEntities(array.getJSONObject(0).getString("translatedText"));
             }
             throw new IOException("Null response received");
         }
