@@ -69,13 +69,21 @@ public class Sdlppx2Xliff {
 		skeleton = params.get("skeleton");
 		String sourceLanguage = params.get("srcLang");
 		String targetLanguage = params.get("tgtLang");
+		if (targetLanguage == null) {
+			targetLanguage = "";
+		}
 
 		try {
 			JSONObject json = getPackageLanguages(inputFile);
 			if (json.has("reason")) {
 				throw new JSONException(json.getString("reason"));
 			}
-
+			if (srcLangs.size() == 1) {
+				sourceLanguage = srcLangs.get(0);
+			}
+			if (tgtLangs.size() == 1) {
+				targetLanguage = tgtLangs.get(0);
+			}
 			if (!tgtLangs.contains(targetLanguage)) {
 				result.add(Constants.ERROR);
 				StringBuilder string = new StringBuilder("Incorrect target language. Valid options:");
@@ -105,10 +113,15 @@ public class Sdlppx2Xliff {
 
 			ZipEntry entry = null;
 			while ((entry = in.getNextEntry()) != null) {
-				File f = new File(entry.getName());
-				if (targetLanguage.equalsIgnoreCase(f.getParent()) && f.getName().endsWith(".sdlxliff")) {
+				String entryName = entry.getName();
+				String parent = "";
+				String name = entryName;
+				if (entryName.indexOf("\\") != -1) {
+					parent = entryName.substring(0, entryName.indexOf("\\"));
+					name = entryName.substring(entryName.indexOf("\\") + 1);
+				}
+				if (targetLanguage.equalsIgnoreCase(parent) && name.endsWith(".sdlxliff")) {
 					// it is sdlxliff from target folder
-					String name = f.getName();
 					File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".sdlxliff");
 					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
 						byte[] buf = new byte[1024];
@@ -123,15 +136,12 @@ public class Sdlppx2Xliff {
 					table.put("xliff", tmp.getAbsolutePath() + ".xlf");
 					table.put("skeleton", tmp.getAbsolutePath() + ".skl");
 					table.put("catalog", params.get("catalog"));
-					table.put("srcLang", params.get("srcLang"));
-					String tgtLang = params.get("tgtLang");
-					if (tgtLang != null) {
-						table.put("tgtLang", tgtLang);
-					}
 					table.put("srcEncoding", params.get("srcEncoding"));
 					table.put("paragraph", params.get("paragraph"));
 					table.put("srxFile", params.get("srxFile"));
 					table.put("format", params.get("format"));
+					table.put("srcLang", sourceLanguage);
+					table.put("tgtLang", targetLanguage);
 					List<String> res = Sdl2Xliff.run(table);
 					if (Constants.SUCCESS.equals(res.get(0))) {
 						updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
@@ -154,8 +164,9 @@ public class Sdlppx2Xliff {
 						saveEntry(entry, tmp.getAbsolutePath());
 					}
 					Files.delete(tmp.toPath());
-				} else if (sourceLanguage.equalsIgnoreCase(f.getParent()) || f.getName().endsWith(".sdlproj")) {
+				} else if (sourceLanguage.equalsIgnoreCase(parent) || name.endsWith(".sdlproj") || targetLanguage.equalsIgnoreCase(parent) ) {
 					// preserve source files and project
+					// preserve other files from target folder too
 					File tmp = File.createTempFile("zip", ".tmp");
 					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
 						byte[] buf = new byte[1024];
@@ -166,7 +177,7 @@ public class Sdlppx2Xliff {
 					}
 					saveEntry(entry, tmp.getAbsolutePath());
 					Files.delete(tmp.toPath());
-				}
+				} 
 			}
 
 			in.close();
