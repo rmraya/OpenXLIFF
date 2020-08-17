@@ -302,68 +302,49 @@ public class FileFormats {
 		return null;
 	}
 
-	public static String getFullName(String type) {
-		if (type.equals("INX")) {
+	public static String getFullName(String dataType) {
+		if (dataType.equals(FileFormats.INX) || dataType.equals("x-inx")) {
 			return INX;
-		}
-		if (type.equals("IDML")) {
+		} else if (dataType.equals(FileFormats.IDML) || dataType.equals("x-idml")) {
 			return IDML;
-		}
-		if (type.equals("DITA")) {
+		} else if (dataType.equals(FileFormats.DITA) || dataType.equals("x-ditamap")) {
 			return DITA;
-		}
-		if (type.equals("HTML")) {
+		} else if (dataType.equals(FileFormats.HTML) || dataType.equals("html")) {
 			return HTML;
-		}
-		if (type.equals("JS")) {
+		} else if (dataType.equals(FileFormats.JS) || dataType.equals("javascript")) {
 			return JS;
-		}
-		if (type.equals("JAVA")) {
+		} else if (dataType.equals(FileFormats.JAVA) || dataType.equals("javapropertyresourcebundle")
+				|| dataType.equals("javalistresourcebundle")) {
 			return JAVA;
-		}
-		if (type.equals("MIF")) {
+		} else if (dataType.equals(FileFormats.MIF) || dataType.equals("mif")) {
 			return MIF;
-		}
-		if (type.equals("OFF")) {
+		} else if (dataType.equals(FileFormats.OFF) || dataType.equals("x-office")) {
 			return OFF;
-		}
-		if (type.equals("OO")) {
+		} else if (dataType.equals("OO")) {
 			return OO;
-		}
-		if (type.equals("TEXT")) {
+		} else if (dataType.equals(FileFormats.TEXT) || dataType.equals("plaintext")) {
 			return TEXT;
-		}
-		if (type.equals("PO")) {
+		} else if (dataType.equals(FileFormats.PO) || dataType.equals("po")) {
 			return PO;
-		}
-		if (type.equals("RC")) {
+		} else if (dataType.equals(FileFormats.RC) || dataType.equals("winres")) {
 			return RC;
-		}
-		if (type.equals("RESX")) {
+		} else if (dataType.equals(FileFormats.RESX) || dataType.equals("resx")) {
 			return RESX;
-		}
-		if (type.equals("SDLPPX")) {
+		} else if (dataType.equals(FileFormats.SDLPPX) || dataType.equals("x-sdlpackage")) {
 			return SDLPPX;
-		}
-		if (type.equals("SDLXLIFF")) {
+		} else if (dataType.equals(FileFormats.SDLXLIFF) || dataType.equals("x-sdlxliff")) {
 			return SDLXLIFF;
-		}
-		if (type.equals("TS")) {
+		} else if (dataType.equals(FileFormats.TS) || dataType.equals("x-ts")) {
 			return TS;
-		}
-		if (type.equals("TXML")) {
+		} else if (dataType.equals(FileFormats.TXML) || dataType.equals("x-txml")) {
 			return TXML;
-		}
-		if (type.equals("WPML")) {
+		} else if (dataType.equals(FileFormats.WPML) || dataType.equals("x-wpmlxliff")) {
 			return WPML;
-		}
-		if (type.equals("XLIFF")) {
+		} else if (dataType.equals("XLIFF")) {
 			return XLIFF;
-		}
-		if (type.equals("XML")) {
+		} else if (dataType.equals(FileFormats.XML) || dataType.equals("xml")) {
 			return XML;
-		}
-		if (type.equals("XMLG")) {
+		} else if (dataType.equals("XMLG")) {
 			return XMLG;
 		}
 		return null;
