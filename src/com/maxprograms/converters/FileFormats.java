@@ -16,8 +16,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -59,14 +57,8 @@ public class FileFormats {
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
 			SDLPPX, SDLXLIFF, TS, TXML, WPML, XML, XMLG };
 
-	private static Set<String> bilingualFormats;
-
 	public static boolean isBilingual(String type) {
-		if (bilingualFormats == null) {
-			bilingualFormats = new TreeSet<>();
-			bilingualFormats.addAll(Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF));
-		}
-		return bilingualFormats.contains(type);
+		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF).contains(type);
 	}
 
 	public static String detectFormat(String fileName) {
@@ -303,46 +295,46 @@ public class FileFormats {
 	}
 
 	public static String getFullName(String dataType) {
-		if (dataType.equals(FileFormats.INX) || dataType.equals("x-inx")) {
+		if (dataType.equals("INX") || dataType.equals("x-inx")) {
 			return INX;
-		} else if (dataType.equals(FileFormats.IDML) || dataType.equals("x-idml")) {
+		} else if (dataType.equals("IDML") || dataType.equals("x-idml")) {
 			return IDML;
-		} else if (dataType.equals(FileFormats.DITA) || dataType.equals("x-ditamap")) {
+		} else if (dataType.equals("DITA") || dataType.equals("x-ditamap")) {
 			return DITA;
-		} else if (dataType.equals(FileFormats.HTML) || dataType.equals("html")) {
+		} else if (dataType.equals("HTML") || dataType.equals("html")) {
 			return HTML;
-		} else if (dataType.equals(FileFormats.JS) || dataType.equals("javascript")) {
+		} else if (dataType.equals("JS") || dataType.equals("javascript")) {
 			return JS;
-		} else if (dataType.equals(FileFormats.JAVA) || dataType.equals("javapropertyresourcebundle")
+		} else if (dataType.equals("JAVA") || dataType.equals("javapropertyresourcebundle")
 				|| dataType.equals("javalistresourcebundle")) {
 			return JAVA;
-		} else if (dataType.equals(FileFormats.MIF) || dataType.equals("mif")) {
+		} else if (dataType.equals("MIF") || dataType.equals("mif")) {
 			return MIF;
-		} else if (dataType.equals(FileFormats.OFF) || dataType.equals("x-office")) {
+		} else if (dataType.equals("OFF") || dataType.equals("x-office")) {
 			return OFF;
 		} else if (dataType.equals("OO")) {
 			return OO;
-		} else if (dataType.equals(FileFormats.TEXT) || dataType.equals("plaintext")) {
+		} else if (dataType.equals("TEXT") || dataType.equals("plaintext")) {
 			return TEXT;
-		} else if (dataType.equals(FileFormats.PO) || dataType.equals("po")) {
+		} else if (dataType.equals("PO") || dataType.equals("po")) {
 			return PO;
-		} else if (dataType.equals(FileFormats.RC) || dataType.equals("winres")) {
+		} else if (dataType.equals("RC") || dataType.equals("winres")) {
 			return RC;
-		} else if (dataType.equals(FileFormats.RESX) || dataType.equals("resx")) {
+		} else if (dataType.equals("RESX") || dataType.equals("resx")) {
 			return RESX;
-		} else if (dataType.equals(FileFormats.SDLPPX) || dataType.equals("x-sdlpackage")) {
+		} else if (dataType.equals("SDLPPX") || dataType.equals("x-sdlpackage")) {
 			return SDLPPX;
-		} else if (dataType.equals(FileFormats.SDLXLIFF) || dataType.equals("x-sdlxliff")) {
+		} else if (dataType.equals("SDLXLIFF") || dataType.equals("x-sdlxliff")) {
 			return SDLXLIFF;
-		} else if (dataType.equals(FileFormats.TS) || dataType.equals("x-ts")) {
+		} else if (dataType.equals("TS") || dataType.equals("x-ts")) {
 			return TS;
-		} else if (dataType.equals(FileFormats.TXML) || dataType.equals("x-txml")) {
+		} else if (dataType.equals("TXML") || dataType.equals("x-txml")) {
 			return TXML;
-		} else if (dataType.equals(FileFormats.WPML) || dataType.equals("x-wpmlxliff")) {
+		} else if (dataType.equals("WPML") || dataType.equals("x-wpmlxliff")) {
 			return WPML;
 		} else if (dataType.equals("XLIFF")) {
 			return XLIFF;
-		} else if (dataType.equals(FileFormats.XML) || dataType.equals("xml")) {
+		} else if (dataType.equals("XML") || dataType.equals("xml")) {
 			return XML;
 		} else if (dataType.equals("XMLG")) {
 			return XMLG;
