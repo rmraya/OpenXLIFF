@@ -155,6 +155,7 @@ Document Types
    TS = TS (Qt Linguist translation source)
    TXML = TXML Document
    WPML = WPML XLIFF
+   XLIFF = XLIFF Document
    XML = XML Document
    XMLG = XML (Generic)
 ```

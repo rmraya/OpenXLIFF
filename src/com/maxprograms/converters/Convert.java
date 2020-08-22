@@ -48,6 +48,7 @@ import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
 import com.maxprograms.converters.ts.Ts2Xliff;
 import com.maxprograms.converters.txml.Txml2Xliff;
 import com.maxprograms.converters.wpml.Wpml2Xliff;
+import com.maxprograms.converters.xliff.ToOpenXliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xliff2.Resegmenter;
 import com.maxprograms.xliff2.ToXliff2;
@@ -301,6 +302,7 @@ public class Convert {
 				+ "   TS = TS (Qt Linguist translation source)\n"
 				+ "   TXML = TXML Document\n" 
 				+ "   WPML = WPML XLIFF\n" 
+				+ "   XLIFF = XLIFF Document\n" 
 				+ "   XML = XML Document\n"
 				+ "   XMLG = XML (Generic)\n";
 		System.out.println(help);
@@ -396,6 +398,8 @@ public class Convert {
 		} else if (format.equals(FileFormats.XMLG)) {
 			params.put("generic", "yes");
 			result = Xml2Xliff.run(params);
+		} else if (format.equals(FileFormats.XLIFF)) {
+			result = ToOpenXliff.run(params);
 		} else {
 			result.add(Constants.ERROR);
 			result.add("Unknown file format.");

@@ -55,7 +55,7 @@ public class FileFormats {
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
-			SDLPPX, SDLXLIFF, TS, TXML, WPML, XML, XMLG };
+			SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
 		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF).contains(type);

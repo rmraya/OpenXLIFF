@@ -1,0 +1,495 @@
+/*******************************************************************************
+ * Copyright (c) 2003-2020 Maxprograms.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 1.0 which accompanies this distribution,
+ * and is available at https://www.eclipse.org/org/documents/epl-v10.html
+ *
+ * Contributors: Maxprograms - initial API and implementation
+ *******************************************************************************/
+
+package com.maxprograms.converters.xliff;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import com.maxprograms.converters.Constants;
+import com.maxprograms.xml.Attribute;
+import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.Document;
+import com.maxprograms.xml.Element;
+import com.maxprograms.xml.Indenter;
+import com.maxprograms.xml.PI;
+import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLOutputter;
+
+import org.xml.sax.SAXException;
+
+public class ToOpenXliff {
+
+    private static String inputFile;
+    private static String skeletonFile;
+    private static String sourceLanguage;
+    private static String targetLanguage;
+
+    private ToOpenXliff() {
+        // do not instantiate this class
+        // use run method instead
+    }
+
+    public static List<String> run(Map<String, String> params) {
+        List<String> result = new ArrayList<>();
+        inputFile = params.get("source");
+        String xliffFile = params.get("xliff");
+        skeletonFile = params.get("skeleton");
+        sourceLanguage = params.get("srcLang");
+        targetLanguage = params.get("tgtLang");
+        String catalog = params.get("catalog");
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            builder.setEntityResolver(new Catalog(catalog));
+            Document doc = builder.build(inputFile);
+            Element root = doc.getRootElement();
+
+            Document newDoc = new Document(null, "xliff", null, null);
+            Element newRoot = newDoc.getRootElement();
+            newRoot.setAttribute("version", "1.2");
+            newRoot.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:1.2");
+            newRoot.addContent(new PI("encoding", doc.getEncoding().name()));
+
+            Element file = new Element("file");
+            file.setAttribute("datatype", "x-xliff");
+            file.setAttribute("source-language", sourceLanguage);
+            if (targetLanguage != null && !targetLanguage.isEmpty()) {
+                file.setAttribute("target-language", targetLanguage);
+            }
+            file.setAttribute("original", inputFile);
+            newRoot.addContent(file);
+
+            Element header = new Element("header");
+            file.addContent(header);
+
+            Element skl = new Element("skl");
+            header.addContent(skl);
+
+            Element externalFile = new Element("external-file");
+            externalFile.setAttribute("href", skeletonFile);
+            skl.addContent(externalFile);
+
+            Element tool = new Element("tool");
+            tool.setAttribute("tool-id", Constants.TOOLID);
+            tool.setAttribute("tool-name", Constants.TOOLNAME);
+            tool.setAttribute("tool-version", Constants.VERSION);
+            header.addContent(tool);
+
+            List<Element> units = new Vector<>();
+
+            if (root.getAttributeValue("version").startsWith("1")) {
+                recurse1x(root, units);
+            }
+            if (root.getAttributeValue("version").startsWith("2")) {
+                recurse2x(root, units);
+            }
+            if (units.isEmpty()) {
+                result.add(Constants.ERROR);
+                result.add("Nothing extracted");
+                return result;
+            }
+
+            Element body = new Element("body");
+            file.addContent(body);
+            for (int i = 0; i < units.size(); i++) {
+                body.addContent(units.get(i));
+            }
+
+            try (FileOutputStream out = new FileOutputStream(xliffFile)) {
+                Indenter.indent(newRoot, 2);
+                XMLOutputter outputter = new XMLOutputter();
+                outputter.preserveSpace(true);
+                outputter.output(newDoc, out);
+            }
+            try (FileOutputStream skeleton = new FileOutputStream(skeletonFile)) {
+                XMLOutputter outputter = new XMLOutputter();
+                outputter.preserveSpace(true);
+                outputter.output(doc, skeleton);
+            }
+            result.add(Constants.SUCCESS);
+        } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            result.add(Constants.ERROR);
+            result.add(e.getMessage());
+        }
+        return result;
+    }
+
+    private static void recurse2x(Element root, List<Element> units) {
+        if ("unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
+            boolean preserve = root.getAttributeValue("xml:space").equals("preserve");
+            List<Element> segments = root.getChildren("segment");
+            Iterator<Element> st = segments.iterator();
+            while (st.hasNext()) {
+                Element segment = st.next();
+                boolean isFinal = segment.getAttributeValue("state").equals("final");
+                Element unit = new Element("trans-unit");
+                unit.setAttribute("id", "" + units.size());
+                if (isFinal) {
+                    unit.setAttribute("approved", "yes");
+                }
+                Element src = segment.getChild("source");
+                if (preserve || src.getAttributeValue("xml:space").equals("preserve")) {
+                    unit.setAttribute("xml:space", "preserve");
+                }
+                Element source = new Element("source");
+                source.setContent(getContent2x(src));
+                if (!hasText(source)) {
+                    return;
+                }
+                unit.addContent("\n        ");
+                unit.addContent(source);
+                unit.addContent("\n        ");
+                Element target = new Element("target");
+                target.setContent(getContent2x(segment.getChild("target")));
+                unit.addContent(target);
+                unit.addContent("\n      ");
+                Element matchesHolder = root.getChild("mtc:matches");
+                if (matchesHolder != null) {
+                    List<Element> matches = matchesHolder.getChildren("mtc:match");
+                    Iterator<Element> it = matches.iterator();
+                    while (it.hasNext()) {
+                        Element match = it.next();
+                        String ref = match.getAttributeValue("ref");
+                        if (ref.equals(segment.getAttributeValue("id"))) {
+                            Element altTrans = new Element("alt-trans");
+                            String origin = match.getAttributeValue("origin");
+                            if (!origin.isEmpty()) {
+                                altTrans.setAttribute("origin", origin);
+                            }
+                            String quality = altTrans.getAttributeValue("matchQuality");
+                            if (!quality.isBlank()) {
+                                try {
+                                    double percentage = Double.parseDouble(quality);
+                                    altTrans.setAttribute("match-quality", "" + percentage);
+                                } catch (NumberFormatException e) {
+                                    // ignore
+                                }
+                            }
+                            Element altSource = new Element("source");
+                            altSource.setContent(getContent2x(match.getChild("source")));
+                            unit.addContent("\n        ");
+                            altTrans.addContent(altSource);
+                            unit.addContent("\n        ");
+                            Element altTarget = new Element("target");
+                            altTarget.setContent(getContent2x(match.getChild("target")));
+                            altTrans.addContent(altTarget);
+                            if (!altSource.getContent().isEmpty() && !altTarget.getContent().isEmpty()) {
+                                unit.addContent(altTrans);
+                            }
+                        }
+                    }
+                }
+                units.add(unit);
+                segment.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
+            }
+            return;
+        }
+        List<Element> children = root.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            recurse2x(it.next(), units);
+        }
+    }
+
+    private static List<XMLNode> getContent2x(Element child) {
+        int cpCount = 0;
+        int ecCount = 0;
+        int emCount = 0;
+        List<XMLNode> result = new Vector<>();
+        if (child != null) {
+            List<XMLNode> content = child.getContent();
+            Iterator<XMLNode> it = content.iterator();
+            while (it.hasNext()) {
+                XMLNode node = it.next();
+                if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                    result.add(node);
+                }
+                if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                    Element e = (Element) node;
+                    String name = e.getName();
+                    if ("pc".equals(name)) {
+                        Element ph1 = new Element("ph");
+                        ph1.setAttribute("id", "pc" + e.getAttributeValue("id"));
+                        ph1.setText(getHead(e));
+                        result.add(ph1);
+
+                        List<XMLNode> nested = getContent2x(e);
+                        result.addAll(nested);
+
+                        Element ph2 = new Element("ph");
+                        ph2.setAttribute("id", "/pc" + e.getAttributeValue("id"));
+                        ph2.setText("</pc>");
+                        result.add(ph2);
+                    }
+                    if ("cp".equals(name)) {
+                        Element ph = new Element("ph");
+                        ph.setAttribute("id", name + cpCount++);
+                        ph.setText(e.toString());
+                        result.add(ph);
+                    }
+                    if ("ph".equals(name) || "sc".equals(name) || "sm".equals(name)) {
+                        Element ph = new Element("ph");
+                        ph.setAttribute("id", name + e.getAttributeValue("id"));
+                        ph.setText(e.toString());
+                        result.add(ph);
+                    }
+                    if ("ec".equals(name)) {
+                        Element ph = new Element("ph");
+                        ph.setAttribute("id", name + ecCount++);
+                        ph.setText(e.toString());
+                        result.add(ph);
+                    }
+                    if ("em".equals(name)) {
+                        Element ph = new Element("ph");
+                        ph.setAttribute("id", name + emCount++);
+                        ph.setText(e.toString());
+                        result.add(ph);
+                    }
+                    if ("mrk".equals(name)) {
+                        boolean translate = e.getAttributeValue("translate").equals("yes");
+                        if (!translate) {
+                            Element mrk = new Element("mrk");
+                            mrk.setAttribute("mtype", "protected");
+                            mrk.setText(e.getText());
+                            result.add(mrk);
+                            continue;
+                        }
+                        String type = e.getAttributeValue("type");
+                        if ("term".equals(type)) {
+                            Element mrk = new Element("mrk");
+                            mrk.setAttribute("mtype", "term");
+                            mrk.setText(e.getText());
+                            result.add(mrk);
+
+                        } else {
+                            result.add(new TextNode(e.getText()));
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static void recurse1x(Element root, List<Element> units) {
+        if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
+            Element segSource = root.getChild("seg-source");
+            if (segSource != null) {
+                List<XMLNode> content = segSource.getContent();
+                Iterator<XMLNode> it = content.iterator();
+                while (it.hasNext()) {
+                    XMLNode node = it.next();
+                    if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                        Element e = (Element) node;
+                        if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
+                            Element unit = new Element("trans-unit");
+                            unit.setAttribute("id", "" + units.size());
+                            unit.setAttribute("approved", root.getAttributeValue("approved", "no"));
+                            boolean space = root.getAttributeValue("xml:space").equals("preserve");
+                            if (space) {
+                                unit.setAttribute("xml:space", "preserve");
+                            }
+                            Element source = new Element("source");
+                            source.setContent(getContent1x(e));
+                            if (!hasText(source)) {
+                                return;
+                            }
+                            unit.addContent("\n        ");
+                            unit.addContent(source);
+                            unit.addContent("\n        ");
+
+                            Element target = new Element("target");
+                            Element tgt = root.getChild("target");
+                            if (tgt != null) {
+                                Element mrk = locateMrk(tgt, e.getAttributeValue("mid"));
+                                if (mrk != null) {
+                                    target.setContent(getContent1x(mrk));
+                                }
+                            }
+                            unit.addContent(target);
+                            unit.addContent("\n      ");
+                            units.add(unit);
+                            e.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
+                        }
+                    }
+                }
+            } else {
+                Element unit = new Element("trans-unit");
+                unit.setAttribute("id", "" + units.size());
+                unit.setAttribute("approved", root.getAttributeValue("approved", "no"));
+                boolean space = root.getAttributeValue("xml:space").equals("preserve");
+                if (space) {
+                    unit.setAttribute("xml:space", "preserve");
+                }
+
+                Element source = new Element("source");
+                source.setContent(getContent1x(root.getChild("source")));
+                if (!hasText(source)) {
+                    return;
+                }
+                unit.addContent("\n        ");
+                unit.addContent(source);
+                unit.addContent("\n        ");
+                Element target = new Element("target");
+                target.setContent(getContent1x(root.getChild("target")));
+                unit.addContent(target);
+
+                List<Element> matches = root.getChildren("alt-trans");
+                Iterator<Element> it = matches.iterator();
+                while (it.hasNext()) {
+                    Element match = it.next();
+                    Element altTrans = new Element("alt-trans");
+                    String origin = match.getAttributeValue("origin");
+                    if (!origin.isEmpty()) {
+                        altTrans.setAttribute("origin", origin);
+                    }
+                    String quality = altTrans.getAttributeValue("match-quality");
+                    if (!quality.isBlank()) {
+                        try {
+                            double percentage = Double.parseDouble(quality);
+                            altTrans.setAttribute("match-quality", "" + percentage);
+                        } catch (NumberFormatException e) {
+                            // ignore
+                        }
+                    }
+                    Element altSource = new Element("source");
+                    altSource.setContent(getContent1x(match.getChild("source")));
+                    unit.addContent("\n        ");
+                    altTrans.addContent(altSource);
+                    unit.addContent("\n        ");
+                    Element altTarget = new Element("target");
+                    altTarget.setContent(getContent1x(match.getChild("target")));
+                    altTrans.addContent(altTarget);
+                    if (!altSource.getContent().isEmpty() && !altTarget.getContent().isEmpty()) {
+                        unit.addContent(altTrans);
+                    }
+                }
+                unit.addContent("\n      ");
+                units.add(unit);
+                root.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
+            }
+            return;
+        }
+        List<Element> children = root.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            recurse1x(it.next(), units);
+        }
+    }
+
+    protected static Element locateMrk(Element target, String mid) {
+        List<XMLNode> content = target.getContent();
+        Iterator<XMLNode> it = content.iterator();
+        while (it.hasNext()) {
+            XMLNode node = it.next();
+            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element e = (Element) node;
+                if ("mrk".equals(e.getName()) && e.getAttributeValue("mid").equals(mid)) {
+                    return e;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static List<XMLNode> getContent1x(Element child) {
+        List<XMLNode> result = new Vector<>();
+        if (child != null) {
+            List<XMLNode> content = child.getContent();
+            Iterator<XMLNode> it = content.iterator();
+            while (it.hasNext()) {
+                XMLNode node = it.next();
+                if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                    result.add(node);
+                }
+                if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                    Element e = (Element) node;
+                    String name = e.getName();
+                    if ("g".equals(name)) {
+                        Element ph1 = new Element("ph");
+                        ph1.setAttribute("id", "g" + e.getAttributeValue("id"));
+                        ph1.setText(getHead(e));
+                        result.add(ph1);
+                        result.add(new TextNode(e.getText()));
+                        Element ph2 = new Element("ph");
+                        ph2.setAttribute("id", "/g" + e.getAttributeValue("id"));
+                        ph2.setText("</g>");
+                        result.add(ph2);
+                    }
+                    if ("x".equals(name) || "bx".equals(name) || "ex".equals(name) || "ph".equals(name)
+                            || "bpt".equals(name) || "ept".equals(name) || "it".equals(name)) {
+                        Element ph = new Element("ph");
+                        ph.setAttribute("id", name + e.getAttributeValue("id"));
+                        ph.setText(e.toString());
+                        result.add(ph);
+                    }
+                    if ("mrk".equals(name)) {
+                        String mtype = e.getAttributeValue("mtype");
+                        if ("protected".equals(mtype) || "term".equals(mtype)) {
+                            Element mrk = new Element("mrk");
+                            mrk.setAttribute("mtype", mtype);
+                            mrk.setText(e.getText());
+                            result.add(mrk);
+                        } else {
+                            result.add(new TextNode(e.getText()));
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    private static String getHead(Element e) {
+        StringBuilder builder = new StringBuilder();
+        builder.append('<');
+        builder.append(e.getName());
+        List<Attribute> atts = e.getAttributes();
+        Iterator<Attribute> it = atts.iterator();
+        while (it.hasNext()) {
+            Attribute a = it.next();
+            builder.append(' ');
+            builder.append(a.toString());
+        }
+        builder.append('>');
+        return builder.toString();
+    }
+
+    private static boolean hasText(Element e) {
+        List<XMLNode> nodes = e.getContent();
+        Iterator<XMLNode> it = nodes.iterator();
+        while (it.hasNext()) {
+            XMLNode node = it.next();
+            if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                TextNode t = (TextNode) node;
+                String text = t.getText();
+                if (text != null) {
+                    for (int i = 0; i < text.length(); i++) {
+                        char c = text.charAt(i);
+                        if (!(Character.isSpaceChar(c) || c == '\n')) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+}

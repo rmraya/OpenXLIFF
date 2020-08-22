@@ -46,6 +46,7 @@ import com.maxprograms.converters.sdlxliff.Xliff2Sdl;
 import com.maxprograms.converters.ts.Xliff2Ts;
 import com.maxprograms.converters.txml.Xliff2Txml;
 import com.maxprograms.converters.wpml.Xliff2Wpml;
+import com.maxprograms.converters.xliff.FromOpenXliff;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Catalog;
@@ -387,6 +388,8 @@ public class Merge {
 				result = Xliff2Wpml.run(params);
 			} else if (dataType.equals(FileFormats.XML) || dataType.equals("xml")) {
 				result = Xliff2Xml.run(params);
+			} else if (dataType.equals(FileFormats.XLIFF) || dataType.equals("x-xliff")) {
+				result = FromOpenXliff.run(params);
 			} else {
 				result.add(Constants.ERROR);
 				result.add("Unsupported XLIFF file.");
