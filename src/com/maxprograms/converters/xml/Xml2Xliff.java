@@ -149,7 +149,7 @@ public class Xml2Xliff {
 
 		try {
 			boolean autoConfiguration = false;
-			String iniFile = getIniFile(inputFile);
+			String iniFile = getIniFile(inputFile, catalog);
 			if (generic) {
 				File temp = File.createTempFile("config_", ".xml");
 				iniFile = temp.getAbsolutePath();
@@ -234,11 +234,11 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	public static String getIniFile(String fileName)
+	public static String getIniFile(String fileName, String catalogFile)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		File folder = new File(System.getProperty("user.dir"), "xmlfilter");
 		SAXBuilder builder = new SAXBuilder();
-		Catalog cat = new Catalog(catalog);
+		Catalog cat = new Catalog(catalogFile);
 		builder.setEntityResolver(cat);
 		builder.setValidating(false);
 		builder.setErrorHandler(new SilentErrorHandler());
@@ -290,6 +290,13 @@ public class Xml2Xliff {
 			}
 		}
 		String pub = doc.getPublicId();
+		if (pub != null && !pub.isEmpty()) {
+			String location = cat.matchPublic(pub);
+			String s = getRootElement(location);
+			if (s != null) {
+				return new File(folder, "config_" + s + ".xml").getAbsolutePath();
+			}
+		}
 		String sys = doc.getSystemId();
 		if (sys != null) {
 			// remove path from systemId
@@ -299,31 +306,10 @@ public class Xml2Xliff {
 			if (sys.indexOf('\\') != -1 && sys.lastIndexOf('/') < sys.length()) {
 				sys = sys.substring(sys.lastIndexOf('\\') + 1);
 			}
-		}
-
-		Document d = builder.build(catalog);
-		Element r = d.getRootElement();
-		List<Element> dtds = r.getChildren("dtd");
-		Iterator<Element> i = dtds.iterator();
-		while (i.hasNext()) {
-			Element dtd = i.next();
-			if (pub != null && dtd.getAttributeValue("publicId", "").equals(pub)) {
-				String s = getRootElement(dtd.getText());
-				if (s != null) {
-					return new File(folder, "config_" + s + ".xml").getAbsolutePath();
-				}
-			}
-			if (sys != null && dtd.getAttributeValue("systemId", "").equals(sys)) {
-				String s = getRootElement(dtd.getText());
-				if (s != null) {
-					return new File(folder, "config_" + s + ".xml").getAbsolutePath();
-				}
-				if (dtd.getAttributeValue("systemId", "").endsWith(sys)) {
-					String st = getRootElement(dtd.getText());
-					if (st != null) {
-						return new File(folder, "config_" + st + ".xml").getAbsolutePath();
-					}
-				}
+			String location = cat.matchSystem("", sys);
+			String s = getRootElement(location);
+			if (s != null) {
+				return new File(folder, "config_" + s + ".xml").getAbsolutePath();
 			}
 		}
 

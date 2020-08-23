@@ -112,6 +112,12 @@
 
 	<nextCatalog catalog="mathml2/catalog.xml"/>
 	
+	<!--    ST4    -->
+	
+	<system systemId="ST4.dtd" uri="st4/ST4.dtd"/>
+	<system systemId="Tms.dtd" uri="st4/Tms.dtd"/>
+	<public publicId="-//Schema//DTD DocuMan TMS V5//EN" uri="st4/Tms.dtd" />
+	
 	<!--    DocBook    -->
 
 	<nextCatalog catalog="docbook5.0/catalog.xml"/>
