@@ -197,6 +197,10 @@ public class Element implements XMLNode {
 		return a != null ? a.getValue() : "";
 	}
 
+	public boolean hasAttribute(String attributeName) {
+		return attsTable.containsKey(attributeName);
+	}
+
 	public String getAttributeValue(String attributeName, String defaultValue) {
 		Attribute a = attsTable.get(attributeName);
 		return a != null ? a.getValue() : defaultValue;
