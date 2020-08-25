@@ -120,7 +120,11 @@ public class Sdlppx2Xliff {
 					parent = entryName.substring(0, entryName.indexOf("\\"));
 					name = entryName.substring(entryName.indexOf("\\") + 1);
 				}
-				if (targetLanguage.equalsIgnoreCase(parent) && name.endsWith(".sdlxliff")) {
+				if (entryName.indexOf("/") != -1) {
+					parent = entryName.substring(0, entryName.indexOf("/"));
+					name = entryName.substring(entryName.indexOf("/") + 1);
+				}
+				if (targetLanguage.equalsIgnoreCase(parent) && name.toLowerCase().endsWith(".sdlxliff")) {
 					// it is sdlxliff from target folder
 					File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".sdlxliff");
 					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
@@ -164,7 +168,8 @@ public class Sdlppx2Xliff {
 						saveEntry(entry, tmp.getAbsolutePath());
 					}
 					Files.delete(tmp.toPath());
-				} else if (sourceLanguage.equalsIgnoreCase(parent) || name.endsWith(".sdlproj") || targetLanguage.equalsIgnoreCase(parent) ) {
+				} else if (sourceLanguage.equalsIgnoreCase(parent) || name.toLowerCase().endsWith(".sdlproj")
+						|| targetLanguage.equalsIgnoreCase(parent)) {
 					// preserve source files and project
 					// preserve other files from target folder too
 					File tmp = File.createTempFile("zip", ".tmp");
@@ -177,7 +182,7 @@ public class Sdlppx2Xliff {
 					}
 					saveEntry(entry, tmp.getAbsolutePath());
 					Files.delete(tmp.toPath());
-				} 
+				}
 			}
 
 			in.close();
