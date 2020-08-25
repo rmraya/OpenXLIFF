@@ -29,6 +29,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25. 2020
 1.9.1 | Added improvements required by [Swordfish IV](https://github.com/rmraya/Swordfish). | August 13, 2020
 1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | May 18, 2020
 1.8.4 | Improved catalog and other minor fixes | April 25. 2020
