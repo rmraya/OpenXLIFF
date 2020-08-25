@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -257,7 +258,6 @@ public class ToXliff2 {
 					space.addContent("keep");
 					metaGroup.addContent(space);
 				}
-
 			}
 			target.addContent(group);
 			target = group;
@@ -287,20 +287,38 @@ public class ToXliff2 {
 			unit.addContent(originalData);
 
 			Element src = source.getChild("source");
-			List<Element> tags = src.getChildren("ph");
+			List<Element> tags = src.getChildren();
 			Set<String> tagSet = new TreeSet<>();
 			for (int i = 0; i < tags.size(); i++) {
-				Element ph = tags.get(i);
-				String id = "ph" + ph.getAttributeValue("id");
-				if (!tagSet.contains(id)) {
-					Element data = new Element("data");
-					data.setAttribute("id", id);
-					data.setContent(ph.getContent());
-					originalData.addContent(data);
-					tagSet.add("ph" + ph.getAttributeValue("id"));
+				Element tag = tags.get(i);
+				if ("ph".equals(tag.getName())) {
+					String id = "ph" + tag.getAttributeValue("id");
+					if (!tagSet.contains(id)) {
+						Element data = new Element("data");
+						data.setAttribute("id", id);
+						data.setContent(tag.getContent());
+						originalData.addContent(data);
+						tagSet.add("ph" + tag.getAttributeValue("id"));
+					}
+				}
+				if ("g".equals(tag.getName())) {
+					String id = "g" + tag.getAttributeValue("id");
+					if (!tagSet.contains(id)) {
+						Element head = new Element("data");
+						head.setAttribute("id", id);
+						head.setText(getHead(tag));
+						originalData.addContent(head);
+						tagSet.add("g" + tag.getAttributeValue("id"));
+
+						Element tail = new Element("data");
+						tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
+						tail.setText("</g>");
+						originalData.addContent(tail);
+						tagSet.add("/g" + tag.getAttributeValue("id"));
+					}
 				}
 			}
-			
+
 			Element segment = new Element("segment");
 			segment.setAttribute("id", source.getAttributeValue("id"));
 			unit.addContent(segment);
@@ -327,6 +345,17 @@ public class ToXliff2 {
 						ph.setAttribute("id", "ph" + tag.getAttributeValue("id"));
 						ph.setAttribute("dataRef", "ph" + tag.getAttributeValue("id"));
 						src2.addContent(ph);
+					}
+					if (tag.getName().equals("g")) {
+						Element head = new Element("ph");
+						head.setAttribute("id", "g" + tag.getAttributeValue("id"));
+						head.setAttribute("dataRef", "g" + tag.getAttributeValue("id"));
+						src2.addContent(head);
+						src2.addContent(tag.getText());
+						Element tail = new Element("ph");
+						tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
+						tail.setAttribute("dataRef", "/g" + tag.getAttributeValue("id"));
+						src2.addContent(tail);
 					}
 					if (tag.getName().equals("mrk")) {
 						Element mrk = new Element("mrk");
@@ -372,6 +401,31 @@ public class ToXliff2 {
 							}
 							ph.setAttribute("dataRef", id);
 							tgt2.addContent(ph);
+						}
+						if (tag.getName().equals("g")) {
+							String id = "g" + tag.getAttributeValue("id");
+							if (!tagSet.contains(id)) {
+								Element head = new Element("data");
+								head.setAttribute("id", id);
+								head.setText(getHead(tag));
+								originalData.addContent(head);
+								tagSet.add("g" + tag.getAttributeValue("id"));
+		
+								Element tail = new Element("data");
+								tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
+								tail.setText("</g>");
+								originalData.addContent(tail);
+								tagSet.add("/g" + tag.getAttributeValue("id"));
+							}
+							Element head = new Element("ph");
+							head.setAttribute("id", id);
+							head.setAttribute("dataRef", id);
+							tgt2.addContent(head);
+							tgt2.addContent(tag.getText());
+							Element tail = new Element("ph");
+							tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
+							tail.setAttribute("dataRef", "/g" + tag.getAttributeValue("id"));
+							tgt2.addContent(tail);
 						}
 						if (tag.getName().equals("mrk")) {
 							Element mrk = new Element("mrk");
@@ -421,8 +475,8 @@ public class ToXliff2 {
 							Element tag = (Element) node;
 							if (tag.getName().equals("ph")) {
 								Element ph = new Element("ph");
-								String id =  "ph" + tag.getAttributeValue("id");
-								ph.setAttribute("id",id);
+								String id = "ph" + tag.getAttributeValue("id");
+								ph.setAttribute("id", id);
 								if (!tagSet.contains(id)) {
 									Element data = new Element("data");
 									data.setAttribute("id", id);
@@ -457,8 +511,8 @@ public class ToXliff2 {
 							Element tag = (Element) node;
 							if (tag.getName().equals("ph")) {
 								Element ph = new Element("ph");
-								String id =  "ph" + tag.getAttributeValue("id");
-								ph.setAttribute("id",id);
+								String id = "ph" + tag.getAttributeValue("id");
+								ph.setAttribute("id", id);
 								if (!tagSet.contains(id)) {
 									Element data = new Element("data");
 									data.setAttribute("id", id);
@@ -496,4 +550,18 @@ public class ToXliff2 {
 		}
 	}
 
+	private static String getHead(Element e) {
+		StringBuilder builder = new StringBuilder();
+		builder.append('<');
+		builder.append(e.getName());
+		List<Attribute> atts = e.getAttributes();
+		Iterator<Attribute> it = atts.iterator();
+		while (it.hasNext()) {
+			Attribute a = it.next();
+			builder.append(' ');
+			builder.append(a.toString());
+		}
+		builder.append('>');
+		return builder.toString();
+	}
 }
