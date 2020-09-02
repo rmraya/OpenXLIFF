@@ -42,6 +42,8 @@ public class ToOpenXliff {
     private static String sourceLanguage;
     private static String targetLanguage;
 
+    private static List<String> namespaces;
+
     private ToOpenXliff() {
         // do not instantiate this class
         // use run method instead
@@ -95,6 +97,7 @@ public class ToOpenXliff {
             List<Element> units = new Vector<>();
 
             if (root.getAttributeValue("version").startsWith("1")) {
+                namespaces = new ArrayList<>();
                 recurse1x(root, units);
             }
             if (root.getAttributeValue("version").startsWith("2")) {
@@ -289,6 +292,22 @@ public class ToOpenXliff {
     }
 
     private static void recurse1x(Element root, List<Element> units) {
+        if ("xliff".equals(root.getName())) {
+            List<Attribute> atts = root.getAttributes();
+		    Iterator<Attribute> it = atts.iterator();
+            while (it.hasNext()) {
+                Attribute a = it.next();
+                if (a.getName().startsWith("xmlns:")) { 
+                    String ns = a.getName().substring("xmlns:".length()); 
+                    if (!ns.equals("xml")) { 
+                        namespaces.add(ns);
+                    }
+                }
+            }
+            if (!namespaces.isEmpty()) {
+                renameAttributes(root);
+            }
+        }
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             Element segSource = root.getChild("seg-source");
             if (segSource != null) {
@@ -492,4 +511,30 @@ public class ToOpenXliff {
         }
         return false;
     }
+
+    private static void renameAttributes(Element e) {
+		List<Attribute> atts = e.getAttributes();
+		Iterator<Attribute> at = atts.iterator();
+		Vector<String> change = new Vector<>();
+		while (at.hasNext()) {
+			Attribute a = at.next();
+			if (a.getName().indexOf(":") != -1) { 
+				String ns = a.getName().substring(0, a.getName().indexOf(":")); 
+				if (namespaces.contains(ns)) {
+					change.add(a.getName());
+				}
+			}
+		}
+		for (int i = 0; i < change.size(); i++) {
+			String name = change.get(i);
+			Attribute a = e.getAttribute(name);
+			e.setAttribute(name.replaceAll("\\:", "__"), a.getValue());  
+			e.removeAttribute(name);
+		}
+		List<Element> children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			renameAttributes(it.next());
+		}
+	}
 }

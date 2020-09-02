@@ -30,6 +30,7 @@ import java.util.Vector;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -63,7 +64,11 @@ public class FromOpenXliff {
             catalog = new Catalog(params.get("catalog"));
             loadXliff(xliffFile);
             loadSkeleton(sklFile);
-            recurseSkeleton(skeleton.getRootElement());
+            Element root = skeleton.getRootElement();
+            recurseSkeleton(root);
+            if (root.getAttributeValue("version").startsWith("1")) {
+                restoreAttributes(root);
+            }
             File f = new File(outputFile);
             File p = f.getParentFile();
             if (p == null) {
@@ -77,7 +82,7 @@ public class FromOpenXliff {
             }
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
                 XMLOutputter outputter = new XMLOutputter();
-                Indenter.indent(skeleton.getRootElement(), 2);
+                Indenter.indent(root, 2);
                 outputter.preserveSpace(true);
                 outputter.output(skeleton, out);
             }
@@ -270,5 +275,28 @@ public class FromOpenXliff {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
         skeleton = builder.build(sklFile);
+    }
+
+    private static void restoreAttributes(Element e) {
+        List<Attribute> atts = e.getAttributes();
+        Iterator<Attribute> at = atts.iterator();
+        Vector<String> change = new Vector<>();
+        while (at.hasNext()) {
+            Attribute a = at.next();
+            if (a.getName().indexOf("__") != -1) {
+                change.add(a.getName());
+            }
+        }
+        for (int i = 0; i < change.size(); i++) {
+            String name = change.get(i);
+            Attribute a = e.getAttribute(name);
+            e.setAttribute(name.replaceAll("__", ":"), a.getValue());
+            e.removeAttribute(name);
+        }
+        List<Element> children = e.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            restoreAttributes(it.next());
+        }
     }
 }
