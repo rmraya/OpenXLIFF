@@ -307,6 +307,9 @@ public class Xml2Xliff {
 				sys = sys.substring(sys.lastIndexOf('\\') + 1);
 			}
 			String location = cat.matchSystem("", sys);
+			if (location == null) {
+				location = cat.getDTD(sys);
+			}
 			String s = getRootElement(location);
 			if (s != null) {
 				return new File(folder, "config_" + s + ".xml").getAbsolutePath();
@@ -403,6 +406,9 @@ public class Xml2Xliff {
 	}
 
 	private static String getRootElement(String file) {
+		if (file == null) {
+			return null;
+		}
 		String result = null;
 		File dtd = new File(file);
 		try {
@@ -411,8 +417,8 @@ public class Xml2Xliff {
 			if (d != null && d.rootElement != null) {
 				result = d.rootElement.getName();
 			}
-		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, "Error getting root element from DTD", e);
+		} catch (Exception e) {
+			// LOGGER.log(Level.WARNING, "Error getting root element from DTD " + file);
 		}
 		return result;
 	}
@@ -1541,5 +1547,4 @@ public class Xml2Xliff {
 		}
 		return result;
 	}
-
 }

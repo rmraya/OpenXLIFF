@@ -17,11 +17,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -34,6 +35,7 @@ public class Catalog implements EntityResolver2 {
 	private Map<String, String> systemCatalog;
 	private Map<String, String> publicCatalog;
 	private Map<String, String> uriCatalog;
+	private Map<String, String> dtdCatalog;
 	private List<String[]> uriRewrites;
 	private List<String[]> systemRewrites;
 	private String workDir;
@@ -54,6 +56,7 @@ public class Catalog implements EntityResolver2 {
 
 		systemCatalog = new Hashtable<>();
 		publicCatalog = new Hashtable<>();
+		dtdCatalog = new Hashtable<>();
 		uriCatalog = new Hashtable<>();
 		uriRewrites = new Vector<>();
 		systemRewrites = new Vector<>();
@@ -87,6 +90,12 @@ public class Catalog implements EntityResolver2 {
 				String uri = makeAbsolute(child.getAttributeValue("uri"));
 				if (validate(uri)) {
 					systemCatalog.put(child.getAttributeValue("systemId"), uri);
+					if (uri.endsWith(".dtd")) {
+						File dtd = new File(uri);
+						if (!dtdCatalog.containsKey(dtd.getName())) {
+							dtdCatalog.put(dtd.getName(), dtd.getAbsolutePath());
+						}
+					}
 				}
 			}
 			if (child.getName().equals("public")) {
@@ -98,6 +107,12 @@ public class Catalog implements EntityResolver2 {
 					String uri = makeAbsolute(child.getAttributeValue("uri"));
 					if (validate(uri)) {
 						publicCatalog.put(publicId, uri);
+						if (uri.endsWith(".dtd")) {
+							File dtd = new File(uri);
+							if (!dtdCatalog.containsKey(dtd.getName())) {
+								dtdCatalog.put(dtd.getName(), dtd.getAbsolutePath());
+							}
+						}
 					}
 				}
 			}
@@ -105,6 +120,12 @@ public class Catalog implements EntityResolver2 {
 				String uri = makeAbsolute(child.getAttributeValue("uri"));
 				if (validate(uri)) {
 					uriCatalog.put(child.getAttributeValue("name"), uri);
+					if (uri.endsWith(".dtd")) {
+						File dtd = new File(uri);
+						if (!dtdCatalog.containsKey(dtd.getName())) {
+							dtdCatalog.put(dtd.getName(), dtd.getAbsolutePath());
+						}
+					}
 				}
 			}
 			if (child.getName().equals("nextCatalog")) {
@@ -139,6 +160,15 @@ public class Catalog implements EntityResolver2 {
 					if (!uriCatalog.containsKey(key)) {
 						String value = table.get(key);
 						uriCatalog.put(key, value);
+					}
+				}
+				table = cat.getDtdCatalogue();
+				it = table.keySet().iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					if (!dtdCatalog.containsKey(key)) {
+						String value = table.get(key);
+						dtdCatalog.put(key, value);
 					}
 				}
 				List<String[]> system = cat.getSystemRewrites();
@@ -200,6 +230,10 @@ public class Catalog implements EntityResolver2 {
 	}
 
 	private Map<String, String> getUriCatalogue() {
+		return uriCatalog;
+	}
+
+	private Map<String, String> getDtdCatalogue() {
 		return uriCatalog;
 	}
 
@@ -324,9 +358,7 @@ public class Catalog implements EntityResolver2 {
 				if (file.exists()) {
 					return file.getAbsolutePath();
 				}
-			} catch (IllegalArgumentException e) {
-				throw new IllegalArgumentException(e.getMessage() + " systemId: " + systemId);
-			} catch (MalformedURLException | URISyntaxException e) {
+			} catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
 				// ignore
 			}
 		}
@@ -359,5 +391,12 @@ public class Catalog implements EntityResolver2 {
 
 	public void currentDocumentBase(String parentFile) {
 		documentParent = parentFile;
+	}
+
+	public String getDTD(String name) {
+		if (name != null) {
+			return dtdCatalog.get(name);
+		}
+		return null;
 	}
 }
