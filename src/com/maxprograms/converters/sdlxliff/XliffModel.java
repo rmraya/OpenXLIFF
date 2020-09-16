@@ -115,12 +115,14 @@ public class XliffModel {
 					List<XMLNode> newContent = new ArrayList<>();
 					for (int i = 0; i < content.size(); i++) {
 						XMLNode n = content.get(i);
-						newContent.add(n);
-						Element child = (Element) n;
-						if (n.getNodeType() == XMLNode.ELEMENT_NODE && child.getName().equals("source")) {
-							newContent.add(new TextNode("\n"));
-							newContent.add(segSource);
-							modified = true;
+						if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+							newContent.add(n);
+							Element child = (Element) n;
+							if (n.getNodeType() == XMLNode.ELEMENT_NODE && child.getName().equals("source")) {
+								newContent.add(new TextNode("\n"));
+								newContent.add(segSource);
+								modified = true;
+							}
 						}
 					}
 					e.setContent(newContent);
