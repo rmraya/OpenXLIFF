@@ -384,39 +384,9 @@ public class Segmenter {
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element tag = (Element) n;
-				if (tag.getName().equals("ph") || tag.getName().equals("x") || tag.getName().equals("bx")
-						|| tag.getName().equals("bpt") || tag.getName().equals("ept") || tag.getName().equals("it")) {
-					tags.put("" + (char) ('\uE000' + tagId), tag.toString());
-					result.append((char) ('\uE000' + tagId));
-					tagId++;
-				}
-				if (tag.getName().equals("g") || tag.getName().equals("mrk")) {
-					if (tag.getAttributeValue("translate", "yes").equals("yes")
-							&& !tag.getAttributeValue("mtype", "").equals("protected")) {
-						String start = "<" + tag.getName();
-						List<Attribute> atts = tag.getAttributes();
-						Iterator<Attribute> at = atts.iterator();
-						while (at.hasNext()) {
-							Attribute a = at.next();
-							start = start + " " + a.getName() + "=\"" + a.getValue().replaceAll("\"", "&quote;") + "\""; //$NON-NLS-5$
-						}
-						start = start + ">";
-						tags.put("" + (char) ('\uE000' + tagId), start);
-						result.append((char) ('\uE000' + tagId));
-						tagId++;
-
-						result.append(pureText(tag));
-
-						String end = "</" + tag.getName() + ">";
-						tags.put("" + (char) ('\uE000' + tagId), end);
-						result.append((char) ('\uE000' + tagId));
-						tagId++;
-					} else {
-						tags.put("" + (char) ('\uE000' + tagId), tag.toString());
-						result.append((char) ('\uE000' + tagId));
-						tagId++;
-					}
-				}
+				tags.put("" + (char) ('\uE000' + tagId), tag.toString());
+				result.append((char) ('\uE000' + tagId));
+				tagId++;
 			}
 		}
 		return result.toString();
