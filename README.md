@@ -147,6 +147,7 @@ Document Types
    HTML = HTML Page
    JS = JavaScript
    JAVA = Java Properties
+   JSON = JSON
    MIF = MIF (Maker Interchange Format)
    OFF = Microsoft Office 2007 Document
    OO = OpenOffice Document
