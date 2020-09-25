@@ -37,6 +37,7 @@ public class FileFormats {
 	public static final String DITA = "DITA Map";
 	public static final String HTML = "HTML Page";
 	public static final String JS = "JavaScript";
+	public static final String JSON = "JSON";
 	public static final String JAVA = "Java Properties";
 	public static final String MIF = "MIF (Maker Interchange Format)";
 	public static final String OFF = "Microsoft Office 2007 Document";
@@ -54,7 +55,7 @@ public class FileFormats {
 	public static final String XML = "XML Document";
 	public static final String XMLG = "XML (Generic)";
 
-	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
+	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
 			SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
@@ -212,6 +213,9 @@ public class FileFormats {
 				builder.build(file);
 				return XML;
 			}
+			if (string.indexOf('{') != -1 && string.indexOf(':') != -1) {
+				return JSON;
+			}
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -242,6 +246,9 @@ public class FileFormats {
 		}
 		if (type.equals(JS)) {
 			return "JS";
+		}
+		if (type.equals(JSON)) {
+			return "JSON";
 		}
 		if (type.equals(JAVA)) {
 			return "JAVA";
@@ -305,6 +312,8 @@ public class FileFormats {
 			return HTML;
 		} else if (dataType.equals("JS") || dataType.equals("javascript")) {
 			return JS;
+		} else if (dataType.equals("JSON") || dataType.equals("json")) {
+			return JSON;
 		} else if (dataType.equals("JAVA") || dataType.equals("javapropertyresourcebundle")
 				|| dataType.equals("javalistresourcebundle")) {
 			return JAVA;

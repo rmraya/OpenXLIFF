@@ -29,6 +29,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.11.0 | Added support for JSON files | September 25, 2020
 1.10.1 | Fixed handling of TXLF files and improved XML catalog | September 5, 2020
 1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25. 2020
 1.9.1 | Added improvements required by [Swordfish IV](https://github.com/rmraya/Swordfish). | August 13, 2020
@@ -87,6 +88,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - XHTML
 - **Software Development**
   - JavaScript
+  - JSON
   - Java Properties
   - PO (Portable Objects)
   - RC (Windows C/C++ Resources)

@@ -79,6 +79,12 @@ public class EncodingResolver {
 			} catch (IOException e) {
 				LOGGER.log(Level.ERROR, "Error detecting HTML encoding", e);
 			}
+		} else if (fileType.equals(FileFormats.JSON)) {
+			try {
+				return getJSONEncoding(fileName);
+			} catch (IOException e) {
+				LOGGER.log(Level.ERROR, "Error detecting XML encoding", e);
+			}
 		}
 		return null;
 	}
@@ -150,6 +156,18 @@ public class EncodingResolver {
 			}
 		}
 		return null;
+	}
+
+	private static Charset getJSONEncoding(String fileName) throws IOException {
+		// return UTF-8 as default
+		String result = StandardCharsets.UTF_8.name();
+		// check if there is a BOM (byte order mark)
+		// at the start of the document
+		Charset bom = getBOM(fileName);
+		if (bom != null) {
+			return bom;
+		}
+		return Charset.forName(result);
 	}
 
 	private static Charset getXMLEncoding(String fileName) throws IOException {

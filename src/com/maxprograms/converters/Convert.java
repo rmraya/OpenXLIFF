@@ -37,6 +37,7 @@ import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.converters.idml.Idml2Xliff;
 import com.maxprograms.converters.javaproperties.Properties2Xliff;
 import com.maxprograms.converters.javascript.Jscript2xliff;
+import com.maxprograms.converters.json.Json2Xliff;
 import com.maxprograms.converters.mif.Mif2Xliff;
 import com.maxprograms.converters.office.Office2Xliff;
 import com.maxprograms.converters.plaintext.Text2Xliff;
@@ -294,6 +295,7 @@ public class Convert {
 				+ "   DITA = DITA Map\n" 
 				+ "   HTML = HTML Page\n" 
 				+ "   JS = JavaScript\n"
+				+ "   JSON = JSON\n"
 				+ "   JAVA = Java Properties\n" 
 				+ "   MIF = MIF (Maker Interchange Format)\n"
 				+ "   OFF = Microsoft Office 2007 Document\n" 
@@ -374,6 +376,8 @@ public class Convert {
 			result = Html2Xliff.run(params);
 		} else if (format.equals(FileFormats.JS)) {
 			result = Jscript2xliff.run(params);
+		} else if (format.equals(FileFormats.JSON)) {
+			result = Json2Xliff.run(params);
 		} else if (format.equals(FileFormats.JAVA)) {
 			result = Properties2Xliff.run(params);
 		} else if (format.equals(FileFormats.MIF)) {
