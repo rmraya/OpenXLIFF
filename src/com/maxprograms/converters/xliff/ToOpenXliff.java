@@ -294,12 +294,12 @@ public class ToOpenXliff {
     private static void recurse1x(Element root, List<Element> units) {
         if ("xliff".equals(root.getName())) {
             List<Attribute> atts = root.getAttributes();
-		    Iterator<Attribute> it = atts.iterator();
+            Iterator<Attribute> it = atts.iterator();
             while (it.hasNext()) {
                 Attribute a = it.next();
-                if (a.getName().startsWith("xmlns:")) { 
-                    String ns = a.getName().substring("xmlns:".length()); 
-                    if (!ns.equals("xml")) { 
+                if (a.getName().startsWith("xmlns:")) {
+                    String ns = a.getName().substring("xmlns:".length());
+                    if (!ns.equals("xml")) {
                         namespaces.add(ns);
                     }
                 }
@@ -513,28 +513,28 @@ public class ToOpenXliff {
     }
 
     private static void renameAttributes(Element e) {
-		List<Attribute> atts = e.getAttributes();
-		Iterator<Attribute> at = atts.iterator();
-		Vector<String> change = new Vector<>();
-		while (at.hasNext()) {
-			Attribute a = at.next();
-			if (a.getName().indexOf(":") != -1) { 
-				String ns = a.getName().substring(0, a.getName().indexOf(":")); 
-				if (namespaces.contains(ns)) {
-					change.add(a.getName());
-				}
-			}
-		}
-		for (int i = 0; i < change.size(); i++) {
-			String name = change.get(i);
-			Attribute a = e.getAttribute(name);
-			e.setAttribute(name.replaceAll("\\:", "__"), a.getValue());  
-			e.removeAttribute(name);
-		}
-		List<Element> children = e.getChildren();
-		Iterator<Element> it = children.iterator();
-		while (it.hasNext()) {
-			renameAttributes(it.next());
-		}
-	}
+        List<Attribute> atts = e.getAttributes();
+        Iterator<Attribute> at = atts.iterator();
+        Vector<String> change = new Vector<>();
+        while (at.hasNext()) {
+            Attribute a = at.next();
+            if (a.getName().indexOf(":") != -1) {
+                String ns = a.getName().substring(0, a.getName().indexOf(":"));
+                if (namespaces.contains(ns)) {
+                    change.add(a.getName());
+                }
+            }
+        }
+        for (int i = 0; i < change.size(); i++) {
+            String name = change.get(i);
+            Attribute a = e.getAttribute(name);
+            e.setAttribute(name.replaceAll("\\:", "__"), a.getValue());
+            e.removeAttribute(name);
+        }
+        List<Element> children = e.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            renameAttributes(it.next());
+        }
+    }
 }
