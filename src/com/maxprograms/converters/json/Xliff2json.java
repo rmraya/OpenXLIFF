@@ -30,6 +30,7 @@ import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
@@ -42,13 +43,11 @@ import org.xml.sax.SAXException;
 public class Xliff2json {
 
     private static Map<String, Element> segments;
+    private static String encoding;
 
     private Xliff2json() {
         // do not instantiate this class
         // use run method instead
-    }
-
-    public static void main(String[] args) {
     }
 
     public static List<String> run(Map<String, String> params) {
@@ -60,13 +59,13 @@ public class Xliff2json {
 
         try {
             loadSegments(xliffFile, catalog);
-            JSONObject json = Json2Xliff.loadFile(sklFile);
+            JSONObject json = Json2Xliff.loadFile(sklFile, encoding);
             parseJson(json);
 
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
                 out.write(json.toString(4).getBytes(StandardCharsets.UTF_8));
             }
-            
+
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2json.class.getName());
@@ -86,6 +85,11 @@ public class Xliff2json {
 
         Document doc = builder.build(xliffFile);
         Element root = doc.getRootElement();
+        List<PI> encodings = root.getChild("file").getPI("encoding");
+        if (encodings.size() == 0) {
+            throw new IOException("Missing encoding");
+        }
+        encoding = encodings.get(0).getData();
         Element body = root.getChild("file").getChild("body");
         List<Element> units = body.getChildren("trans-unit");
         Iterator<Element> i = units.iterator();

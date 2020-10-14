@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -80,7 +81,7 @@ public class Json2Xliff {
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
             }
 
-            JSONObject json = loadFile(inputFile);
+            JSONObject json = loadFile(inputFile, encoding);
             parseJson(json);
 
             if (segments.size() == 0) {
@@ -138,9 +139,9 @@ public class Json2Xliff {
         out.write(string.getBytes(StandardCharsets.UTF_8));
     }
 
-    protected static JSONObject loadFile(String file) throws IOException {
+    protected static JSONObject loadFile(String file, String charset) throws IOException {
         StringBuilder builder = new StringBuilder();
-        try (FileReader stream = new FileReader(new File(file))) {
+        try (FileReader stream = new FileReader(new File(file), Charset.forName(charset))) {
             try (BufferedReader reader = new BufferedReader(stream)) {
                 String line = "";
                 while ((line = reader.readLine()) != null) {
