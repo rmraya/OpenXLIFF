@@ -448,23 +448,24 @@ public class ToXliff2 {
 				Element mtc = new Element("mtc:matches");
 				unit.getContent().add(0, mtc);
 				for (int i = 0; i < matches.size(); i++) {
-					Element smatch = matches.get(i);
-					Element tmatch = new Element("mtc:match");
-					tmatch.setAttribute("ref", "#" + source.getAttributeValue("id"));
-					String matchQuality = smatch.getAttributeValue("match-quality");
+					Element altTrans = matches.get(i);
+					Element match = new Element("mtc:match");
+					match.setAttribute("ref", "#" + source.getAttributeValue("id"));
+					String matchQuality = altTrans.getAttributeValue("match-quality");
 					if (!matchQuality.isEmpty()) {
 						try {
-							tmatch.setAttribute("matchQuality", "" + Float.parseFloat(matchQuality));
+							Float quality = Float.parseFloat(matchQuality);
+							match.setAttribute("matchQuality", "" +  quality);
 						} catch (NumberFormatException nf) {
 							// ignore
 						}
 					}
-					String origin = smatch.getAttributeValue("origin");
+					String origin = altTrans.getAttributeValue("origin");
 					if (!origin.isEmpty()) {
-						tmatch.setAttribute("origin", origin);
+						match.setAttribute("origin", origin);
 					}
 					Element tsrc = new Element("source");
-					List<XMLNode> content = smatch.getChild("source").getContent();
+					List<XMLNode> content = altTrans.getChild("source").getContent();
 					Iterator<XMLNode> snodes = content.iterator();
 					while (snodes.hasNext()) {
 						XMLNode node = snodes.next();
@@ -498,9 +499,9 @@ public class ToXliff2 {
 							}
 						}
 					}
-					tmatch.addContent(tsrc);
+					match.addContent(tsrc);
 					Element ttgt = new Element("target");
-					content = smatch.getChild("target").getContent();
+					content = altTrans.getChild("target").getContent();
 					snodes = content.iterator();
 					while (snodes.hasNext()) {
 						XMLNode node = snodes.next();
@@ -534,8 +535,8 @@ public class ToXliff2 {
 							}
 						}
 					}
-					tmatch.addContent(ttgt);
-					mtc.addContent(tmatch);
+					match.addContent(ttgt);
+					mtc.addContent(match);
 				}
 			}
 			if (originalData.getChildren("data").isEmpty()) {

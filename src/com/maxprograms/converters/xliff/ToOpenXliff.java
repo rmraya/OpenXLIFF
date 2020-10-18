@@ -170,20 +170,15 @@ public class ToOpenXliff {
                     while (it.hasNext()) {
                         Element match = it.next();
                         String ref = match.getAttributeValue("ref");
-                        if (ref.equals(segment.getAttributeValue("id"))) {
+                        if (ref.equals("#" + segment.getAttributeValue("id"))) {
                             Element altTrans = new Element("alt-trans");
                             String origin = match.getAttributeValue("origin");
                             if (!origin.isEmpty()) {
                                 altTrans.setAttribute("origin", origin);
                             }
-                            String quality = altTrans.getAttributeValue("matchQuality");
+                            String quality = match.getAttributeValue("matchQuality");
                             if (!quality.isBlank()) {
-                                try {
-                                    double percentage = Double.parseDouble(quality);
-                                    altTrans.setAttribute("match-quality", "" + percentage);
-                                } catch (NumberFormatException e) {
-                                    // ignore
-                                }
+                                altTrans.setAttribute("match-quality", quality);
                             }
                             Element altSource = new Element("source");
                             altSource.setContent(getContent2x(match.getChild("source")));
@@ -379,14 +374,9 @@ public class ToOpenXliff {
                     if (!origin.isEmpty()) {
                         altTrans.setAttribute("origin", origin);
                     }
-                    String quality = altTrans.getAttributeValue("match-quality");
+                    String quality = match.getAttributeValue("match-quality");
                     if (!quality.isBlank()) {
-                        try {
-                            double percentage = Double.parseDouble(quality);
-                            altTrans.setAttribute("match-quality", "" + percentage);
-                        } catch (NumberFormatException e) {
-                            // ignore
-                        }
+                        altTrans.setAttribute("match-quality", quality);
                     }
                     Element altSource = new Element("source");
                     altSource.setContent(getContent1x(match.getChild("source")));
