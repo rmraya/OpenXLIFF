@@ -29,6 +29,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.11.1 | Fixed JSON encoding; fixed import of XLIFF matches | November 1, 2020
 1.11.0 | Added support for JSON files | September 25, 2020
 1.10.1 | Fixed handling of TXLF files and improved XML catalog | September 5, 2020
 1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25. 2020
