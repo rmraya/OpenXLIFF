@@ -338,6 +338,10 @@ public class FromXliff2 {
 				for (int i = 0; i < notesList.size(); i++) {
 					Element note = notesList.get(i);
 					Element n = new Element("note");
+					String id = note.getAttributeValue("id");
+					if (!id.isEmpty()) {
+						n.setAttribute("id", id);
+					}
 					String appliesTo = note.getAttributeValue("appliesTo");
 					if (!appliesTo.isEmpty()) {
 						n.setAttribute("annotates", appliesTo);

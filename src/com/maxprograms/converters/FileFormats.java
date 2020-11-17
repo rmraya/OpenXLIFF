@@ -48,6 +48,7 @@ public class FileFormats {
 	public static final String RESX = "ResX (Windows .NET Resources)";
 	public static final String SDLPPX = "Trados Studio Package";
 	public static final String SDLXLIFF = "SDLXLIFF Document";
+	public static final String SRT = "SRT Subtitle";
 	public static final String TS = "TS (Qt Linguist translation source)";
 	public static final String TXML = "TXML Document";
 	public static final String WPML = "WPML XLIFF";
@@ -56,7 +57,7 @@ public class FileFormats {
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
-			SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF, XML, XMLG };
+			SDLPPX, SDLXLIFF, SRT, TS, TXML, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
 		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF).contains(type);
@@ -213,6 +214,9 @@ public class FileFormats {
 				builder.build(file);
 				return XML;
 			}
+			if (string.indexOf(" --> ") != -1 && string.indexOf(':') != -1) {
+				return SRT;
+			}
 			if (string.indexOf('{') != -1 && string.indexOf(':') != -1) {
 				return JSON;
 			}
@@ -280,6 +284,9 @@ public class FileFormats {
 		if (type.equals(SDLXLIFF)) {
 			return "SDLXLIFF";
 		}
+		if (type.equals(SRT)) {
+			return "SRT";
+		}
 		if (type.equals(TS)) {
 			return "TS";
 		}
@@ -335,6 +342,8 @@ public class FileFormats {
 			return SDLPPX;
 		} else if (dataType.equals("SDLXLIFF") || dataType.equals("x-sdlxliff")) {
 			return SDLXLIFF;
+		} else if (dataType.equals("SRT") || dataType.equals("x-srt")) {
+			return SRT;
 		} else if (dataType.equals("TS") || dataType.equals("x-ts")) {
 			return TS;
 		} else if (dataType.equals("TXML") || dataType.equals("x-txml")) {

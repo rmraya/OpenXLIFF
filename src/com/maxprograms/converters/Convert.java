@@ -46,6 +46,7 @@ import com.maxprograms.converters.rc.Rc2Xliff;
 import com.maxprograms.converters.resx.Resx2Xliff;
 import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
 import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
+import com.maxprograms.converters.srt.Srt2Xliff;
 import com.maxprograms.converters.ts.Ts2Xliff;
 import com.maxprograms.converters.txml.Txml2Xliff;
 import com.maxprograms.converters.wpml.Wpml2Xliff;
@@ -305,6 +306,7 @@ public class Convert {
 				+ "   RESX = ResX (Windows .NET Resources)\n" 
 				+ "   SDLPPX = Trados Studio Package\n"
 				+ "   SDLXLIFF = SDLXLIFF Document\n"
+				+ "   SRT = SRT Substitle"
 				+ "   TEXT = Plain Text\n" 
 				+ "   TS = TS (Qt Linguist translation source)\n"
 				+ "   TXML = TXML Document\n" 
@@ -394,6 +396,8 @@ public class Convert {
 			result = Sdlppx2Xliff.run(params);
 		} else if (format.equals(FileFormats.SDLXLIFF)) {
 			result = Sdl2Xliff.run(params);
+		} else if (format.equals(FileFormats.SRT)) {
+			result = Srt2Xliff.run(params);
 		} else if (format.equals(FileFormats.TEXT)) {
 			result = Text2Xliff.run(params);
 		} else if (format.equals(FileFormats.TS)) {

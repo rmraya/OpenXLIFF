@@ -39,12 +39,12 @@ public class Resegmenter {
 
     private static Segmenter segmenter;
     private static String srcLang;
-    
+
     private Resegmenter() {
-		// do not instantiate this class
-		// use run method instead
+        // do not instantiate this class
+        // use run method instead
     }
-    
+
     public static List<String> run(String xliff, String srx, String srcLang, String catalog) {
         List<String> result = new ArrayList<>();
         try {
@@ -74,6 +74,11 @@ public class Resegmenter {
             srcLang = root.getAttributeValue("srcLang");
         }
         if ("unit".equals(root.getName())) {
+            List<Element> notesList = null;
+            Element notes = root.getChild("notes");
+            if (notes != null) {
+                notesList = notes.getChildren("note");
+            }
             root.removeAttribute("canResegment");
             Element segment = root.getChild("segment");
             Element source = segment.getChild("source");
@@ -102,6 +107,16 @@ public class Resegmenter {
                         } else {
                             throw new SAXException("Unexpected element found: " + e.toString());
                         }
+                    }
+                }
+            }
+            if (!notesList.isEmpty()) {
+                String id = root.getChild("segment").getAttributeValue("id");
+                Iterator<Element> nt = notesList.iterator();
+                while (nt.hasNext()) {
+                    Element note = nt.next();
+                    if (note.hasAttribute("mtc:ref")) {
+                        note.setAttribute("mtc:ref", "#" + id);
                     }
                 }
             }

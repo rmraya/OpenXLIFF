@@ -139,20 +139,20 @@ public class Xliff2Text {
 	}
 
 	private static String extractText(Element target) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		List<XMLNode> content = target.getContent();
 		Iterator<XMLNode> i = content.iterator();
 		while (i.hasNext()) {
 			XMLNode n = i.next();
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element e = (Element) n;
-				result = result + extractText(e);
+				result.append(extractText(e));
 			}
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				result = result + ((TextNode) n).getText();
+				result.append(((TextNode) n).getText());
 			}
 		}
-		return result;
+		return result.toString();
 	}
 
 	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {

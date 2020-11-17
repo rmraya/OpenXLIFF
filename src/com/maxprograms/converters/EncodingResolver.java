@@ -79,11 +79,21 @@ public class EncodingResolver {
 			} catch (IOException e) {
 				LOGGER.log(Level.ERROR, "Error detecting HTML encoding", e);
 			}
+		} else if (fileType.equals(FileFormats.SRT)) {
+			try {
+				Charset bom = getBOM(fileName);
+				if (bom != null) {
+					return bom;
+				}
+				return StandardCharsets.UTF_8;
+			} catch (IOException e) {
+				LOGGER.log(Level.ERROR, "Error detecting SRT encoding", e);
+			}
 		} else if (fileType.equals(FileFormats.JSON)) {
 			try {
 				return getJSONEncoding(fileName);
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, "Error detecting XML encoding", e);
+				LOGGER.log(Level.ERROR, "Error detecting JSON encoding", e);
 			}
 		}
 		return null;

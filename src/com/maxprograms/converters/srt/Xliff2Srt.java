@@ -1,0 +1,171 @@
+/*******************************************************************************
+ * Copyright (c) 2003-2020 Maxprograms.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 1.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/org/documents/epl-v10.html
+ *
+ * Contributors:
+ *     Maxprograms - initial API and implementation
+ *******************************************************************************/
+package com.maxprograms.converters.srt;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import com.maxprograms.converters.Constants;
+import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.Document;
+import com.maxprograms.xml.Element;
+import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
+
+import org.xml.sax.SAXException;
+
+public class Xliff2Srt {
+
+    private static String xliffFile;
+    private static Catalog catalog;
+    private static Map<String, Element> segments;
+    private static FileOutputStream output;
+
+    private Xliff2Srt() {
+        // do not instantiate this class
+        // use run method instead
+    }
+
+    public static List<String> run(Map<String, String> params) {
+        List<String> result = new ArrayList<>();
+
+        String sklFile = params.get("skeleton");
+        xliffFile = params.get("xliff");
+
+        try {
+            catalog = new Catalog(params.get("catalog"));
+            String outputFile = params.get("backfile");
+            File f = new File(outputFile);
+            File p = f.getParentFile();
+            if (p == null) {
+                p = new File(System.getProperty("user.dir"));
+            }
+            if (!p.exists()) {
+                p.mkdirs();
+            }
+            if (!f.exists()) {
+                Files.createFile(Paths.get(f.toURI()));
+            }
+            output = new FileOutputStream(f);
+            loadSegments();
+            try (FileReader reader = new FileReader(sklFile, StandardCharsets.UTF_8)) {
+                try (BufferedReader buffer = new BufferedReader(reader)) {
+                    String line;
+                    while ((line = buffer.readLine()) != null) {
+                        line = line + "\n";
+                        if (line.contains("%%%")) {
+                            int index = line.indexOf("%%%");
+                            while (index != -1) {
+                                String start = line.substring(0, index);
+                                writeString(start);
+                                line = line.substring(index + 3);
+                                String code = line.substring(0, line.indexOf("%%%"));
+                                line = line.substring(line.indexOf("%%%") + 3);
+                                Element segment = segments.get(code);
+                                if (segment != null) {
+                                    Element target = segment.getChild("target");
+                                    Element source = segment.getChild("source");
+                                    if (target != null) {
+                                        if (segment.getAttributeValue("approved", "no").equals("yes")) {
+                                            writeString(extractText(target));
+                                        } else {
+                                            writeString(extractText(source));
+                                        }
+                                    } else {
+                                        writeString(extractText(source));
+                                    }
+                                } else {
+                                    result.add(Constants.ERROR);
+                                    result.add("segment " + code + " not found");
+                                    return result;
+                                }
+
+                                index = line.indexOf("%%%");
+                                if (index == -1) {
+                                    writeString(line);
+                                }
+                            }
+                        } else {
+                            writeString(line);
+                        }
+                    }
+                }
+            }
+            output.close();
+            result.add(Constants.SUCCESS);
+        } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            Logger logger = System.getLogger(Xliff2Srt.class.getName());
+            logger.log(Level.ERROR, "Error merging SRT file", e);
+            result.add(Constants.ERROR);
+            result.add(e.getMessage());
+        }
+        return result;
+    }
+
+    private static void writeString(String string) throws IOException {
+        output.write(string.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
+        SAXBuilder builder = new SAXBuilder();
+        if (catalog != null) {
+            builder.setEntityResolver(catalog);
+        }
+
+        Document doc = builder.build(xliffFile);
+        Element root = doc.getRootElement();
+        Element body = root.getChild("file").getChild("body");
+        List<Element> units = body.getChildren("trans-unit");
+        Iterator<Element> i = units.iterator();
+
+        segments = new HashMap<>();
+
+        while (i.hasNext()) {
+            Element unit = i.next();
+            segments.put(unit.getAttributeValue("id"), unit);
+        }
+    }
+
+    private static String extractText(Element target) {
+        StringBuilder result = new StringBuilder();
+        List<XMLNode> content = target.getContent();
+        Iterator<XMLNode> i = content.iterator();
+        while (i.hasNext()) {
+            XMLNode n = i.next();
+            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element e = (Element) n;
+                result.append(extractText(e));
+            }
+            if (n.getNodeType() == XMLNode.TEXT_NODE) {
+                result.append(((TextNode) n).getText());
+            }
+        }
+        return result.toString();
+    }
+}

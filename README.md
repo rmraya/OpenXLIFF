@@ -77,6 +77,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - OpenOffice / LibreOffice / StarOffice
   - Plain Text
   - SDLXLIFF (Trados Studio)
+  - SRT Subtitles
   - Trados Studio Packages (*.sdlppx)
   - TXML (GlobalLink/Wordfast PRO)
   - WPML XLIFF (WordPress Multilingual Plugin)
@@ -157,6 +158,7 @@ Document Types
    RESX = ResX (Windows .NET Resources)
    SDLPPX = Trados Studio Package
    SDLXLIFF = SDLXLIFF Document
+   SRT = SRT Subtitles
    TEXT = Plain Text
    TS = TS (Qt Linguist translation source)
    TXML = TXML Document

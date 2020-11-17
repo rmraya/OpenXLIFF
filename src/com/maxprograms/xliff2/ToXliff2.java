@@ -94,6 +94,7 @@ public class ToXliff2 {
 			target.setAttribute("version", "2.0");
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.0");
 			target.setAttribute("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
+			target.setAttribute("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
 
 			List<PI> encodings = source.getPI("encoding");
 			if (!encodings.isEmpty()) {
@@ -278,6 +279,8 @@ public class ToXliff2 {
 				for (int i = 0; i < notesList.size(); i++) {
 					Element note = notesList.get(i);
 					Element n = new Element("note");
+					n.setAttribute("id", "" + (i + 1));
+					n.setAttribute("mtc:ref", "#" + source.getAttributeValue("id"));
 					notes.addContent(n);
 					n.addContent(note.getText());
 				}
@@ -410,7 +413,7 @@ public class ToXliff2 {
 								head.setText(getHead(tag));
 								originalData.addContent(head);
 								tagSet.add("g" + tag.getAttributeValue("id"));
-		
+
 								Element tail = new Element("data");
 								tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
 								tail.setText("</g>");
@@ -455,7 +458,7 @@ public class ToXliff2 {
 					if (!matchQuality.isEmpty()) {
 						try {
 							Float quality = Float.parseFloat(matchQuality);
-							match.setAttribute("matchQuality", "" +  quality);
+							match.setAttribute("matchQuality", "" + quality);
 						} catch (NumberFormatException nf) {
 							// ignore
 						}
