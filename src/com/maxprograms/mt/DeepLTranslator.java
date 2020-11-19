@@ -68,7 +68,7 @@ public class DeepLTranslator implements MTEngine {
 	public List<Language> getTargetLanguages() throws IOException {
 		if (tgtLanguages == null) {
 			tgtLanguages = new ArrayList<>();
-			String[] codes = { "de", "en", "fr", "it", "ja", "es", "nl", "pl", "pt", "pt-BR", "ru", "zh" };
+			String[] codes = { "de", "en-US", "en-GB", "fr", "it", "ja", "es", "nl", "pl", "pt", "pt-BR", "ru", "zh" };
 			for (int i = 0; i < codes.length; i++) {
 				tgtLanguages.add(LanguageUtils.getLanguage(codes[i]));
 			}
