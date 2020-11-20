@@ -444,85 +444,7 @@ public class MSOffice2Xliff {
 		}
 		removeProperties(e, "w:lang");
 		removeProperties(e, "w:noProof");
-		if ("w:p".equals(e.getName())) {
-			simplifyFonts(e);
-		}
 		mergeRegions(e);
-	}
-
-	private static void simplifyFonts(Element paragraph) {
-		Element currentFont = null;
-		Element currentColor = null;
-		Element currentFontSize = null;
-		Element currentComplexSize = null;
-		List<Element> regions = paragraph.getChildren("w:r");
-		Iterator<Element> rt = regions.iterator();
-		while (rt.hasNext()) {
-			Element region = rt.next();
-			Element props = region.getChild("w:rPr");
-			if (props != null) {
-				Element font = props.getChild("w:rFonts");
-				if (font != null) {
-					if (currentFont == null) {
-						currentFont = font;
-					} else {
-						if (currentFont.equals(font)) {
-							props.removeChild(font);
-							if (props.getChildren().isEmpty()) {
-								region.removeChild(props);
-							}
-						} else {
-							currentFont = font;
-						}
-					}
-				}
-				Element color = props.getChild("w:color");
-				if (color != null) {
-					if (currentColor == null) {
-						currentColor = color;
-					} else {
-						if (currentColor.equals(color)) {
-							props.removeChild(color);
-							if (props.getChildren().isEmpty()) {
-								region.removeChild(props);
-							}
-						} else {
-							currentColor = color;
-						}
-					}
-				}
-				Element fontSize = props.getChild("w:sz");
-				if (fontSize != null) {
-					if (currentFontSize == null) {
-						currentFontSize = fontSize;
-					} else {
-						if (currentFontSize.equals(fontSize)) {
-							props.removeChild(fontSize);
-							if (props.getChildren().isEmpty()) {
-								region.removeChild(props);
-							}
-						} else {
-							currentFontSize = fontSize;
-						}
-					}
-				}
-				Element complexSize = props.getChild("w:szCs");
-				if (complexSize != null) {
-					if (currentComplexSize == null) {
-						currentComplexSize = complexSize;
-					} else {
-						if (currentComplexSize.equals(complexSize)) {
-							props.removeChild(complexSize);
-							if (props.getChildren().isEmpty()) {
-								region.removeChild(props);
-							}
-						} else {
-							currentComplexSize = complexSize;
-						}
-					}
-				}
-			}
-		}
 	}
 
 	private static void mergeRegions(Element paragraph) {
@@ -570,12 +492,47 @@ public class MSOffice2Xliff {
 					}
 					if (merge) {
 						currRegion.getChild("w:t").setAttribute("xml:space", "preserve");
-						currRegion.getChild("w:t").addContent(nextRegion.getChild("w:t").getText());
+						List<Element> content = nextRegion.getChildren();
+						for (int i = 0; i < content.size(); i++) {
+							Element e = content.get(i);
+							if ("w:tab".equals(e.getName()) || "w:t".equals(e.getName())) {
+								currRegion.addContent(e);
+							}
+						}
 						paragraph.removeChild(nextRegion);
 					}
 				}
 			}
 			curr++;
+		}
+
+		List<Element> regions = paragraph.getChildren("w:r");
+		for (int i = 0; i < regions.size(); i++) {
+			Element region = regions.get(i);
+			List<XMLNode> newContent = new ArrayList<>();
+			List<XMLNode> oldContent = region.getContent();
+			Iterator<XMLNode> it = oldContent.iterator();
+			Element last = null;
+			while (it.hasNext()) {
+				XMLNode node = it.next();
+				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+					Element e = (Element) node;
+					if (last == null) {
+						last = e;
+						newContent.add(node);
+					} else {
+						if (last.getName().equals(e.getName())) {
+							last.addContent(e.getContent());
+						} else {
+							newContent.add(e);
+							last = e;
+						}
+					}
+				} else {
+					newContent.add(node);
+				}
+			}
+			region.setContent(newContent);
 		}
 	}
 
