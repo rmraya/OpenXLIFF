@@ -33,6 +33,7 @@ public class FileFormats {
 	}
 
 	public static final String INX = "Adobe InDesign Interchange";
+	public static final String ICML = "Adobe InCopy ICML";
 	public static final String IDML = "Adobe InDesign IDML";
 	public static final String DITA = "DITA Map";
 	public static final String HTML = "HTML Page";
@@ -56,7 +57,7 @@ public class FileFormats {
 	public static final String XML = "XML Document";
 	public static final String XMLG = "XML (Generic)";
 
-	protected static final String[] formats = { INX, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
+	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
 			SDLPPX, SDLXLIFF, SRT, TS, TXML, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
@@ -122,6 +123,9 @@ public class FileFormats {
 				}
 				if (string.indexOf("<map") != -1 || string.indexOf("<bookmap") != -1) {
 					return DITA;
+				}
+				if (string.indexOf("<?aid ") != -1 || string.indexOf("<Document ") != -1) {
+					return ICML;
 				}
 				return XML;
 			}
@@ -239,6 +243,9 @@ public class FileFormats {
 		if (type.equals(INX)) {
 			return "INX";
 		}
+		if (type.equals(ICML)) {
+			return "ICML";
+		}
 		if (type.equals(IDML)) {
 			return "IDML";
 		}
@@ -311,6 +318,8 @@ public class FileFormats {
 	public static String getFullName(String dataType) {
 		if (dataType.equals("INX") || dataType.equals("x-inx")) {
 			return INX;
+		} else if (dataType.equals("ICML") || dataType.equals("x-icml")) {
+			return ICML;
 		} else if (dataType.equals("IDML") || dataType.equals("x-idml")) {
 			return IDML;
 		} else if (dataType.equals("DITA") || dataType.equals("x-ditamap")) {

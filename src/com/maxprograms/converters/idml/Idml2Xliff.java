@@ -221,6 +221,7 @@ public class Idml2Xliff {
 							table.put("paragraph", params.get("paragraph"));
 							table.put("srxFile", params.get("srxFile"));
 							table.put("format", params.get("format"));
+							table.put("from", "x-idml");
 							List<String> res = Story2Xliff.run(table);
 
 							if (Constants.SUCCESS.equals(res.get(0))) {

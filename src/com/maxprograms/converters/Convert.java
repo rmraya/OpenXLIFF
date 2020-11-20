@@ -35,6 +35,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.maxprograms.converters.ditamap.DitaMap2Xliff;
 import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.converters.idml.Idml2Xliff;
+import com.maxprograms.converters.idml.Story2Xliff;
 import com.maxprograms.converters.javaproperties.Properties2Xliff;
 import com.maxprograms.converters.javascript.Jscript2xliff;
 import com.maxprograms.converters.json.Json2Xliff;
@@ -292,6 +293,7 @@ public class Convert {
 				+ "   -charsets:  (optional) display a list of available character sets and exit\n\n"
 				+ "Document Types\n\n" 
 				+ "   INX = Adobe InDesign Interchange\n" 
+				+ "   ICML = Adobe InCopy ICML\n"
 				+ "   IDML = Adobe InDesign IDML\n"
 				+ "   DITA = DITA Map\n" 
 				+ "   HTML = HTML Page\n" 
@@ -370,6 +372,9 @@ public class Convert {
 		if (format.equals(FileFormats.INX)) {
 			params.put("InDesign", "yes");
 			result = Xml2Xliff.run(params);
+		} else if (format.equals(FileFormats.ICML)) {
+			params.put("from", "x-icml");
+			result = Story2Xliff.run(params);
 		} else if (format.equals(FileFormats.IDML)) {
 			result = Idml2Xliff.run(params);
 		} else if (format.equals(FileFormats.DITA)) {

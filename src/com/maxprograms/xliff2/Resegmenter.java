@@ -110,7 +110,7 @@ public class Resegmenter {
                     }
                 }
             }
-            if (!notesList.isEmpty()) {
+            if (notesList != null && !notesList.isEmpty()) {
                 String id = root.getChild("segment").getAttributeValue("id");
                 Iterator<Element> nt = notesList.iterator();
                 while (nt.hasNext()) {

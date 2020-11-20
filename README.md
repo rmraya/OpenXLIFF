@@ -144,6 +144,7 @@ Where:
 Document Types
 
    INX = Adobe InDesign Interchange
+   ICML = Adobe InCopy ICML
    IDML = Adobe InDesign IDML
    DITA = DITA Map
    HTML = HTML Page

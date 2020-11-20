@@ -79,7 +79,7 @@ public class Story2Xliff {
 			}
 			skeleton = new FileOutputStream(skeletonFile);
 			output = new FileOutputStream(xliffFile);
-			writeHeader();
+			writeHeader(params.get("from"));
 
 			SAXBuilder builder = new SAXBuilder();
 			Document doc = builder.build(inputFile);
@@ -554,12 +554,11 @@ public class Story2Xliff {
 		return false;
 	}
 
-	private static void writeHeader() throws IOException {
+	private static void writeHeader(String format) throws IOException {
 		String tgtLang = "";
 		if (targetLanguage != null) {
 			tgtLang = "\" target-language=\"" + targetLanguage;
 		}
-		String format = "x-idml";
 		writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 		writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "

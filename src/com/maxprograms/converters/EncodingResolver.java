@@ -47,7 +47,7 @@ public class EncodingResolver {
 		if (fileType == null || fileName == null) {
 			return null;
 		} else if (fileType.equals(FileFormats.OO) || fileType.equals(FileFormats.OFF)
-				|| fileType.equals(FileFormats.IDML)) {
+				|| fileType.equals(FileFormats.ICML) || fileType.equals(FileFormats.IDML)) {
 			return StandardCharsets.UTF_8;
 		} else if (fileType.equals(FileFormats.MIF)) {
 			return StandardCharsets.US_ASCII;

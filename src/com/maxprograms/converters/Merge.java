@@ -353,6 +353,9 @@ public class Merge {
 			if (dataType.equals(FileFormats.INX) || dataType.equals("x-inx")) {
 				params.put("InDesign", "yes");
 				result = Xliff2Xml.run(params);
+			} else if(dataType.equals(FileFormats.ICML) || dataType.equals("x-icml")) {
+				params.put("IDML", "true");
+				result = Xliff2Xml.run(params);
 			} else if (dataType.equals(FileFormats.IDML) || dataType.equals("x-idml")) {
 				result = Xliff2Idml.run(params);
 			} else if (dataType.equals(FileFormats.DITA) || dataType.equals("x-ditamap")) {
