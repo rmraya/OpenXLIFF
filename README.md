@@ -29,7 +29,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
-1.12.0 | Added support for Adobe Incopy ICML and SRT subtitles | November 23, 2020
+1.12.0 | Added support for Adobe InCopy ICML and SRT subtitles | November 23, 2020
 1.11.1 | Fixed JSON encoding; fixed import of XLIFF matches | November 1, 2020
 1.11.0 | Added support for JSON files | September 25, 2020
 1.10.1 | Fixed handling of TXLF files and improved XML catalog | September 5, 2020
