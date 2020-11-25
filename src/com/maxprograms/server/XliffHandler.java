@@ -106,10 +106,10 @@ public class XliffHandler implements HttpHandler {
 			}
 			if (command.equals("version")) {
 				json = new JSONObject();
-				json.put("tool",Constants.TOOLNAME );
+				json.put("tool", Constants.TOOLNAME);
 				json.put("version", Constants.VERSION);
 				json.put("build", Constants.BUILD);
-				response =json.toString(2);
+				response = json.toString(2);
 			}
 			if (command.equals("convert")) {
 				response = convert(json);
@@ -156,25 +156,21 @@ public class XliffHandler implements HttpHandler {
 			if (command.equals("getPackageLangs")) {
 				response = getPackageLangs(json);
 			}
+			byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
 			exchange.getResponseHeaders().add("content-type", "application/json");
-			exchange.sendResponseHeaders(200, response.length());
-			try (BufferedReader reader = new BufferedReader(
-					new InputStreamReader(new ByteArrayInputStream(response.getBytes())))) {
-				try (OutputStream os = exchange.getResponseBody()) {
-					String line;
-					while ((line = reader.readLine()) != null) {
-						os.write(line.getBytes());
-					}
-				}
+			exchange.sendResponseHeaders(200, bytes.length);
+			try (OutputStream os = exchange.getResponseBody()) {
+				os.write(bytes);
 			}
 			if (command.equals("stop")) {
 				server.stop();
 			}
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			response = e.getMessage();
-			exchange.sendResponseHeaders(500, response.length());
+			byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+			exchange.sendResponseHeaders(500, bytes.length);
 			try (OutputStream os = exchange.getResponseBody()) {
-				os.write(response.getBytes());
+				os.write(bytes);
 			}
 		}
 	}
@@ -201,7 +197,6 @@ public class XliffHandler implements HttpHandler {
 		return request.toString();
 	}
 
-    
 	private String merge(JSONObject json) {
 		xliff = "";
 		if (json.has("xliff")) {
@@ -344,7 +339,7 @@ public class XliffHandler implements HttpHandler {
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		String ditaval = "";
-		if (json.has("ditaval") ) {
+		if (json.has("ditaval")) {
 			ditaval = json.getString("ditaval");
 		}
 		embed = false;
@@ -406,7 +401,7 @@ public class XliffHandler implements HttpHandler {
 		return "{\"process\":\"" + process + "\"}";
 	}
 
-    private static String getFileType(JSONObject json) {
+	private static String getFileType(JSONObject json) {
 		String file = json.getString("file");
 		String type = "Unknown";
 		String encoding = "Unknown";
@@ -472,9 +467,9 @@ public class XliffHandler implements HttpHandler {
 		}
 		builder.append("]}\n");
 		return builder.toString();
-    }
-    
-    private String getAnalysisResult(JSONObject json) {
+	}
+
+	private String getAnalysisResult(JSONObject json) {
 		JSONObject result = new JSONObject();
 		if (json.has("process")) {
 			String process = json.getString("process");
@@ -516,7 +511,7 @@ public class XliffHandler implements HttpHandler {
 	private String analyseXliff(JSONObject json) {
 		String file = json.getString("file");
 		catalog = "";
-		if (json.has("catalog")){
+		if (json.has("catalog")) {
 			catalog = json.getString("catalog");
 		}
 		if (catalog.isEmpty()) {
