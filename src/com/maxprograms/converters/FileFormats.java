@@ -359,7 +359,7 @@ public class FileFormats {
 			return TXML;
 		} else if (dataType.equals("WPML") || dataType.equals("x-wpmlxliff")) {
 			return WPML;
-		} else if (dataType.equals("XLIFF")) {
+		} else if (dataType.equals("XLIFF") || dataType.equals("x-xliff")) {
 			return XLIFF;
 		} else if (dataType.equals("XML") || dataType.equals("xml")) {
 			return XML;
