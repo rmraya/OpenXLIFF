@@ -228,7 +228,7 @@ public class FromXliff2 {
 
 			Element joinedSource = new Element("source");
 			Element joinedTarget = new Element("target");
-			boolean approved = true;
+			boolean approved = false;
 			boolean preserve = false;
 
 			List<Element> children = source.getChildren();
@@ -246,9 +246,8 @@ public class FromXliff2 {
 						joinedTarget.addContent(tgt.getContent());
 					}
 					if (child.getName().equals("segment")) {
-						String state = child.getAttributeValue("state");
-						if (!state.equals("final")) {
-							approved = false;
+						if ("final".equals(child.getAttributeValue("state"))) {
+							approved = true;
 						}
 					}
 				}
@@ -295,8 +294,8 @@ public class FromXliff2 {
 			}
 			transUnit.addContent(src);
 
+			Element tgt = new Element("target");
 			if (!joinedTarget.getContent().isEmpty()) {
-				Element tgt = new Element("target");
 				nodes = joinedTarget.getContent();
 				it = nodes.iterator();
 				while (it.hasNext()) {
@@ -326,11 +325,11 @@ public class FromXliff2 {
 						}
 					}
 				}
-				if (preserve) {
-					transUnit.addContent("\n        ");
-				}
-				transUnit.addContent(tgt);
 			}
+			if (preserve) {
+				transUnit.addContent("\n        ");
+			}
+			transUnit.addContent(tgt);
 
 			Element notes = source.getChild("notes");
 			if (notes != null) {
