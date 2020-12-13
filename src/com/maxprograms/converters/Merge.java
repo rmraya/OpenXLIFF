@@ -60,9 +60,6 @@ import com.maxprograms.xml.XMLNode;
 
 import org.xml.sax.SAXException;
 
-
-
-
 public class Merge {
 
 	private static final Logger LOGGER = System.getLogger(Merge.class.getName());

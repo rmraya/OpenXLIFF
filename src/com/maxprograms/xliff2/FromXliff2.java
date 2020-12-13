@@ -55,7 +55,7 @@ public class FromXliff2 {
 			builder.setEntityResolver(new Catalog(catalog));
 			Document doc = builder.build(sourceFile);
 			Element root = doc.getRootElement();
-			if (!root.getAttributeValue("version", "2.0").equals("2.0")) {
+			if (!root.getAttributeValue("version").startsWith("2.")) {
 				result.add(Constants.ERROR);
 				result.add("Wrong XLIFF version.");
 				return result;
@@ -326,10 +326,12 @@ public class FromXliff2 {
 					}
 				}
 			}
-			if (preserve) {
-				transUnit.addContent("\n        ");
+			if (!tgt.getContent().isEmpty() || approved) {
+				if (preserve) {
+					transUnit.addContent("\n        ");
+				}
+				transUnit.addContent(tgt);
 			}
-			transUnit.addContent(tgt);
 
 			Element notes = source.getChild("notes");
 			if (notes != null) {
@@ -449,6 +451,7 @@ public class FromXliff2 {
 			}
 			Indenter.indent(transUnit, 2);
 		}
+
 		List<Element> children = source.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
