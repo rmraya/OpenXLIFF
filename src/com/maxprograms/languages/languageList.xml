@@ -258,7 +258,14 @@
 <lang code="zh-CN">Chinese (China)</lang>
 <lang code="zh-HK">Chinese (Hong Kong)</lang>
 <lang code="zh-Hans">Chinese (Han [Simplified variant])</lang>
+<lang code="zh-Hans-CN">Chinese (Han [Simplified variant], China)</lang>
+<lang code="zh-Hans-HK">Chinese (Han [Simplified variant], Hong Kong)</lang>
+<lang code="zh-Hans-MO">Chinese (Han [Simplified variant], Macao)</lang>
+<lang code="zh-Hans-SG">Chinese (Han [Simplified variant], Singapore)</lang>
 <lang code="zh-Hant">Chinese (Han [Traditional variant])</lang>
+<lang code="zh-Hant-HK">Chinese (Han [Traditional variant], Hong Kong)</lang>
+<lang code="zh-Hant-MO">Chinese (Han [Traditional variant], Macao)</lang>
+<lang code="zh-Hant-TW">Chinese (Han [Traditional variant], Taiwan, Province of China)</lang>
 <lang code="zh-SG">Chinese (Singapore)</lang>
 <lang code="zh-TW">Chinese (Taiwan, Province of China)</lang>
 <lang code="zu">Zulu</lang>
