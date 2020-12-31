@@ -228,6 +228,7 @@ public class Sdlppx2Xliff {
 		ext.setAttribute("href", Utils.cleanString(skeleton));
 
 		XMLOutputter outputter = new XMLOutputter();
+		outputter.preserveSpace(true);
 		Indenter.indent(root, 2);
 		try (FileOutputStream output = new FileOutputStream(xliff)) {
 			outputter.output(doc, output);
