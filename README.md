@@ -29,37 +29,37 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
-1.12.3 | Improved support for Trados Studio packages | January 1, 2021
-1.12.2 | Suppressed output for confirmed empty targets | December 7, 2020
-1.12.1 | Improved conversion of XLIFF 1.2 files | December 3, 2020
-1.12.0 | Added support for Adobe InCopy ICML and SRT subtitles | November 23, 2020
-1.11.1 | Fixed JSON encoding; fixed import of XLIFF matches | November 1, 2020
+1.12.3 | Improved support for Trados Studio packages | January 1st, 2021
+1.12.2 | Suppressed output for confirmed empty targets | December 7th, 2020
+1.12.1 | Improved conversion of XLIFF 1.2 files | December 3rd, 2020
+1.12.0 | Added support for Adobe InCopy ICML and SRT subtitles | November 23rd, 2020
+1.11.1 | Fixed JSON encoding; fixed import of XLIFF matches | November 1st, 2020
 1.11.0 | Added support for JSON files | September 25, 2020
-1.10.1 | Fixed handling of TXLF files and improved XML catalog | September 5, 2020
-1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25. 2020
-1.9.1 | Added improvements required by [Swordfish IV](https://github.com/rmraya/Swordfish). | August 13, 2020
-1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | May 18, 2020
-1.8.4 | Improved catalog and other minor fixes | April 25. 2020
-1.8.3 | Fixed conversion of PO files | April 17, 2020
-1.8.2 | Switched to synchronized classes in XML package | April 10, 2020
-1.8.1 | Improved support for Trados Studio packages | April 3, 2020
-1.8.0 | Implemented support for Trados Studio packages | March 29, 2020
-1.7.0 | Major code cleanup; Changed segmentation model for XLIFF 2.0 | January 01, 2020
-1.6.0 | Added support for XLIFF files from WPML WordPress Plugin | December 01, 2019
-1.5.2 | Improved segmenter performance | October 29, 2019
-1.5.1 | Fixed catalog on Windows | September 22, 2019
-1.5.0 | Improved support for empty &lt;xref/> elements in DITA; improved support for XML catalogs | September 5, 2019
-1.4.2 | Added option to join XLIFF files; Fixed merge errors in XLIFF 2.0; added tool info to XLIFF files; cleaned DITA attributes on merging | August 14, 2019
-1.4.1 | Improved performance embedding skeleton; added Apache Ant building option; renamed module to 'openxliff' | July 25, 2019
-1.4.0 | Improved report of task results | July 17, 2019
-1.3.3 | Fixed merging of MS Office files from XLIFF 2.0 | July 5, 2019
-1.3.2 | Updated for Swordfish 3.4.3 | June 30, 2019
-1.3.1 | Updated for Swordfish 3.4-0 | April 30, 2019
-1.3.0 | Added option to export approved XLIFF segments as TMX | April 18, 2019
-1.2.1 | Improved validation of XLIFF 2.0 | April 6, 2019
-1.2.0 | Added Translation Status Analysis | March 3, 2019
-1.1.0 | Incorporated XLIFFChecker code| November 20, 2018
-1.0.0 | Initial Release | November 12, 2018
+1.10.1 | Fixed handling of TXLF files and improved XML catalog | September 5th, 2020
+1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25th. 2020
+1.9.1 | Added improvements required by [Swordfish IV](https://github.com/rmraya/Swordfish). | August 13th, 2020
+1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | May 18th, 2020
+1.8.4 | Improved catalog and other minor fixes | April 25th. 2020
+1.8.3 | Fixed conversion of PO files | April 17th, 2020
+1.8.2 | Switched to synchronized classes in XML package | April 10th, 2020
+1.8.1 | Improved support for Trados Studio packages | April 3rd, 2020
+1.8.0 | Implemented support for Trados Studio packages | March 29th, 2020
+1.7.0 | Major code cleanup; Changed segmentation model for XLIFF 2.0 | January 1st, 2020
+1.6.0 | Added support for XLIFF files from WPML WordPress Plugin | December 1st, 2019
+1.5.2 | Improved segmenter performance | October 29th, 2019
+1.5.1 | Fixed catalog on Windows | September 22nd, 2019
+1.5.0 | Improved support for empty &lt;xref/> elements in DITA; improved support for XML catalogs | September 5th, 2019
+1.4.2 | Added option to join XLIFF files; Fixed merge errors in XLIFF 2.0; added tool info to XLIFF files; cleaned DITA attributes on merging | August 14th, 2019
+1.4.1 | Improved performance embedding skeleton; added Apache Ant building option; renamed module to 'openxliff' | July 25th, 2019
+1.4.0 | Improved report of task results | July 17th, 2019
+1.3.3 | Fixed merging of MS Office files from XLIFF 2.0 | July 5th, 2019
+1.3.2 | Updated for Swordfish 3.4.3 | June 30th, 2019
+1.3.1 | Updated for Swordfish 3.4-0 | April 30th, 2019
+1.3.0 | Added option to export approved XLIFF segments as TMX | April 18th, 2019
+1.2.1 | Improved validation of XLIFF 2.0 | April 6th, 2019
+1.2.0 | Added Translation Status Analysis | March 3rd, 2019
+1.1.0 | Incorporated XLIFFChecker code| November 20th, 2018
+1.0.0 | Initial Release | November 12th, 2018
 
 ## Downloads
 
