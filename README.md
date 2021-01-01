@@ -29,6 +29,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.12.3 | Improved support for Trados Studio packages | January 1, 2021
 1.12.2 | Suppressed output for confirmed empty targets | December 7, 2020
 1.12.1 | Improved conversion of XLIFF 1.2 files | December 3, 2020
 1.12.0 | Added support for Adobe InCopy ICML and SRT subtitles | November 23, 2020
