@@ -436,7 +436,11 @@ public class ToOpenXliff {
                         ph1.setAttribute("id", "g" + e.getAttributeValue("id"));
                         ph1.setText(getHead(e));
                         result.add(ph1);
-                        result.add(new TextNode(e.getText()));
+                        if (e.getChildren().isEmpty()) {
+                            result.add(new TextNode(e.getText()));
+                        } else {
+                            result.addAll(getContent1x(e));
+                        }
                         Element ph2 = new Element("ph");
                         ph2.setAttribute("id", "/g" + e.getAttributeValue("id"));
                         ph2.setText("</g>");
