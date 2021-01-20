@@ -19,12 +19,12 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -218,7 +218,7 @@ public class XliffChecker {
 	}
 
 	private void createAttributesTable() {
-		attributesTable = new HashMap<>();
+		attributesTable = new ConcurrentHashMap<>();
 
 		Set<String> xliffSet = new HashSet<>();
 		xliffSet.add("version");
@@ -640,19 +640,19 @@ public class XliffChecker {
 
 		if (e.getLocalName().equals("file")) {
 			// create tables to make sure that "id" attributes are unique within the <file>
-			ids = new HashMap<>();
-			groupIds = new HashMap<>();
+			ids = new ConcurrentHashMap<>();
+			groupIds = new ConcurrentHashMap<>();
 
 			// create tables to check that <it> tags have both start and end positions
-			srcItTable = new HashMap<>();
-			tgtItTable = new HashMap<>();
+			srcItTable = new ConcurrentHashMap<>();
+			tgtItTable = new ConcurrentHashMap<>();
 
 			// create table to check if "xid" points to valid <trans-unit>
-			xids = new HashMap<>();
+			xids = new ConcurrentHashMap<>();
 
 			// check <phase> and <tool> elements
-			phasesTable = new HashMap<>();
-			toolsTable = new HashMap<>();
+			phasesTable = new ConcurrentHashMap<>();
+			toolsTable = new ConcurrentHashMap<>();
 
 			// check language codes used
 			sourceLanguage = e.getAttributeValue("source-language");
@@ -725,8 +725,8 @@ public class XliffChecker {
 				}
 			}
 			// create tables to check if <it> tags are duplicated
-			altSrcItTable = new HashMap<>();
-			altTgtItTable = new HashMap<>();
+			altSrcItTable = new ConcurrentHashMap<>();
+			altTgtItTable = new ConcurrentHashMap<>();
 		}
 
 		// validate "phase-name" attribute
@@ -778,7 +778,7 @@ public class XliffChecker {
 
 		// initialize table for checking "mid" attribute in <alt-trans>
 		if (e.getLocalName().equals("trans-unit")) {
-			midTable = new HashMap<>();
+			midTable = new ConcurrentHashMap<>();
 		}
 
 		if (e.getLocalName().equals("seg-source")) {
@@ -823,11 +823,11 @@ public class XliffChecker {
 		// initialize tables for checking matched pairs of inline elements
 		if (e.getLocalName().equals("source") || e.getLocalName().equals("seg-source")
 				|| e.getLocalName().equals("target")) {
-			bxTable = new HashMap<>();
-			exTable = new HashMap<>();
-			bptTable = new HashMap<>();
-			eptTable = new HashMap<>();
-			inlineIds = new HashMap<>();
+			bxTable = new ConcurrentHashMap<>();
+			exTable = new ConcurrentHashMap<>();
+			bptTable = new ConcurrentHashMap<>();
+			eptTable = new ConcurrentHashMap<>();
+			inlineIds = new ConcurrentHashMap<>();
 		}
 
 		// check for unique id at <source>, <seg-source> and <target> level
