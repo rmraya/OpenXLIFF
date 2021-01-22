@@ -24,11 +24,13 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Swordfish IV](https://github.com/rmraya/Swordfish)** uses OpenXLIFF Filters to extract translatable text from supported formats and manage XML documents.
 - **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF filters for extracting the text to align from supported monolingual documents.
 - **[TMXEditor](https://github.com/rmraya/TMXEditor)** relies on OpenXLIFF Filters XML support for processing TMX files.
+- **[XLIFF Validation](https://github.com/rmraya/XLIFFValidation)** web-based XLIFF Validation Service.
 
 ## Releases
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.12.4 | Allowed concurrent access for [XLIFF Validation](https://github.com/rmraya/XLIFFValidation) | January 22nd, 2021
 1.12.3 | Improved support for Trados Studio packages | January 1st, 2021
 1.12.2 | Suppressed output for confirmed empty targets | December 7th, 2020
 1.12.1 | Improved conversion of XLIFF 1.2 files | December 3rd, 2020

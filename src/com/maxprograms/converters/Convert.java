@@ -228,7 +228,7 @@ public class Convert {
 			xliff = sourceFile.getAbsolutePath() + ".xlf";
 		}
 
-		if (xliff20 && !paragraph && !FileFormats.isBilingual(type)) {
+		if (xliff20 && !paragraph) {
 			mustResegment = true;
 			paragraph = true;
 		}
