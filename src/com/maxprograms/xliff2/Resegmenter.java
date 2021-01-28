@@ -39,6 +39,7 @@ public class Resegmenter {
 
     private static Segmenter segmenter;
     private static String srcLang;
+    private static String tgtLang;
 
     private Resegmenter() {
         // do not instantiate this class
@@ -72,51 +73,67 @@ public class Resegmenter {
     private static void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
         if ("xliff".equals(root.getName())) {
             srcLang = root.getAttributeValue("srcLang");
+            tgtLang = root.getAttributeValue("trgLang");
         }
         if ("unit".equals(root.getName())) {
-            List<Element> notesList = null;
-            Element notes = root.getChild("notes");
-            if (notes != null) {
-                notesList = notes.getChildren("note");
-            }
-            root.removeAttribute("canResegment");
-            Element segment = root.getChild("segment");
-            Element source = segment.getChild("source");
-            Element segSource = segmenter.segment(source);
-            if (segSource.getChildren("mrk").size() > 1) {
-                root.removeChild(segment);
-                List<XMLNode> content = segSource.getContent();
-                Iterator<XMLNode> it = content.iterator();
-
-                while (it.hasNext()) {
-                    XMLNode n = it.next();
-                    if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-                        Element e = (Element) n;
-                        if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
-                            Element newSeg = new Element("segment");
-                            if (!hasText(e)) {
-                                newSeg = new Element("ignorable");
+            if (root.getChildren("segment").size() == 1) {
+                Element segment = root.getChild("segment");
+                Element source = segment.getChild("source");
+                Element target = segment.getChild("target");
+                boolean copySource = target != null && source.getContent().equals(target.getContent());
+                if (target == null || copySource) {
+                    List<Element> notesList = null;
+                    Element notes = root.getChild("notes");
+                    if (notes != null) {
+                        notesList = notes.getChildren("note");
+                    }
+                    root.removeAttribute("canResegment");
+                    Element segSource = segmenter.segment(source);
+                    if (segSource.getChildren("mrk").size() > 1) {
+                        root.removeChild(segment);
+                        List<XMLNode> content = segSource.getContent();
+                        Iterator<XMLNode> it = content.iterator();
+                        while (it.hasNext()) {
+                            XMLNode n = it.next();
+                            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+                                Element e = (Element) n;
+                                if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
+                                    Element newSeg = new Element("segment");
+                                    if (!hasText(e)) {
+                                        newSeg = new Element("ignorable");
+                                    }
+                                    newSeg.setAttribute("id",
+                                            root.getAttributeValue("id") + '-' + e.getAttributeValue("mid"));
+                                    root.addContent(newSeg);
+                                    Element newSource = new Element("source");
+                                    newSource.setAttribute("xml:space",
+                                            source.getAttributeValue("xml:space", "default"));
+                                    newSource.setAttribute("xml:lang", srcLang);
+                                    newSeg.addContent(newSource);
+                                    newSource.addContent(e.getContent());
+                                    if (copySource) {
+                                        Element newTarget = new Element("target");
+                                        newTarget.setAttribute("xml:space",
+                                                source.getAttributeValue("xml:space", "default"));
+                                        newTarget.setAttribute("xml:lang", tgtLang);
+                                        newSeg.addContent(newTarget);
+                                        newTarget.addContent(e.getContent());
+                                    }
+                                } else {
+                                    throw new SAXException("Unexpected element found: " + e.toString());
+                                }
                             }
-                            newSeg.setAttribute("id", root.getAttributeValue("id") + '-' + e.getAttributeValue("mid"));
-                            root.addContent(newSeg);
-                            Element newSource = new Element("source");
-                            newSource.setAttribute("xml:space", source.getAttributeValue("xml:space", "default"));
-                            newSource.setAttribute("xml:lang", srcLang);
-                            newSeg.addContent(newSource);
-                            newSource.addContent(e.getContent());
-                        } else {
-                            throw new SAXException("Unexpected element found: " + e.toString());
                         }
                     }
-                }
-            }
-            if (notesList != null && !notesList.isEmpty()) {
-                String id = root.getChild("segment").getAttributeValue("id");
-                Iterator<Element> nt = notesList.iterator();
-                while (nt.hasNext()) {
-                    Element note = nt.next();
-                    if (note.hasAttribute("mtc:ref")) {
-                        note.setAttribute("mtc:ref", "#" + id);
+                    if (notesList != null && !notesList.isEmpty()) {
+                        String id = root.getChild("segment").getAttributeValue("id");
+                        Iterator<Element> nt = notesList.iterator();
+                        while (nt.hasNext()) {
+                            Element note = nt.next();
+                            if (note.hasAttribute("mtc:ref")) {
+                                note.setAttribute("mtc:ref", "#" + id);
+                            }
+                        }
                     }
                 }
             }
