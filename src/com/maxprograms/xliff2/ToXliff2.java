@@ -304,22 +304,6 @@ public class ToXliff2 {
 						tagSet.add("ph" + tag.getAttributeValue("id"));
 					}
 				}
-				if ("g".equals(tag.getName())) {
-					String id = "g" + tag.getAttributeValue("id");
-					if (!tagSet.contains(id)) {
-						Element head = new Element("data");
-						head.setAttribute("id", id);
-						head.setText(getHead(tag));
-						originalData.addContent(head);
-						tagSet.add("g" + tag.getAttributeValue("id"));
-
-						Element tail = new Element("data");
-						tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
-						tail.setText("</g>");
-						originalData.addContent(tail);
-						tagSet.add("/g" + tag.getAttributeValue("id"));
-					}
-				}
 			}
 
 			Element segment = new Element("segment");
@@ -350,15 +334,10 @@ public class ToXliff2 {
 						src2.addContent(ph);
 					}
 					if (tag.getName().equals("g")) {
-						Element head = new Element("ph");
-						head.setAttribute("id", "g" + tag.getAttributeValue("id"));
-						head.setAttribute("dataRef", "g" + tag.getAttributeValue("id"));
-						src2.addContent(head);
-						src2.addContent(tag.getText());
-						Element tail = new Element("ph");
-						tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
-						tail.setAttribute("dataRef", "/g" + tag.getAttributeValue("id"));
-						src2.addContent(tail);
+						Element pc = new Element("pc");
+						pc.setAttribute("id", tag.getAttributeValue("id"));
+						pc.setContent(tag.getContent());
+						src2.addContent(pc);
 					}
 					if (tag.getName().equals("mrk")) {
 						Element mrk = new Element("mrk");
@@ -406,29 +385,10 @@ public class ToXliff2 {
 							tgt2.addContent(ph);
 						}
 						if (tag.getName().equals("g")) {
-							String id = "g" + tag.getAttributeValue("id");
-							if (!tagSet.contains(id)) {
-								Element head = new Element("data");
-								head.setAttribute("id", id);
-								head.setText(getHead(tag));
-								originalData.addContent(head);
-								tagSet.add("g" + tag.getAttributeValue("id"));
-
-								Element tail = new Element("data");
-								tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
-								tail.setText("</g>");
-								originalData.addContent(tail);
-								tagSet.add("/g" + tag.getAttributeValue("id"));
-							}
-							Element head = new Element("ph");
-							head.setAttribute("id", id);
-							head.setAttribute("dataRef", id);
-							tgt2.addContent(head);
-							tgt2.addContent(tag.getText());
-							Element tail = new Element("ph");
-							tail.setAttribute("id", "/g" + tag.getAttributeValue("id"));
-							tail.setAttribute("dataRef", "/g" + tag.getAttributeValue("id"));
-							tgt2.addContent(tail);
+							Element pc = new Element("pc");
+							pc.setAttribute("id", tag.getAttributeValue("id"));
+							pc.setContent(tag.getContent());
+							tgt2.addContent(pc);
 						}
 						if (tag.getName().equals("mrk")) {
 							Element mrk = new Element("mrk");

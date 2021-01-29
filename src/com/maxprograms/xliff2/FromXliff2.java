@@ -275,6 +275,12 @@ public class FromXliff2 {
 						ph.addContent(tags.get(tag.getAttributeValue("id")));
 						src.addContent(ph);
 					}
+					if (tag.getName().equals("pc")) {
+						Element g = new Element("g");
+						g.setAttribute("id", tag.getAttributeValue("id"));
+						g.setContent(tag.getContent());
+						src.addContent(g);
+					}
 					if (tag.getName().equals("mrk")) {
 						Element mrk = new Element("mrk");
 						mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
@@ -310,6 +316,12 @@ public class FromXliff2 {
 							ph.setAttribute("id", tag.getAttributeValue("id").substring("ph".length()));
 							ph.addContent(tags.get(tag.getAttributeValue("id")));
 							tgt.addContent(ph);
+						}
+						if (tag.getName().equals("pc")) {
+							Element g = new Element("g");
+							g.setAttribute("id", tag.getAttributeValue("id"));
+							g.setContent(tag.getContent());
+							tgt.addContent(g);
 						}
 						if (tag.getName().equals("mrk")) {
 							Element mrk = new Element("mrk");
