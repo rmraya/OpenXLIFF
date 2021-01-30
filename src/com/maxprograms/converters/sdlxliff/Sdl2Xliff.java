@@ -143,7 +143,7 @@ public class Sdl2Xliff {
 						Iterator<Element> it = mrks.iterator();
 						while (it.hasNext()) {
 							Element mrk = it.next();
-							writeStr("<trans-unit id=\"" + root.getAttributeValue("id") + '|'
+							writeStr("<trans-unit id=\"" + root.getAttributeValue("id") + ':'
 									+ mrk.getAttributeValue("mid") + "\" xml:space=\"preserve\">\n");
 							// write new source
 							writeStr("<source>");
@@ -214,7 +214,6 @@ public class Sdl2Xliff {
 				}
 			}
 		}
-
 	}
 
 	private static void recurseSource(Element mrk) throws IOException {

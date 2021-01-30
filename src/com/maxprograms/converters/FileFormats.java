@@ -57,8 +57,8 @@ public class FileFormats {
 	public static final String XML = "XML Document";
 	public static final String XMLG = "XML (Generic)";
 
-	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC, RESX,
-			SDLPPX, SDLXLIFF, SRT, TS, TXML, WPML, XLIFF, XML, XMLG };
+	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC,
+			RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
 		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF).contains(type);
@@ -99,16 +99,16 @@ public class FileFormats {
 				return MIF;
 			}
 
+			if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:sdl") != -1) {
+				return SDLXLIFF;
+			}
+			if (string.indexOf("<xliff ") != -1 && string.indexOf("<![CDATA[") != -1) {
+				return WPML;
+			}
+			if (string.indexOf("<xliff ") != -1 && parseXliff(fileName)) {
+				return XLIFF;
+			}
 			if (string.startsWith("<?xml")) {
-				if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:sdl") != -1) {
-					return SDLXLIFF;
-				}
-				if (string.indexOf("<xliff ") != -1 && string.indexOf("<![CDATA[") != -1) {
-					return WPML;
-				}
-				if (string.indexOf("<xliff ") != -1 && parseXliff(fileName)) {
-					return XLIFF;
-				}
 				if (string.indexOf("<txml ") != -1) {
 					return TXML;
 				}
@@ -135,7 +135,6 @@ public class FileFormats {
 			if (string.indexOf("<!DOCTYPE TS>") != -1) {
 				return TS;
 			}
-
 			if (string.startsWith("<!DOCTYPE")) {
 				int index = string.indexOf("-//IETF//DTD HTML");
 				if (index != -1) {

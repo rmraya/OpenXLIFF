@@ -65,28 +65,30 @@ public class Xliff2Sdl {
 		}
 
 		try {
-			
+
 			loadSegments();
 			loadSkeleton();
 
 			Set<String> keys = segments.keySet();
-			Iterator<String> it =keys.iterator();
+			Iterator<String> it = keys.iterator();
 			while (it.hasNext()) {
 				String key = it.next();
 				Element unit = segments.get(key);
 				if (type.equals("sdlxliff")) {
 					if (!unit.getAttributeValue("translate", "yes").equals("no")) {
 						String fullid = unit.getAttributeValue("id");
-						String id = fullid.substring(0, fullid.lastIndexOf('|'));
-						String mrk = fullid.substring(fullid.lastIndexOf('|') + 1);
+						char separator = fullid.indexOf('|') != -1 ? '|' : ':';
+						String id = fullid.substring(0, fullid.lastIndexOf(separator));
+						String mrk = fullid.substring(fullid.lastIndexOf(separator) + 1);
 						replaceTarget(id, mrk, unit.getChild("target"),
 								unit.getAttributeValue("approved", "no").equals("yes"));
 					}
 				} else {
 					String fullid = unit.getAttributeValue("id");
-					if (fullid.indexOf('|') != -1) {
-						String id = fullid.substring(0, fullid.lastIndexOf('|'));
-						String mrk = fullid.substring(fullid.lastIndexOf('|') + 1);
+					if (fullid.indexOf('|') != -1 || fullid.indexOf(':') != -1) {
+						char separator = fullid.indexOf('|') != -1 ? '|' : ':';
+						String id = fullid.substring(0, fullid.lastIndexOf(separator));
+						String mrk = fullid.substring(fullid.lastIndexOf(separator) + 1);
 						replaceTarget(id, mrk, unit.getChild("target"), false);
 					}
 				}
@@ -109,7 +111,8 @@ public class Xliff2Sdl {
 				outputter.output(doc, out);
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException | URISyntaxException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException
+				| URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Sdl.class.getName());
 			logger.log(Level.ERROR, "Error merging SDLXLIFF file", e);
 			result.add(Constants.ERROR);
@@ -223,14 +226,16 @@ public class Xliff2Sdl {
 		return null;
 	}
 
-	private static void loadSkeleton() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void loadSkeleton()
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		doc = builder.build(sklFile);
 		root = doc.getRootElement();
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void loadSegments()
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 

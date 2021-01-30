@@ -143,8 +143,8 @@ public class XliffModel {
 					}
 					for (int i = 0; i < segments.size(); i++) {
 						Element mrk = segments.get(i);
-						ids.add(id + "|" + mrk.getAttributeValue("mid"));
-						sources.put(id + "|" + mrk.getAttributeValue("mid"), mrk);
+						ids.add(id + ":" + mrk.getAttributeValue("mid"));
+						sources.put(id + ":" + mrk.getAttributeValue("mid"), mrk);
 					}
 					Element target = e.getChild("target");
 					if (target != null) {
@@ -162,14 +162,14 @@ public class XliffModel {
 						} else {
 							for (int h = 0; h < translations.size(); h++) {
 								Element mrk = translations.get(h);
-								targets.put(id + "|" + mrk.getAttributeValue("mid"), mrk);
+								targets.put(id + ":" + mrk.getAttributeValue("mid"), mrk);
 							}
 						}
 					}
 					List<Element> alttrans = e.getChildren("alt-trans");
 					for (int i = 0; i < alttrans.size(); i++) {
 						Element alt = alttrans.get(i);
-						String mid = id + "|" + alt.getAttributeValue("mid");
+						String mid = id + ":" + alt.getAttributeValue("mid");
 						if (matches.containsKey(mid)) {
 							matches.get(mid).add(alt);
 						} else {
@@ -186,7 +186,7 @@ public class XliffModel {
 						if (!nids.isEmpty()) {
 							nid = nids.get(0).getData();
 						}
-						String mid = id + "|" + nid;
+						String mid = id + ":" + nid;
 						if (notes.containsKey(mid)) {
 							notes.get(mid).add(note);
 						} else {
@@ -344,7 +344,7 @@ public class XliffModel {
 						Iterator<Element> it = mrks1.iterator();
 						while (it.hasNext()) {
 							Element mrk = it.next();
-							writeStr("<trans-unit id=\"" + root1.getAttributeValue("id") + '|'
+							writeStr("<trans-unit id=\"" + root1.getAttributeValue("id") + ':'
 									+ mrk.getAttributeValue("mid") + "\" xml:space=\"preserve\">\n");
 							// write new source
 							writeStr("<source>");
