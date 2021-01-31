@@ -27,7 +27,6 @@ import java.util.TreeSet;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -512,20 +511,5 @@ public class ToXliff2 {
 		while (it.hasNext()) {
 			recurse(it.next(), target);
 		}
-	}
-
-	private static String getHead(Element e) {
-		StringBuilder builder = new StringBuilder();
-		builder.append('<');
-		builder.append(e.getName());
-		List<Attribute> atts = e.getAttributes();
-		Iterator<Attribute> it = atts.iterator();
-		while (it.hasNext()) {
-			Attribute a = it.next();
-			builder.append(' ');
-			builder.append(a.toString());
-		}
-		builder.append('>');
-		return builder.toString();
 	}
 }
