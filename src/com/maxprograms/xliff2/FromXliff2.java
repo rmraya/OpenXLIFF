@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c)  Maxprograms.
  *
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -46,6 +48,11 @@ public class FromXliff2 {
 	private FromXliff2() {
 		// do not instantiate this class
 		// use run method instead
+	}
+
+	public static void main(String[] args) {
+		run("/Users/rmraya/Desktop/xliff20.xlf", "/Users/rmraya/Desktop/xliff12.xlf",
+				"/Users/rmraya/Documents/GitHub/OpenXLIFF/catalog/catalog.xml");
 	}
 
 	public static List<String> run(String sourceFile, String outputFile, String catalog) {
@@ -260,6 +267,8 @@ public class FromXliff2 {
 			}
 
 			Element src = new Element("source");
+			joinedSource = removeComments(joinedSource);
+			joinedTarget = removeComments(joinedTarget);
 			List<XMLNode> nodes = joinedSource.getContent();
 			Iterator<XMLNode> it = nodes.iterator();
 			while (it.hasNext()) {
@@ -284,7 +293,10 @@ public class FromXliff2 {
 					if (tag.getName().equals("mrk")) {
 						Element mrk = new Element("mrk");
 						mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
-						mrk.setAttribute("ts", tag.getAttributeValue("value"));
+						String value = tag.getAttributeValue("value");
+						if (!value.isEmpty()) {
+							mrk.setAttribute("ts", value);
+						}
 						if (tag.getAttributeValue("translate", "yes").equals("no")) {
 							mrk.setAttribute("mtype", "protected");
 						} else {
@@ -326,7 +338,10 @@ public class FromXliff2 {
 						if (tag.getName().equals("mrk")) {
 							Element mrk = new Element("mrk");
 							mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
-							mrk.setAttribute("ts", tag.getAttributeValue("value"));
+							String value = tag.getAttributeValue("value");
+							if (!value.isEmpty()) {
+								mrk.setAttribute("ts", value);
+							}
 							if (tag.getAttributeValue("translate", "yes").equals("no")) {
 								mrk.setAttribute("mtype", "protected");
 							} else {
@@ -351,10 +366,6 @@ public class FromXliff2 {
 				for (int i = 0; i < notesList.size(); i++) {
 					Element note = notesList.get(i);
 					Element n = new Element("note");
-					String id = note.getAttributeValue("id");
-					if (!id.isEmpty()) {
-						n.setAttribute("id", id);
-					}
 					String appliesTo = note.getAttributeValue("appliesTo");
 					if (!appliesTo.isEmpty()) {
 						n.setAttribute("annotates", appliesTo);
@@ -408,11 +419,12 @@ public class FromXliff2 {
 							if (tag.getName().equals("mrk")) {
 								Element mrk = new Element("mrk");
 								mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
-								mrk.setAttribute("ts", tag.getAttributeValue("value"));
+								String value = tag.getAttributeValue("value");
+								if (!value.isEmpty()) {
+									mrk.setAttribute("ts", value);
+								}
 								if (tag.getAttributeValue("translate", "yes").equals("no")) {
 									mrk.setAttribute("mtype", "protected");
-								} else {
-									mrk.setAttribute("mtype", "term");
 								}
 								mrk.setContent(tag.getContent());
 								s.addContent(mrk);
@@ -440,7 +452,10 @@ public class FromXliff2 {
 							if (tag.getName().equals("mrk")) {
 								Element mrk = new Element("mrk");
 								mrk.setAttribute("mid", tag.getAttributeValue("id").substring("mrk".length()));
-								mrk.setAttribute("ts", tag.getAttributeValue("value"));
+								String value = tag.getAttributeValue("value");
+								if (!value.isEmpty()) {
+									mrk.setAttribute("ts", value);
+								}
 								if (tag.getAttributeValue("translate", "yes").equals("no")) {
 									mrk.setAttribute("mtype", "protected");
 								} else {
@@ -469,5 +484,60 @@ public class FromXliff2 {
 		while (it.hasNext()) {
 			recurse(it.next(), target);
 		}
+	}
+
+	public static Element removeComments(Element element) {
+		if (!containsComments(element)) {
+			return element;
+		}
+		List<XMLNode> newContent = new Vector<>();
+		List<XMLNode>content = element.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				newContent.add(node);
+			}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element child = (Element) node;
+				if (containsComments(child)) {
+					List<XMLNode> nodes = child.getContent();
+					Iterator<XMLNode> nt = nodes.iterator();
+					while (nt.hasNext()) {
+						XMLNode n = nt.next();
+						if (n.getNodeType() == XMLNode.TEXT_NODE) {
+							newContent.add(n);
+						} 
+						if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+							Element clean = removeComments((Element) n);
+							newContent.addAll(clean.getContent());
+						}
+					}
+				} else {
+					newContent.add(node);
+				}
+			}
+		}
+		element.setContent(newContent);
+		return element;
+	}
+
+	public static boolean containsComments(Element element) {
+		if (isComment(element)) {
+			return true;
+		}
+		List<Element> children = element.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			Element child = it.next();
+			if (containsComments(child)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean isComment(Element element) {
+		return ("mrk".equals(element.getName()) && "comment".equals(element.getAttributeValue("type")));
 	}
 }

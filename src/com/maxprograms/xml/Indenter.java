@@ -37,6 +37,9 @@ public class Indenter {
 	}
 
 	private static void recurse(Element e) {
+		if (e.getAttributeValue("xml:space", "default").equals("preserve")) {
+			return;
+		}
 		boolean hasText = hasText(e);
 		if (!hasText) {
 			indent(e);
@@ -51,9 +54,6 @@ public class Indenter {
 	}
 
 	private static void indent(Element e) {
-		if (e.getAttributeValue("xml:space", "default").equals("preserve")) {
-			return;
-		}
 		StringBuilder start = new StringBuilder("\n");
 		StringBuilder end = new StringBuilder("\n");
 		for (int i = 0; i < (level * numSpaces); i++) {

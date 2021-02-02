@@ -51,6 +51,10 @@ public class ToXliff2 {
 		// use run method instead
 	}
 
+	public static void main(String[] args) {
+		run("/Users/rmraya/Desktop/term differences.docx.xlf", "/Users/rmraya/Desktop/xliff20.xlf", "/Users/rmraya/Documents/GitHub/OpenXLIFF/catalog/catalog.xml");
+	}
+
 	public static List<String> run(File xliffFile, String catalog) {
 		return run(xliffFile.getAbsolutePath(), xliffFile.getAbsolutePath(), catalog);
 	}
@@ -271,6 +275,8 @@ public class ToXliff2 {
 			}
 			target.addContent(unit);
 
+			List<Element> sourceNotes = new ArrayList<>();
+			List<Element> targetNotes = new ArrayList<>();
 			List<Element> notesList = source.getChildren("note");
 			if (!notesList.isEmpty()) {
 				Element notes = new Element("notes");
@@ -278,10 +284,14 @@ public class ToXliff2 {
 				for (int i = 0; i < notesList.size(); i++) {
 					Element note = notesList.get(i);
 					Element n = new Element("note");
-					n.setAttribute("id", "" + (i + 1));
-					n.setAttribute("mtc:ref", "#" + source.getAttributeValue("id"));
+					n.setAttribute("id", "n" + (i + 1));
 					notes.addContent(n);
 					n.addContent(note.getText());
+					if ("source".equals(note.getAttributeValue("annotates", "target"))) {
+						sourceNotes.add(n);
+					} else {
+						targetNotes.add(n);
+					}
 				}
 			}
 
@@ -316,7 +326,6 @@ public class ToXliff2 {
 				src2.setAttribute("xml:space", "preserve");
 			}
 			src2.setAttribute("xml:lang", fileSrcLang);
-			segment.addContent(src2);
 			List<XMLNode> srcContent = src.getContent();
 			Iterator<XMLNode> nodes = srcContent.iterator();
 			while (nodes.hasNext()) {
@@ -344,65 +353,99 @@ public class ToXliff2 {
 						if (tag.getAttributeValue("mtype", "").equals("protected")) {
 							mrk.setAttribute("translate", "no");
 						}
-						mrk.setAttribute("value", tag.getAttributeValue("ts", ""));
+						String value = tag.getAttributeValue("ts");
+						if (!value.isEmpty()) {
+							mrk.setAttribute("value", value);
+						}
 						mrk.setContent(tag.getContent());
 						src2.addContent(mrk);
 					}
 				}
 			}
+			if (!sourceNotes.isEmpty()) {
+				for (int i = 0; i < sourceNotes.size(); i++) {
+					Element note = sourceNotes.get(i);
+					Element mrk = new Element("mrk");
+					mrk.setAttribute("id", "sn" + i);
+					mrk.setAttribute("type", "comment");
+					mrk.setAttribute("ref", "#n=" + note.getAttributeValue("id"));
+					mrk.setContent(src2.getContent());
+					List<XMLNode> content = new ArrayList<>();
+					content.add(mrk);
+					src2.setContent(content);
+				}
+			}
+			segment.addContent(src2);
 
 			Element tgt = source.getChild("target");
-			if (tgt != null) {
-				Element tgt2 = new Element("target");
-				if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
-					tgt2.setAttribute("xml:space", "preserve");
-				}
-				if (fileTgtLang != null && !fileTgtLang.isEmpty()) {
-					tgt2.setAttribute("xml:lang", fileTgtLang);
-				}
-				List<XMLNode> tgtContent = tgt.getContent();
-				nodes = tgtContent.iterator();
-				while (nodes.hasNext()) {
-					XMLNode node = nodes.next();
-					if (node.getNodeType() == XMLNode.TEXT_NODE) {
-						tgt2.addContent(node);
-					}
-					if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-						Element tag = (Element) node;
-						if (tag.getName().equals("ph")) {
-							Element ph = new Element("ph");
-							String id = "ph" + tag.getAttributeValue("id");
-							ph.setAttribute("id", id);
-							if (!tagSet.contains(id)) {
-								Element data = new Element("data");
-								data.setAttribute("id", id);
-								data.setContent(ph.getContent());
-								originalData.addContent(data);
-								tagSet.add(id);
-							}
-							ph.setAttribute("dataRef", id);
-							tgt2.addContent(ph);
-						}
-						if (tag.getName().equals("g")) {
-							Element pc = new Element("pc");
-							pc.setAttribute("id", tag.getAttributeValue("id"));
-							pc.setContent(tag.getContent());
-							tgt2.addContent(pc);
-						}
-						if (tag.getName().equals("mrk")) {
-							Element mrk = new Element("mrk");
-							mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-							if (tag.getAttributeValue("mtype", "").equals("protected")) {
-								mrk.setAttribute("translate", "no");
-							}
-							mrk.setAttribute("value", tag.getAttributeValue("ts", ""));
-							mrk.setContent(tag.getContent());
-							tgt2.addContent(mrk);
-						}
-					}
-				}
-				segment.addContent(tgt2);
+			if (tgt == null) {
+				tgt = new Element("target");
 			}
+			Element tgt2 = new Element("target");
+			if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
+				tgt2.setAttribute("xml:space", "preserve");
+			}
+			if (fileTgtLang != null && !fileTgtLang.isEmpty()) {
+				tgt2.setAttribute("xml:lang", fileTgtLang);
+			}
+			List<XMLNode> tgtContent = tgt.getContent();
+			nodes = tgtContent.iterator();
+			while (nodes.hasNext()) {
+				XMLNode node = nodes.next();
+				if (node.getNodeType() == XMLNode.TEXT_NODE) {
+					tgt2.addContent(node);
+				}
+				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+					Element tag = (Element) node;
+					if (tag.getName().equals("ph")) {
+						Element ph = new Element("ph");
+						String id = "ph" + tag.getAttributeValue("id");
+						ph.setAttribute("id", id);
+						if (!tagSet.contains(id)) {
+							Element data = new Element("data");
+							data.setAttribute("id", id);
+							data.setContent(ph.getContent());
+							originalData.addContent(data);
+							tagSet.add(id);
+						}
+						ph.setAttribute("dataRef", id);
+						tgt2.addContent(ph);
+					}
+					if (tag.getName().equals("g")) {
+						Element pc = new Element("pc");
+						pc.setAttribute("id", tag.getAttributeValue("id"));
+						pc.setContent(tag.getContent());
+						tgt2.addContent(pc);
+					}
+					if (tag.getName().equals("mrk")) {
+						Element mrk = new Element("mrk");
+						mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
+						if (tag.getAttributeValue("mtype", "").equals("protected")) {
+							mrk.setAttribute("translate", "no");
+						}
+						String value = tag.getAttributeValue("ts");
+						if (!value.isEmpty()) {
+							mrk.setAttribute("value", value);
+						}
+						mrk.setContent(tag.getContent());
+						tgt2.addContent(mrk);
+					}
+				}
+			}
+			if (!targetNotes.isEmpty()) {
+				for (int i = 0; i < targetNotes.size(); i++) {
+					Element note = targetNotes.get(i);
+					Element mrk = new Element("mrk");
+					mrk.setAttribute("id", "tn" + i);
+					mrk.setAttribute("type", "comment");
+					mrk.setAttribute("ref", "#n=" + note.getAttributeValue("id"));
+					mrk.setContent(tgt2.getContent());
+					List<XMLNode> content = new ArrayList<>();
+					content.add(mrk);
+					tgt2.setContent(content);
+				}
+			}
+			segment.addContent(tgt2);
 
 			List<Element> matches = source.getChildren("alt-trans");
 			if (!matches.isEmpty()) {
