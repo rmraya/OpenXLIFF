@@ -80,13 +80,9 @@ public class Resegmenter {
                 Element segment = root.getChild("segment");
                 Element source = segment.getChild("source");
                 Element target = segment.getChild("target");
-                boolean copySource = target != null && source.getContent().equals(target.getContent());
-                if (target == null || copySource) {
-                    List<Element> notesList = null;
-                    Element notes = root.getChild("notes");
-                    if (notes != null) {
-                        notesList = notes.getChildren("note");
-                    }
+                boolean copySource = target != null && source.getContent().equals(target.getContent());                
+                boolean isEmpty = target != null && target.getContent().isEmpty();
+                if (target == null || copySource || isEmpty) {
                     root.removeAttribute("canResegment");
                     Element segSource = segmenter.segment(source);
                     if (segSource.getChildren("mrk").size() > 1) {
@@ -122,16 +118,6 @@ public class Resegmenter {
                                 } else {
                                     throw new SAXException("Unexpected element found: " + e.toString());
                                 }
-                            }
-                        }
-                    }
-                    if (notesList != null && !notesList.isEmpty()) {
-                        String id = root.getChild("segment").getAttributeValue("id");
-                        Iterator<Element> nt = notesList.iterator();
-                        while (nt.hasNext()) {
-                            Element note = nt.next();
-                            if (note.hasAttribute("mtc:ref")) {
-                                note.setAttribute("mtc:ref", "#" + id);
                             }
                         }
                     }
