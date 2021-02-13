@@ -865,7 +865,7 @@ public class Html2Xliff {
 				end = file.indexOf("]]>") + 2;
 			}
 			if (end < start || end < 0 || start < 0) {
-				throw new IOException("nvalid HTML markup found.");
+				throw new IOException("Invalid HTML markup found.");
 			}
 			String element = file.substring(start, end + 1);
 
