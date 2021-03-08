@@ -51,10 +51,6 @@ public class ToXliff2 {
 		// use run method instead
 	}
 
-	public static void main(String[] args) {
-		run("/Users/rmraya/Desktop/term differences.docx.xlf", "/Users/rmraya/Desktop/xliff20.xlf", "/Users/rmraya/Documents/GitHub/OpenXLIFF/catalog/catalog.xml");
-	}
-
 	public static List<String> run(File xliffFile, String catalog) {
 		return run(xliffFile.getAbsolutePath(), xliffFile.getAbsolutePath(), catalog);
 	}

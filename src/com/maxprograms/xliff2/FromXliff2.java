@@ -50,11 +50,6 @@ public class FromXliff2 {
 		// use run method instead
 	}
 
-	public static void main(String[] args) {
-		run("/Users/rmraya/Desktop/xliff20.xlf", "/Users/rmraya/Desktop/xliff12.xlf",
-				"/Users/rmraya/Documents/GitHub/OpenXLIFF/catalog/catalog.xml");
-	}
-
 	public static List<String> run(String sourceFile, String outputFile, String catalog) {
 		List<String> result = new ArrayList<>();
 		try {
