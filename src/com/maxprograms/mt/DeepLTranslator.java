@@ -56,7 +56,8 @@ public class DeepLTranslator implements MTEngine {
 	public List<Language> getSourceLanguages() throws IOException {
 		if (srcLanguages == null) {
 			srcLanguages = new ArrayList<>();
-			String[] codes = { "de", "en", "fr", "it", "ja", "es", "nl", "pl", "pt", "ru", "zh" };
+			String[] codes = { "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hu", "it", "ja", "lt", "lv",
+					"nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "zh" };
 			for (int i = 0; i < codes.length; i++) {
 				srcLanguages.add(LanguageUtils.getLanguage(codes[i]));
 			}
@@ -68,7 +69,8 @@ public class DeepLTranslator implements MTEngine {
 	public List<Language> getTargetLanguages() throws IOException {
 		if (tgtLanguages == null) {
 			tgtLanguages = new ArrayList<>();
-			String[] codes = { "de", "en-US", "en-GB", "fr", "it", "ja", "es", "nl", "pl", "pt", "pt-BR", "ru", "zh" };
+			String[] codes = { "bg", "cs", "da", "de", "el", "en-GB", "en-US", "es", "et", "fi", "fr", "hu", "it", "ja",
+					"lt", "lv", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sk", "sl", "sv", "zh" };
 			for (int i = 0; i < codes.length; i++) {
 				tgtLanguages.add(LanguageUtils.getLanguage(codes[i]));
 			}
@@ -106,22 +108,22 @@ public class DeepLTranslator implements MTEngine {
 			throw new IOException("Null response received");
 		}
 		switch (response.statusCode()) {
-			case 400:
-				throw new IOException("Bad request. Please check error message and your parameters.");
-			case 403:
-				throw new IOException("Authorization failed. Please supply a valid auth_key parameter.");
-			case 404:
-				throw new IOException("The requested resource could not be found.");
-			case 413:
-				throw new IOException("The request size exceeds the limit.");
-			case 429:
-				throw new IOException("Too many requests. Please wait and resend your request.");
-			case 456:
-				throw new IOException("Quota exceeded. The character limit has been reached.");
-			case 503:
-				throw new IOException("Resource currently unavailable. Try again later.");
-			default:
-				throw new IOException("Server status code: " + response.statusCode());
+		case 400:
+			throw new IOException("Bad request. Please check error message and your parameters.");
+		case 403:
+			throw new IOException("Authorization failed. Please supply a valid auth_key parameter.");
+		case 404:
+			throw new IOException("The requested resource could not be found.");
+		case 413:
+			throw new IOException("The request size exceeds the limit.");
+		case 429:
+			throw new IOException("Too many requests. Please wait and resend your request.");
+		case 456:
+			throw new IOException("Quota exceeded. The character limit has been reached.");
+		case 503:
+			throw new IOException("Resource currently unavailable. Try again later.");
+		default:
+			throw new IOException("Server status code: " + response.statusCode());
 		}
 	}
 
