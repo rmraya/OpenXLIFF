@@ -45,7 +45,7 @@ public class XliffChecker {
 	private String version;
 
 	private RegistryParser registry;
-	
+
 	private HashSet<String> xliffNamespaces;
 	private Map<String, Set<String>> attributesTable;
 	private Map<String, String> altSrcItTable;
@@ -140,6 +140,8 @@ public class XliffChecker {
 	}
 
 	public XliffChecker() throws IOException {
+		version = "";
+		reason = "";
 		registry = new RegistryParser();
 		xliffNamespaces = new HashSet<>();
 		xliffNamespaces.add("urn:oasis:names:tc:xliff:document:1.1");
@@ -155,6 +157,10 @@ public class XliffChecker {
 			Element root = document.getRootElement();
 			if (!"xliff".equals(root.getLocalName())) {
 				reason = "Selected file is not an XLIFF document";
+				return false;
+			}
+			if (!root.hasAttribute("version")) {
+				reason = "Missing version attribute";
 				return false;
 			}
 			version = root.getAttributeValue("version");
@@ -580,7 +586,7 @@ public class XliffChecker {
 			// ignore element from another namespace
 			return true;
 		}
-		
+
 		if (!"1.0".equals(version)) {
 			// validate the attributes (the parser can't do it due to bugs in the schemas
 			List<Attribute> atts = e.getAttributes();
@@ -757,7 +763,7 @@ public class XliffChecker {
 		}
 
 		// check for unique "id" in <trans-unit> and <bin-unit>
-		if (version.equals("1.2") && (e.getLocalName().equals("trans-unit") || e.getLocalName().equals("bin-unit"))) { 
+		if (version.equals("1.2") && (e.getLocalName().equals("trans-unit") || e.getLocalName().equals("bin-unit"))) {
 			String id = e.getAttributeValue("id");
 			if (!ids.containsKey(id)) {
 				ids.put(id, "");
@@ -779,7 +785,7 @@ public class XliffChecker {
 		}
 
 		// check segment ids
-		if (e.getLocalName().equals("mrk") && e.getAttributeValue("mtype").equals("seg")) { 
+		if (e.getLocalName().equals("mrk") && e.getAttributeValue("mtype").equals("seg")) {
 			String mid = e.getAttributeValue("mid");
 			if (inSegSource) {
 				if (!midTable.containsKey(mid)) {
