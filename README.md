@@ -15,6 +15,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
 - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
+- **[XLIFF Validation Service](https://github.com/rmraya/OpenXLIFF#xliff-validation-service)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Joining multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#joining-multiple-xliff-files)**
 
@@ -232,6 +233,10 @@ Where:
    -file:      XLIFF file to validate
    -catalog:   (optional) XML catalog to use for processing
 ```
+
+## XLIFF Validation Service
+
+You can validate your XLIFF files online at [https://dev.maxprograms.com/Validation/](https://dev.maxprograms.com/Validation/
 
 ## Translation Status Analysis
 
