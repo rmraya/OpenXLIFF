@@ -78,12 +78,13 @@ public class Xliff20 {
 	private HashSet<String> scId;
 	private HashSet<String> smId;
 	private HashSet<String> fileScId;
+	private HashSet<String> sourceSc;
 	private HashSet<String> orderSet;
 	private boolean inMatch;
 	private boolean isReference;
 	private boolean inSource;
 	private boolean inTarget;
-	private String currentState;	
+	private String currentState;
 	private String fsPrefix = "";
 
 	public Xliff20() throws IOException {
@@ -234,6 +235,7 @@ public class Xliff20 {
 			groupId = new HashSet<>();
 			unitId = new HashSet<>();
 			fileScId = new HashSet<>();
+			sourceSc = new HashSet<>();
 			if (noteId != null) {
 				noteId = null;
 			}
@@ -466,7 +468,10 @@ public class Xliff20 {
 				}
 				sourceId.add(id);
 				scId.add(id);
-				fileScId.add(id);
+				if ("yes".equals(e.getAttributeValue("isolated"))) {
+					fileScId.add(id);
+					sourceSc.add(id);
+				}
 				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
 					cantDelete.add(id);
 				}
@@ -511,8 +516,11 @@ public class Xliff20 {
 				return false;
 			}
 			if (isolated && !fileScId.contains(id)) {
-				reason = "Missing <sc/> element with id=\"" + id + "\" referenced by <ec/>";
+				reason = "Missing isolated <sc/> element with id=\"" + id + "\" referenced by <ec/>";
 				return false;
+			}
+			if (inSource && isolated) {
+				sourceSc.remove(id);
 			}
 			if (!isolated && !scId.contains(startRef)) {
 				reason = "Missing <sc/> element in <unit> with id=\"" + startRef + "\" referenced by <ec/>";
@@ -601,7 +609,7 @@ public class Xliff20 {
 		}
 
 		// attributes from fs module
-		
+
 		if (!fsPrefix.isEmpty()) {
 			String fs = e.getAttributeValue(fsPrefix + ":fs");
 			String subFs = e.getAttributeValue(fsPrefix + ":subFs");
@@ -610,10 +618,16 @@ public class Xliff20 {
 				return false;
 			}
 		}
-		
+
 		List<Element> children = e.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			boolean result = recurse(children.get(i));
+			if ("file".equals(children.get(i).getName())) {
+				if (!sourceSc.isEmpty()) {
+					reason = "Isolated <sc> element without matching <ec> in <file>";
+					return false;
+				}
+			}
 			if (!result) {
 				return false;
 			}
@@ -649,6 +663,7 @@ public class Xliff20 {
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -664,7 +679,7 @@ public class Xliff20 {
 			Element tag = it.next();
 			if ("ph".equals(tag.getName())) {
 				List<Element> phList = target.getChildren("ph");
-				for (int i=0 ; i<phList.size() ; i++) {
+				for (int i = 0; i < phList.size(); i++) {
 					Element ph = phList.get(i);
 					if (tag.getAttributeValue("id").equals(ph.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(ph.getAttributeValue("canCopy"))) {
@@ -700,7 +715,7 @@ public class Xliff20 {
 			}
 			if ("pc".equals(tag.getName())) {
 				List<Element> pcList = target.getChildren("pc");
-				for (int i=0 ; i<pcList.size() ; i++) {
+				for (int i = 0; i < pcList.size(); i++) {
 					Element pc = pcList.get(i);
 					if (tag.getAttributeValue("id").equals(pc.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(pc.getAttributeValue("canCopy"))) {
@@ -748,7 +763,7 @@ public class Xliff20 {
 			}
 			if ("sc".equals(tag.getName())) {
 				List<Element> scList = target.getChildren("sc");
-				for (int i=0 ; i<scList.size() ; i++) {
+				for (int i = 0; i < scList.size(); i++) {
 					Element sc = scList.get(i);
 					if (tag.getAttributeValue("id").equals(sc.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(sc.getAttributeValue("canCopy"))) {
@@ -792,7 +807,7 @@ public class Xliff20 {
 				boolean isolated = tag.getAttributeValue("isolated", "no").equals("yes");
 				if (!isolated) {
 					List<Element> ecList = target.getChildren("ec");
-					for (int i=0 ; i<ecList.size() ; i++) {
+					for (int i = 0; i < ecList.size(); i++) {
 						Element ec = ecList.get(i);
 						if (tag.getAttributeValue("id").equals(ec.getAttributeValue("startRef"))) {
 							if (!tag.getAttributeValue("canCopy").equals(ec.getAttributeValue("canCopy"))) {
@@ -827,7 +842,8 @@ public class Xliff20 {
 								reason = "<sc> element with different value of \"type\" in <source> and <target>";
 								return false;
 							}
-							if (!tag.getAttributeValue("isolated", "no").equals(ec.getAttributeValue("isolated", "no"))) {
+							if (!tag.getAttributeValue("isolated", "no")
+									.equals(ec.getAttributeValue("isolated", "no"))) {
 								reason = "<sc> element with different value of \"isolated\" in <source> and <target>";
 								return false;
 							}
@@ -837,7 +853,7 @@ public class Xliff20 {
 			}
 			if ("ec".equals(tag.getName())) {
 				List<Element> ecList = target.getChildren("sc");
-				for (int i=0 ; i<ecList.size() ; i++) {
+				for (int i = 0; i < ecList.size(); i++) {
 					Element ec = ecList.get(i);
 					if (tag.getAttributeValue("id").equals(ec.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(ec.getAttributeValue("canCopy"))) {
@@ -886,7 +902,7 @@ public class Xliff20 {
 	private Source getSource(String string) {
 		String location = resolver.matchURI(string);
 		if (location == null) {
-			location = resolver.matchPublic(string); 
+			location = resolver.matchPublic(string);
 		}
 		if (location == null) {
 			location = resolver.matchSystem("", string);
