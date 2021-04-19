@@ -236,7 +236,7 @@ Where:
 
 ## XLIFF Validation Service
 
-You can validate your XLIFF files online at [https://dev.maxprograms.com/Validation/](https://dev.maxprograms.com/Validation/
+You can validate your XLIFF files online at [https://dev.maxprograms.com/Validation/](https://dev.maxprograms.com/Validation/)
 
 ## Translation Status Analysis
 
