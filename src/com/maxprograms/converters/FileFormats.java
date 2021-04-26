@@ -11,8 +11,10 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
@@ -24,6 +26,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 public class FileFormats {
@@ -220,7 +224,7 @@ public class FileFormats {
 			if (string.indexOf(" --> ") != -1 && string.indexOf(':') != -1) {
 				return SRT;
 			}
-			if (string.indexOf('{') != -1 && string.indexOf(':') != -1) {
+			if (string.indexOf('{') != -1 && string.indexOf(':') != -1 && loadJSON(file) != null) {
 				return JSON;
 			}
 		} catch (Exception e) {
@@ -382,4 +386,16 @@ public class FileFormats {
 		return formats;
 	}
 
+	private static JSONObject loadJSON(File file) throws IOException, JSONException {
+		StringBuilder sb = new StringBuilder();
+		try (FileReader reader = new FileReader(file)) {
+			try (BufferedReader buffered = new BufferedReader(reader)) {
+				String line = "";
+				while ((line = buffered.readLine()) != null) {
+					sb.append(line);
+				}
+			}
+		}
+		return new JSONObject(sb.toString());
+	}
 }
