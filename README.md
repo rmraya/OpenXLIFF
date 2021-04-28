@@ -77,6 +77,7 @@ If you prefer to use a graphical interface instead of the command line, get inst
 OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 
 - **General Documentation**
+  - Adobe InCopy ICML
   - Adobe InDesign Interchange (INX)
   - Adobe InDesign IDML CS4, CS5, CS6 & CC
   - HTML
@@ -90,6 +91,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - Trados Studio Packages (*.sdlppx)
   - TXML (GlobalLink/Wordfast PRO)
   - WPML XLIFF (WordPress Multilingual Plugin)
+  - XLIFF from Other Tools (.mqxliff, .txlf, .xliff, etc.)
 - **XML Formats**
   - XML (Generic)
   - DITA 1.0, 1.1, 1.2 and 1.3
