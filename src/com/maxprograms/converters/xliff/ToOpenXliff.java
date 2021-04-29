@@ -232,7 +232,7 @@ public class ToOpenXliff {
                         result.addAll(nested);
 
                         Element ph2 = new Element("ph");
-                        ph2.setAttribute("id", "/pc" + e.getAttributeValue("id"));
+                        ph2.setAttribute("id", "pc_" + e.getAttributeValue("id"));
                         ph2.setText("</pc>");
                         result.add(ph2);
                     }
@@ -442,7 +442,7 @@ public class ToOpenXliff {
                             result.addAll(getContent1x(e));
                         }
                         Element ph2 = new Element("ph");
-                        ph2.setAttribute("id", "/g" + e.getAttributeValue("id"));
+                        ph2.setAttribute("id", "g_" + e.getAttributeValue("id"));
                         ph2.setText("</g>");
                         result.add(ph2);
                     }
