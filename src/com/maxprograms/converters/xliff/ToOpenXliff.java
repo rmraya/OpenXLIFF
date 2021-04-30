@@ -43,6 +43,7 @@ public class ToOpenXliff {
     private static String targetLanguage;
 
     private static List<String> namespaces;
+    private static int tag;
 
     private ToOpenXliff() {
         // do not instantiate this class
@@ -152,6 +153,7 @@ public class ToOpenXliff {
                     unit.setAttribute("xml:space", "preserve");
                 }
                 Element source = new Element("source");
+                tag = 1;
                 source.setContent(getContent2x(src));
                 if (!hasText(source)) {
                     return;
@@ -160,6 +162,7 @@ public class ToOpenXliff {
                 unit.addContent(source);
                 unit.addContent("\n        ");
                 Element target = new Element("target");
+                tag = 1;
                 target.setContent(getContent2x(segment.getChild("target")));
                 unit.addContent(target);
                 unit.addContent("\n      ");
@@ -181,11 +184,13 @@ public class ToOpenXliff {
                                 altTrans.setAttribute("match-quality", quality);
                             }
                             Element altSource = new Element("source");
+                            tag = 1;
                             altSource.setContent(getContent2x(match.getChild("source")));
                             unit.addContent("\n        ");
                             altTrans.addContent(altSource);
                             unit.addContent("\n        ");
                             Element altTarget = new Element("target");
+                            tag = 1;
                             altTarget.setContent(getContent2x(match.getChild("target")));
                             altTrans.addContent(altTarget);
                             if (!altSource.getContent().isEmpty() && !altTarget.getContent().isEmpty()) {
@@ -207,9 +212,6 @@ public class ToOpenXliff {
     }
 
     private static List<XMLNode> getContent2x(Element child) {
-        int cpCount = 0;
-        int ecCount = 0;
-        int emCount = 0;
         List<XMLNode> result = new Vector<>();
         if (child != null) {
             List<XMLNode> content = child.getContent();
@@ -224,7 +226,7 @@ public class ToOpenXliff {
                     String name = e.getName();
                     if ("pc".equals(name)) {
                         Element ph1 = new Element("ph");
-                        ph1.setAttribute("id", "pc" + e.getAttributeValue("id"));
+                        ph1.setAttribute("id", "" + tag++);
                         ph1.setText(getHead(e));
                         result.add(ph1);
 
@@ -232,31 +234,31 @@ public class ToOpenXliff {
                         result.addAll(nested);
 
                         Element ph2 = new Element("ph");
-                        ph2.setAttribute("id", "pc_" + e.getAttributeValue("id"));
+                        ph2.setAttribute("id", "" + tag++);
                         ph2.setText("</pc>");
                         result.add(ph2);
                     }
                     if ("cp".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", name + cpCount++);
+                        ph.setAttribute("id", "" + tag++);
                         ph.setText(e.toString());
                         result.add(ph);
                     }
                     if ("ph".equals(name) || "sc".equals(name) || "sm".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", name + e.getAttributeValue("id"));
+                        ph.setAttribute("id", "" + tag++);
                         ph.setText(e.toString());
                         result.add(ph);
                     }
                     if ("ec".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", name + ecCount++);
+                        ph.setAttribute("id", "" + tag++);
                         ph.setText(e.toString());
                         result.add(ph);
                     }
                     if ("em".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", name + emCount++);
+                        ph.setAttribute("id", "" + tag++);
                         ph.setText(e.toString());
                         result.add(ph);
                     }
@@ -275,7 +277,6 @@ public class ToOpenXliff {
                             mrk.setAttribute("mtype", "term");
                             mrk.setText(e.getText());
                             result.add(mrk);
-
                         } else {
                             result.add(new TextNode(e.getText()));
                         }
@@ -321,6 +322,7 @@ public class ToOpenXliff {
                                 unit.setAttribute("xml:space", "preserve");
                             }
                             Element source = new Element("source");
+                            tag = 1;
                             source.setContent(getContent1x(e));
                             if (!hasText(source)) {
                                 return;
@@ -332,6 +334,7 @@ public class ToOpenXliff {
                             Element target = new Element("target");
                             Element tgt = root.getChild("target");
                             if (tgt != null) {
+                                tag = 1;
                                 Element mrk = locateMrk(tgt, e.getAttributeValue("mid"));
                                 if (mrk != null) {
                                     target.setContent(getContent1x(mrk));
@@ -354,6 +357,7 @@ public class ToOpenXliff {
                 }
 
                 Element source = new Element("source");
+                tag = 1;
                 source.setContent(getContent1x(root.getChild("source")));
                 if (!hasText(source)) {
                     return;
@@ -362,6 +366,7 @@ public class ToOpenXliff {
                 unit.addContent(source);
                 unit.addContent("\n        ");
                 Element target = new Element("target");
+                tag = 1;
                 target.setContent(getContent1x(root.getChild("target")));
                 unit.addContent(target);
 
@@ -379,11 +384,13 @@ public class ToOpenXliff {
                         altTrans.setAttribute("match-quality", quality);
                     }
                     Element altSource = new Element("source");
+                    tag = 1;
                     altSource.setContent(getContent1x(match.getChild("source")));
                     unit.addContent("\n        ");
                     altTrans.addContent(altSource);
                     unit.addContent("\n        ");
                     Element altTarget = new Element("target");
+                    tag = 1;
                     altTarget.setContent(getContent1x(match.getChild("target")));
                     altTrans.addContent(altTarget);
                     if (!altSource.getContent().isEmpty() && !altTarget.getContent().isEmpty()) {
@@ -433,7 +440,7 @@ public class ToOpenXliff {
                     String name = e.getName();
                     if ("g".equals(name)) {
                         Element ph1 = new Element("ph");
-                        ph1.setAttribute("id", "g" + e.getAttributeValue("id"));
+                        ph1.setAttribute("id", "" + tag++);
                         ph1.setText(getHead(e));
                         result.add(ph1);
                         if (e.getChildren().isEmpty()) {
@@ -442,14 +449,14 @@ public class ToOpenXliff {
                             result.addAll(getContent1x(e));
                         }
                         Element ph2 = new Element("ph");
-                        ph2.setAttribute("id", "g_" + e.getAttributeValue("id"));
+                        ph2.setAttribute("id", "" + tag++);
                         ph2.setText("</g>");
                         result.add(ph2);
                     }
                     if ("x".equals(name) || "bx".equals(name) || "ex".equals(name) || "ph".equals(name)
                             || "bpt".equals(name) || "ept".equals(name) || "it".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", name + e.getAttributeValue("id"));
+                        ph.setAttribute("id", "" + tag++);
                         ph.setText(e.toString());
                         result.add(ph);
                     }
