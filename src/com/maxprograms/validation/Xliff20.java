@@ -852,7 +852,7 @@ public class Xliff20 {
 				}
 			}
 			if ("ec".equals(tag.getName())) {
-				List<Element> ecList = target.getChildren("sc");
+				List<Element> ecList = target.getChildren("ec");
 				for (int i = 0; i < ecList.size(); i++) {
 					Element ec = ecList.get(i);
 					if (tag.getAttributeValue("id").equals(ec.getAttributeValue("id"))) {
