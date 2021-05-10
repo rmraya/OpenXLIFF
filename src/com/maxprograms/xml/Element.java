@@ -89,26 +89,26 @@ public class Element implements XMLNode {
 		while (ic.hasNext()) {
 			XMLNode node = ic.next();
 			switch (node.getNodeType()) {
-			case XMLNode.TEXT_NODE:
-				content.add(new TextNode(((TextNode) node).getText()));
-				break;
-			case XMLNode.ELEMENT_NODE:
-				Element e = new Element();
-				e.clone((Element) node);
-				content.add(e);
-				break;
-			case XMLNode.PROCESSING_INSTRUCTION_NODE:
-				content.add(new PI(((PI) node).getTarget(), ((PI) node).getData()));
-				break;
-			case XMLNode.COMMENT_NODE:
-				content.add(new Comment(((Comment) node).getText()));
-				break;
-			case XMLNode.CDATA_SECTION_NODE:
-				content.add(new CData(((CData) node).getData()));
-				break;
-			default:
-				// should never happen
-				LOGGER.log(Level.WARNING, "Element contains wrong content type.");
+				case XMLNode.TEXT_NODE:
+					content.add(new TextNode(((TextNode) node).getText()));
+					break;
+				case XMLNode.ELEMENT_NODE:
+					Element e = new Element();
+					e.clone((Element) node);
+					content.add(e);
+					break;
+				case XMLNode.PROCESSING_INSTRUCTION_NODE:
+					content.add(new PI(((PI) node).getTarget(), ((PI) node).getData()));
+					break;
+				case XMLNode.COMMENT_NODE:
+					content.add(new Comment(((Comment) node).getText()));
+					break;
+				case XMLNode.CDATA_SECTION_NODE:
+					content.add(new CData(((CData) node).getData()));
+					break;
+				default:
+					// should never happen
+					LOGGER.log(Level.WARNING, "Element contains wrong content type.");
 			}
 		}
 	}
@@ -251,7 +251,7 @@ public class Element implements XMLNode {
 		if (name.indexOf(':') == -1) {
 			return name;
 		}
-		return name.substring(name.indexOf(':'));
+		return name.substring(name.indexOf(':') + 1);
 	}
 
 	public String getNamespace() {

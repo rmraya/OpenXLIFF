@@ -71,6 +71,7 @@ public class Xliff20 {
 	private HashSet<String> cantDelete;
 	private HashSet<String> sourceId;
 	private HashSet<String> dataId;
+	private HashSet<String> matchDataId;
 	private HashSet<String> matchId;
 	private HashSet<String> metaId;
 	private HashSet<String> glossId;
@@ -139,6 +140,7 @@ public class Xliff20 {
 						matchId.add(id);
 					}
 					inMatch = true;
+					matchDataId = new HashSet<>();
 					isReference = e.getAttributeValue("reference", "no").equals("yes");
 				}
 			}
@@ -373,11 +375,19 @@ public class Xliff20 {
 
 		if ("data".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
-			if (dataId.contains(id)) {
-				reason = "Duplicated \"id\" in <data>";
-				return false;
+			if (inMatch) {
+				if (matchDataId.contains(id)) {
+					reason = "Duplicated \"id\" for <data> in <mtc:match>";
+					return false;
+				}
+				matchDataId.add(id);
+			} else {
+				if (dataId.contains(id)) {
+					reason = "Duplicated \"id\" in <data>";
+					return false;
+				}
+				dataId.add(id);
 			}
-			dataId.add(id);
 		}
 
 		// Inline elements
@@ -416,9 +426,16 @@ public class Xliff20 {
 				return false;
 			}
 			if (!dataRef.isEmpty()) {
-				if (!dataId.contains(dataRef)) {
-					reason = "Missing <data> element referenced by <ph>";
-					return false;
+				if (inMatch) {
+					if (!matchDataId.contains(dataRef)) {
+						reason = "Missing <data> element referenced by <ph> in <mtc:match>";
+						return false;
+					}
+				} else {
+					if (!dataId.contains(dataRef)) {
+						reason = "Missing <data> element referenced by <ph>";
+						return false;
+					}
 				}
 			}
 		}
@@ -444,18 +461,36 @@ public class Xliff20 {
 				reason = "<pc> element with both \"copyOf\" and \"dataRefStart\"";
 				return false;
 			}
-			if (!dataRefStart.isEmpty() && !dataId.contains(dataRefStart)) {
-				reason = "Missing <data> element referenced by \"dataRefStart\" <pc>";
-				return false;
+			if (!dataRefStart.isEmpty()) {
+				if (inMatch) {
+					if (!matchDataId.contains(dataRefStart)) {
+						reason = "Missing <data> element referenced by \"dataRefStart\" <pc> in <mtc:match>";
+						return false;
+					}
+				} else {
+					if (!dataId.contains(dataRefStart)) {
+						reason = "Missing <data> element referenced by \"dataRefStart\" <pc>";
+						return false;
+					}
+				}
 			}
 			String dataRefEnd = e.getAttributeValue("dataRefEnd");
 			if (isCopy && !dataRefEnd.isEmpty()) {
 				reason = "<pc> element with both \"copyOf\" and \"dataRefEnd\"";
 				return false;
 			}
-			if (!dataRefEnd.isEmpty() && !dataId.contains(dataRefEnd)) {
-				reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc>";
-				return false;
+			if (!dataRefEnd.isEmpty()) {
+				if (inMatch) {
+					if (!matchDataId.contains(dataRefEnd)) {
+						reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc> in <mtc:match>";
+						return false;
+					}
+				} else {
+					if (!dataId.contains(dataRefEnd)) {
+						reason = "Missing <data> element referenced by \"dataRefEnd\" in <pc>";
+						return false;
+					}
+				}
 			}
 		}
 
@@ -485,9 +520,18 @@ public class Xliff20 {
 				reason = "<sc> element with both \"copyOf\" and \"dataRef\"";
 				return false;
 			}
-			if (!dataRef.isEmpty() && !dataId.contains(dataRef)) {
-				reason = "Missing <data> element referenced by <sc>";
-				return false;
+			if (!dataRef.isEmpty()) {
+				if (inMatch) {
+					if (!matchDataId.contains(dataRef)) {
+						reason = "Missing <data> element referenced by <sc>";
+						return false;
+					}
+				} else {
+					if (!dataId.contains(dataRef)) {
+						reason = "Missing <data> element referenced by <sc>";
+						return false;
+					}
+				}
 			}
 		}
 
@@ -547,9 +591,18 @@ public class Xliff20 {
 				reason = "<ec> element with both \"copyOf\" and \"dataRef\"";
 				return false;
 			}
-			if (!dataRef.isEmpty() && !dataId.contains(dataRef)) {
-				reason = "Missing <data> element referenced by <ec>";
-				return false;
+			if (!dataRef.isEmpty()) {
+				if (inMatch) {
+					if (!matchDataId.contains(dataRef)) {
+						reason = "Missing <data> element referenced by <ec> in <mtc:match>";
+						return false;
+					}
+				} else {
+					if (!dataId.contains(dataRef)) {
+						reason = "Missing <data> element referenced by <ec>";
+						return false;
+					}
+				}
 			}
 		}
 
