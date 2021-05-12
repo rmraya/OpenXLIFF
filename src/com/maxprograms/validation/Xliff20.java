@@ -86,7 +86,7 @@ public class Xliff20 {
 	private boolean inSource;
 	private boolean inTarget;
 	private String currentState;
-	private String fsPrefix = "";
+	private String fsPrefix = "fs";
 
 	public Xliff20() throws IOException {
 		registry = new RegistryParser();
@@ -203,17 +203,6 @@ public class Xliff20 {
 		// Element from XLIFF Core
 
 		if ("xliff".equals(e.getLocalName())) {
-			List<Attribute> atts = e.getAttributes();
-			Iterator<Attribute> it = atts.iterator();
-			while (it.hasNext()) {
-				Attribute a = it.next();
-				if ("xmlns".equals(a.getNamespace())) {
-					declaredNamespaces.put(a.getLocalName(), a.getValue());
-					if (XLIFF_FS_2_0.equals(a.getValue())) {
-						fsPrefix = a.getLocalName();
-					}
-				}
-			}
 			srcLang = e.getAttributeValue("srcLang");
 			if (!checkLanguage(srcLang)) {
 				reason = "Invalid source language '" + srcLang + "'";
@@ -225,6 +214,25 @@ public class Xliff20 {
 				return false;
 			}
 			fileId = new HashSet<>();
+		}
+
+		// check namespaces
+		List<Attribute> atts = e.getAttributes();
+		Iterator<Attribute> at = atts.iterator();
+		while (at.hasNext()) {
+			Attribute a = at.next();
+			String prefix = a.getNamespace();
+			if ("xmlns".equals(prefix)) {
+				declaredNamespaces.put(a.getLocalName(), a.getValue());
+				if (XLIFF_FS_2_0.equals(a.getValue())) {
+					fsPrefix = a.getLocalName();
+
+				}
+			}
+			if (fsPrefix.equals(prefix) && !("fs".equals(a.getLocalName()) || "subFs".equals(a.getLocalName()))) {
+				reason = "Invalid Format Style attribute: '" + a + "'";
+				return false;
+			}
 		}
 
 		if ("file".equals(e.getLocalName())) {
@@ -685,10 +693,22 @@ public class Xliff20 {
 				return false;
 			}
 		}
+
 		if (XLIFF_MATCHES_2_0.equals(declaredNamespaces.get(namespace)) && "match".equals(e.getLocalName())) {
 			inMatch = false;
 			isReference = false;
 		}
+
+		// remove namespaces declared in current element
+		at = atts.iterator();
+		while (at.hasNext()) {
+			Attribute a = at.next();
+			String prefix = a.getNamespace();
+			if ("xmlns".equals(prefix)) {
+				declaredNamespaces.remove(prefix);
+			}
+		}
+
 		if ("source".equals(e.getLocalName())) {
 			inSource = false;
 		}
