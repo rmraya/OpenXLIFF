@@ -19,30 +19,31 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
-public class LCIDParser {
-
-    public static final int UNKNOWN = 0x1000;
-
-    private static HashMap<String, Integer> languageMap;
-
-    public LCIDParser() throws IOException {
-        URL url = RegistryParser.class.getResource("LCID.txt");
+public class OfficeParser {
+    
+    private HashMap<String, String> languageMap;
+    
+    public OfficeParser() throws IOException {
+        URL url = RegistryParser.class.getResource("Office.txt");
         loadMap(url);
     }
 
-    public int getLCID(String lang) {
-        return languageMap.containsKey(lang) ? languageMap.get(lang) : UNKNOWN;
+    public String getLCID(String lang) {
+        return languageMap.containsKey(lang) ? languageMap.get(lang) : "";
     }
 
-    private static void loadMap(URL url) throws IOException {
+    public boolean isSupported(String lang) {
+        return !getLCID(lang).isEmpty(); 
+    }
+
+    private void loadMap(URL url) throws IOException {
         languageMap = new HashMap<>();
         try (InputStream input = url.openStream()) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_16LE))) {
                 String line = "";
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\t");
-                    String hex = parts[0].substring(parts[0].indexOf("x") + 1);
-                    languageMap.put(parts[1], Integer.valueOf(hex, 16));
+                    languageMap.put(parts[1], parts[0]);
                 }
             }
         }
