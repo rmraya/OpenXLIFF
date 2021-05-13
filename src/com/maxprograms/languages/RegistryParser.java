@@ -33,17 +33,18 @@ public class RegistryParser {
 	private Map<String, Variant> variants;
 
 	private void parseRegistry(URL url) throws IOException {
-		InputStream input = url.openStream();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
-			String line = "";
-			entries = new ArrayList<>();
-			String buffer = "";
-			while ((line = reader.readLine()) != null) {
-				if (line.trim().equals("%%")) {
-					entries.add(new RegistryEntry(buffer.replaceAll("\n ", " ")));
-					buffer = "";
-				} else {
-					buffer = buffer + line + "\n";
+		try (InputStream input = url.openStream()) {
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
+				String line = "";
+				entries = new ArrayList<>();
+				String buffer = "";
+				while ((line = reader.readLine()) != null) {
+					if (line.trim().equals("%%")) {
+						entries.add(new RegistryEntry(buffer.replaceAll("\n ", " ")));
+						buffer = "";
+					} else {
+						buffer = buffer + line + "\n";
+					}
 				}
 			}
 		}
@@ -117,7 +118,6 @@ public class RegistryParser {
 				}
 			}
 		}
-
 	}
 
 	public String getRegistryDate() {
