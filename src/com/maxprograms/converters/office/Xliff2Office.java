@@ -216,7 +216,7 @@ public class Xliff2Office {
 			isEmbedded = true;
 		}
 		file.getChild("header").getChild("skl").getChild("external-file").setAttribute("href",
-				xliff.getAbsolutePath() + ".skl"); //$NON-NLS-1$
+				xliff.getAbsolutePath() + ".skl"); 
 		XMLOutputter outputter = new XMLOutputter();
 		try (FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath())) {
 			outputter.output(doc, output);
