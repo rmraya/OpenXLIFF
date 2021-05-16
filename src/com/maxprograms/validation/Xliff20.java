@@ -17,8 +17,9 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -76,17 +77,25 @@ public class Xliff20 {
 	private HashSet<String> metaId;
 	private HashSet<String> glossId;
 	private HashSet<String> noteId;
-	private HashSet<String> scId;
 	private HashSet<String> smId;
-	private HashSet<String> fileScId;
-	private HashSet<String> sourceSc;
 	private HashSet<String> orderSet;
+	private Map<String, Element> isolatedSc;
+	private Map<String, Element> unitSc;
+	private int segCount;
+	private int maxSegment;
 	private boolean inMatch;
 	private boolean isReference;
 	private boolean inSource;
 	private boolean inTarget;
 	private String currentState;
 	private String fsPrefix = "fs";
+
+	private List<String> knownPrefixes = Arrays
+			.asList(new String[] { "xlf", "mtc", "gls", "fs", "mda", "res", "ctr", "slr", "val", "its", "my" });
+	private List<String> knownTypes = Arrays.asList(new String[] { "fmt", "ui", "quote", "link", "image", "other" });
+	private List<String> xlfSubTypes = Arrays
+			.asList(new String[] { "xlf:lb", "xlf:pb", "xlf:b", "xlf:i", "xlf:u", "xlf:var" });
+	private List<String> fmtSubTypes = Arrays.asList(new String[] { "xlf:b", "xlf:i", "xlf:u", "xlf:lb", "xlf:pb" });
 
 	public Xliff20() throws IOException {
 		registry = new RegistryParser();
@@ -116,7 +125,7 @@ public class Xliff20 {
 		builder.setValidating(true);
 		builder.setEntityResolver(resolver);
 		Document document = builder.build(file);
-		declaredNamespaces = new HashMap<>();
+		declaredNamespaces = new Hashtable<>();
 		return recurse(document.getRootElement());
 	}
 
@@ -244,8 +253,7 @@ public class Xliff20 {
 			fileId.add(id);
 			groupId = new HashSet<>();
 			unitId = new HashSet<>();
-			fileScId = new HashSet<>();
-			sourceSc = new HashSet<>();
+			isolatedSc = new Hashtable<>();
 			if (noteId != null) {
 				noteId = null;
 			}
@@ -296,19 +304,22 @@ public class Xliff20 {
 				return false;
 			}
 			unitId.add(id);
-			if (e.getChildren("segment").isEmpty()) {
+			List<Element> segments = e.getChildren("segment");
+			if (segments.isEmpty()) {
 				reason = "<unit> without <segment> child";
 				return false;
 			}
+			segCount = 0;
+			maxSegment = segments.size();
 			dataId = new HashSet<>();
 			ignorableId = new HashSet<>();
 			segmentId = new HashSet<>();
 			if (noteId != null) {
 				noteId = null;
 			}
-			scId = new HashSet<>();
 			smId = new HashSet<>();
 			orderSet = new HashSet<>();
+			unitSc = new Hashtable<>();
 		}
 
 		if ("ignorable".equals(e.getLocalName())) {
@@ -341,6 +352,35 @@ public class Xliff20 {
 				}
 			}
 			currentState = e.getAttributeValue("state", "initial");
+			Element target = e.getChild("target");
+			if (!currentState.equals("initial") && target == null) {
+				reason = "Missing <target> in <segment> with \"state\" other than \"initial\"";
+				return false;
+			}
+			if ("final".equals(currentState)) {
+				if (!validateInlineElements(e)) {
+					return false;
+				}
+			}
+			String subState = e.getAttributeValue("subState");
+			if (!subState.isEmpty()) {
+				String state = e.getAttributeValue("state");
+				if (state.isEmpty()) {
+					reason = "<segment> has \"subState\" attribute without corresponding \"state\"";
+					return false;
+				}
+				int index = subState.indexOf(':');
+				if (index == -1) {
+					reason = "Invalid \"subState\" attribute value: " + subState;
+					return false;
+				}
+				String prefix = subState.substring(0, index);
+				if (!knownPrefixes.contains(prefix)) {
+					reason = "Invalid prefix '" + prefix + "' in \"subState\" attribute";
+					return false;
+				}
+			}
+			segCount++;
 		}
 
 		if ("source".equals(e.getLocalName())) {
@@ -349,15 +389,15 @@ public class Xliff20 {
 				reason = "Different \"xml:lang\" in <source>";
 				return false;
 			}
+			inSource = true;
 			sourceId = new HashSet<>();
 			cantDelete = new HashSet<>();
-			inSource = true;
 		}
 
 		if ("target".equals(e.getLocalName())) {
 			String lang = e.getAttributeValue("xml:lang");
 			if (trgLang.isEmpty()) {
-				reason = "Missing \"trgLang\" in <file>";
+				reason = "Missing \"trgLang\" in <xliff>";
 				return false;
 			}
 			if (!inMatch && !lang.isEmpty() && !trgLang.equals(lang)) {
@@ -369,14 +409,18 @@ public class Xliff20 {
 				return false;
 			}
 			if (!inMatch) {
-				String count = e.getAttributeValue("order");
-				if (!count.isEmpty()) {
-					if (orderSet.contains(count)) {
-						reason = "Duplicated \"order\" in <target>";
-						return false;
-					}
-					orderSet.add(count);
+				String order = e.getAttributeValue("order", "" + segCount);
+				int value = Integer.parseInt(order);
+				if (value > maxSegment) {
+					reason = "order=\"" + value + "\" in <target> is greater than the number of <segment> elements ("
+							+ maxSegment + ")";
+					return false;
 				}
+				if (orderSet.contains(order)) {
+					reason = "Duplicated order=\"" + value + "\"  in <target>";
+					return false;
+				}
+				orderSet.add(order);
 			}
 			inTarget = true;
 		}
@@ -446,6 +490,42 @@ public class Xliff20 {
 					}
 				}
 			}
+			String type = e.getAttributeValue("type");
+			if (!type.isEmpty() && !knownTypes.contains(type)) {
+				reason = "Invalid \"type\" attribute in <ph>";
+				return false;
+			}
+			String subType = e.getAttributeValue("subType");
+			if (!subType.isEmpty()) {
+				if (type.isEmpty()) {
+					reason = "Missing \"type\" attribute in <ph> that has \"subType\"";
+					return false;
+				}
+				int index = subType.indexOf(':');
+				if (index == -1) {
+					reason = "Invalid \"subType\" attribute value: " + subType;
+					return false;
+				}
+				String prefix = subType.substring(0, index);
+				if (!knownPrefixes.contains(prefix)) {
+					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
+					return false;
+				}
+				if ("xlf".equals(prefix)) {
+					if (!xlfSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <ph>";
+						return false;
+					}
+					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"ui\" in <ph>";
+						return false;
+					}
+					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"fmt\" in <ph>";
+						return false;
+					}
+				}
+			}
 		}
 
 		if ("pc".equals(e.getLocalName())) {
@@ -500,6 +580,42 @@ public class Xliff20 {
 					}
 				}
 			}
+			String type = e.getAttributeValue("type");
+			if (!type.isEmpty() && !knownTypes.contains(type)) {
+				reason = "Invalid \"type\" attribute in <pc>";
+				return false;
+			}
+			String subType = e.getAttributeValue("subType");
+			if (!subType.isEmpty()) {
+				if (type.isEmpty()) {
+					reason = "Missing \"type\" attribute in <pc> that has \"subType\"";
+					return false;
+				}
+				int index = subType.indexOf(':');
+				if (index == -1) {
+					reason = "Invalid \"subType\" attribute value: " + subType;
+					return false;
+				}
+				String prefix = subType.substring(0, index);
+				if (!knownPrefixes.contains(prefix)) {
+					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
+					return false;
+				}
+				if ("xlf".equals(prefix)) {
+					if (!xlfSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <pc>";
+						return false;
+					}
+					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"ui\" in <pc>";
+						return false;
+					}
+					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"fmt\" in <pc>";
+						return false;
+					}
+				}
+			}
 		}
 
 		if ("sc".equals(e.getLocalName())) {
@@ -510,10 +626,10 @@ public class Xliff20 {
 					return false;
 				}
 				sourceId.add(id);
-				scId.add(id);
 				if ("yes".equals(e.getAttributeValue("isolated"))) {
-					fileScId.add(id);
-					sourceSc.add(id);
+					isolatedSc.put(id, e);
+				} else {
+					unitSc.put(id, e);
 				}
 				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
 					cantDelete.add(id);
@@ -541,43 +657,109 @@ public class Xliff20 {
 					}
 				}
 			}
+			String type = e.getAttributeValue("type");
+			if (!type.isEmpty() && !knownTypes.contains(type)) {
+				reason = "Invalid \"type\" attribute in <sc>";
+				return false;
+			}
+			String subType = e.getAttributeValue("subType");
+			if (!subType.isEmpty()) {
+				if (type.isEmpty()) {
+					reason = "Missing \"type\" attribute in <sc> that has \"subType\"";
+					return false;
+				}
+				int index = subType.indexOf(':');
+				if (index == -1) {
+					reason = "Invalid \"subType\" attribute value: " + subType;
+					return false;
+				}
+				String prefix = subType.substring(0, index);
+				if (!knownPrefixes.contains(prefix)) {
+					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
+					return false;
+				}
+				if ("xlf".equals(prefix)) {
+					if (!xlfSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <sc>";
+						return false;
+					}
+					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"ui\" in <sc>";
+						return false;
+					}
+					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"fmt\" in <sc>";
+						return false;
+					}
+				}
+			}
 		}
 
 		if ("ec".equals(e.getLocalName())) {
-			boolean isolated = e.getAttributeValue("isolated", "no").equals("yes");
-			String id = e.getAttributeValue("id");
 			String startRef = e.getAttributeValue("startRef");
-			if (isolated && id.isEmpty()) {
-				reason = "Missing \"id\" attribute in isolated <ec/>";
+			if (startRef.isEmpty()) {
+				reason = "Missing \"startRef\" attribute <ec/>";
 				return false;
 			}
-			if (isolated && !startRef.isEmpty()) {
-				reason = "\"startRef\" attribute present in isolated <ec/>";
-				return false;
+			boolean isolated = e.getAttributeValue("isolated", "no").equals("yes");
+			if (isolated) {
+				if (!isolatedSc.containsKey(startRef)) {
+					reason = "Missing isolated <sc/> element with id=\"" + startRef + "\" referenced by <ec/>";
+					return false;
+				}
+				Element sc = isolatedSc.get(startRef);
+				if (!sc.getAttributeValue("canCopy", "yes").equals(e.getAttributeValue("canCopy", "yes"))) {
+					reason = "Different 'canCopy' attribute in isolated <sc/> with id=\"" + startRef
+							+ "\" and matching <ec/>";
+					return false;
+				}
+				if (!sc.getAttributeValue("canDelete", "yes").equals(e.getAttributeValue("canDelete", "yes"))) {
+					reason = "Different 'canDelete' attribute in isolated <sc/> with id=\"" + startRef
+							+ "\" and matching <ec/>";
+					return false;
+				}
+				if (!sc.getAttributeValue("canOverlap", "yes").equals(e.getAttributeValue("canOverlap", "yes"))) {
+					reason = "Different 'canOverlap' attribute in isolated <sc/> with id=\"" + startRef
+							+ "\" and matching <ec/>";
+					return false;
+				}
+				if (!sc.getAttributeValue("canReorder", "yes").equals(e.getAttributeValue("canReorder", "yes"))) {
+					reason = "Different 'canReorder' attribute in isolated <sc/> with id=\"" + startRef
+							+ "\" and matching <ec/>";
+					return false;
+				}
+				if (inSource) {
+					isolatedSc.remove(startRef);
+				}
+			} else {
+				if (!unitSc.containsKey(startRef)) {
+					reason = "Missing <sc/> element with id=\"" + startRef + "\" referenced by <ec/>";
+					return false;
+				}
+				Element sc = unitSc.get(startRef);
+				if (!sc.getAttributeValue("canCopy", "yes").equals(e.getAttributeValue("canCopy", "yes"))) {
+					reason = "Different 'canCopy' attribute in <sc/> with id=\"" + startRef + "\" and matching <ec/>";
+					return false;
+				}
+				if (!sc.getAttributeValue("canDelete", "yes").equals(e.getAttributeValue("canDelete", "yes"))) {
+					reason = "Different 'canDelete' attribute in <sc/> with id=\"" + startRef + "\" and matching <ec/>";
+					return false;
+				}
+				if (!sc.getAttributeValue("canOverlap", "yes").equals(e.getAttributeValue("canOverlap", "yes"))) {
+					reason = "Different 'canOverlap' attribute in <sc/> with id=\"" + startRef
+							+ "\" and matching <ec/>";
+					return false;
+				}
+				if (!sc.getAttributeValue("canReorder", "yes").equals(e.getAttributeValue("canReorder", "yes"))) {
+					reason = "Different 'canReorder' attribute in <sc/> with id=\"" + startRef
+							+ "\" and matching <ec/>";
+					return false;
+				}
+				if (inSource) {
+					unitSc.remove(startRef);
+				}
 			}
-			if (!isolated && startRef.isEmpty()) {
-				reason = "Missing \"startRef\" attribute in non-isolated <ec/>";
-				return false;
-			}
-			if (!isolated && !id.isEmpty()) {
-				reason = "\"id\" attribute present in non-isolated <ec/>";
-				return false;
-			}
-			if (!isolated && !e.getAttributeValue("dir").isEmpty()) {
-				reason = "Attribute \"dir\" used in non-isolated <ec/>";
-				return false;
-			}
-			if (isolated && !fileScId.contains(id)) {
-				reason = "Missing isolated <sc/> element with id=\"" + id + "\" referenced by <ec/>";
-				return false;
-			}
-			if (inSource && isolated) {
-				sourceSc.remove(id);
-			}
-			if (!isolated && !scId.contains(startRef)) {
-				reason = "Missing <sc/> element in <unit> with id=\"" + startRef + "\" referenced by <ec/>";
-				return false;
-			}
+			String id = e.getAttributeValue("id");
 			if (!id.isEmpty()) {
 				if (inSource) {
 					if (sourceId.contains(id)) {
@@ -608,6 +790,42 @@ public class Xliff20 {
 				} else {
 					if (!dataId.contains(dataRef)) {
 						reason = "Missing <data> element referenced by <ec>";
+						return false;
+					}
+				}
+			}
+			String type = e.getAttributeValue("type");
+			if (!type.isEmpty() && !knownTypes.contains(type)) {
+				reason = "Invalid \"type\" attribute in <ec>";
+				return false;
+			}
+			String subType = e.getAttributeValue("subType");
+			if (!subType.isEmpty()) {
+				if (type.isEmpty()) {
+					reason = "Missing \"type\" attribute in <ec> that has \"subType\"";
+					return false;
+				}
+				int index = subType.indexOf(':');
+				if (index == -1) {
+					reason = "Invalid \"subType\" attribute value: " + subType;
+					return false;
+				}
+				String prefix = subType.substring(0, index);
+				if (!knownPrefixes.contains(prefix)) {
+					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
+					return false;
+				}
+				if ("xlf".equals(prefix)) {
+					if (!xlfSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <ec>";
+						return false;
+					}
+					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"ui\" in <ec>";
+						return false;
+					}
+					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
+						reason = "Invalid \"subType\" attribute value for type=\"fmt\" in <ec>";
 						return false;
 					}
 				}
@@ -682,15 +900,25 @@ public class Xliff20 {
 
 		List<Element> children = e.getChildren();
 		for (int i = 0; i < children.size(); i++) {
-			boolean result = recurse(children.get(i));
-			if ("file".equals(children.get(i).getName())) {
-				if (!sourceSc.isEmpty()) {
+			Element child = children.get(i);
+			if ("source".equals(child.getLocalName())) {
+
+			}
+			boolean result = recurse(child);
+			if (!result) {
+				return false;
+			}
+			if ("file".equals(child.getName())) {
+				if (!isolatedSc.isEmpty()) {
 					reason = "Isolated <sc> element without matching <ec> in <file>";
 					return false;
 				}
 			}
-			if (!result) {
-				return false;
+			if (result && "unit".equals(child.getName())) {
+				if (!unitSc.isEmpty()) {
+					reason = "<sc> element without matching <ec> in <unit>";
+					return false;
+				}
 			}
 		}
 
@@ -708,10 +936,6 @@ public class Xliff20 {
 				declaredNamespaces.remove(prefix);
 			}
 		}
-
-		if ("source".equals(e.getLocalName())) {
-			inSource = false;
-		}
 		if ("target".equals(e.getLocalName())) {
 			if (!cantDelete.isEmpty()) {
 				reason = "Inline element with \"canDelete\" set to \"no\" is missing in <target>";
@@ -719,33 +943,20 @@ public class Xliff20 {
 			}
 			inTarget = false;
 		}
-		if ("segment".equals(e.getLocalName())) {
-			Element target = e.getChild("target");
-			if (!currentState.equals("initial") && target == null) {
-				reason = "Missing <target> in <segment> with \"state\" other than \"initial\"";
-				return false;
-			}
-			if ("final".equals(currentState)) {
-				if (!validateInlineElements(e)) {
-					return false;
-				}
-			}
-		}
 		if ("ignorable".equals(e.getLocalName())) {
 			if (!validateInlineElements(e)) {
 				return false;
 			}
 		}
-
 		return true;
 	}
 
-	private boolean validateInlineElements(Element e) {
-		Element target = e.getChild("target");
-		if ("ignorable".equals(e.getLocalName()) && target == null) {
+	private boolean validateInlineElements(Element segment) {
+		Element target = segment.getChild("target");
+		if ("ignorable".equals(segment.getLocalName()) && target == null) {
 			return true;
 		}
-		Element source = e.getChild("source");
+		Element source = segment.getChild("source");
 		List<Element> sourceList = source.getChildren();
 		Iterator<Element> it = sourceList.iterator();
 		while (it.hasNext()) {
@@ -784,7 +995,7 @@ public class Xliff20 {
 							return false;
 						}
 					}
-				}
+				}				
 			}
 			if ("pc".equals(tag.getName())) {
 				List<Element> pcList = target.getChildren("pc");
