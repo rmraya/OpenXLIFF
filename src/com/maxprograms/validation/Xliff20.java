@@ -67,8 +67,6 @@ public class Xliff20 {
 	private HashSet<String> fileId;
 	private HashSet<String> groupId;
 	private HashSet<String> unitId;
-	private HashSet<String> ignorableId;
-	private HashSet<String> segmentId;
 	private HashSet<String> cantDelete;
 	private HashSet<String> sourceId;
 	private HashSet<String> dataId;
@@ -310,30 +308,25 @@ public class Xliff20 {
 				return false;
 			}
 			segCount = 0;
-			maxSegment = segments.size();
+			maxSegment = segments.size() + e.getChildren("ignorable").size();
 			dataId = new HashSet<>();
-			ignorableId = new HashSet<>();
-			segmentId = new HashSet<>();
 			if (noteId != null) {
 				noteId = null;
 			}
 			smId = new HashSet<>();
 			orderSet = new HashSet<>();
 			unitSc = new Hashtable<>();
+			sourceId = new HashSet<>();
 		}
 
 		if ("ignorable".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (!id.isEmpty()) {
-				if (ignorableId.contains(id)) {
+				if (sourceId.contains(id)) {
 					reason = "Duplicated \"id\" in <ignorable>";
 					return false;
 				}
-				ignorableId.add(id);
-				if (segmentId.contains(id)) {
-					reason = "<ignorable> with \"id\" of sibling <segment>";
-					return false;
-				}
+				sourceId.add(id);
 			}
 			currentState = null;
 		}
@@ -341,15 +334,11 @@ public class Xliff20 {
 		if ("segment".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (!id.isEmpty()) {
-				if (segmentId.contains(id)) {
+				if (sourceId.contains(id)) {
 					reason = "Duplicated \"id\" in <segment>";
 					return false;
 				}
-				segmentId.add(id);
-				if (ignorableId.contains(id)) {
-					reason = "<segment> with \"id\" of sibling <ignorable>";
-					return false;
-				}
+				sourceId.add(id);
 			}
 			currentState = e.getAttributeValue("state", "initial");
 			Element target = e.getChild("target");
@@ -390,7 +379,6 @@ public class Xliff20 {
 				return false;
 			}
 			inSource = true;
-			sourceId = new HashSet<>();
 			cantDelete = new HashSet<>();
 		}
 
@@ -698,7 +686,7 @@ public class Xliff20 {
 		if ("ec".equals(e.getLocalName())) {
 			String startRef = e.getAttributeValue("startRef");
 			if (startRef.isEmpty()) {
-				reason = "Missing \"startRef\" attribute <ec/>";
+				reason = "Missing \"startRef\" attribute in <ec/>";
 				return false;
 			}
 			boolean isolated = e.getAttributeValue("isolated", "no").equals("yes");
