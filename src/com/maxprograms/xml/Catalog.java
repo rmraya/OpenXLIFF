@@ -343,7 +343,11 @@ public class Catalog implements EntityResolver2 {
 				String name = f.getAbsolutePath();
 				if (!f.isAbsolute()) {
 					File currentFolder = new File(System.getProperty("user.dir"));
-					name = name.substring(currentFolder.getAbsolutePath().length());
+					if (name.startsWith(currentFolder.getAbsolutePath())) {
+						name = name.substring(currentFolder.getAbsolutePath().length());
+					} else {
+						name = f.getName();
+					}
 				}
 				File parent = new File(documentParent);
 				File file = new File(parent, name);
