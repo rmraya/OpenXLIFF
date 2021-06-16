@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -65,6 +67,18 @@ public class LanguageUtils {
 		return null;
 	}
 
+	public static Language languageFromName(String description) throws SAXException, IOException, ParserConfigurationException {
+		List<Language> list = getCommonLanguages();
+		Iterator<Language> it = list.iterator();
+		while (it.hasNext()) {
+			Language l = it.next();
+			if (l.getDescription().equals(description)) {
+				return l;
+			}
+		}
+		return null;
+	}
+
 	public static String normalizeCode(String code) throws IOException {
 		if (registry == null) {
 			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
@@ -82,5 +96,15 @@ public class LanguageUtils {
 	public static boolean isCJK(String code) {
 		return code.startsWith("zh") || code.startsWith("ja") || code.startsWith("ko") || code.startsWith("vi")
 				|| code.startsWith("ain") || code.startsWith("aib");
+	}
+
+	public static String[] getLanguageNames() throws SAXException, IOException, ParserConfigurationException {
+		Set<String> set = new TreeSet<>();
+		List<Language> list = getCommonLanguages();	
+		Iterator<Language> it = list.iterator();
+		while (it.hasNext()) {
+			set.add(it.next().getDescription());
+		}
+		return set.toArray(new String[set.size()]);
 	}
 }
