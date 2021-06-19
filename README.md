@@ -32,6 +32,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.12.6 | Improved validation; updated language management | June 19, 2021
 1.12.5 | Improved support for bilingual files | February 3rd, 2021
 1.12.4 | Allowed concurrent access for [XLIFF Validation](https://github.com/rmraya/XLIFFValidation) | January 22nd, 2021
 1.12.3 | Improved support for Trados Studio packages | January 1st, 2021
