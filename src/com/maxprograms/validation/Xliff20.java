@@ -77,7 +77,6 @@ public class Xliff20 {
 	private HashSet<String> noteId;
 	private HashSet<String> smId;
 	private HashSet<String> orderSet;
-	private Map<String, Element> isolatedSc;
 	private Map<String, Element> unitSc;
 	private int segCount;
 	private int maxSegment;
@@ -251,7 +250,6 @@ public class Xliff20 {
 			fileId.add(id);
 			groupId = new HashSet<>();
 			unitId = new HashSet<>();
-			isolatedSc = new Hashtable<>();
 			if (noteId != null) {
 				noteId = null;
 			}
@@ -433,11 +431,12 @@ public class Xliff20 {
 		// Inline elements
 
 		if ("cp".equals(e.getLocalName())) {
+			// #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
 			String hex = e.getAttributeValue("hex");
 			int value = Integer.valueOf(hex, 16);
-			String s = "" + (char) value;
-			if (s.equals(XMLUtils.validChars(s))) {
-				reason = "Valid XML character represented as <cp>";
+			if (value == 0x9 || value == 0xA || value == 0xD || (value >= 0x20 && value <= 0xD7FF)
+					|| (value >= 0xE000 && value <= 0xFFFD) || (value >= 0x10000 && value <= 0x10FFFF)) {
+				reason = "Valid XML character represented as <cp> hex: " + hex;
 				return false;
 			}
 		}
@@ -614,9 +613,7 @@ public class Xliff20 {
 					return false;
 				}
 				sourceId.add(id);
-				if ("yes".equals(e.getAttributeValue("isolated"))) {
-					isolatedSc.put(id, e);
-				} else {
+				if (!"yes".equals(e.getAttributeValue("isolated"))) {
 					unitSc.put(id, e);
 				}
 				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
@@ -684,42 +681,36 @@ public class Xliff20 {
 		}
 
 		if ("ec".equals(e.getLocalName())) {
-			String startRef = e.getAttributeValue("startRef");
-			if (startRef.isEmpty()) {
-				reason = "Missing \"startRef\" attribute in <ec/>";
-				return false;
-			}
 			boolean isolated = e.getAttributeValue("isolated", "no").equals("yes");
 			if (isolated) {
-				if (!isolatedSc.containsKey(startRef)) {
-					reason = "Missing isolated <sc/> element with id=\"" + startRef + "\" referenced by <ec/>";
-					return false;
-				}
-				Element sc = isolatedSc.get(startRef);
-				if (!sc.getAttributeValue("canCopy", "yes").equals(e.getAttributeValue("canCopy", "yes"))) {
-					reason = "Different 'canCopy' attribute in isolated <sc/> with id=\"" + startRef
-							+ "\" and matching <ec/>";
-					return false;
-				}
-				if (!sc.getAttributeValue("canDelete", "yes").equals(e.getAttributeValue("canDelete", "yes"))) {
-					reason = "Different 'canDelete' attribute in isolated <sc/> with id=\"" + startRef
-							+ "\" and matching <ec/>";
-					return false;
-				}
-				if (!sc.getAttributeValue("canOverlap", "yes").equals(e.getAttributeValue("canOverlap", "yes"))) {
-					reason = "Different 'canOverlap' attribute in isolated <sc/> with id=\"" + startRef
-							+ "\" and matching <ec/>";
-					return false;
-				}
-				if (!sc.getAttributeValue("canReorder", "yes").equals(e.getAttributeValue("canReorder", "yes"))) {
-					reason = "Different 'canReorder' attribute in isolated <sc/> with id=\"" + startRef
-							+ "\" and matching <ec/>";
+				String id = e.getAttributeValue("id");
+				if (id.isEmpty()) {
+					reason = "Missing \"id\" attribute in <ec/>";
 					return false;
 				}
 				if (inSource) {
-					isolatedSc.remove(startRef);
+					if (sourceId.contains(id)) {
+						reason = "Duplicated \"id\" in <ec/>";
+						return false;
+					}
+					sourceId.add(id);
+					if (e.getAttributeValue("canDelete", "yes").equals("no")) {
+						cantDelete.add(id);
+					}
+				}
+				if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
+					cantDelete.remove(id);
 				}
 			} else {
+				if (e.hasAttribute("dir")) {
+					reason = "Non isolated <ec/> has \"dir\" attribute";
+					return false;
+				}
+				String startRef = e.getAttributeValue("startRef");
+				if (startRef.isEmpty()) {
+					reason = "Missing \"startRef\" attribute in <ec/>";
+					return false;
+				}
 				if (!unitSc.containsKey(startRef)) {
 					reason = "Missing <sc/> element with id=\"" + startRef + "\" referenced by <ec/>";
 					return false;
@@ -745,22 +736,6 @@ public class Xliff20 {
 				}
 				if (inSource) {
 					unitSc.remove(startRef);
-				}
-			}
-			String id = e.getAttributeValue("id");
-			if (!id.isEmpty()) {
-				if (inSource) {
-					if (sourceId.contains(id)) {
-						reason = "Duplicated \"id\" in <ec/>";
-						return false;
-					}
-					sourceId.add(id);
-					if (e.getAttributeValue("canDelete", "yes").equals("no")) {
-						cantDelete.add(id);
-					}
-				}
-				if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
-					cantDelete.remove(id);
 				}
 			}
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
@@ -896,12 +871,6 @@ public class Xliff20 {
 			if (!result) {
 				return false;
 			}
-			if ("file".equals(child.getName())) {
-				if (!isolatedSc.isEmpty()) {
-					reason = "Isolated <sc> element without matching <ec> in <file>";
-					return false;
-				}
-			}
 			if (result && "unit".equals(child.getName())) {
 				if (!unitSc.isEmpty()) {
 					reason = "<sc> element without matching <ec> in <unit>";
@@ -983,7 +952,7 @@ public class Xliff20 {
 							return false;
 						}
 					}
-				}				
+				}
 			}
 			if ("pc".equals(tag.getName())) {
 				List<Element> pcList = target.getChildren("pc");
