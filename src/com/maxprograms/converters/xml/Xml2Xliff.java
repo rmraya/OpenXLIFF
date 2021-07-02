@@ -99,6 +99,7 @@ public class Xml2Xliff {
 	private static String targetLanguage;
 	private static boolean inCData;
 	private static boolean translateComments;
+	private static boolean containsText;
 
 	private Xml2Xliff() {
 		// do not instantiate this class
@@ -109,6 +110,7 @@ public class Xml2Xliff {
 		List<String> result = new ArrayList<>();
 		segId = 1;
 		stack = new Stack<>();
+		containsText = false;
 
 		inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -222,9 +224,12 @@ public class Xml2Xliff {
 				writeString("</xliff>");
 			}
 			output.close();
-
+			if (!containsText) {
+				Files.deleteIfExists(new File(skeletonFile).toPath());
+				Files.deleteIfExists(new File(xliffFile).toPath());
+				throw new IOException("File does not contain translatable text");
+			}
 			result.add(Constants.SUCCESS);
-
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException
 				| IllegalArgumentException e) {
 			LOGGER.log(Level.ERROR, "Error converting XML file", e);
@@ -545,6 +550,7 @@ public class Xml2Xliff {
 		String dirt = startText + "%%%" + segId++ + "%%%\n" + endText;
 		writeString(clean);
 		writeSkeleton(dirt);
+		containsText = true;
 	}
 
 	private static String removeTags(String tagged) throws IOException, SAXException, ParserConfigurationException {

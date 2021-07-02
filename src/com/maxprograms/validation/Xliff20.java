@@ -38,7 +38,6 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
-import com.maxprograms.xml.XMLUtils;
 
 import org.xml.sax.SAXException;
 

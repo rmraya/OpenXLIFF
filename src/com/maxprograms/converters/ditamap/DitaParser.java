@@ -36,6 +36,8 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
 
 import org.xml.sax.SAXException;
 
@@ -100,6 +102,8 @@ public class DitaParser {
 	private static TreeSet<String> linkSet;
 	private static TreeSet<String> imageSet;
 
+	private boolean containsText;
+
 	protected List<String> run(Map<String, String> params)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
 		List<String> result = new ArrayList<>();
@@ -161,6 +165,13 @@ public class DitaParser {
 				if (!recursed.contains(file)) {
 					try {
 						Element e = builder.build(file).getRootElement();
+						if ("svg".equals(e.getName())) {
+							containsText = false;
+							recurseSVG(e);
+							if (!containsText) {
+								continue;
+							}
+						}
 						recurse(e, file);
 						recursed.add(file);
 						filesMap.add(file);
@@ -174,6 +185,43 @@ public class DitaParser {
 
 		result.addAll(filesMap);
 		return result;
+	}
+
+	private void recurseSVG(Element e) {
+		if ("text".equals(e.getName()) && !svgText(e).isEmpty()) {
+			containsText = true;
+			return;
+		}
+		if ("title".equals(e.getName()) && !svgText(e).isEmpty()) {
+			containsText = true;
+			return;
+		}
+		if ("desc".equals(e.getName()) && !svgText(e).isEmpty()) {
+			containsText = true;
+			return;
+		}
+		List<Element> children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while(it.hasNext()) {
+			recurseSVG(it.next());
+		}
+	}
+
+	private String svgText(Element e) {
+		StringBuilder sb = new StringBuilder();
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				TextNode t = (TextNode)node;
+				sb.append(t.getText());
+			}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				sb.append(svgText((Element)node));
+			}
+		}
+		return sb.toString();
 	}
 
 	private void recurse(Element e, String parentFile) throws IOException, SAXException, ParserConfigurationException {
