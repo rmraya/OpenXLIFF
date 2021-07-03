@@ -123,7 +123,25 @@ public class ToXliff2 {
 			typeMeta.addContent(source.getAttributeValue("datatype"));
 			typeGroup.addContent(typeMeta);
 			fileMetadata.addContent(typeGroup);
-
+			if (!source.getAttributeValue("product-name").isEmpty()
+					|| !source.getAttributeValue("product-version").isEmpty()
+					|| !source.getAttributeValue("build-num").isEmpty()) {
+				Element productGroup = new Element("mda:metaGroup");
+				productGroup.setAttribute("category", "project-data");
+				Element productName = new Element("mda:meta");
+				productName.setAttribute("type", "product-name");
+				productName.setText(source.getAttributeValue("product-name"));
+				productGroup.addContent(productName);
+				Element productVersion = new Element("mda:meta");
+				productVersion.setAttribute("type", "project-id");
+				productVersion.setText(source.getAttributeValue("product-version"));
+				productGroup.addContent(productVersion);
+				Element buildNumber = new Element("mda:meta");
+				buildNumber.setAttribute("type", "build-number");
+				buildNumber.setText(source.getAttributeValue("build-num"));
+				productGroup.addContent(buildNumber);
+				fileMetadata.addContent(productGroup);
+			}
 			Element header = source.getChild("header");
 			if (header != null) {
 				Element skl = header.getChild("skl");
