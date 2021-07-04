@@ -27,6 +27,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF Filters for extracting the text to align from supported monolingual documents.
 - **[TMXEditor](https://github.com/rmraya/TMXEditor)** relies on OpenXLIFF Filters XML support for processing TMX files.
 - **[XLIFF Validation](https://github.com/rmraya/XLIFFValidation)** web-based XLIFF Validation Service.
+- **[Fluenta](https://github.com/rmraya/Fluenta)** DITA Translation Manager that uses OpenXLIFF to generate XLIFF from DITA projects
 
 ## Releases
 
