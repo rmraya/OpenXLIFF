@@ -33,8 +33,8 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
-1.12.7 | Improved round trip 1.2 -> 2.0 -> 1.2; Ignored untranslatable SVG in DITA maps | July 4, 2021
-1.12.6 | Improved validation; updated language management | June 19, 2021
+1.12.7 | Improved round trip 1.2 -> 2.0 -> 1.2; Ignored untranslatable SVG in DITA maps | July 4th, 2021
+1.12.6 | Improved validation; updated language management | June 19th, 2021
 1.12.5 | Improved support for bilingual files | February 3rd, 2021
 1.12.4 | Allowed concurrent access for [XLIFF Validation](https://github.com/rmraya/XLIFFValidation) | January 22nd, 2021
 1.12.3 | Improved support for Trados Studio packages | January 1st, 2021
@@ -44,10 +44,10 @@ Version | Comment | Release Date
 1.11.1 | Fixed JSON encoding; fixed import of XLIFF matches | November 1st, 2020
 1.11.0 | Added support for JSON files | September 25, 2020
 1.10.1 | Fixed handling of TXLF files and improved XML catalog | September 5th, 2020
-1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25th. 2020
+1.10.0 | Added conversion of 3rd party XLIFF; improved support for XLIFF 2.0; fixed issues with Trados Studio packages | August 25th, 2020
 1.9.1 | Added improvements required by [Swordfish IV](https://github.com/rmraya/Swordfish). | August 13th, 2020
 1.9.0 | Added 5 Machine Translation (MT) engines (Google, Microsoft Azure, DeepL, MyMemory & Yandex) | May 18th, 2020
-1.8.4 | Improved catalog and other minor fixes | April 25th. 2020
+1.8.4 | Improved catalog and other minor fixes | April 25th, 2020
 1.8.3 | Fixed conversion of PO files | April 17th, 2020
 1.8.2 | Switched to synchronized classes in XML package | April 10th, 2020
 1.8.1 | Improved support for Trados Studio packages | April 3rd, 2020
