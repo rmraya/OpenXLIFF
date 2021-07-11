@@ -110,13 +110,10 @@ public class Resx2Xliff {
 		if (node.getAttributeValue("name", "").startsWith(">>")) {
 			return false;
 		}
-		if (node.getAttribute("mimetype") != null && !node.getAttributeValue("mimetype").trim().equals("")) {
+		if (node.getAttribute("mimetype") != null && !node.getAttributeValue("mimetype").trim().isEmpty()) {
 			return false;
 		}
-		if (node.getAttribute("type") != null && !node.getAttributeValue("type").trim().equals("")) {
-			return false;
-		}
-		return true;
+		return !(node.getAttribute("type") != null && !node.getAttributeValue("type").trim().isEmpty());
 	}
 
 	static boolean isSkipCommand(Element node) {

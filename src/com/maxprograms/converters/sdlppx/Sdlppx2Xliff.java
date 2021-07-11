@@ -53,7 +53,6 @@ public class Sdlppx2Xliff {
 	static List<String> tgtLangs;
 	private static String inputFile;
 	private static String skeleton;
-	private static ZipInputStream in;
 	private static ZipOutputStream out;
 
 	private Sdlppx2Xliff() {
@@ -107,85 +106,85 @@ public class Sdlppx2Xliff {
 			}
 
 			out = new ZipOutputStream(new FileOutputStream(skeleton));
-			in = new ZipInputStream(new FileInputStream(inputFile));
-
 			List<String> xliffList = new ArrayList<>();
+			try (ZipInputStream in = new ZipInputStream(new FileInputStream(inputFile))) {
 
-			ZipEntry entry = null;
-			while ((entry = in.getNextEntry()) != null) {
-				String entryName = entry.getName();
-				String parent = "";
-				String name = entryName;
-				if (entryName.indexOf("\\") != -1) {
-					parent = entryName.substring(0, entryName.indexOf("\\"));
-					name = entryName.substring(entryName.indexOf("\\") + 1);
-				}
-				if (entryName.indexOf("/") != -1) {
-					parent = entryName.substring(0, entryName.indexOf("/"));
-					name = entryName.substring(entryName.indexOf("/") + 1);
-				}
-				if (targetLanguage.equalsIgnoreCase(parent) && name.toLowerCase().endsWith(".sdlxliff")) {
-					// it is sdlxliff from target folder
-					File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".sdlxliff");
-					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-						byte[] buf = new byte[1024];
-						int len;
-						while ((len = in.read(buf)) > 0) {
-							output.write(buf, 0, len);
-						}
+
+				ZipEntry entry = null;
+				while ((entry = in.getNextEntry()) != null) {
+					String entryName = entry.getName();
+					String parent = "";
+					String name = entryName;
+					if (entryName.indexOf("\\") != -1) {
+						parent = entryName.substring(0, entryName.indexOf("\\"));
+						name = entryName.substring(entryName.indexOf("\\") + 1);
 					}
-
-					Map<String, String> table = new HashMap<>();
-					table.put("source", tmp.getAbsolutePath());
-					table.put("xliff", tmp.getAbsolutePath() + ".xlf");
-					table.put("skeleton", tmp.getAbsolutePath() + ".skl");
-					table.put("catalog", params.get("catalog"));
-					table.put("srcEncoding", params.get("srcEncoding"));
-					table.put("paragraph", params.get("paragraph"));
-					table.put("srxFile", params.get("srxFile"));
-					table.put("format", params.get("format"));
-					table.put("srcLang", sourceLanguage);
-					table.put("tgtLang", targetLanguage);
-					List<String> res = Sdl2Xliff.run(table);
-					if (Constants.SUCCESS.equals(res.get(0))) {
-						updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
-						ZipEntry content = new ZipEntry(entry.getName() + ".skl");
-						content.setMethod(ZipEntry.DEFLATED);
-						out.putNextEntry(content);
-						try (FileInputStream input = new FileInputStream(tmp.getAbsolutePath() + ".skl")) {
-							byte[] array = new byte[1024];
+					if (entryName.indexOf("/") != -1) {
+						parent = entryName.substring(0, entryName.indexOf("/"));
+						name = entryName.substring(entryName.indexOf("/") + 1);
+					}
+					if (targetLanguage.equalsIgnoreCase(parent) && name.toLowerCase().endsWith(".sdlxliff")) {
+						// it is sdlxliff from target folder
+						File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".sdlxliff");
+						try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
+							byte[] buf = new byte[1024];
 							int len;
-							while ((len = input.read(array)) > 0) {
-								out.write(array, 0, len);
+							while ((len = in.read(buf)) > 0) {
+								output.write(buf, 0, len);
 							}
-							out.closeEntry();
 						}
-						File skl = new File(tmp.getAbsolutePath() + ".skl");
-						Files.delete(skl.toPath());
-						File xlf = new File(tmp.getAbsolutePath() + ".xlf");
-						xliffList.add(xlf.getAbsolutePath());
-					} else {
-						saveEntry(entry, tmp.getAbsolutePath());
-					}
-					Files.delete(tmp.toPath());
-				} else if (sourceLanguage.equalsIgnoreCase(parent) || name.toLowerCase().endsWith(".sdlproj")
-						|| targetLanguage.equalsIgnoreCase(parent)) {
-					// preserve source files and project
-					// preserve other files from target folder too
-					File tmp = File.createTempFile("zip", ".tmp");
-					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-						byte[] buf = new byte[1024];
-						int len;
-						while ((len = in.read(buf)) > 0) {
-							output.write(buf, 0, len);
-						}
-					}
-					saveEntry(entry, tmp.getAbsolutePath());
-					Files.delete(tmp.toPath());
-				}
-			}
 
-			in.close();
+						Map<String, String> table = new HashMap<>();
+						table.put("source", tmp.getAbsolutePath());
+						table.put("xliff", tmp.getAbsolutePath() + ".xlf");
+						table.put("skeleton", tmp.getAbsolutePath() + ".skl");
+						table.put("catalog", params.get("catalog"));
+						table.put("srcEncoding", params.get("srcEncoding"));
+						table.put("paragraph", params.get("paragraph"));
+						table.put("srxFile", params.get("srxFile"));
+						table.put("format", params.get("format"));
+						table.put("srcLang", sourceLanguage);
+						table.put("tgtLang", targetLanguage);
+						List<String> res = Sdl2Xliff.run(table);
+						if (Constants.SUCCESS.equals(res.get(0))) {
+							updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
+							ZipEntry content = new ZipEntry(entry.getName() + ".skl");
+							content.setMethod(ZipEntry.DEFLATED);
+							out.putNextEntry(content);
+							try (FileInputStream input = new FileInputStream(tmp.getAbsolutePath() + ".skl")) {
+								byte[] array = new byte[1024];
+								int len;
+								while ((len = input.read(array)) > 0) {
+									out.write(array, 0, len);
+								}
+								out.closeEntry();
+							}
+							File skl = new File(tmp.getAbsolutePath() + ".skl");
+							Files.delete(skl.toPath());
+							File xlf = new File(tmp.getAbsolutePath() + ".xlf");
+							xliffList.add(xlf.getAbsolutePath());
+						} else {
+							saveEntry(entry, tmp.getAbsolutePath());
+						}
+						Files.delete(tmp.toPath());
+					} else if (sourceLanguage.equalsIgnoreCase(parent) || name.toLowerCase().endsWith(".sdlproj")
+							|| targetLanguage.equalsIgnoreCase(parent)) {
+						// preserve source files and project
+						// preserve other files from target folder too
+						File tmp = File.createTempFile("zip", ".tmp");
+						try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
+							byte[] buf = new byte[1024];
+							int len;
+							while ((len = in.read(buf)) > 0) {
+								output.write(buf, 0, len);
+							}
+						}
+						saveEntry(entry, tmp.getAbsolutePath());
+						Files.delete(tmp.toPath());
+					}
+				}
+
+			}
 			out.close();
 
 			// generate final XLIFF

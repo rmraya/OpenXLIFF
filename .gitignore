@@ -1,6 +1,4 @@
 .DS_Store
 /bin/
 /dist/
-/sonar-project.properties
-/sonarqube.sh
 /.scannerwork/

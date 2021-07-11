@@ -159,10 +159,7 @@ public class Srt2Xliff {
             return true;
         }
         matcher = endPattern.matcher(string);
-        if (matcher.find()) {
-            return true;
-        }
-        return false;
+        return matcher.find();
     }
 
     private static String fixHtml(String string) {
@@ -247,7 +244,7 @@ public class Srt2Xliff {
             }
             src.setContent(newContent);
         }
-        return src.toString().replace("<src>", "").replace("</src>","");
+        return src.toString().replace("<src>", "").replace("</src>", "");
     }
 
 }

@@ -45,7 +45,6 @@ import org.xml.sax.SAXException;
 
 public class Xliff2Sdlrpx {
 
-    private static ZipInputStream in;
     private static ZipOutputStream out;
 
     private static String srcLang;
@@ -129,50 +128,49 @@ public class Xliff2Sdlrpx {
                 filesMap.put(sdlxliffFile, tempXliff.getAbsolutePath());
             }
 
-            in = new ZipInputStream(new FileInputStream(sklFile));
             out = new ZipOutputStream(new FileOutputStream(outputFile));
-
-            ZipEntry entry = null;
-            while ((entry = in.getNextEntry()) != null) {
-                File f = new File(entry.getName());
-                String name = f.getName();
-                String extension = name.substring(name.lastIndexOf('.'));
-                File tmp = File.createTempFile("tmp", extension);
-                try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-                    byte[] buf = new byte[1024];
-                    int len;
-                    while ((len = in.read(buf)) > 0) {
-                        output.write(buf, 0, len);
+            try (ZipInputStream in = new ZipInputStream(new FileInputStream(sklFile))) {
+                ZipEntry entry = null;
+                while ((entry = in.getNextEntry()) != null) {
+                    File f = new File(entry.getName());
+                    String name = f.getName();
+                    String extension = name.substring(name.lastIndexOf('.'));
+                    File tmp = File.createTempFile("tmp", extension);
+                    try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = in.read(buf)) > 0) {
+                            output.write(buf, 0, len);
+                        }
                     }
-                }
 
-                if (name.endsWith(".skl")) {
-                    File back = File.createTempFile("tmp", ".sdlxliff");
-                    String xliff = entry.getName();
-                    xliff = xliff.substring(0, xliff.length() - 4);
-                    Map<String, String> map = new HashMap<>();
-                    map.put("xliff", filesMap.get(xliff));
-                    map.put("skeleton", tmp.getAbsolutePath());
-                    map.put("catalog", catalog);
-                    map.put("backfile", back.getAbsolutePath());
-                    List<String> res = Xliff2Sdl.run(map);
-                    if (!res.get(0).equals(Constants.SUCCESS)) {
-                        return res;
+                    if (name.endsWith(".skl")) {
+                        File back = File.createTempFile("tmp", ".sdlxliff");
+                        String xliff = entry.getName();
+                        xliff = xliff.substring(0, xliff.length() - 4);
+                        Map<String, String> map = new HashMap<>();
+                        map.put("xliff", filesMap.get(xliff));
+                        map.put("skeleton", tmp.getAbsolutePath());
+                        map.put("catalog", catalog);
+                        map.put("backfile", back.getAbsolutePath());
+                        List<String> res = Xliff2Sdl.run(map);
+                        if (!res.get(0).equals(Constants.SUCCESS)) {
+                            return res;
+                        }
+                        saveEntry(xliff, back.getAbsolutePath());
+                        Files.delete(back.toPath());
+                    } else if (name.endsWith(".sdlproj")) {
+                        // update project
+                        updateProjectFile(tmp);
+                        saveEntry(updateProjectName(entry.getName()), tmp.getAbsolutePath());
+                    } else {
+                        // store as is
+                        saveEntry(entry.getName(), tmp.getAbsolutePath());
                     }
-                    saveEntry(xliff, back.getAbsolutePath());
-                    Files.delete(back.toPath());
-                } else if (name.endsWith(".sdlproj")) {
-                    // update project
-                    updateProjectFile(tmp);
-                    saveEntry(updateProjectName(entry.getName()), tmp.getAbsolutePath());
-                } else {
-                    // store as is
-                    saveEntry(entry.getName(), tmp.getAbsolutePath());
+                    Files.delete(tmp.toPath());
+
                 }
-                Files.delete(tmp.toPath());
             }
-
-            in.close();
             out.close();
 
             Set<String> keySet = filesMap.keySet();

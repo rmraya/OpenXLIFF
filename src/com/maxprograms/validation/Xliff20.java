@@ -54,7 +54,7 @@ public class Xliff20 {
 	private static final String XLIFF_DOCUMENT_2_0 = "urn:oasis:names:tc:xliff:document:2.0";
 	private static final String W3_ORG_XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
 
-	private static Logger LOGGER = System.getLogger(Xliff20.class.getName());
+	private static Logger logger = System.getLogger(Xliff20.class.getName());
 	private String reason = "";
 	private Catalog resolver;
 
@@ -83,15 +83,13 @@ public class Xliff20 {
 	private boolean isReference;
 	private boolean inSource;
 	private boolean inTarget;
-	private String currentState;
 	private String fsPrefix = "fs";
 
-	private List<String> knownPrefixes = Arrays
-			.asList(new String[] { "xlf", "mtc", "gls", "fs", "mda", "res", "ctr", "slr", "val", "its", "my" });
-	private List<String> knownTypes = Arrays.asList(new String[] { "fmt", "ui", "quote", "link", "image", "other" });
-	private List<String> xlfSubTypes = Arrays
-			.asList(new String[] { "xlf:lb", "xlf:pb", "xlf:b", "xlf:i", "xlf:u", "xlf:var" });
-	private List<String> fmtSubTypes = Arrays.asList(new String[] { "xlf:b", "xlf:i", "xlf:u", "xlf:lb", "xlf:pb" });
+	private List<String> knownPrefixes = Arrays.asList("xlf", "mtc", "gls", "fs", "mda", "res", "ctr", "slr", "val",
+			"its", "my");
+	private List<String> knownTypes = Arrays.asList("fmt", "ui", "quote", "link", "image", "other");
+	private List<String> xlfSubTypes = Arrays.asList( "xlf:lb", "xlf:pb", "xlf:b", "xlf:i", "xlf:u", "xlf:var");
+	private List<String> fmtSubTypes = Arrays.asList("xlf:b", "xlf:i", "xlf:u", "xlf:lb", "xlf:pb");
 
 	public Xliff20() throws IOException {
 		registry = new RegistryParser();
@@ -110,7 +108,7 @@ public class Xliff20 {
 			schema.newValidator().validate(source);
 			return validateContent(file);
 		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {
-			LOGGER.log(Level.ERROR, e);
+			logger.log(Level.ERROR, e);
 			reason = e.getMessage();
 		}
 		return false;
@@ -325,7 +323,6 @@ public class Xliff20 {
 				}
 				sourceId.add(id);
 			}
-			currentState = null;
 		}
 
 		if ("segment".equals(e.getLocalName())) {
@@ -337,7 +334,7 @@ public class Xliff20 {
 				}
 				sourceId.add(id);
 			}
-			currentState = e.getAttributeValue("state", "initial");
+			String currentState = e.getAttributeValue("state", "initial");
 			Element target = e.getChild("target");
 			if (!currentState.equals("initial") && target == null) {
 				reason = "Missing <target> in <segment> with \"state\" other than \"initial\"";

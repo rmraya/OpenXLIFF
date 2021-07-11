@@ -10,7 +10,7 @@
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
 
- package com.maxprograms.converters.json;
+package com.maxprograms.converters.json;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,7 +36,6 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -86,7 +85,7 @@ public class Xliff2json {
         Document doc = builder.build(xliffFile);
         Element root = doc.getRootElement();
         List<PI> encodings = root.getChild("file").getPI("encoding");
-        if (encodings.size() == 0) {
+        if (encodings.isEmpty()) {
             throw new IOException("Missing encoding");
         }
         encoding = encodings.get(0).getData();
@@ -102,7 +101,7 @@ public class Xliff2json {
         }
     }
 
-    private static void parseJson(JSONObject json) throws JSONException, IOException {
+    private static void parseJson(JSONObject json) throws IOException {
         Iterator<String> keys = json.keys();
         while (keys.hasNext()) {
             String key = keys.next();
@@ -146,7 +145,7 @@ public class Xliff2json {
         return builder.toString();
     }
 
-    private static void parseArray(JSONArray array) throws JSONException, IOException {
+    private static void parseArray(JSONArray array) throws IOException {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String) {

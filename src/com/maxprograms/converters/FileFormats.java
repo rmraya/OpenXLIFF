@@ -26,7 +26,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.SAXBuilder;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -386,7 +385,7 @@ public class FileFormats {
 		return formats;
 	}
 
-	private static JSONObject loadJSON(File file) throws IOException, JSONException {
+	private static JSONObject loadJSON(File file) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		try (FileReader reader = new FileReader(file)) {
 			try (BufferedReader buffered = new BufferedReader(reader)) {

@@ -37,11 +37,6 @@ import org.xml.sax.SAXException;
 
 public class ToOpenXliff {
 
-    private static String inputFile;
-    private static String skeletonFile;
-    private static String sourceLanguage;
-    private static String targetLanguage;
-
     private static List<String> namespaces;
     private static int tag;
 
@@ -52,11 +47,11 @@ public class ToOpenXliff {
 
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
-        inputFile = params.get("source");
+        String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
-        skeletonFile = params.get("skeleton");
-        sourceLanguage = params.get("srcLang");
-        targetLanguage = params.get("tgtLang");
+        String skeletonFile = params.get("skeleton");
+        String sourceLanguage = params.get("srcLang");
+        String targetLanguage = params.get("tgtLang");
         String catalog = params.get("catalog");
         try {
             SAXBuilder builder = new SAXBuilder();

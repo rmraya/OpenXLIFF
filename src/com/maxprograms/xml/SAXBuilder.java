@@ -124,7 +124,7 @@ public class SAXBuilder {
 
 	public Document build(URL url) throws SAXException, IOException, ParserConfigurationException {
 		if ("file".equals(url.getProtocol())) {
-			if (resolver != null && resolver instanceof Catalog) {
+			if (resolver instanceof Catalog) {
 				File f = new File(url.toString());
 				String parent = f.getParentFile().getAbsolutePath();
 				if (parent.lastIndexOf("file:") != -1) {
