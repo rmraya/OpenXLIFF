@@ -40,6 +40,7 @@ public class Catalog implements EntityResolver2 {
 	private String workDir;
 	private String base = "";
 	private String documentParent = "";
+	private String currentFile;
 
 	public Catalog(String catalogFile)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
@@ -48,6 +49,7 @@ public class Catalog implements EntityResolver2 {
 			String absolute = XMLUtils.getAbsolutePath(System.getProperty("user.dir"), catalogFile);
 			file = new File(absolute);
 		}
+		currentFile = file.getAbsolutePath();
 		workDir = file.getParent();
 		if (!workDir.endsWith(File.separator)) {
 			workDir = workDir + File.separator;
@@ -76,7 +78,10 @@ public class Catalog implements EntityResolver2 {
 
 			if (!child.getAttributeValue("xml:base", "").equals("")) {
 				base = child.getAttributeValue("xml:base");
-				File b = new File(base);
+				File b = new File(new File(currentFile).getParentFile(), base);
+				if (!b.exists()) {					
+					throw new IOException("Invalid base: " + b.toPath().toString());
+				}
 				if (!b.isAbsolute()) {
 					base = XMLUtils.getAbsolutePath(workDir, base);
 					if (!base.endsWith(File.separator)) {
