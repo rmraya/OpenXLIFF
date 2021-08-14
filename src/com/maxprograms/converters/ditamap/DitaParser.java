@@ -175,14 +175,13 @@ public class DitaParser {
 						recurse(e, file);
 						recursed.add(file);
 						filesMap.add(file);
-					} catch (Exception e) {
-						// ignore keys that point to images
+					} catch (IOException | SAXException | ParserConfigurationException ex) {
+						// ignore images
 					}
 				}
 			}
 			count++;
 		} while (!pendingRecurse.isEmpty() && count < 4);
-
 		result.addAll(filesMap);
 		return result;
 	}
@@ -202,7 +201,7 @@ public class DitaParser {
 		}
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			recurseSVG(it.next());
 		}
 	}
@@ -214,11 +213,11 @@ public class DitaParser {
 		while (it.hasNext()) {
 			XMLNode node = it.next();
 			if (node.getNodeType() == XMLNode.TEXT_NODE) {
-				TextNode t = (TextNode)node;
+				TextNode t = (TextNode) node;
 				sb.append(t.getText());
 			}
 			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-				sb.append(svgText((Element)node));
+				sb.append(svgText((Element) node));
 			}
 		}
 		return sb.toString();
@@ -291,7 +290,16 @@ public class DitaParser {
 						MessageFormat mf = new MessageFormat("Referenced file '{0}' doesn't exist");
 						LOGGER.log(Level.WARNING, mf.format(new Object[] { href }));
 					}
-				} catch (Exception ex) {
+				} catch (SAXException ex) {
+					String lower = href.toLowerCase();
+					if (!(lower.endsWith(".eps") || lower.endsWith(".png") || lower.endsWith(".jpeg")
+							|| lower.endsWith(".jpg") || lower.endsWith(".pdf") || lower.endsWith(".tiff")
+							|| lower.endsWith(".tif") || lower.endsWith(".mov") || lower.endsWith(".mp4")
+							|| lower.endsWith(".m4v") || lower.endsWith(".flv") || lower.endsWith(".fl4v")
+							|| lower.endsWith(".avi") || lower.endsWith(".mpg") || lower.endsWith(".mpeg")
+							|| lower.endsWith(".wmv") || lower.endsWith(".asf"))) {
+						throw new SAXException(ex.getMessage() + "\n File: '" + href + "'");
+					}
 					LOGGER.log(Level.WARNING, "Error recursing", ex);
 				}
 			}
