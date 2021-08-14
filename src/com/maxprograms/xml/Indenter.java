@@ -37,7 +37,7 @@ public class Indenter {
 	}
 
 	private static void recurse(Element e) {
-		if (e.getAttributeValue("xml:space", "default").equals("preserve")) {
+		if ("preserve".equals(e.getAttributeValue("xml:space"))) {
 			return;
 		}
 		boolean hasText = hasText(e);
