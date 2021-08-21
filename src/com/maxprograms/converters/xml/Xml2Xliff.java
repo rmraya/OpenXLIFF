@@ -513,24 +513,26 @@ public class Xml2Xliff {
 			return string;
 		}
 		String txt = string;
-		String result = txt.substring(0, start);
+		StringBuilder result = new StringBuilder(txt.substring(0, start));
 		while (start != -1) {
 			txt = txt.substring(start + STARTG.length());
 			start = txt.indexOf(STARTG);
 			String element = txt.substring(0, start);
-			result = result + makeMrk(element);
+			result.append(makeMrk(element));
 			txt = txt.substring(start + STARTG.length());
 			int end = txt.indexOf(ENDG);
 			String content = txt.substring(0, end);
-			result = result + content + "</mrk>";
+			result.append(content);
+			result.append("</mrk>");
 			end = txt.indexOf(ENDG, end + 1);
 			txt = txt.substring(end + ENDG.length());
 			start = txt.indexOf(STARTG);
 			if (start != -1) {
-				result = result + txt.substring(0, start);
+				result.append(txt.substring(0, start));
 			}
 		}
-		return result + txt;
+		result.append(txt);
+		return result.toString();
 	}
 
 	private static void writeSegment(String tagged) throws IOException, SAXException, ParserConfigurationException {
@@ -575,7 +577,7 @@ public class Xml2Xliff {
 			return cleanMrk(element);
 		}
 
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		List<XMLNode> content = element.getContent();
 		Iterator<XMLNode> i = content.iterator();
 		while (i.hasNext()) {
@@ -584,20 +586,18 @@ public class Xml2Xliff {
 				case XMLNode.ELEMENT_NODE:
 					Element e = (Element) n;
 					if (e.getName().equals("ph")) {
-						String ph = extractText(e);
-						result = result + ph;
+						result.append(extractText(e));
 					} else if (e.getName().equals("mrk")) {
-						String mrk = cleanMrk(e);
-						result = result + mrk;
+						result.append(cleanMrk(e));
 					} else {
 						throw new SAXException("broken tagged text");
 					}
 					break;
 				case XMLNode.TEXT_NODE:
 					if (inCData) {
-						result = result + ((TextNode) n).getText();
+						result.append(((TextNode) n).getText());
 					} else {
-						result = result + addEntities(((TextNode) n).getText());
+						result.append(addEntities(((TextNode) n).getText()));
 					}
 					break;
 				default:
@@ -605,7 +605,7 @@ public class Xml2Xliff {
 					break;
 			}
 		}
-		return result;
+		return result.toString();
 	}
 
 	private static String cleanMrk(Element element) throws SAXException {
@@ -870,13 +870,13 @@ public class Xml2Xliff {
 
 	private static String addTags(String string) {
 		String src = string;
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		int start = src.indexOf('<');
 		int end = src.indexOf('>');
 
 		while (start != -1) {
 			if (start > 0) {
-				result = result + cleanString(src.substring(0, start));
+				result.append(cleanString(src.substring(0, start)));
 				src = src.substring(start);
 				start = src.indexOf('<');
 				end = src.indexOf('>');
@@ -885,18 +885,18 @@ public class Xml2Xliff {
 			src = src.substring(end + 1);
 			if (ditaBased) {
 				if (!(element.startsWith("<mrk ") || element.equals("</mrk>"))) {
-					result = result + tag(element);
+					result.append(tag(element));
 				} else {
-					result = result + element;
+					result.append(element);
 				}
 			} else {
-				result = result + tag(element);
+				result.append(tag(element));
 			}
 			start = src.indexOf('<');
 			end = src.indexOf('>');
 		}
-		result = result + cleanString(src);
-		return result;
+		result.append(cleanString(src));
+		return result.toString();
 	}
 
 	private static String makeMrk(String element) {
@@ -1047,7 +1047,6 @@ public class Xml2Xliff {
 	}
 
 	private static String extractAttributes(String type, String element) {
-
 		String ctype = "";
 		if (ctypes.containsKey(type)) {
 			ctype = " ctype=\"" + ctypes.get(type) + "\"";
@@ -1483,7 +1482,6 @@ public class Xml2Xliff {
 	}
 
 	private static String getType(String string) {
-
 		String result = "";
 		if (string.startsWith("<![CDATA[")) {
 			return "![CDATA[";
