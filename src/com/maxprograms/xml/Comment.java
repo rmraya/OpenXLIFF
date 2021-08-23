@@ -11,8 +11,8 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 public class Comment implements XMLNode {
@@ -55,7 +55,7 @@ public class Comment implements XMLNode {
 	}
 
 	@Override
-	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
+	public void writeBytes(OutputStream output, Charset charset) throws IOException {
 		output.write(toString().getBytes(charset));
 	}
 

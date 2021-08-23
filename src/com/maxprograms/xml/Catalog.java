@@ -139,7 +139,7 @@ public class Catalog implements EntityResolver2 {
                     nextCatalog = XMLUtils.getAbsolutePath(workDir, nextCatalog);
                 }
                 Catalog cat = new Catalog(nextCatalog);
-                Map<String, String> table = cat.getSystemCatalogue();
+                Map<String, String> table = cat.getSystemCatalog();
                 Iterator<String> it = table.keySet().iterator();
                 while (it.hasNext()) {
                     String key = it.next();
@@ -148,7 +148,7 @@ public class Catalog implements EntityResolver2 {
                         systemCatalog.put(key, value);
                     }
                 }
-                table = cat.getPublicCatalogue();
+                table = cat.getPublicCatalog();
                 it = table.keySet().iterator();
                 while (it.hasNext()) {
                     String key = it.next();
@@ -157,7 +157,7 @@ public class Catalog implements EntityResolver2 {
                         publicCatalog.put(key, value);
                     }
                 }
-                table = cat.getUriCatalogue();
+                table = cat.getUriCatalog();
                 it = table.keySet().iterator();
                 while (it.hasNext()) {
                     String key = it.next();
@@ -166,7 +166,7 @@ public class Catalog implements EntityResolver2 {
                         uriCatalog.put(key, value);
                     }
                 }
-                table = cat.getDtdCatalogue();
+                table = cat.getDtdCatalog();
                 it = table.keySet().iterator();
                 while (it.hasNext()) {
                     String key = it.next();
@@ -225,19 +225,19 @@ public class Catalog implements EntityResolver2 {
         return base + uri;
     }
 
-    private Map<String, String> getSystemCatalogue() {
+    private Map<String, String> getSystemCatalog() {
         return systemCatalog;
     }
 
-    private Map<String, String> getPublicCatalogue() {
+    private Map<String, String> getPublicCatalog() {
         return publicCatalog;
     }
 
-    private Map<String, String> getUriCatalogue() {
+    private Map<String, String> getUriCatalog() {
         return uriCatalog;
     }
 
-    private Map<String, String> getDtdCatalogue() {
+    private Map<String, String> getDtdCatalog() {
         return uriCatalog;
     }
 

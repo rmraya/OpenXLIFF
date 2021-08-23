@@ -12,8 +12,8 @@
 
 package com.maxprograms.xml;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 public class Attribute implements XMLNode, Comparable<Attribute> {
@@ -67,7 +67,7 @@ public class Attribute implements XMLNode, Comparable<Attribute> {
 	}
 
 	@Override
-	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
+	public void writeBytes(OutputStream output, Charset charset) throws IOException {
 		output.write(toString().getBytes(charset));
 	}
 
@@ -85,9 +85,9 @@ public class Attribute implements XMLNode, Comparable<Attribute> {
 		if (name.indexOf(':') == -1) {
 			return name;
 		}
-		return name.substring(name.indexOf(':')+1);
+		return name.substring(name.indexOf(':') + 1);
 	}
-	
+
 	public String getNamespace() {
 		if (name.indexOf(':') == -1) {
 			return "";

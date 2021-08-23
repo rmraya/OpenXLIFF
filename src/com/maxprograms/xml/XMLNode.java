@@ -11,8 +11,8 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.Charset;
 
@@ -34,6 +34,6 @@ public interface XMLNode extends Serializable {
 	@Override
 	public boolean equals(Object node);
 
-	public void writeBytes(FileOutputStream output, Charset charset) throws IOException;
+	public void writeBytes(OutputStream output, Charset charset) throws IOException;
 
 }

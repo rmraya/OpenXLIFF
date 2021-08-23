@@ -11,8 +11,8 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
@@ -194,7 +194,7 @@ public class Document implements XMLNode {
 	}
 
 	public boolean isDefaultNamespace(String namespaceURI) {
-		return root.getAttributeValue("xmlns", "").equals(namespaceURI);
+		return root.getAttributeValue("xmlns").equals(namespaceURI);
 	}
 
 	public void setDefaultNamespace(String namespaceURI) {
@@ -238,7 +238,7 @@ public class Document implements XMLNode {
 			return false;
 		}
 		Document doc = (Document) obj;
-		return content == doc.getContent();
+		return content.equals(doc.getContent());
 	}
 
 	public List<XMLNode> getContent() {
@@ -276,7 +276,7 @@ public class Document implements XMLNode {
 	}
 
 	@Override
-	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
+	public void writeBytes(OutputStream output, Charset charset) throws IOException {
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setEncoding(charset);
 		outputter.output(this, output);

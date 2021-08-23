@@ -11,8 +11,8 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
@@ -142,16 +142,7 @@ public class Element implements XMLNode {
 		}
 		mergeText();
 		s.mergeText();
-		if (content.size() != s.getContent().size()) {
-			return false;
-		}
-		List<XMLNode> scontent = s.getContent();
-		for (int i = 0; i < content.size(); i++) {
-			if (!content.get(i).equals(scontent.get(i))) {
-				return false;
-			}
-		}
-		return true;
+		return content.equals(s.getContent());
 	}
 
 	private void mergeText() {
@@ -407,7 +398,7 @@ public class Element implements XMLNode {
 	}
 
 	@Override
-	public void writeBytes(FileOutputStream output, Charset charset) throws IOException {
+	public void writeBytes(OutputStream output, Charset charset) throws IOException {
 		output.write(toString().getBytes(charset));
 	}
 
