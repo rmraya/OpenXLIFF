@@ -37,7 +37,8 @@ class CustomContentHandler implements IContentHandler {
 	private Map<String, String> pendingNamespaces;
 	private String systemId;
 	private String encoding;
-
+	private Catalog catalog;
+	
 	public CustomContentHandler() {
 		doc = null;
 		stack = new Stack<>();
@@ -98,11 +99,23 @@ class CustomContentHandler implements IContentHandler {
 		if (target.equals("xml-model")) {
 			List<Attribute> atts = getPseudoAttributes(data);
 			Iterator<Attribute> it = atts.iterator();
+			String href = null;
+			String type = null;
+			String schemaType = null;
 			while (it.hasNext()) {
 				Attribute a = it.next();
-				if (a.getName().equals("href")) {
-					systemId = a.getValue();
+				if ("href".equals(a.getName())) {
+					href = a.getValue();
 				}
+				if ("schematypens".equals(a.getName())) {
+					schemaType = a.getValue();
+				}
+				if ("type".equals(a.getName())) {
+					type = a.getValue();
+				}
+			}
+			if (href != null && "http://relaxng.org/ns/structure/1.0".equals(schemaType)) {
+				parseRelaxNG(href, type);
 			}
 		}
 		if (current != null) {
@@ -344,5 +357,19 @@ class CustomContentHandler implements IContentHandler {
 
 	public void setInternalSubset(String internalSubset) {
 		doc.setInternalSubset(internalSubset);
+	}
+
+	@Override
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
+	}
+
+	private void parseRelaxNG(String href, String type) {
+		if (catalog != null ) {
+			// TODO
+			String system = catalog.matchSystem(null, href);
+			System.out.println(system);
+			System.out.println(type);
+		}
 	}
 }

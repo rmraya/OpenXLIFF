@@ -143,6 +143,9 @@ public class SAXBuilder {
 		boolean clearHandler = false;
 		if (contentHandler == null) {
 			contentHandler = new CustomContentHandler();
+			if (resolver != null && resolver instanceof Catalog) {
+				contentHandler.setCatalog((Catalog)resolver);
+			}
 			clearHandler = true;
 		}
 		parser.setContentHandler(contentHandler);
