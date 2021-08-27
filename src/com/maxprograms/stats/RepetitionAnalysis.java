@@ -804,7 +804,7 @@ public class RepetitionAnalysis {
 
 			Element target = e.getChild("target");
 			String translated = "no";
-			if (target != null && !target.getText().equals("")) {
+			if (target != null && !target.getText().isEmpty()) {
 				translated = "yes";
 			}
 

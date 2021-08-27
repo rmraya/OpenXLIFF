@@ -145,7 +145,7 @@ public class Mif2Xliff {
 						}
 						if (inPara) {
 							if (!translatable.contains(type)) {
-								if (!segment.equals("")) {
+								if (!segment.isEmpty()) {
 									if (segment.endsWith("</ph>")) {
 										segment = segment.substring(0, segment.length() - 5);
 										segment += "\n" + cleanTag(line) + "</ph>";
@@ -161,7 +161,7 @@ public class Mif2Xliff {
 								content = removeComments(content);
 								// check for ilegal characters
 								content = cleanString(replaceChars(content));
-								if (segment.equals("")) {
+								if (segment.isEmpty()) {
 									writeSkeleton("%%%" + segId + "%%%\n");
 								}
 								segment += content;
@@ -176,7 +176,7 @@ public class Mif2Xliff {
 						if (!typesList.isEmpty()) {
 							type = typesList.pop();
 						}
-						if (inPara && !segment.equals("")) {
+						if (inPara && !segment.isEmpty()) {
 							if (segment.endsWith("</ph>")) {
 								segment = segment.substring(0, segment.length() - 5);
 								segment += "\n" + cleanTag(line) + "</ph>";
@@ -187,7 +187,7 @@ public class Mif2Xliff {
 							writeSkeleton(line + "\n");
 						}
 						if (type != null && type.equals("para")) {
-							if (!segment.equals("")) {
+							if (!segment.isEmpty()) {
 								writeSegment();
 							}
 							inPara = false;
@@ -258,7 +258,7 @@ public class Mif2Xliff {
 	 * skeleton file instead.
 	 */
 	private static void writeSegment() throws IOException {
-		if (segment.equals("")) {
+		if (segment.isEmpty()) {
 			return;
 		}
 		if (segment.endsWith("</ph>")) {
@@ -309,7 +309,7 @@ public class Mif2Xliff {
 			String code = s.substring(control + 2, s.indexOf(' ', control));
 
 			String character = "" + getCharValue(Integer.valueOf(code, 16).intValue());
-			if (!character.equals("")) {
+			if (!character.isEmpty()) {
 				s = s.substring(0, control) + character + s.substring(1 + s.indexOf(' ', control));
 			}
 			control++;

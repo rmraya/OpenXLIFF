@@ -132,7 +132,7 @@ public class Xliff2Po {
 			boolean newLine = false;
 			boolean fuzzy = false;
 			if (!segment.getAttributeValue("approved", "no").equalsIgnoreCase("Yes") && target != null
-					&& !target.getText().trim().equals("")) {
+					&& !target.getText().trim().isEmpty()) {
 				fuzzy = true;
 			}
 			writeComments(segment);
@@ -214,12 +214,12 @@ public class Xliff2Po {
 			}
 		} else {
 			if (flags.indexOf("fuzzy") == -1) {
-				if (!flags.equals("")) {
+				if (!flags.isEmpty()) {
 					writeString("#, " + flags + "\n");
 				}
 			} else {
 				flags = flags.substring(0, flags.indexOf("fuzzy")) + flags.substring(flags.indexOf("fuzzy") + 5);
-				if (!flags.equals("")) {
+				if (!flags.isEmpty()) {
 					writeString("#, " + flags + "\n");
 				}
 			}
@@ -301,7 +301,7 @@ public class Xliff2Po {
 						List<String> comments = splitLines(context.getText());
 						for (int j = 0; j < comments.size(); j++) {
 							String comment = comments.get(j);
-							if (!comment.trim().equals("")) {
+							if (!comment.trim().isEmpty()) {
 								writeString("#. " + comment.trim() + "\n");
 							} else {
 								writeString("#.\n");

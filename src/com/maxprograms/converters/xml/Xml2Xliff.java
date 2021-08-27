@@ -451,7 +451,7 @@ public class Xml2Xliff {
 		writeString("   <skl>\n");
 		writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
 		writeString("   </skl>\n");
-		if (!entitiesMap.equals("")) {
+		if (!entitiesMap.isEmpty()) {
 			writeString("   <prop-group name=\"entities\">\n" + entitiesMap + "   </prop-group>\n");
 		}
 		writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
@@ -476,8 +476,8 @@ public class Xml2Xliff {
 			} else {
 				inCData = false;
 			}
-			if (inDesign && !txt.trim().equals("")) {
-				if (txt.startsWith("c_") && !txt.substring(2).trim().equals("")) {
+			if (inDesign && !txt.trim().isEmpty()) {
+				if (txt.startsWith("c_") && !txt.substring(2).trim().isEmpty()) {
 					writeSkeleton("c_");
 					txt = txt.substring(2);
 					txt = txt.replace("~sep~", "_");
@@ -680,7 +680,7 @@ public class Xml2Xliff {
 
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
-			if (n.getNodeType() == XMLNode.TEXT_NODE && !n.toString().trim().equals("")) {
+			if (n.getNodeType() == XMLNode.TEXT_NODE && !n.toString().trim().isEmpty()) {
 				break;
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
@@ -698,7 +698,7 @@ public class Xml2Xliff {
 		}
 		for (int i = content.size() - 1; i >= 0; i--) {
 			XMLNode n = content.get(i);
-			if (n.getNodeType() == XMLNode.TEXT_NODE && !n.toString().trim().equals("")) {
+			if (n.getNodeType() == XMLNode.TEXT_NODE && !n.toString().trim().isEmpty()) {
 				break;
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
@@ -1133,7 +1133,7 @@ public class Xml2Xliff {
 				keepFormating.put(t.getText(), "yes");
 			}
 			String attributes = t.getAttributeValue("attributes");
-			if (!attributes.equals("")) {
+			if (!attributes.isEmpty()) {
 				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
 				int count = tokenizer.countTokens();
 				List<String> v = new ArrayList<>(count);
@@ -1143,7 +1143,7 @@ public class Xml2Xliff {
 				translatableAttributes.put(t.getText(), v);
 			}
 			String ctype = t.getAttributeValue("ctype");
-			if (!ctype.equals("")) {
+			if (!ctype.isEmpty()) {
 				ctypes.put(t.getText(), ctype);
 			}
 		}
@@ -1265,7 +1265,7 @@ public class Xml2Xliff {
 					return;
 				}
 				if (stack.isEmpty() && e.getChildren().isEmpty() && !translatableAttributes.containsKey(e.getName())) {
-					if (inline.containsKey(e.getName()) && !e.getText().equals("")) {
+					if (inline.containsKey(e.getName()) && !e.getText().isEmpty()) {
 						if (text.startsWith('\u007F' + "" + '\u007F')) {
 							segments.add(text);
 							text = "";
@@ -1299,14 +1299,14 @@ public class Xml2Xliff {
 				}
 				List<XMLNode> content = e.getContent();
 				if (content.isEmpty()) {
-					if (text.equals("")) {
+					if (text.isEmpty()) {
 						text = "" + '\u007F' + '\u007F' + "/>";
 					} else {
 						text = text + "/>";
 					}
 				} else {
 					if (!inline.containsKey(e.getName())) {
-						if (!text.equals("")) {
+						if (!text.isEmpty()) {
 							segments.add(text + ">");
 							text = "";
 						} else {
@@ -1314,7 +1314,7 @@ public class Xml2Xliff {
 						}
 						translatable = "";
 					} else {
-						if (!text.equals("")) {
+						if (!text.isEmpty()) {
 							text = text + ">";
 						} else {
 							segments.add("" + '\u007F' + '\u007F' + ">");
@@ -1329,7 +1329,7 @@ public class Xml2Xliff {
 						text = "";
 						translatable = "";
 					}
-					if (!text.equals("")) {
+					if (!text.isEmpty()) {
 						text = text + "</" + e.getName() + ">";
 					} else {
 						segments.add("" + '\u007F' + '\u007F' + "</" + e.getName() + ">");
@@ -1341,7 +1341,7 @@ public class Xml2Xliff {
 
 				break;
 			case XMLNode.PROCESSING_INSTRUCTION_NODE:
-				if (inDesign && !translatable.trim().equals("")) {
+				if (inDesign && !translatable.trim().isEmpty()) {
 					text = text + n.toString();
 				} else {
 					segments.add(text);

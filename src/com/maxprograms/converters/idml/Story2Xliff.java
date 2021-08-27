@@ -341,7 +341,7 @@ public class Story2Xliff {
 					segments = new String[] { fixTags(center) };
 				}
 				for (int h = 0; h < segments.length; h++) {
-					if (segments[h].trim().equals("")) {
+					if (segments[h].trim().isEmpty()) {
 						writeSkeleton(segments[h]);
 					} else {
 						writeSkeleton("%%%" + id + "%%%\n");

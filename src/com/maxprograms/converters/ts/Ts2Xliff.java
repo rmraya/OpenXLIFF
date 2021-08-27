@@ -109,7 +109,7 @@ public class Ts2Xliff {
 			target.setAttribute("id", "" + segId);
 			String targetText = getTarget(target);
 			Element comment = e.getChild("comment");
-			String approved = (target.getAttributeValue("type").equals("") && !targetText.trim().equals("")) ? "yes" //$NON-NLS-5$
+			String approved = (target.getAttributeValue("type").isEmpty() && !targetText.trim().isEmpty()) ? "yes" //$NON-NLS-5$
 					: "no"; //$NON-NLS-1$
 			writeString("<trans-unit id=\"" + segId++ + "\" approved=\"" + approved + "\" xml:space=\"preserve\">\n");
 			writeString("<source xml:lang=\"" + sourceLanguage + "\">" + getText(source) + "</source>\n");

@@ -233,7 +233,7 @@ public class DitaParser {
 		if (ditaClass(e, "map/topicref") || isTopicref(e.getName())) {
 			String href = "";
 			String keyref = e.getAttributeValue("keyref");
-			if (!keyref.equals("")) {
+			if (!keyref.isEmpty()) {
 				Key k = rootScope.getKey(keyref);
 				if (k != null) {
 					if (!usedKeys.containsKey(k)) {
@@ -258,7 +258,7 @@ public class DitaParser {
 			} else {
 				href = e.getAttributeValue("href");
 				String format = e.getAttributeValue("format", "dita");
-				if (!href.equals("") && format.startsWith("dita")) {
+				if (!href.isEmpty() && format.startsWith("dita")) {
 					href = Utils.getAbsolutePath(parentFile, href);
 				}
 			}
@@ -268,10 +268,10 @@ public class DitaParser {
 				return;
 			}
 			String format = e.getAttributeValue("format", "dita");
-			if (!href.equals("") && !format.startsWith("dita")) {
+			if (!href.isEmpty() && !format.startsWith("dita")) {
 				return;
 			}
-			if (!href.equals("") && !href.equals(parentFile)) {
+			if (!href.isEmpty() && !href.equals(parentFile)) {
 				try {
 					File file = new File(href);
 					if (file.exists()) {
@@ -341,7 +341,7 @@ public class DitaParser {
 			if (!conaction.isEmpty()) { // it's a conref push
 				conkeyref = "";
 			}
-			if (!conkeyref.equals("")) {
+			if (!conkeyref.isEmpty()) {
 				String key = conkeyref.substring(0, conkeyref.indexOf('/'));
 				String id = conkeyref.substring(conkeyref.indexOf('/') + 1);
 				Key k = rootScope.getKey(key);
@@ -377,7 +377,7 @@ public class DitaParser {
 			}
 
 			String keyref = e.getAttributeValue("keyref");
-			if (!keyref.equals("")) {
+			if (!keyref.isEmpty()) {
 				if (keyref.indexOf('/') == -1) {
 					Key k = rootScope.getKey(keyref);
 					if (k != null) {
@@ -615,12 +615,12 @@ public class DitaParser {
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
 					String att = prop.getAttributeValue("att");
 					String val = prop.getAttributeValue("val");
-					if (!att.equals("")) {
+					if (!att.isEmpty()) {
 						Set<String> set = excludeTable.get(att);
 						if (set == null) {
 							set = new HashSet<>();
 						}
-						if (!val.equals("")) {
+						if (!val.isEmpty()) {
 							set.add(val);
 						}
 						excludeTable.put(att, set);
@@ -629,7 +629,7 @@ public class DitaParser {
 				if (prop.getAttributeValue("action", "include").equals("include")) {
 					String att = prop.getAttributeValue("att");
 					String val = prop.getAttributeValue("val");
-					if (!att.equals("") && !val.equals("")) {
+					if (!att.isEmpty() && !val.isEmpty()) {
 						Set<String> set = includeTable.get(att);
 						if (set == null) {
 							set = new HashSet<>();

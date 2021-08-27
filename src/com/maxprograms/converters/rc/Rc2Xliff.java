@@ -115,7 +115,7 @@ public class Rc2Xliff {
 	}
 
 	private static void writeSegment(String segment) throws IOException {
-		if (segment.equals("")) {
+		if (segment.isEmpty()) {
 			return;
 		}
 		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n" + "      <source xml:lang=\""
@@ -463,7 +463,7 @@ public class Rc2Xliff {
 				}
 			} else { // is in the string
 				if (character == '"') { // end of string Careful can be the \" escape character
-					if (word.equals("")) {
+					if (word.isEmpty()) {
 						writeSkeleton('"');
 						writeSkeleton('"');
 					} else { // string is empty string
@@ -479,7 +479,7 @@ public class Rc2Xliff {
 								character = (char) buffer.read();
 							}
 							if (character == '"') {// if end of string in first character of the next line
-								if (word.equals("")) {
+								if (word.isEmpty()) {
 									writeSkeleton('"');
 									writeSkeleton('"');
 								} else { // string is empty string
@@ -587,7 +587,7 @@ public class Rc2Xliff {
 		stack = "";
 		while (buffer.ready() && !endBlock(word)) {
 			word = parseWords(" \n\t\r,", false, false).trim();
-			if (!word.equals("")) {
+			if (!word.isEmpty()) {
 				if (word.equals("0") && position == 0) {
 					break;
 				}

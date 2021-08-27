@@ -343,7 +343,7 @@ public class DitaMap2Xliff {
 		String conkeyref = e.getAttributeValue("conkeyref");
 		String conaction = e.getAttributeValue("conaction");
 		String keyref = e.getAttributeValue("keyref");
-		if (!conaction.equals("")) { // it's a conref push
+		if (!conaction.isEmpty()) { // it's a conref push
 			conkeyref = "";
 		}
 		if (!conkeyref.isEmpty()) {
@@ -590,10 +590,10 @@ public class DitaMap2Xliff {
 			throws IOException, SAXException, ParserConfigurationException {
 		String conref = e.getAttributeValue("conref");
 		String conaction = e.getAttributeValue("conaction");
-		if (!conaction.equals("")) { // it's a conref push
+		if (!conaction.isEmpty()) { // it's a conref push
 			conref = "";
 		}
-		if (!conref.equals("")) {
+		if (!conref.isEmpty()) {
 			if (conref.indexOf('#') != -1) {
 				String file = conref.substring(0, conref.indexOf('#'));
 				if (file.length() == 0) {
@@ -692,12 +692,12 @@ public class DitaMap2Xliff {
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
 					String att = prop.getAttributeValue("att");
 					String val = prop.getAttributeValue("val");
-					if (!att.equals("")) {
+					if (!att.isEmpty()) {
 						Set<String> set = excludeTable.get(att);
 						if (set == null) {
 							set = new HashSet<>();
 						}
-						if (!val.equals("")) {
+						if (!val.isEmpty()) {
 							set.add(val);
 						}
 						excludeTable.put(att, set);
@@ -706,7 +706,7 @@ public class DitaMap2Xliff {
 				if (prop.getAttributeValue("action", "include").equals("include")) {
 					String att = prop.getAttributeValue("att");
 					String val = prop.getAttributeValue("val");
-					if (!att.equals("") && !val.equals("")) {
+					if (!att.isEmpty() && !val.isEmpty()) {
 						Set<String> set = includeTable.get(att);
 						if (set == null) {
 							set = new HashSet<>();

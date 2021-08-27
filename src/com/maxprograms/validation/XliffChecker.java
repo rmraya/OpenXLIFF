@@ -637,7 +637,7 @@ public class XliffChecker {
 				|| e.getLocalName().equals("source") || e.getLocalName().equals("target")
 				|| e.getLocalName().equals("alt-trans") || e.getLocalName().equals("seg-source")) {
 			String lang = e.getAttributeValue("xml:lang");
-			if (!lang.equals("") && !checkLanguage(lang)) {
+			if (!lang.isEmpty() && !checkLanguage(lang)) {
 				MessageFormat mf = new MessageFormat("Invalid language: {0}");
 				reason = mf.format(new Object[] { lang });
 				return false;
@@ -668,7 +668,7 @@ public class XliffChecker {
 				return false;
 			}
 			targetLanguage = e.getAttributeValue("target-language");
-			if (!targetLanguage.equals("")) {
+			if (!targetLanguage.isEmpty()) {
 				if (!checkLanguage(targetLanguage)) {
 					MessageFormat mf = new MessageFormat("Invalid target language: {0}");
 					reason = mf.format(new Object[] { targetLanguage });
@@ -707,7 +707,7 @@ public class XliffChecker {
 
 			// check for valid segment reference
 			String mid = e.getAttributeValue("mid");
-			if (!mid.equals("")) {
+			if (!mid.isEmpty()) {
 				if (!midTable.containsKey(mid)) {
 					reason = "Incorrect segment referenced in <alt-trans> element.";
 					return false;
@@ -716,7 +716,7 @@ public class XliffChecker {
 
 			// check for declared <tool>
 			String tool = e.getAttributeValue("tool-id");
-			if (!tool.equals("")) {
+			if (!tool.isEmpty()) {
 				if (!toolsTable.containsKey(tool)) {
 					reason = "Undeclared <tool> referenced in <alt-trans> element.";
 					return false;
@@ -732,7 +732,7 @@ public class XliffChecker {
 				|| e.getLocalName().equals("bin-unit") || e.getLocalName().equals("target")
 				|| e.getLocalName().equals("bin-target") || e.getLocalName().equals("alt-trans")) {
 			String phase = e.getAttributeValue("phase-name");
-			if (!phase.equals("")) {
+			if (!phase.isEmpty()) {
 				if (!phasesTable.containsKey(phase)) {
 					reason = "Undeclared <phase> referenced in <alt-trans> element.";
 					return false;
@@ -743,7 +743,7 @@ public class XliffChecker {
 		// check language code in <source> and <target>
 		if (e.getLocalName().equals("source") && !inAltTrans) {
 			String lang = e.getAttributeValue("xml:lang");
-			if (!lang.equals("") && !lang.equalsIgnoreCase(sourceLanguage)) {
+			if (!lang.isEmpty() && !lang.equalsIgnoreCase(sourceLanguage)) {
 				MessageFormat mf = new MessageFormat("Found <source> with wrong language code: {0}");
 				reason = mf.format(new Object[] { lang });
 				return false;
@@ -751,11 +751,11 @@ public class XliffChecker {
 		}
 		if (e.getLocalName().equals("target") && !inAltTrans) {
 			String lang = e.getAttributeValue("xml:lang");
-			if (targetLanguage.equals("") && lang.equals("")) {
+			if (targetLanguage.isEmpty() && lang.isEmpty()) {
 				// Missing target language code
 				// bad practice, but legal
 			}
-			if (!targetLanguage.equals("") && !lang.equals("") && !lang.equalsIgnoreCase(targetLanguage)) {
+			if (!targetLanguage.isEmpty() && !lang.isEmpty() && !lang.equalsIgnoreCase(targetLanguage)) {
 				MessageFormat mf = new MessageFormat("Found <target> with wrong language code: {0}");
 				reason = mf.format(new Object[] { lang });
 				return false;
@@ -807,7 +807,7 @@ public class XliffChecker {
 		// check for unique "id" in <group>
 		if (e.getLocalName().equals("group") && version.equals("1.2")) {
 			String id = e.getAttributeValue("id");
-			if (!id.equals("")) {
+			if (!id.isEmpty()) {
 				if (!groupIds.containsKey(id)) {
 					groupIds.put(id, "");
 				} else {
@@ -904,17 +904,17 @@ public class XliffChecker {
 				|| e.getLocalName().equals("bx") || e.getLocalName().equals("ex") || e.getLocalName().equals("bpt")
 				|| e.getLocalName().equals("ept") || e.getLocalName().equals("g") || e.getLocalName().equals("x")) {
 			String xid = e.getAttributeValue("xid");
-			if (!xid.equals("")) {
+			if (!xid.isEmpty()) {
 				xids.put(xid, "");
 			}
 		}
 
 		if (e.getLocalName().equals("bx")) {
 			String id = e.getAttributeValue("rid");
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				id = e.getAttributeValue("id");
 			}
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				reason = "Found <bx> without \"rid\" or \"id\" attributes.";
 				return false;
 			}
@@ -922,10 +922,10 @@ public class XliffChecker {
 		}
 		if (e.getLocalName().equals("ex")) {
 			String id = e.getAttributeValue("rid");
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				id = e.getAttributeValue("id");
 			}
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				reason = "Found <ex> without \"rid\" or \"id\" attributes.";
 				return false;
 			}
@@ -933,10 +933,10 @@ public class XliffChecker {
 		}
 		if (e.getLocalName().equals("bpt")) {
 			String id = e.getAttributeValue("rid");
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				id = e.getAttributeValue("id");
 			}
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				reason = "Found <bpt> without \"rid\" or \"id\" attributes.";
 				return false;
 			}
@@ -944,10 +944,10 @@ public class XliffChecker {
 		}
 		if (e.getLocalName().equals("ept")) {
 			String id = e.getAttributeValue("rid");
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				id = e.getAttributeValue("id");
 			}
-			if (id.equals("")) {
+			if (id.isEmpty()) {
 				reason = "Found <ept> without \"rid\" or \"id\" attributes.";
 				return false;
 			}

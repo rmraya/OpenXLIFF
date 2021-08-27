@@ -173,7 +173,7 @@ public class Text2Xliff {
 			segments[0] = source;
 		}
 		for (int i = 0; i < segments.length; i++) {
-			if (Utils.cleanString(segments[i]).trim().equals("")) {
+			if (Utils.cleanString(segments[i]).trim().isEmpty()) {
 				writeSkeleton(segments[i]);
 			} else {
 				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"

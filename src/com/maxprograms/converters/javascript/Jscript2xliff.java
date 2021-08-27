@@ -81,7 +81,7 @@ public class Jscript2xliff {
 					while ((line = buffer.readLine()) != null) {
 						line = line + "\n";
 						comment = findComment(line);
-						if (!comment.equals("")) {
+						if (!comment.isEmpty()) {
 							line = line.substring(0, line.indexOf(comment));
 						}
 
@@ -107,7 +107,7 @@ public class Jscript2xliff {
 										return result;
 									}
 									comment = findComment(nextLine);
-									if (!comment.equals("")) {
+									if (!comment.isEmpty()) {
 										nextLine = nextLine.substring(0, nextLine.indexOf(comment));
 									}
 									line = line + nextLine;
@@ -212,7 +212,7 @@ public class Jscript2xliff {
 	}
 
 	private static void writeSegment(String segment) throws IOException {
-		if (segment.equals("")) {
+		if (segment.isEmpty()) {
 			return;
 		}
 		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n" + "      <source xml:lang=\""

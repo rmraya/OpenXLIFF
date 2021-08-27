@@ -242,7 +242,7 @@ public class MSOffice2Xliff {
 		if (isNumeric(string.trim())) {
 			return false;
 		}
-		return !string.trim().equals("");
+		return !string.trim().isEmpty();
 	}
 
 	private static boolean isNumeric(String string) {
@@ -377,7 +377,7 @@ public class MSOffice2Xliff {
 
 	private static void recursePara(Element e) throws IOException, SAXException, ParserConfigurationException {
 		if (e.getName().matches("w:p") || e.getName().matches("a:p")) {
-			if (!text.equals("")) {
+			if (!text.isEmpty()) {
 				if (segByElement) {
 					writeSegment(text);
 				} else {

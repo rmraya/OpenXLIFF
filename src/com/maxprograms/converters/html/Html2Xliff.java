@@ -267,11 +267,11 @@ public class Html2Xliff {
 	private static void writeSegment(String segment) throws IOException, SAXException, ParserConfigurationException {
 		segment = segment.replaceAll("\u2029", "");
 		String pure = removePH(segment);
-		if (pure.trim().equals("")) {
+		if (pure.trim().isEmpty()) {
 			writeSkeleton(phContent(segment));
 			return;
 		}
-		if (segment.trim().equals("")) {
+		if (segment.trim().isEmpty()) {
 			writeSkeleton(segment);
 			return;
 		}
@@ -824,7 +824,7 @@ public class Html2Xliff {
 				keepFormating.put(t.getText(), "yes");
 			}
 			String attributes = t.getAttributeValue("attributes");
-			if (!attributes.equals("")) {
+			if (!attributes.isEmpty()) {
 				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
 				int count = tokenizer.countTokens();
 				List<String> v = new ArrayList<>(count);
@@ -834,7 +834,7 @@ public class Html2Xliff {
 				translatableAttributes.put(t.getText(), v);
 			}
 			String ctype = t.getAttributeValue("ctype");
-			if (!ctype.equals("")) {
+			if (!ctype.isEmpty()) {
 				ctypes.put(t.getText(), ctype);
 			}
 		}
@@ -1015,7 +1015,7 @@ public class Html2Xliff {
 			return "?";
 		}
 
-		if (!string.equals("")) {
+		if (!string.isEmpty()) {
 			// skip initial "<"
 			string = string.substring(1);
 		}
@@ -1052,7 +1052,7 @@ public class Html2Xliff {
 				buffer.append(c);
 			}
 		}
-		return !buffer.toString().trim().equals("");
+		return !buffer.toString().trim().isEmpty();
 	}
 
 }

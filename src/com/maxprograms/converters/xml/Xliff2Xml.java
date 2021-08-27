@@ -464,7 +464,7 @@ public class Xliff2Xml {
 		while (it.hasNext()) {
 			String key = it.next();
 			String value = entities.get(key);
-			if (!value.equals("") && !key.equals("amp") && !key.equals("lt") && !key.equals("gt") && !key.equals("quot")
+			if (!value.isEmpty() && !key.equals("amp") && !key.equals("lt") && !key.equals("gt") && !key.equals("quot")
 					&& !key.equals("apos")) {
 				result = replaceEntities(result, value, "&" + key + ";");
 			}

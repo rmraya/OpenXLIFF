@@ -285,7 +285,7 @@ public class XliffModel {
 
 	public void normalize(String output, String skeletonFile) throws IOException {
 		String targetLanguage = root.getChild("file").getAttributeValue("target-language");
-		if (!targetLanguage.equals("")) {
+		if (!targetLanguage.isEmpty()) {
 			targetLanguage = "\" target-language=\"" + targetLanguage;
 		}
 
@@ -381,7 +381,7 @@ public class XliffModel {
 		Iterator<XMLNode> it = nodes.iterator();
 		while (it.hasNext()) {
 			XMLNode n = it.next();
-			if (n.getNodeType() == XMLNode.TEXT_NODE && !n.toString().trim().equals("")) {
+			if (n.getNodeType() == XMLNode.TEXT_NODE && !n.toString().trim().isEmpty()) {
 				return true;
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {

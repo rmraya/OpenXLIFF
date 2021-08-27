@@ -108,7 +108,7 @@ public class ToXliff2 {
 			fileSrcLang = source.getAttributeValue("source-language");
 			root2.setAttribute("srcLang", fileSrcLang);
 			fileTgtLang = source.getAttributeValue("target-language");
-			if (!fileTgtLang.equals("")) {
+			if (!fileTgtLang.isEmpty()) {
 				root2.setAttribute("trgLang", fileTgtLang);
 			}
 			Element file = new Element("file");

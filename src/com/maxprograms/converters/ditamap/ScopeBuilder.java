@@ -75,7 +75,7 @@ public class ScopeBuilder {
 			return;
 		}
 
-		if (!e.getAttributeValue("format", "dita").startsWith("dita") && e.getAttributeValue("keys").equals("")) {
+		if (!e.getAttributeValue("format", "dita").startsWith("dita") && e.getAttributeValue("keys").isEmpty()) {
 			return;
 		}
 
@@ -84,7 +84,7 @@ public class ScopeBuilder {
 		}
 
 		String scope = e.getAttributeValue("keyscope");
-		if (!scope.equals("")) {
+		if (!scope.isEmpty()) {
 			Scope c = new Scope(scope);
 			currentScope.addScope(c);
 			currentScope = c;
@@ -116,19 +116,19 @@ public class ScopeBuilder {
 
 		String val = e.getAttributeValue("keys");
 
-		if (!val.equals("")) {
+		if (!val.isEmpty()) {
 			String[] keys = val.split("\\s");
 			Element topicmeta = e.getChild("topicmeta");
 			String keyref = e.getAttributeValue("keyref");
 			for (int i = 0; i < keys.length; i++) {
 				String key = keys[i];
-				if (!keyref.equals("")) {
+				if (!keyref.isEmpty()) {
 					if (!currentScope.addKey(new Key(key, keyref, parentFile))) {
 						MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
 						LOGGER.log(Level.WARNING, mf.format(new Object[] { key, keyref }));
 					}
 				} else {
-					if (href.equals("")) {
+					if (href.isEmpty()) {
 						if (!currentScope.addKey(new Key(key, parentFile, topicmeta, parentFile))) {
 							MessageFormat mf = new MessageFormat("Duplicate key definition: {0}");
 							LOGGER.log(Level.WARNING, mf.format(new Object[] { key }));
@@ -174,12 +174,12 @@ public class ScopeBuilder {
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
 					String att = prop.getAttributeValue("att");
 					String val = prop.getAttributeValue("val");
-					if (!att.equals("")) {
+					if (!att.isEmpty()) {
 						Set<String> set = excludeTable.get(att);
 						if (set == null) {
 							set = new HashSet<>();
 						}
-						if (!val.equals("")) {
+						if (!val.isEmpty()) {
 							set.add(val);
 						}
 						excludeTable.put(att, set);
@@ -188,7 +188,7 @@ public class ScopeBuilder {
 				if (prop.getAttributeValue("action", "include").equals("include")) {
 					String att = prop.getAttributeValue("att");
 					String val = prop.getAttributeValue("val");
-					if (!att.equals("") && !val.equals("")) {
+					if (!att.isEmpty() && !val.isEmpty()) {
 						Set<String> set = includeTable.get(att);
 						if (set == null) {
 							set = new HashSet<>();

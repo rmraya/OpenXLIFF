@@ -223,7 +223,7 @@ class CustomContentHandler implements IContentHandler {
 		} else {
 			Element child = new Element(qName);
 			String prefix = getPrefixPart(qName);
-			if (!prefix.equals("") && !namespacesInUse.containsKey(prefix)) {
+			if (!prefix.isEmpty() && !namespacesInUse.containsKey(prefix)) {
 				if (pendingNamespaces == null) {
 					pendingNamespaces = new Hashtable<>();
 				}
@@ -254,7 +254,7 @@ class CustomContentHandler implements IContentHandler {
 
 	@Override
 	public void startPrefixMapping(String prefix, String uri) throws SAXException {
-		if (!prefix.equals("") && inDocument) {
+		if (!prefix.isEmpty() && inDocument) {
 			if (current != null) {
 				if (namespacesInUse == null) {
 					namespacesInUse = new Hashtable<>();

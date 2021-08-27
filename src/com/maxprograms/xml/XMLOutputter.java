@@ -67,7 +67,7 @@ public class XMLOutputter {
 			writeString(output, "<!DOCTYPE " + doctype + " ");
 			if (publicId != null) {
 				writeString(output, "PUBLIC \"" + publicId + "\" \"" + systemId + "\"");
-				if (internalSubset != null && !internalSubset.equals("")) {
+				if (internalSubset != null && !internalSubset.isEmpty()) {
 					writeString(output, " [" + internalSubset + "]>\n");
 				} else {
 					writeString(output, ">\n");
@@ -221,7 +221,7 @@ public class XMLOutputter {
 		while (it.hasNext()) {
 			String key = it.next();
 			String value = entities.get(key);
-			if (!value.equals("") && !key.equals("amp") && !key.equals("lt") && !key.equals("gt")
+			if (!value.isEmpty() && !key.equals("amp") && !key.equals("lt") && !key.equals("gt")
 					&& !key.equals("quot")) {
 				result = replaceEntities(result, value, "&" + key + ";");
 			}

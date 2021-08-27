@@ -84,7 +84,7 @@ public class AutoConfiguration {
 				recurse(e);
 			}
 		}
-		if (!text.equals("") && !segment.containsKey(r.getName())) {
+		if (!text.isEmpty() && !segment.containsKey(r.getName())) {
 			segment.put(r.getName(), r.getName());
 		}
 	}

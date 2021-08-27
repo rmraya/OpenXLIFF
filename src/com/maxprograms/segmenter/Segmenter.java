@@ -70,7 +70,7 @@ public class Segmenter {
 	}
 
 	public String[] segment(String string) {
-		if (string == null || string.equals("")) {
+		if (string == null || string.isEmpty()) {
 			return new String[] {};
 		}
 		String pureText = prepareString(string);
@@ -78,7 +78,7 @@ public class Segmenter {
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));
 			String right = hideTags(pureText.substring(pos));
-			if (left.equals("")) {
+			if (left.isEmpty()) {
 				continue;
 			}
 			for (int i = 0; i < rules.size(); i++) {
@@ -94,7 +94,7 @@ public class Segmenter {
 				if (after != null) {
 					afterxp = after.getText();
 				}
-				if (!beforexp.equals("") && !afterxp.equals("")) {
+				if (!beforexp.isEmpty() && !afterxp.isEmpty()) {
 					// match left and right
 					if (endsWith(left, beforexp) && startsWith(right, afterxp)) {
 						if (breaks) {
@@ -104,7 +104,7 @@ public class Segmenter {
 						}
 						break;
 					}
-				} else if (!beforexp.equals("")) {
+				} else if (!beforexp.isEmpty()) {
 					// match left side only
 					if (endsWith(left, beforexp)) {
 						if (breaks) {
@@ -297,7 +297,7 @@ public class Segmenter {
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));
 			String right = hideTags(pureText.substring(pos));
-			if (left.equals("")) {
+			if (left.isEmpty()) {
 				continue;
 			}
 			for (int i = 0; i < rules.size(); i++) {
@@ -313,7 +313,7 @@ public class Segmenter {
 				if (after != null) {
 					afterxp = after.getText();
 				}
-				if (!beforexp.equals("") && !afterxp.equals("")) {
+				if (!beforexp.isEmpty() && !afterxp.isEmpty()) {
 					// match left and right
 					if (endsWith(left, beforexp) && startsWith(right, afterxp)) {
 						if (breaks) {
@@ -323,7 +323,7 @@ public class Segmenter {
 						}
 						break;
 					}
-				} else if (!beforexp.equals("")) {
+				} else if (!beforexp.isEmpty()) {
 					// match left side only
 					if (endsWith(left, beforexp)) {
 						if (breaks) {

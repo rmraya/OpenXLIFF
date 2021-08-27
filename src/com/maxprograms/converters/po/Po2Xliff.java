@@ -120,7 +120,7 @@ public class Po2Xliff {
 						} else {
 							if (line.startsWith("#:")) {
 								// it is a reference
-								if (reference.equals("")) {
+								if (reference.isEmpty()) {
 									reference = line.substring(2);
 								} else {
 									reference = reference + " " + line.substring(2);
@@ -228,7 +228,7 @@ public class Po2Xliff {
 											parsePlural(line);
 										}
 									}
-									if (plural_source.equals("")) {
+									if (plural_source.isEmpty()) {
 										writeSegment();
 									}
 								}
@@ -285,22 +285,22 @@ public class Po2Xliff {
 	}
 
 	private static void writeSegment() throws IOException {
-		if (!plural_source.equals("")) {
+		if (!plural_source.isEmpty()) {
 			writeString("   <group restype=\"x-gettext-plurals\" id=\"" + segId + "\">\n");
-			if (!context.equals("")) {
+			if (!context.isEmpty()) {
 				writeString("      <context-group name=\"x-po-entry-header#" + contextId++
 						+ "\" purpose=\"information\">\n" + "         <context context-type=\"x-po-autocomment\">"
 						+ Utils.cleanString(context) + "</context>\n" + "      </context-group>\n");
 			}
-			if (!reference.equals("")) {
+			if (!reference.isEmpty()) {
 				parseReference(reference);
 			}
-			if (!newContext.equals("")) {
+			if (!newContext.isEmpty()) {
 				writeString("      <context-group name=\"x-po-msgctxt#" + contextId++ + "\" purpose=\"information\">\n"
 						+ "         <context context-type=\"x-msgctxt\">" + Utils.cleanString(newContext)
 						+ "</context>\n" + "      </context-group>\n");
 			}
-			if (!flags.equals("")) {
+			if (!flags.isEmpty()) {
 				writeString("      <prop-group>\n" + "         <prop prop-type=\"x-po-flags\">"
 						+ Utils.cleanString(flags).trim() + "</prop>\n" + "      </prop-group>\n");
 			}
@@ -329,7 +329,7 @@ public class Po2Xliff {
 					writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
 				}
 			}
-			if (!comment.equals("")) {
+			if (!comment.isEmpty()) {
 				writeString("         <note from=\"po-file\">" + Utils.cleanString(comment) + "</note>\n");
 			}
 			writeString("         <note from=\"po-file\" annotates=\"source\">" + "Singular form" + "</note>\n");
@@ -371,7 +371,7 @@ public class Po2Xliff {
 				approved = "yes";
 			}
 			String restype = "";
-			if (source.trim().equals("")) {
+			if (source.trim().isEmpty()) {
 				restype = " restype=\"x-gettext-domain-header\" ";
 			}
 			writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"" + approved + "\""
@@ -383,7 +383,7 @@ public class Po2Xliff {
 					writeString("      <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 				}
 			} else {
-				if (source.trim().equals("")) {
+				if (source.trim().isEmpty()) {
 					source = target;
 				}
 				writeString("      <source xml:lang=\"" + sourceLanguage + "\">" + Utils.cleanString(source)
@@ -392,23 +392,23 @@ public class Po2Xliff {
 					writeString("      <target>" + Utils.cleanString(target) + "</target>\n");
 				}
 			}
-			if (!comment.equals("")) {
+			if (!comment.isEmpty()) {
 				writeString("      <note from=\"po-file\">" + Utils.cleanString(comment) + "</note>\n");
 			}
-			if (!context.equals("")) {
+			if (!context.isEmpty()) {
 				writeString("      <context-group name=\"x-po-entry-header#" + contextId++
 						+ "\" purpose=\"information\">\n" + "         <context context-type=\"x-po-autocomment\">"
 						+ Utils.cleanString(context) + "</context>\n" + "      </context-group>\n");
 			}
-			if (!reference.equals("")) {
+			if (!reference.isEmpty()) {
 				parseReference(reference);
 			}
-			if (!newContext.equals("")) {
+			if (!newContext.isEmpty()) {
 				writeString("      <context-group name=\"x-po-msgctxt#" + contextId++ + "\" purpose=\"information\">\n"
 						+ "         <context context-type=\"x-msgctxt\">" + Utils.cleanString(newContext)
 						+ "</context>\n" + "      </context-group>\n");
 			}
-			if (!flags.equals("")) {
+			if (!flags.isEmpty()) {
 				writeString("      <prop-group>\n" + "         <prop prop-type=\"x-po-flags\">"
 						+ Utils.cleanString(flags).trim() + "</prop>\n" + "      </prop-group>\n");
 			}
@@ -463,7 +463,7 @@ public class Po2Xliff {
 	}
 
 	private static void parseReference(String ref) throws IOException {
-		if (ref.trim().equals("")) {
+		if (ref.trim().isEmpty()) {
 			return;
 		}
 		writeString("      <context-group name=\"x-po-reference#" + refId++ + "\" purpose=\"x-unknown\">\n");

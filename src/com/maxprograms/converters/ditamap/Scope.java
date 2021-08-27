@@ -85,7 +85,7 @@ public class Scope {
 		while (it.hasNext()) {
 			String name = it.next();
 			String prefix = "";
-			if (!name.equals("")) {
+			if (!name.isEmpty()) {
 				prefix = name + ".";
 			}
 			Set<String> keySet = keys.keySet();
