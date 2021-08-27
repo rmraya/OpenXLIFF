@@ -1,6 +1,12 @@
 {
     "configurations": [
-        
+        {
+            "type": "java",
+            "name": "Launch DitaParser",
+            "request": "launch",
+            "mainClass": "openxliff/com.maxprograms.converters.ditamap.DitaParser",
+            "projectName": "OpenXLIFF"
+        },
         {
             "type": "java",
             "name": "CodeLens (Launch) - Merge",

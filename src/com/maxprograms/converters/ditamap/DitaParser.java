@@ -483,19 +483,32 @@ public class DitaParser {
 
 	private static boolean hasText(Element svg) {
 		String name = svg.getName();
-		if ("text".equals(name) && !svg.getText().isEmpty()) {
+		if ("text".equals(name) && translatableText(svg.getText().strip())) {
 			return true;
 		}
-		if ("title".equals(name) && !svg.getText().isEmpty()) {
+		if ("title".equals(name) && translatableText(svg.getText().strip())) {
 			return true;
 		}
-		if ("desc".equals(name) && !svg.getText().isEmpty()) {
+		if ("desc".equals(name)&& translatableText(svg.getText().strip())) {
 			return true;
 		}
 		List<Element> children = svg.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
 			if (hasText(it.next())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static boolean translatableText(String string) {
+		for (int i=0 ; i<string.length() ; i++) {
+			char c = string.charAt(i);
+			if (Character.isSpaceChar(c)) {
+				continue;
+			}
+			if (Character.isLetterOrDigit(c)) {
 				return true;
 			}
 		}
