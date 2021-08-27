@@ -107,7 +107,7 @@ public class Resx2Xliff {
 	 */
 
 	static boolean isTrans(Element node) {
-		if (node.getAttributeValue("name", "").startsWith(">>")) {
+		if (node.getAttributeValue("name").startsWith(">>")) {
 			return false;
 		}
 		if (node.getAttribute("mimetype") != null && !node.getAttributeValue("mimetype").trim().isEmpty()) {

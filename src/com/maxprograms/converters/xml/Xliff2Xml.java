@@ -117,8 +117,8 @@ public class Xliff2Xml {
 								line = line.substring(line.indexOf("%%%\n") + 4);
 								Element segment = segments.get(code);
 								if (segment != null) {
-									inAttribute = segment.getAttributeValue("restype", "").equals("x-attribute");
-									inCData = segment.getAttributeValue("restype", "").equals("x-cdata");
+									inAttribute = segment.getAttributeValue("restype").equals("x-attribute");
+									inCData = segment.getAttributeValue("restype").equals("x-cdata");
 									Element target = segment.getChild("target");
 									Element source = segment.getChild("source");
 									if (target != null) {
@@ -268,7 +268,7 @@ public class Xliff2Xml {
 	}
 
 	private static String cleanMrk(Element element) throws SAXException {
-		String ts = element.getAttributeValue("ts", "");
+		String ts = element.getAttributeValue("ts");
 		if (ts.isEmpty()) {
 			throw new SAXException("Broken <mrk> element.");
 		}
@@ -534,12 +534,12 @@ public class Xliff2Xml {
 		List<Element> tlist = target.getChildren("mrk");
 		for (int i = 0; i < slist.size(); i++) {
 			Element sg = slist.get(i);
-			if (!sg.getAttributeValue("mtype", "").equals("protected")) {
+			if (!sg.getAttributeValue("mtype").equals("protected")) {
 				continue;
 			}
 			for (int j = 0; j < tlist.size(); j++) {
 				Element tg = tlist.get(j);
-				if (tg.getAttributeValue("mid", "").equals(sg.getAttributeValue("mid", "-"))) {
+				if (tg.getAttributeValue("mid").equals(sg.getAttributeValue("mid", "-"))) {
 					tg.setContent(sg.getContent());
 					break;
 				}

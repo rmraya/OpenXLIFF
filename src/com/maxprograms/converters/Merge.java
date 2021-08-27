@@ -452,7 +452,7 @@ public class Merge {
 	}
 
 	private static boolean checkGroups(Element e) {
-		if (e.getName().equals("group") && e.getAttributeValue("ts", "").equals("hs-split")) {
+		if (e.getName().equals("group") && e.getAttributeValue("ts").equals("hs-split")) {
 			return true;
 		}
 		List<Element> children = e.getChildren();
@@ -472,7 +472,7 @@ public class Merge {
 			XMLNode n = children.get(i);
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element child = (Element) n;
-				if (child.getName().equals("group") && child.getAttributeValue("ts", "").equals("hs-split")) {
+				if (child.getName().equals("group") && child.getAttributeValue("ts").equals("hs-split")) {
 					child = joinGroup(child);
 					Element tu = new Element("trans-unit");
 					tu.clone(child);

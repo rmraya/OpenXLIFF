@@ -337,7 +337,7 @@ public class Xml2Xliff {
 					return base.getAbsolutePath();
 				}
 			}
-			String cls = root.getAttributeValue("class", "");
+			String cls = root.getAttributeValue("class");
 			String[] parts = cls.split("\\s");
 			for (int h = 0; h < parts.length; h++) {
 				String part = parts[h];
@@ -609,7 +609,7 @@ public class Xml2Xliff {
 	}
 
 	private static String cleanMrk(Element element) throws SAXException {
-		String ts = element.getAttributeValue("ts", "");
+		String ts = element.getAttributeValue("ts");
 		if (ts.isEmpty()) {
 			throw new SAXException("Broken <mrk> element.");
 		}
@@ -1132,7 +1132,7 @@ public class Xml2Xliff {
 			if (t.getAttributeValue("keep-format", "no").equals("yes")) {
 				keepFormating.put(t.getText(), "yes");
 			}
-			String attributes = t.getAttributeValue("attributes", "");
+			String attributes = t.getAttributeValue("attributes");
 			if (!attributes.equals("")) {
 				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
 				int count = tokenizer.countTokens();
@@ -1142,7 +1142,7 @@ public class Xml2Xliff {
 				}
 				translatableAttributes.put(t.getText(), v);
 			}
-			String ctype = t.getAttributeValue("ctype", "");
+			String ctype = t.getAttributeValue("ctype");
 			if (!ctype.equals("")) {
 				ctypes.put(t.getText(), ctype);
 			}
@@ -1382,7 +1382,7 @@ public class Xml2Xliff {
 	}
 
 	private static void configureElement(Element e) {
-		String cls = e.getAttributeValue("class", "");
+		String cls = e.getAttributeValue("class");
 		String[] parts = cls.split("\\s");
 		for (int h = 0; h < parts.length; h++) {
 			String part = parts[h];

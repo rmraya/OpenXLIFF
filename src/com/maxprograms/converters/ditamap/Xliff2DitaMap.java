@@ -102,7 +102,7 @@ public class Xliff2DitaMap {
 				Element r = doc.getRootElement();
 
 				List<PI> ish = doc.getPI("ish");
-				String id = r.getAttributeValue("id", "");
+				String id = r.getAttributeValue("id");
 
 				if (!ish.isEmpty() || id.startsWith("GUID-")) {
 					restoreGUID(r);
@@ -139,7 +139,7 @@ public class Xliff2DitaMap {
 	}
 
 	private static void restoreGUID(Element r) {
-		String href = r.getAttributeValue("href", "");
+		String href = r.getAttributeValue("href");
 		if (!href.isEmpty()) {
 			int index = href.indexOf("GUID");
 			if (index != -1) {
@@ -150,7 +150,7 @@ public class Xliff2DitaMap {
 				}
 			}
 		}
-		String conref = r.getAttributeValue("conref", "");
+		String conref = r.getAttributeValue("conref");
 		int index = conref.indexOf('=');
 		if (!conref.isEmpty() && conref.startsWith("GUID-") && index != -1) {
 			String guid = conref.substring(0, index);
@@ -172,18 +172,18 @@ public class Xliff2DitaMap {
 		if (!e.getAttributeValue("fluentaIgnore").isEmpty()) {
 			e.removeAttribute("fluentaIgnore");
 		}
-		if (!e.getAttributeValue("keyref", "").equals("")
-				&& e.getAttributeValue("status", "").equals("removeContent")) { //$NON-NLS-3$
+		if (!e.getAttributeValue("keyref").equals("")
+				&& e.getAttributeValue("status").equals("removeContent")) { //$NON-NLS-3$
 			e.setContent(new ArrayList<>());
 			e.removeAttribute("status");
 		}
-		if (!e.getAttributeValue("conref", "").equals("") && e.getAttributeValue("conaction", "").equals("")) { //$NON-NLS-6$
+		if (!e.getAttributeValue("conref").equals("") && e.getAttributeValue("conaction").equals("")) { //$NON-NLS-6$
 			emptyElement(e);
 		}
-		if (!e.getAttributeValue("conkeyref", "").equals("") && e.getAttributeValue("conaction", "").equals("")) { //$NON-NLS-6$
+		if (!e.getAttributeValue("conkeyref").equals("") && e.getAttributeValue("conaction").equals("")) { //$NON-NLS-6$
 			emptyElement(e);
 		}
-		if (e.getAttributeValue("status", "").equals("removeContent")) {
+		if (e.getAttributeValue("status").equals("removeContent")) {
 			e.setContent(new ArrayList<>());
 			e.removeAttribute("status");
 		}
@@ -230,7 +230,7 @@ public class Xliff2DitaMap {
 			// embedded skeleton
 			File tmp = File.createTempFile("internal", ".skl", new File(xliffFile).getParentFile());
 			tmp.deleteOnExit();
-			if (internal.getAttributeValue("form", "").equals("base64")) {
+			if (internal.getAttributeValue("form").equals("base64")) {
 				Utils.decodeToFile(internal.getText(), tmp.getAbsolutePath());
 			} else {
 				try (FileOutputStream out = new FileOutputStream(tmp)) {

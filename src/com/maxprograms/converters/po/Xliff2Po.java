@@ -145,7 +145,7 @@ public class Xliff2Po {
 			} else {
 				newLine = false;
 			}
-			if (!segment.getAttributeValue("restype", "").equals("x-gettext-domain-header")) {
+			if (!segment.getAttributeValue("restype").equals("x-gettext-domain-header")) {
 				writeString("msgid \"" + addQuotes(source.getText()) + "\"\n");
 			} else {
 				writeString("msgid \"\"\n");
@@ -201,7 +201,7 @@ public class Xliff2Po {
 			Iterator<Element> h = contexts.iterator();
 			while (h.hasNext()) {
 				Element prop = h.next();
-				if (prop.getAttributeValue("ctype", "").equals("x-po-flags")) {
+				if (prop.getAttributeValue("ctype").equals("x-po-flags")) {
 					flags = prop.getText();
 				}
 			}
@@ -233,7 +233,7 @@ public class Xliff2Po {
 		Iterator<Element> i = groups.iterator();
 		while (i.hasNext()) {
 			Element group = i.next();
-			if (group.getAttributeValue("name", "").startsWith("x-po-reference")
+			if (group.getAttributeValue("name").startsWith("x-po-reference")
 					&& group.getAttributeValue("purpose").equals("location")) {
 				String file = "";
 				String linenumber = "";
@@ -241,10 +241,10 @@ public class Xliff2Po {
 				Iterator<Element> h = contexts.iterator();
 				while (h.hasNext()) {
 					Element context = h.next();
-					if (context.getAttributeValue("context-type", "").equals("sourcefile")) {
+					if (context.getAttributeValue("context-type").equals("sourcefile")) {
 						file = context.getText();
 					}
-					if (context.getAttributeValue("context-type", "").equals("linenumber")) {
+					if (context.getAttributeValue("context-type").equals("linenumber")) {
 						linenumber = context.getText();
 					}
 				}
@@ -256,7 +256,7 @@ public class Xliff2Po {
 					reference = reference + " " + file + ":" + linenumber;
 				}
 			}
-			if (group.getAttributeValue("name", "").startsWith("x-po-reference")
+			if (group.getAttributeValue("name").startsWith("x-po-reference")
 					&& group.getAttributeValue("purpose").equals("x-unknown")) {
 				List<Element> contexts = group.getChildren();
 				Iterator<Element> h = contexts.iterator();
@@ -269,7 +269,7 @@ public class Xliff2Po {
 					}
 				}
 			}
-			if (group.getAttributeValue("name", "").startsWith("x-po-msgctxt")) {
+			if (group.getAttributeValue("name").startsWith("x-po-msgctxt")) {
 				List<Element> contexts = group.getChildren();
 				Iterator<Element> h = contexts.iterator();
 				while (h.hasNext()) {
@@ -291,13 +291,13 @@ public class Xliff2Po {
 		Iterator<Element> i = groups.iterator();
 		while (i.hasNext()) {
 			Element group = i.next();
-			if (group.getAttributeValue("name", "").startsWith("x-po-entry-header")
+			if (group.getAttributeValue("name").startsWith("x-po-entry-header")
 					&& group.getAttributeValue("purpose").equals("information")) {
 				List<Element> contexts = group.getChildren();
 				Iterator<Element> h = contexts.iterator();
 				while (h.hasNext()) {
 					Element context = h.next();
-					if (context.getAttributeValue("context-type", "").equals("x-po-autocomment")) {
+					if (context.getAttributeValue("context-type").equals("x-po-autocomment")) {
 						List<String> comments = splitLines(context.getText());
 						for (int j = 0; j < comments.size(); j++) {
 							String comment = comments.get(j);
@@ -368,7 +368,7 @@ public class Xliff2Po {
 			Element u = i.next();
 			if (u.getName().equals("trans-unit")) {
 				segments.put(u.getAttributeValue("id"), u);
-			} else if (u.getName().equals("group") && u.getAttributeValue("restype", "").equals("x-gettext-plurals")) {
+			} else if (u.getName().equals("group") && u.getAttributeValue("restype").equals("x-gettext-plurals")) {
 				segments.put(u.getAttributeValue("id"), u);
 			} else {
 				recurse(u);

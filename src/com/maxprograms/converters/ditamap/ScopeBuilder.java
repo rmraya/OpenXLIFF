@@ -62,7 +62,7 @@ public class ScopeBuilder {
 		Document doc = builder.build(inputFile);
 		Element root = doc.getRootElement();
 
-		currentScope = new Scope(root.getAttributeValue("keyscope", ""));
+		currentScope = new Scope(root.getAttributeValue("keyscope"));
 		Scope rootScope = currentScope;
 		recurse(root, inputFile);
 
@@ -75,7 +75,7 @@ public class ScopeBuilder {
 			return;
 		}
 
-		if (!e.getAttributeValue("format", "dita").startsWith("dita") && e.getAttributeValue("keys", "").equals("")) {
+		if (!e.getAttributeValue("format", "dita").startsWith("dita") && e.getAttributeValue("keys").equals("")) {
 			return;
 		}
 
@@ -83,14 +83,14 @@ public class ScopeBuilder {
 			return;
 		}
 
-		String scope = e.getAttributeValue("keyscope", "");
+		String scope = e.getAttributeValue("keyscope");
 		if (!scope.equals("")) {
 			Scope c = new Scope(scope);
 			currentScope.addScope(c);
 			currentScope = c;
 		}
 
-		String href = e.getAttributeValue("href", "");
+		String href = e.getAttributeValue("href");
 
 		String path = "";
 		if (!href.isEmpty()) {
@@ -114,12 +114,12 @@ public class ScopeBuilder {
 			}
 		}
 
-		String val = e.getAttributeValue("keys", "");
+		String val = e.getAttributeValue("keys");
 
 		if (!val.equals("")) {
 			String[] keys = val.split("\\s");
 			Element topicmeta = e.getChild("topicmeta");
-			String keyref = e.getAttributeValue("keyref", "");
+			String keyref = e.getAttributeValue("keyref");
 			for (int i = 0; i < keys.length; i++) {
 				String key = keys[i];
 				if (!keyref.equals("")) {
@@ -172,8 +172,8 @@ public class ScopeBuilder {
 			while (it.hasNext()) {
 				Element prop = it.next();
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
-					String att = prop.getAttributeValue("att", "");
-					String val = prop.getAttributeValue("val", "");
+					String att = prop.getAttributeValue("att");
+					String val = prop.getAttributeValue("val");
 					if (!att.equals("")) {
 						Set<String> set = excludeTable.get(att);
 						if (set == null) {
@@ -186,8 +186,8 @@ public class ScopeBuilder {
 					}
 				}
 				if (prop.getAttributeValue("action", "include").equals("include")) {
-					String att = prop.getAttributeValue("att", "");
-					String val = prop.getAttributeValue("val", "");
+					String att = prop.getAttributeValue("att");
+					String val = prop.getAttributeValue("val");
 					if (!att.equals("") && !val.equals("")) {
 						Set<String> set = includeTable.get(att);
 						if (set == null) {

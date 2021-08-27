@@ -823,7 +823,7 @@ public class Html2Xliff {
 			if (t.getAttributeValue("keep-format", "no").equals("yes")) {
 				keepFormating.put(t.getText(), "yes");
 			}
-			String attributes = t.getAttributeValue("attributes", "");
+			String attributes = t.getAttributeValue("attributes");
 			if (!attributes.equals("")) {
 				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
 				int count = tokenizer.countTokens();
@@ -833,7 +833,7 @@ public class Html2Xliff {
 				}
 				translatableAttributes.put(t.getText(), v);
 			}
-			String ctype = t.getAttributeValue("ctype", "");
+			String ctype = t.getAttributeValue("ctype");
 			if (!ctype.equals("")) {
 				ctypes.put(t.getText(), ctype);
 			}

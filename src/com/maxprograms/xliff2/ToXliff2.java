@@ -107,7 +107,7 @@ public class ToXliff2 {
 		if (source.getName().equals("file")) {
 			fileSrcLang = source.getAttributeValue("source-language");
 			root2.setAttribute("srcLang", fileSrcLang);
-			fileTgtLang = source.getAttributeValue("target-language", "");
+			fileTgtLang = source.getAttributeValue("target-language");
 			if (!fileTgtLang.equals("")) {
 				root2.setAttribute("trgLang", fileTgtLang);
 			}
@@ -162,13 +162,13 @@ public class ToXliff2 {
 					Element sgroup = propGroups.get(i);
 					Element tgroup = new Element("mda:metaGroup");
 					tgroup.setAttribute("id", "" + i);
-					tgroup.setAttribute("category", sgroup.getAttributeValue("name", ""));
+					tgroup.setAttribute("category", sgroup.getAttributeValue("name"));
 					List<Element> props = sgroup.getChildren("prop");
 					Iterator<Element> it = props.iterator();
 					while (it.hasNext()) {
 						Element prop = it.next();
 						Element meta = new Element("mda:meta");
-						meta.setAttribute("type", prop.getAttributeValue("prop-type", ""));
+						meta.setAttribute("type", prop.getAttributeValue("prop-type"));
 						meta.addContent(prop.getText());
 						tgroup.addContent(meta);
 					}
@@ -181,7 +181,7 @@ public class ToXliff2 {
 				if (tool != null) {
 					Element toolGroup = new Element("mda:metaGroup");
 					toolGroup.setAttribute("category", "tool");
-					String toolId = tool.getAttributeValue("tool-id", "");
+					String toolId = tool.getAttributeValue("tool-id");
 					if (!toolId.isEmpty()) {
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", "tool-id");
@@ -192,34 +192,34 @@ public class ToXliff2 {
 							fluentaGroup.setAttribute("category", "project-data");
 							Element name = new Element("mda:meta");
 							name.setAttribute("type", "project-name");
-							name.addContent(source.getAttributeValue("product-name", ""));
+							name.addContent(source.getAttributeValue("product-name"));
 							fluentaGroup.addContent(name);
 							Element project = new Element("mda:meta");
 							project.setAttribute("type", "project-id");
-							project.addContent(source.getAttributeValue("product-version", ""));
+							project.addContent(source.getAttributeValue("product-version"));
 							fluentaGroup.addContent(project);
 							Element build = new Element("mda:meta");
 							build.setAttribute("type", "build-number");
-							build.addContent(source.getAttributeValue("build-num", ""));
+							build.addContent(source.getAttributeValue("build-num"));
 							fluentaGroup.addContent(build);
 							fileMetadata.addContent(fluentaGroup);
 						}
 					}
-					String toolName = tool.getAttributeValue("tool-name", "");
+					String toolName = tool.getAttributeValue("tool-name");
 					if (!toolName.isEmpty()) {
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", "tool-name");
 						meta.addContent(toolName);
 						toolGroup.addContent(meta);
 					}
-					String toolCompany = tool.getAttributeValue("tool-company", "");
+					String toolCompany = tool.getAttributeValue("tool-company");
 					if (!toolCompany.isEmpty()) {
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", "tool-company");
 						meta.addContent(toolCompany);
 						toolGroup.addContent(meta);
 					}
-					String toolVersion = tool.getAttributeValue("tool-version", "");
+					String toolVersion = tool.getAttributeValue("tool-version");
 					if (!toolVersion.isEmpty()) {
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", "tool-version");
@@ -364,7 +364,7 @@ public class ToXliff2 {
 					if (tag.getName().equals("mrk")) {
 						Element mrk = new Element("mrk");
 						mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-						if (tag.getAttributeValue("mtype", "").equals("protected")) {
+						if (tag.getAttributeValue("mtype").equals("protected")) {
 							mrk.setAttribute("translate", "no");
 						}
 						String value = tag.getAttributeValue("ts");
@@ -434,7 +434,7 @@ public class ToXliff2 {
 					if (tag.getName().equals("mrk")) {
 						Element mrk = new Element("mrk");
 						mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-						if (tag.getAttributeValue("mtype", "").equals("protected")) {
+						if (tag.getAttributeValue("mtype").equals("protected")) {
 							mrk.setAttribute("translate", "no");
 						}
 						String value = tag.getAttributeValue("ts");
@@ -509,10 +509,10 @@ public class ToXliff2 {
 							if (tag.getName().equals("mrk")) {
 								Element mrk = new Element("mrk");
 								mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-								if (tag.getAttributeValue("mtype", "").equals("protected")) {
+								if (tag.getAttributeValue("mtype").equals("protected")) {
 									mrk.setAttribute("translate", "no");
 								}
-								mrk.setAttribute("value", tag.getAttributeValue("ts", ""));
+								mrk.setAttribute("value", tag.getAttributeValue("ts"));
 								mrk.setContent(tag.getContent());
 								tsrc.addContent(mrk);
 							}
@@ -545,10 +545,10 @@ public class ToXliff2 {
 							if (tag.getName().equals("mrk")) {
 								Element mrk = new Element("mrk");
 								mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-								if (tag.getAttributeValue("mtype", "").equals("protected")) {
+								if (tag.getAttributeValue("mtype").equals("protected")) {
 									mrk.setAttribute("translate", "no");
 								}
-								mrk.setAttribute("value", tag.getAttributeValue("ts", ""));
+								mrk.setAttribute("value", tag.getAttributeValue("ts"));
 								mrk.setContent(tag.getContent());
 								ttgt.addContent(mrk);
 							}

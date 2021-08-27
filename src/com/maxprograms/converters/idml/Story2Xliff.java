@@ -163,7 +163,7 @@ public class Story2Xliff {
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element e = (Element) n;
 				if (e.getName().equals("Change")) {
-					if (e.getAttributeValue("ChangeType", "").equals("DeletedText")) {
+					if (e.getAttributeValue("ChangeType").equals("DeletedText")) {
 						changed = true;
 					} else {
 						newContent.addAll(e.getContent());
@@ -230,7 +230,7 @@ public class Story2Xliff {
 		}
 		for (int i = 0; i < currentList.size(); i++) {
 			Attribute a = currentList.get(i);
-			if (!a.getValue().equals(next.getAttributeValue(a.getName(), ""))) {
+			if (!a.getValue().equals(next.getAttributeValue(a.getName()))) {
 				return false;
 			}
 		}

@@ -87,7 +87,7 @@ public class FromXliff2 {
 			target.setAttribute("version", "1.2");
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:1.2");
 			srcLang = source.getAttributeValue("srcLang");
-			trgLang = source.getAttributeValue("trgLang", "");
+			trgLang = source.getAttributeValue("trgLang");
 
 			List<PI> encodings = source.getPI("encoding");
 			if (!encodings.isEmpty()) {
@@ -112,7 +112,7 @@ public class FromXliff2 {
 			Element skeleton = source.getChild("skeleton");
 			if (skeleton != null) {
 				Element skl = new Element("skl");
-				String href = skeleton.getAttributeValue("href", "");
+				String href = skeleton.getAttributeValue("href");
 				if (!href.isEmpty()) {
 					Element external = new Element("external-file");
 					external.setAttribute("href", href);

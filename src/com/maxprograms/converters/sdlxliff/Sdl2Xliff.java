@@ -121,7 +121,7 @@ public class Sdl2Xliff {
 	private static void recurse(Element root) throws IOException {
 		if (root.getName().equals("trans-unit")) {
 			if (root.getAttributeValue("translate", "yes").equals("no")
-					&& !(root.getAttributeValue("sdl:locktype", "").equals("Manual")
+					&& !(root.getAttributeValue("sdl:locktype").equals("Manual")
 							&& containsSrcText(root.getChild("source")))) {
 				return;
 			}
@@ -242,7 +242,7 @@ public class Sdl2Xliff {
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
 			Element child = it.next();
-			if (child.getName().equals("mrk") && child.getAttributeValue("mtype", "").equals("seg")) {
+			if (child.getName().equals("mrk") && child.getAttributeValue("mtype").equals("seg")) {
 				result.add(child);
 			} else {
 				result.addAll(getSegments(child));

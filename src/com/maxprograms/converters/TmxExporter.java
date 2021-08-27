@@ -169,11 +169,11 @@ public class TmxExporter {
 			if (target == null) {
 				return;
 			}
-			String srcLang = source.getAttributeValue("xml:lang", "");
+			String srcLang = source.getAttributeValue("xml:lang");
 			if (srcLang.isEmpty()) {
 				srcLang = sourceLang;
 			}
-			String tgtLang = target.getAttributeValue("xml:lang", "");
+			String tgtLang = target.getAttributeValue("xml:lang");
 			if (tgtLang.isEmpty()) {
 				tgtLang = targetLang;
 			}
@@ -198,7 +198,7 @@ public class TmxExporter {
 			Iterator<Element> it = notes.iterator();
 			while (it.hasNext()) {
 				Element note = it.next();
-				String lang = note.getAttributeValue("xml:lang", "");
+				String lang = note.getAttributeValue("xml:lang");
 				if (!lang.isEmpty()) {
 					lang = " xml:lang=\"" + lang + "\"";
 				}
@@ -324,11 +324,11 @@ public class TmxExporter {
 		if (type.equals("it")) {
 			List<XMLNode> l = src.getContent();
 			Iterator<XMLNode> i = l.iterator();
-			String ctype = src.getAttributeValue("ctype", "");
+			String ctype = src.getAttributeValue("ctype");
 			if (!ctype.isEmpty()) {
 				ctype = " type=\"" + XMLUtils.cleanText(ctype) + "\"";
 			}
-			String pos = src.getAttributeValue("pos", "");
+			String pos = src.getAttributeValue("pos");
 			if (pos.equals("open")) {
 				pos = " pos=\"begin\"";
 			} else if (pos.equals("close")) {
@@ -359,15 +359,15 @@ public class TmxExporter {
 		if (type.equals("bpt") || type.equals("ept")) {
 			List<XMLNode> l = src.getContent();
 			Iterator<XMLNode> i = l.iterator();
-			String ctype = src.getAttributeValue("ctype", "");
+			String ctype = src.getAttributeValue("ctype");
 			if (!ctype.isEmpty()) {
 				ctype = " type=\"" + XMLUtils.cleanText(ctype) + "\"";
 			}
-			String rid = src.getAttributeValue("rid", "");
+			String rid = src.getAttributeValue("rid");
 			if (!rid.isEmpty()) {
 				rid = " i=\"" + XMLUtils.cleanText(rid) + "\"";
 			} else {
-				rid = " i=\"" + XMLUtils.cleanText(src.getAttributeValue("id", "")) + "\"";
+				rid = " i=\"" + XMLUtils.cleanText(src.getAttributeValue("id")) + "\"";
 			}
 			StringBuilder text = new StringBuilder();
 			text.append('<');
@@ -419,12 +419,12 @@ public class TmxExporter {
 			return text.toString();
 		}
 		if (type.equals("mrk")) {
-			if (src.getAttributeValue("mtype", "").equals("term")) {
+			if (src.getAttributeValue("mtype").equals("term")) {
 				// ignore terminology entries
 				return XMLUtils.cleanText(src.getText());
 			}
-			if (src.getAttributeValue("mtype", "").equals("protected")) {
-				String ts = src.getAttributeValue("ts", "");
+			if (src.getAttributeValue("mtype").equals("protected")) {
+				String ts = src.getAttributeValue("ts");
 				ts = restoreChars(ts).trim();
 				String name = "";
 				for (int i = 1; i < ts.length(); i++) {

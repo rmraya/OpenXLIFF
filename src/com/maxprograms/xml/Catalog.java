@@ -74,7 +74,7 @@ public class Catalog implements EntityResolver2 {
             Element child = i.next();
             String currentBase = base;
 
-            if (!child.getAttributeValue("xml:base", "").equals("")) {
+            if (!child.getAttributeValue("xml:base").equals("")) {
                 base = child.getAttributeValue("xml:base");
                 File b = new File(base);
                 if (!b.isAbsolute()) {

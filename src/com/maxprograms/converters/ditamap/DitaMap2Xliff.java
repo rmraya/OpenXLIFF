@@ -340,9 +340,9 @@ public class DitaMap2Xliff {
 
 	private static void fixConKeyRef(Element e, String source, Document doc)
 			throws IOException, SAXException, ParserConfigurationException {
-		String conkeyref = e.getAttributeValue("conkeyref", "");
-		String conaction = e.getAttributeValue("conaction", "");
-		String keyref = e.getAttributeValue("keyref", "");
+		String conkeyref = e.getAttributeValue("conkeyref");
+		String conaction = e.getAttributeValue("conaction");
+		String keyref = e.getAttributeValue("keyref");
 		if (!conaction.equals("")) { // it's a conref push
 			conkeyref = "";
 		}
@@ -534,7 +534,7 @@ public class DitaMap2Xliff {
 	}
 
 	private static Element locateReferenced(Element root, String id) {
-		String current = root.getAttributeValue("id", "");
+		String current = root.getAttributeValue("id");
 		if (current.equals(id)) {
 			return root;
 		}
@@ -588,8 +588,8 @@ public class DitaMap2Xliff {
 
 	private static void fixConref(Element e, String source, Document doc)
 			throws IOException, SAXException, ParserConfigurationException {
-		String conref = e.getAttributeValue("conref", "");
-		String conaction = e.getAttributeValue("conaction", "");
+		String conref = e.getAttributeValue("conref");
+		String conaction = e.getAttributeValue("conaction");
 		if (!conaction.equals("")) { // it's a conref push
 			conref = "";
 		}
@@ -637,7 +637,7 @@ public class DitaMap2Xliff {
 			throws SAXException, IOException, ParserConfigurationException {
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
-		String topicId = root.getAttributeValue("id", "");
+		String topicId = root.getAttributeValue("id");
 		if (id.isEmpty() || topicId.equals(id)) {
 			return root;
 		}
@@ -645,7 +645,7 @@ public class DitaMap2Xliff {
 	}
 
 	private static Element locate(Element root, String topicId, String id) {
-		String current = root.getAttributeValue("id", "");
+		String current = root.getAttributeValue("id");
 		if (id.equals(topicId + "/" + current)) {
 			return root;
 		}
@@ -690,8 +690,8 @@ public class DitaMap2Xliff {
 			while (it.hasNext()) {
 				Element prop = it.next();
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
-					String att = prop.getAttributeValue("att", "");
-					String val = prop.getAttributeValue("val", "");
+					String att = prop.getAttributeValue("att");
+					String val = prop.getAttributeValue("val");
 					if (!att.equals("")) {
 						Set<String> set = excludeTable.get(att);
 						if (set == null) {
@@ -704,8 +704,8 @@ public class DitaMap2Xliff {
 					}
 				}
 				if (prop.getAttributeValue("action", "include").equals("include")) {
-					String att = prop.getAttributeValue("att", "");
-					String val = prop.getAttributeValue("val", "");
+					String att = prop.getAttributeValue("att");
+					String val = prop.getAttributeValue("val");
 					if (!att.equals("") && !val.equals("")) {
 						Set<String> set = includeTable.get(att);
 						if (set == null) {

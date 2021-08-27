@@ -112,7 +112,7 @@ public class RepetitionAnalysis {
 			Element el = it.next();
 			if (el.getName().equals("file")) {
 				String originalFile = el.getAttributeValue("original");
-				srcLang = el.getAttributeValue("source-language", "");
+				srcLang = el.getAttributeValue("source-language");
 				if (!segments.containsKey(originalFile)) {
 					sources = new ArrayList<>();
 					segments.put(originalFile, sources);
@@ -136,7 +136,7 @@ public class RepetitionAnalysis {
 				String type = "";
 				int[] count = getCount(el);
 				if (approved.equalsIgnoreCase("yes") && target != null
-						&& target.getAttributeValue("state-qualifier", "").equals("leveraged-inherited")) {
+						&& target.getAttributeValue("state-qualifier").equals("leveraged-inherited")) {
 					type = "ice";
 				} else {
 					type = getMatch(el);
@@ -811,7 +811,7 @@ public class RepetitionAnalysis {
 			String type = "";
 			int[] count = getCount(e);
 			if (approved.equalsIgnoreCase("yes") && target != null
-					&& target.getAttributeValue("state-qualifier", "").equals("leveraged-inherited")) {
+					&& target.getAttributeValue("state-qualifier").equals("leveraged-inherited")) {
 				type = "ice";
 			} else {
 				type = getMatch(e);

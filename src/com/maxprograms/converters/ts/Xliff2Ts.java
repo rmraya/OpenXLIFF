@@ -92,7 +92,7 @@ public class Xliff2Ts {
 		if (e.getName().equals("message")) {
 			Element translation = e.getChild("translation");
 			String id = translation.getAttributeValue("id");
-			boolean wasObsolete = translation.getAttributeValue("type", "").equals("obsolete");
+			boolean wasObsolete = translation.getAttributeValue("type").equals("obsolete");
 			String old = translation.getText();
 			Element segment = segments.get(id);
 			Element tmp = getTranslation(segment.getChild("target"));

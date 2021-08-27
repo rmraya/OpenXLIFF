@@ -120,7 +120,7 @@ public class DitaParser {
 		builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		Document doc = builder.build(inputFile);
-		String id = doc.getRootElement().getAttributeValue("id", "");
+		String id = doc.getRootElement().getAttributeValue("id");
 		List<PI> ish = doc.getPI("ish");
 		if (!ish.isEmpty() || id.startsWith("GUID-")) {
 			SDLFixer.fix(new File(inputFile).getParentFile(), catalog);
@@ -232,7 +232,7 @@ public class DitaParser {
 		}
 		if (ditaClass(e, "map/topicref") || isTopicref(e.getName())) {
 			String href = "";
-			String keyref = e.getAttributeValue("keyref", "");
+			String keyref = e.getAttributeValue("keyref");
 			if (!keyref.equals("")) {
 				Key k = rootScope.getKey(keyref);
 				if (k != null) {
@@ -242,7 +242,7 @@ public class DitaParser {
 					usedKeys.get(k).add(parentFile);
 					href = k.getHref();
 				} else {
-					href = e.getAttributeValue("href", "");
+					href = e.getAttributeValue("href");
 					if (!href.isEmpty()) {
 						// use href as fallback mechanism
 						String format = e.getAttributeValue("format", "dita");
@@ -256,7 +256,7 @@ public class DitaParser {
 					return;
 				}
 			} else {
-				href = e.getAttributeValue("href", "");
+				href = e.getAttributeValue("href");
 				String format = e.getAttributeValue("format", "dita");
 				if (!href.equals("") && format.startsWith("dita")) {
 					href = Utils.getAbsolutePath(parentFile, href);
@@ -304,7 +304,7 @@ public class DitaParser {
 				}
 			}
 		} else {
-			String conref = e.getAttributeValue("conref", "");
+			String conref = e.getAttributeValue("conref");
 			if (!conref.isEmpty()) {
 				if (conref.indexOf('#') != -1) {
 					String file = conref.substring(0, conref.indexOf('#'));
@@ -336,9 +336,9 @@ public class DitaParser {
 				LOGGER.log(Level.WARNING, () -> "@conref without fragment identifier: " + conref);
 			}
 
-			String conkeyref = e.getAttributeValue("conkeyref", "");
-			String conaction = e.getAttributeValue("conaction", "");
-			if (!conaction.equals("")) { // it's a conref push
+			String conkeyref = e.getAttributeValue("conkeyref");
+			String conaction = e.getAttributeValue("conaction");
+			if (!conaction.isEmpty()) { // it's a conref push
 				conkeyref = "";
 			}
 			if (!conkeyref.equals("")) {
@@ -376,7 +376,7 @@ public class DitaParser {
 				return;
 			}
 
-			String keyref = e.getAttributeValue("keyref", "");
+			String keyref = e.getAttributeValue("keyref");
 			if (!keyref.equals("")) {
 				if (keyref.indexOf('/') == -1) {
 					Key k = rootScope.getKey(keyref);
@@ -451,7 +451,7 @@ public class DitaParser {
 				LOGGER.log(Level.WARNING, mf.format(new Object[] { keyref, parentFile }));
 			}
 
-			String href = e.getAttributeValue("href", "");
+			String href = e.getAttributeValue("href");
 			if (!href.isEmpty() && (ditaClass(e, "topic/image") || isImage(e.getName()))
 					&& !"external".equals(e.getAttributeValue("scope"))) {
 				// check for SVG
@@ -589,7 +589,7 @@ public class DitaParser {
 	}
 
 	protected static boolean ditaClass(Element e, String string) {
-		String cls = e.getAttributeValue("class", "");
+		String cls = e.getAttributeValue("class");
 		String[] parts = cls.split("\\s");
 		for (int i = 0; i < parts.length; i++) {
 			if (parts[i].equals(string)) {
@@ -613,8 +613,8 @@ public class DitaParser {
 			while (it.hasNext()) {
 				Element prop = it.next();
 				if (prop.getAttributeValue("action", "include").equals("exclude")) {
-					String att = prop.getAttributeValue("att", "");
-					String val = prop.getAttributeValue("val", "");
+					String att = prop.getAttributeValue("att");
+					String val = prop.getAttributeValue("val");
 					if (!att.equals("")) {
 						Set<String> set = excludeTable.get(att);
 						if (set == null) {
@@ -627,8 +627,8 @@ public class DitaParser {
 					}
 				}
 				if (prop.getAttributeValue("action", "include").equals("include")) {
-					String att = prop.getAttributeValue("att", "");
-					String val = prop.getAttributeValue("val", "");
+					String att = prop.getAttributeValue("att");
+					String val = prop.getAttributeValue("val");
 					if (!att.equals("") && !val.equals("")) {
 						Set<String> set = includeTable.get(att);
 						if (set == null) {
@@ -680,7 +680,7 @@ public class DitaParser {
 		StringArray array = new StringArray(file, id);
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
-		String topicId = root.getAttributeValue("id", "");
+		String topicId = root.getAttributeValue("id");
 		if (topicId.equals(id)) {
 			if (!filesMap.contains(file)) {
 				filesMap.add(file);
@@ -708,7 +708,7 @@ public class DitaParser {
 
 	private Element locate(Element e, String topic, String searched) {
 		String topicId = topic;
-		String id = e.getAttributeValue("id", "");
+		String id = e.getAttributeValue("id");
 		if (searched.equals(topicId + "/" + id)) {
 			return e;
 		}
@@ -755,7 +755,7 @@ public class DitaParser {
 	}
 
 	private Element locateReferenced(Element root, String id) {
-		String current = root.getAttributeValue("id", "");
+		String current = root.getAttributeValue("id");
 		if (current.equals(id)) {
 			return root;
 		}
