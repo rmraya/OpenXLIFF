@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -244,6 +246,7 @@ public class DitaParser {
 				} else {
 					href = e.getAttributeValue("href");
 					if (!href.isEmpty()) {
+						href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 						// use href as fallback mechanism
 						String format = e.getAttributeValue("format", "dita");
 						if (format.startsWith("dita")) {
@@ -259,6 +262,7 @@ public class DitaParser {
 				href = e.getAttributeValue("href");
 				String format = e.getAttributeValue("format", "dita");
 				if (!href.isEmpty() && format.startsWith("dita")) {
+					href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 					href = Utils.getAbsolutePath(parentFile, href);
 				}
 			}
@@ -272,6 +276,7 @@ public class DitaParser {
 				return;
 			}
 			if (!href.isEmpty() && !href.equals(parentFile)) {
+				href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 				try {
 					File file = new File(href);
 					if (file.exists()) {
@@ -287,7 +292,7 @@ public class DitaParser {
 							LOGGER.log(Level.WARNING, mf.format(new Object[] { href }));
 						}
 					} else {
-						MessageFormat mf = new MessageFormat("Referenced file '{0}' doesn't exist");
+						MessageFormat mf = new MessageFormat("Referenced file {0} doesn't exist");
 						LOGGER.log(Level.WARNING, mf.format(new Object[] { href }));
 					}
 				} catch (SAXException ex) {
@@ -306,6 +311,7 @@ public class DitaParser {
 		} else {
 			String conref = e.getAttributeValue("conref");
 			if (!conref.isEmpty()) {
+				conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
 				if (conref.indexOf('#') != -1) {
 					String file = conref.substring(0, conref.indexOf('#'));
 					if (file.length() == 0) {
@@ -333,7 +339,7 @@ public class DitaParser {
 					}
 					return;
 				}
-				LOGGER.log(Level.WARNING, () -> "@conref without fragment identifier: " + conref);
+				LOGGER.log(Level.WARNING, "@conref without fragment identifier: " + conref);
 			}
 
 			String conkeyref = e.getAttributeValue("conkeyref");
@@ -456,10 +462,11 @@ public class DitaParser {
 					&& !"external".equals(e.getAttributeValue("scope"))) {
 				// check for SVG
 				try {
+					href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 					String path = Utils.getAbsolutePath(parentFile, href);
 					File f = new File(path);
-					Element s = builder.build(f).getRootElement();
-					if (s.getName().equals("svg")) {
+					Element svg = builder.build(f).getRootElement();
+					if ("svg".equals(svg.getName()) && hasText(svg)) {
 						filesMap.add(path);
 					}
 				} catch (Exception ex) {
@@ -472,6 +479,27 @@ public class DitaParser {
 		while (it.hasNext()) {
 			recurse(it.next(), parentFile);
 		}
+	}
+
+	private static boolean hasText(Element svg) {
+		String name = svg.getName();
+		if ("text".equals(name) && !svg.getText().isEmpty()) {
+			return true;
+		}
+		if ("title".equals(name) && !svg.getText().isEmpty()) {
+			return true;
+		}
+		if ("desc".equals(name) && !svg.getText().isEmpty()) {
+			return true;
+		}
+		List<Element> children = svg.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			if (hasText(it.next())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static boolean isImage(String name) {

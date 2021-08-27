@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +96,7 @@ public class ScopeBuilder {
 
 		String path = "";
 		if (!href.isEmpty()) {
+			href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 			try {
 				path = Utils.getAbsolutePath(parentFile, href);
 				if (!recursed.contains(path)) {

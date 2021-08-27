@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -88,6 +90,7 @@ public class SDLFixer {
 	private static void recurse(Element root, File folder) throws MalformedURLException {
 		String href = root.getAttributeValue("href");
 		if (!href.isEmpty()) {
+			href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 			String file = table.get(href);
 			if (file != null) {
 				File f = new File(folder, file);

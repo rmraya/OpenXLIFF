@@ -16,7 +16,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -156,6 +158,7 @@ public class DitaMap2Xliff {
 				}
 				List<String> res = Xml2Xliff.run(params2);
 				if (!Constants.SUCCESS.equals(res.get(0))) {
+					LOGGER.log(Level.ERROR, "Error converting \"" + source + "\" to XLIFF" );
 					return res;
 				}
 				if (!source.equals(filesMap.get(i))) {
@@ -226,6 +229,7 @@ public class DitaMap2Xliff {
 			if (content.isEmpty()) {
 				String href = root.getAttributeValue("href");
 				if (!href.isEmpty()) {
+					href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 					try {
 						String file = href;
 						String id = "";
@@ -594,6 +598,7 @@ public class DitaMap2Xliff {
 			conref = "";
 		}
 		if (!conref.isEmpty()) {
+			conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
 			if (conref.indexOf('#') != -1) {
 				String file = conref.substring(0, conref.indexOf('#'));
 				if (file.length() == 0) {
