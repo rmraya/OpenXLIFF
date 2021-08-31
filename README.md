@@ -33,6 +33,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.13.0 | Improved DITA support | August 31st, 2021
 1.12.7 | Improved round trip 1.2 -> 2.0 -> 1.2; Ignored untranslatable SVG in DITA maps | July 4th, 2021
 1.12.6 | Improved validation; updated language management | June 19th, 2021
 1.12.5 | Improved support for bilingual files | February 3rd, 2021
