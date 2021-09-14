@@ -108,7 +108,8 @@ public class Resegmenter {
                         if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
                             Element e = (Element) n;
                             if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
-                                if (startsWithTag(e)) {
+                                boolean surrounded = surroundedWithTags(e);
+                                if (surrounded || startsWithTag(e)) {
                                     // starts with tag
                                     Element ignorable = new Element("ignorable");
                                     ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
@@ -121,32 +122,13 @@ public class Resegmenter {
                                     root.addContent(ignorable);
                                 }
                                 Element lastIgnorable = null;
-                                if (endsWithTag(e)) {
+                                if (surrounded || endsWithTag(e)) {
                                     // ends with tag
                                     lastIgnorable = new Element("ignorable");
                                     Element ignorableSource = new Element("source");
                                     lastIgnorable.addContent(ignorableSource);
                                     List<XMLNode> list = e.getContent();
                                     ignorableSource.addContent(list.get(list.size() - 1));
-                                    list.remove(list.size() - 1);
-                                    e.setContent(list);
-                                }
-                                if (surroundedWithTags(e)) {
-                                    // starts with tag
-                                    Element ignorable = new Element("ignorable");
-                                    ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
-                                    Element ignorableSource = new Element("source");
-                                    ignorable.addContent(ignorableSource);
-                                    List<XMLNode> list = e.getContent();
-                                    ignorableSource.addContent(list.get(0));
-                                    list.remove(0);
-                                    e.setContent(list);
-                                    root.addContent(ignorable);
-                                    lastIgnorable = new Element("ignorable");
-                                    Element ignorableSource2 = new Element("source");
-                                    lastIgnorable.addContent(ignorableSource2);
-                                    list = e.getContent();
-                                    ignorableSource2.addContent(list.get(list.size() - 1));
                                     list.remove(list.size() - 1);
                                     e.setContent(list);
                                 }
