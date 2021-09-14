@@ -70,6 +70,20 @@ public class Resegmenter {
         return result;
     }
 
+    private static boolean startsWithTag(Element e) {
+        return e.getChildren().size() == 1 && e.getContent().get(0).getNodeType() == XMLNode.ELEMENT_NODE;
+    }
+
+    private static boolean endsWithTag(Element e) {
+        return e.getChildren().size() == 1
+                && e.getContent().get(e.getContent().size() - 1).getNodeType() == XMLNode.ELEMENT_NODE;
+    }
+
+    private static boolean surroundedWithTags(Element e) {
+        return e.getChildren().size() == 2 && e.getContent().get(0).getNodeType() == XMLNode.ELEMENT_NODE
+                && e.getContent().get(e.getContent().size() - 1).getNodeType() == XMLNode.ELEMENT_NODE;
+    }
+
     private static void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
         if ("xliff".equals(root.getName())) {
             srcLang = root.getAttributeValue("srcLang");
@@ -80,44 +94,87 @@ public class Resegmenter {
                 Element segment = root.getChild("segment");
                 Element source = segment.getChild("source");
                 Element target = segment.getChild("target");
-                boolean copySource = target != null && source.getContent().equals(target.getContent());                
+                boolean isSourceCopy = target != null && source.getContent().equals(target.getContent());
                 boolean isEmpty = target != null && target.getContent().isEmpty();
-                if (target == null || copySource || isEmpty) {
+                if (target == null || isSourceCopy || isEmpty) {
                     root.removeAttribute("canResegment");
                     Element segSource = segmenter.segment(source);
-                    if (segSource.getChildren("mrk").size() > 1) {
-                        root.removeChild(segment);
-                        List<XMLNode> content = segSource.getContent();
-                        Iterator<XMLNode> it = content.iterator();
-                        while (it.hasNext()) {
-                            XMLNode n = it.next();
-                            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-                                Element e = (Element) n;
-                                if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
-                                    Element newSeg = new Element("segment");
-                                    if (!hasText(e)) {
-                                        newSeg = new Element("ignorable");
-                                    }
-                                    newSeg.setAttribute("id",
-                                            root.getAttributeValue("id") + '-' + e.getAttributeValue("mid"));
-                                    root.addContent(newSeg);
-                                    Element newSource = new Element("source");
-                                    newSource.setAttribute("xml:space",
-                                            source.getAttributeValue("xml:space", "default"));
-                                    newSource.setAttribute("xml:lang", srcLang);
-                                    newSeg.addContent(newSource);
-                                    newSource.addContent(e.getContent());
-                                    if (copySource) {
-                                        Element newTarget = new Element("target");
-                                        newTarget.setAttribute("xml:space",
-                                                source.getAttributeValue("xml:space", "default"));
-                                        newTarget.setAttribute("xml:lang", tgtLang);
-                                        newSeg.addContent(newTarget);
-                                        newTarget.addContent(e.getContent());
-                                    }
-                                } else {
-                                    throw new SAXException("Unexpected element found: " + e.toString());
+                    int id = 0;
+                    root.removeChild(segment);
+                    List<XMLNode> content = segSource.getContent();
+                    Iterator<XMLNode> it = content.iterator();
+                    while (it.hasNext()) {
+                        XMLNode n = it.next();
+                        if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+                            Element e = (Element) n;
+                            if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
+                                if (startsWithTag(e)) {
+                                    // starts with tag
+                                    Element ignorable = new Element("ignorable");
+                                    ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
+                                    Element ignorableSource = new Element("source");
+                                    ignorable.addContent(ignorableSource);
+                                    List<XMLNode> list = e.getContent();
+                                    ignorableSource.addContent(list.get(0));
+                                    list.remove(0);
+                                    e.setContent(list);
+                                    root.addContent(ignorable);
                                 }
+                                Element lastIgnorable = null;
+                                if (endsWithTag(e)) {
+                                    // ends with tag
+                                    lastIgnorable = new Element("ignorable");
+                                    Element ignorableSource = new Element("source");
+                                    lastIgnorable.addContent(ignorableSource);
+                                    List<XMLNode> list = e.getContent();
+                                    ignorableSource.addContent(list.get(list.size() - 1));
+                                    list.remove(list.size() - 1);
+                                    e.setContent(list);
+                                }
+                                if (surroundedWithTags(e)) {
+                                    // starts with tag
+                                    Element ignorable = new Element("ignorable");
+                                    ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
+                                    Element ignorableSource = new Element("source");
+                                    ignorable.addContent(ignorableSource);
+                                    List<XMLNode> list = e.getContent();
+                                    ignorableSource.addContent(list.get(0));
+                                    list.remove(0);
+                                    e.setContent(list);
+                                    root.addContent(ignorable);
+                                    lastIgnorable = new Element("ignorable");
+                                    Element ignorableSource2 = new Element("source");
+                                    lastIgnorable.addContent(ignorableSource2);
+                                    list = e.getContent();
+                                    ignorableSource2.addContent(list.get(list.size() - 1));
+                                    list.remove(list.size() - 1);
+                                    e.setContent(list);
+                                }
+                                Element newSeg = new Element("segment");
+                                if (!hasText(e)) {
+                                    newSeg = new Element("ignorable");
+                                }
+                                newSeg.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
+                                root.addContent(newSeg);
+                                Element newSource = new Element("source");
+                                newSource.setAttribute("xml:space", source.getAttributeValue("xml:space", "default"));
+                                newSource.setAttribute("xml:lang", srcLang);
+                                newSeg.addContent(newSource);
+                                newSource.addContent(e.getContent());
+                                if (isSourceCopy) {
+                                    Element newTarget = new Element("target");
+                                    newTarget.setAttribute("xml:space",
+                                            source.getAttributeValue("xml:space", "default"));
+                                    newTarget.setAttribute("xml:lang", tgtLang);
+                                    newSeg.addContent(newTarget);
+                                    newTarget.addContent(e.getContent());
+                                }
+                                if (lastIgnorable != null) {
+                                    lastIgnorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
+                                    root.addContent(lastIgnorable);
+                                }
+                            } else {
+                                throw new SAXException("Unexpected element found: " + e.toString());
                             }
                         }
                     }

@@ -376,7 +376,7 @@ public class MSOffice2Xliff {
 	}
 
 	private static void recursePara(Element e) throws IOException, SAXException, ParserConfigurationException {
-		if (e.getName().matches("w:p") || e.getName().matches("a:p")) {
+		if ("w:p".equals(e.getName()) || "a:p".equals(e.getName())) {
 			if (!text.isEmpty()) {
 				if (segByElement) {
 					writeSegment(text);
@@ -599,7 +599,28 @@ public class MSOffice2Xliff {
 		return containsText;
 	}
 
+	private static boolean isBreak(Element e) {
+		return "w:r".equals(e.getName()) && e.getChildren().size() == 1
+				&& "w:br".equals(e.getChildren().get(0).getName());
+	}
+
 	private static void recursePhrase(Element e) throws IOException, SAXException, ParserConfigurationException {
+		if ("w:r".equals(e.getName()) && isBreak(e)) {
+			if (!text.isEmpty()) {
+				if (segByElement) {
+					writeSegment(text);
+				} else {
+					String[] segs = segmenter.segment(text);
+					for (int h = 0; h < segs.length; h++) {
+						String seg = segs[h];
+						writeSegment(seg);
+					}
+				}
+				text = "";
+			}
+			writeSkel(e.toString());
+			return;
+		}
 		if (e.getName().equals("w:p")) {
 			cleanPara(e);
 		}
