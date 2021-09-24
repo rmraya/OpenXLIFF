@@ -130,7 +130,6 @@ public class MSOffice2Xliff {
 		writeOut("    </header>\n");
 		writeOut("    <?encoding " + srcEncoding + "?>\n");
 		writeOut("    <body>\n");
-		writeOut("\n");
 	}
 
 	private static void writeSegment(String sourceText) throws IOException, SAXException, ParserConfigurationException {
@@ -179,9 +178,9 @@ public class MSOffice2Xliff {
 			for (int i = 0; i < phs.size(); i++) {
 				phs.get(i).setAttribute("id", "" + (i + 1));
 			}
-			writeOut("    <trans-unit id=\"" + segnum + "\" xml:space=\"preserve\">\n");
-			writeOut(replaceText(source.toString(), "\uE0FF", "&amp;quot;"));
-			writeOut("\n    </trans-unit>\n\n");
+			writeOut("      <trans-unit id=\"" + segnum + "\" xml:space=\"preserve\">\n");
+			writeOut("        " + replaceText(source.toString(), "\uE0FF", "&amp;quot;") + "\n");
+			writeOut("      </trans-unit>\n");
 			writeSkel("%%%" + segnum++ + "%%%\n");
 		} else {
 			Iterator<XMLNode> i = source.getContent().iterator();
@@ -232,9 +231,9 @@ public class MSOffice2Xliff {
 	private static boolean containsText(Element source) {
 		List<XMLNode> content = source.getContent();
 		String string = "";
-		Iterator<XMLNode> i = content.iterator();
-		while (i.hasNext()) {
-			XMLNode n = i.next();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode n = it.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
 				string = string + ((TextNode) n).getText();
 			}
@@ -242,7 +241,13 @@ public class MSOffice2Xliff {
 		if (isNumeric(string.trim())) {
 			return false;
 		}
-		return !string.trim().isEmpty();
+		for (int i = 0; i < string.length(); i++) {
+			char c = string.charAt(i);
+			if (!(Character.isWhitespace(c) || c == '\u00A0')) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static boolean isNumeric(String string) {
