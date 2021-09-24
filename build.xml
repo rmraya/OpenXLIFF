@@ -1,73 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="dist" name="OpenXLIFF">
-    <property name="target" value="11"/>
-    <property name="source" value="11"/>
-    <property name="build.compiler" value="javac10+"/>
+    <property name="target" value="11" />
+    <property name="source" value="11" />
+    <property name="build.compiler" value="javac10+" />
     <path id="OpenXLIFF.classpath">
-        <pathelement location="lib/dtd.jar"/>
-        <pathelement location="lib/json.jar"/>
-        <pathelement location="lib/jsoup.jar"/>
-        <pathelement location="lib/mapdb.jar"/>
+        <pathelement location="lib/dtd.jar" />
+        <pathelement location="lib/json.jar" />
+        <pathelement location="lib/jsoup.jar" />
+        <pathelement location="lib/mapdb.jar" />
     </path>
-    <condition property="isWindows"> 
-        <os family="windows"/>
+    <condition property="isWindows">
+        <os family="windows" />
     </condition>
     <target name="init">
-        <mkdir dir="bin"/>
+        <mkdir dir="bin" />
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
-                <exclude name="**/*.java"/>
+                <exclude name="**/*.java" />
             </fileset>
         </copy>
     </target>
     <target name="clean">
-        <delete dir="bin"/>
+        <delete dir="bin" />
     </target>
     <target name="distclean">
-        <delete dir="dist" failonerror="false"/>
+        <delete dir="dist" failonerror="false" />
     </target>
     <target name="compile" depends="clean,init">
         <description>Build jar file</description>
-        <delete file="lib/openxliff.jar"/>
-        <javac srcdir="src" destdir="bin" classpathref="OpenXLIFF.classpath" modulepathref="OpenXLIFF.classpath" includeAntRuntime="false"/>
-        <jar destfile="lib/openxliff.jar" basedir="bin"/>
+        <delete file="lib/openxliff.jar" />
+        <javac srcdir="src" destdir="bin" classpathref="OpenXLIFF.classpath" modulepathref="OpenXLIFF.classpath" includeAntRuntime="false">
+            <compilerarg line="-encoding utf-8" />
+        </javac>
+        <jar destfile="lib/openxliff.jar" basedir="bin" />
     </target>
     <target name="link" depends="distclean,compile">
         <description>Build Java binaries</description>
         <link destDir="dist" modulepath="lib:${java.home}/jmods">
-            <module name="openxliff"/>
+            <module name="openxliff" />
         </link>
-        <delete file="dist/lib/jrt-fs.jar"/>
+        <delete file="dist/lib/jrt-fs.jar" />
     </target>
     <target name="copyBats" if="isWindows">
         <description>Copy .bat to /dist</description>
-        <copy file="convert.bat" todir="dist"/>
-        <copy file="merge.bat" todir="dist"/>
-        <copy file="xliffchecker.bat" todir="dist"/>
-        <copy file="analysis.bat" todir="dist"/>
-        <copy file="server.bat" todir="dist"/>
-        <copy file="join.bat" todir="dist"/>
+        <copy file="convert.bat" todir="dist" />
+        <copy file="merge.bat" todir="dist" />
+        <copy file="xliffchecker.bat" todir="dist" />
+        <copy file="analysis.bat" todir="dist" />
+        <copy file="server.bat" todir="dist" />
+        <copy file="join.bat" todir="dist" />
     </target>
     <target name="copyShells" unless="isWindows">
         <description>Copy .sh to /dist</description>
-        <copy file="convert.sh" todir="dist"/>
-        <copy file="merge.sh" todir="dist"/>
-        <copy file="xliffchecker.sh" todir="dist"/>
-        <copy file="analysis.sh" todir="dist"/>
-        <copy file="server.sh" todir="dist"/>
-        <copy file="join.sh" todir="dist"/>
+        <copy file="convert.sh" todir="dist" />
+        <copy file="merge.sh" todir="dist" />
+        <copy file="xliffchecker.sh" todir="dist" />
+        <copy file="analysis.sh" todir="dist" />
+        <copy file="server.sh" todir="dist" />
+        <copy file="join.sh" todir="dist" />
     </target>
     <target name="dist" depends="link,copyBats,copyShells">
         <description>Prepare distribution</description>
         <copy todir="dist/catalog">
-            <fileset dir="catalog"/>
+            <fileset dir="catalog" />
         </copy>
         <copy todir="dist/srx">
-            <fileset dir="srx"/>
+            <fileset dir="srx" />
         </copy>
         <copy todir="dist/xmlfilter">
-            <fileset dir="xmlfilter"/>
+            <fileset dir="xmlfilter" />
         </copy>
-        <copy file="LICENSE" todir="dist"/>
+        <copy file="LICENSE" todir="dist" />
     </target>
 </project>
