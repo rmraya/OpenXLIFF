@@ -393,7 +393,7 @@ public class Element implements XMLNode {
 	}
 
 	public void setChildren(List<Element> c) {
-		content = new Vector<>();
+		content.clear();
 		content.addAll(c);
 	}
 
