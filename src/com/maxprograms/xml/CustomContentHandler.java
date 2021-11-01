@@ -11,13 +11,17 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
-import java.util.Vector;
+import java.io.IOException;
 import java.util.EmptyStackException;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+import java.util.Vector;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
@@ -38,7 +42,9 @@ class CustomContentHandler implements IContentHandler {
 	private String systemId;
 	private String encoding;
 	private Catalog catalog;
-	
+	private boolean isRelaxNG;
+	private Map<String, Map<String, String>> defaultAttributes;
+
 	public CustomContentHandler() {
 		doc = null;
 		stack = new Stack<>();
@@ -72,6 +78,17 @@ class CustomContentHandler implements IContentHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
 			current = stack.pop();
+			if (isRelaxNG) {
+				Map<String, String> map = defaultAttributes.get(localName);
+				Set<String> keys = map.keySet();
+				Iterator<String> it = keys.iterator();
+				while (it.hasNext()) {
+					String key = it.next();
+					if (!current.hasAttribute(key)) {
+						current.setAttribute(key, map.get(key));
+					}
+				}
+			}
 		} catch (EmptyStackException es) {
 			throw new SAXException("Malformed content found.");
 		}
@@ -115,7 +132,11 @@ class CustomContentHandler implements IContentHandler {
 				}
 			}
 			if (href != null && "http://relaxng.org/ns/structure/1.0".equals(schemaType)) {
-				parseRelaxNG(href, type);
+				try {
+					parseRelaxNG(href, type);
+				} catch (IOException | ParserConfigurationException e) {
+					throw new SAXException(e);
+				}
 			}
 		}
 		if (current != null) {
@@ -364,12 +385,14 @@ class CustomContentHandler implements IContentHandler {
 		this.catalog = catalog;
 	}
 
-	private void parseRelaxNG(String href, String type) {
-		if (catalog != null ) {
-			// TODO
+	private void parseRelaxNG(String href, String type) throws SAXException, IOException, ParserConfigurationException {
+		if (catalog != null) {
 			String system = catalog.matchSystem(null, href);
-			System.out.println(system);
-			System.out.println(type);
+			if (system != null) {
+				RelaxNGParser relaxngParser = new RelaxNGParser(system, catalog);
+				defaultAttributes = relaxngParser.getElements();
+				isRelaxNG = true;
+			}
 		}
 	}
 }

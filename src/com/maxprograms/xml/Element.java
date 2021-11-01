@@ -306,11 +306,12 @@ public class Element implements XMLNode {
 	}
 
 	public void setContent(List<XMLNode> c) {
-		content = c;
+		content.clear();
+		content.addAll(c);
 	}
 
 	public void setText(String text) {
-		content = new Vector<>();
+		content.clear();;
 		content.add(new TextNode(text));
 	}
 
