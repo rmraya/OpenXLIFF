@@ -86,6 +86,9 @@ public class Document implements XMLNode {
 				case XMLNode.COMMENT_NODE:
 					content.add(new Comment(((Comment) node).getText()));
 					break;
+				case XMLNode.TEXT_NODE:
+					content.add(new TextNode(((TextNode) node).getText()));
+					break;
 				default:
 					// should never happen
 					LOGGER.log(Level.WARNING, "Prolog contains wrong content type.");
