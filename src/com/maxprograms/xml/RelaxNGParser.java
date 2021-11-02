@@ -40,7 +40,6 @@ public class RelaxNGParser {
     private boolean optionalRemoved;
 
     public RelaxNGParser(String file, Catalog catalog) throws SAXException, IOException, ParserConfigurationException {
-        definitions = new HashMap<>();
         this.catalog = catalog;
         builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
@@ -439,7 +438,6 @@ public class RelaxNGParser {
         while (it.hasNext()) {
             Attribute a = it.next();
             if ("defaultValue".equals(a.getLocalName())) {
-                a.setValue(a.getValue().replaceAll("\\s+", " ").trim());
                 return true;
             }
         }
