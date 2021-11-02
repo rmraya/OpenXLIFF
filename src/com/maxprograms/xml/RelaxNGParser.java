@@ -11,6 +11,7 @@
  *******************************************************************************/
 package com.maxprograms.xml;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -38,9 +39,11 @@ public class RelaxNGParser {
     private boolean divsRemoved;
     private boolean choicesReduced;
     private boolean optionalRemoved;
+    private File baseURI;
 
     public RelaxNGParser(String file, Catalog catalog) throws SAXException, IOException, ParserConfigurationException {
         this.catalog = catalog;
+        baseURI = new File(file).getParentFile();
         builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
         doc = builder.build(file);
@@ -229,6 +232,12 @@ public class RelaxNGParser {
                 Element child = (Element) node;
                 if ("externalRef".equals(child.getName())) {
                     String system = catalog.matchSystem(null, child.getAttributeValue("href"));
+                    if (system == null) {
+                        File f = new File(baseURI, child.getAttributeValue("href"));
+                        if (f.exists()) {
+                            system = f.getAbsolutePath();
+                        }
+                    }
                     if (system != null) {
                         RelaxNGParser parser = new RelaxNGParser(system, catalog);
                         newContent.add(parser.getRootElement());
@@ -263,6 +272,12 @@ public class RelaxNGParser {
                 Element child = (Element) node;
                 if ("include".equals(child.getName())) {
                     String system = catalog.matchSystem(null, child.getAttributeValue("href"));
+                    if (system == null) {
+                        File f = new File(baseURI, child.getAttributeValue("href"));
+                        if (f.exists()) {
+                            system = f.getAbsolutePath();
+                        }
+                    }
                     if (system != null) {
                         RelaxNGParser parser = new RelaxNGParser(system, catalog);
                         Element div = new Element("div");
