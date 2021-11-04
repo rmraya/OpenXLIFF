@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -318,7 +319,9 @@ public class Element implements XMLNode {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder("<" + name);
-		Set<String> keys = attsTable.keySet();
+		List<String> keys = new Vector<>();
+		keys.addAll(attsTable.keySet());
+		Collections.sort(keys);
 		Iterator<String> it = keys.iterator();
 		while (it.hasNext()) {
 			Attribute a = attsTable.get(it.next());
