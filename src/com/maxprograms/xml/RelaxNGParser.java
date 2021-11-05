@@ -82,7 +82,7 @@ public class RelaxNGParser {
                 List<Attribute> atts = attribute.getAttributes();
                 for (int j = 0; j < atts.size(); j++) {
                     Attribute a = atts.get(j);
-                    if ("defaultvalue".equals(a.getLocalName())) {
+                    if ("defaultValue".equals(a.getLocalName())) {
                         map.put(attribute.getChild("name").getText(), a.getValue());
                     }
                 }
