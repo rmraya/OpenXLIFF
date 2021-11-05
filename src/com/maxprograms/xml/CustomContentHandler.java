@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.Attributes;
@@ -77,18 +78,20 @@ class CustomContentHandler implements IContentHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		try {
-			current = stack.pop();
 			if (isRelaxNG) {
 				Map<String, String> map = defaultAttributes.get(localName);
-				Set<String> keys = map.keySet();
-				Iterator<String> it = keys.iterator();
-				while (it.hasNext()) {
-					String key = it.next();
-					if (!current.hasAttribute(key)) {
-						current.setAttribute(key, map.get(key));
+				if (map != null) {
+					Set<String> keys = map.keySet();
+					Iterator<String> it = keys.iterator();
+					while (it.hasNext()) {
+						String key = it.next();
+						if (!current.hasAttribute(key)) {
+							current.setAttribute(key, map.get(key));
+						}
 					}
 				}
 			}
+			current = stack.pop();
 		} catch (EmptyStackException es) {
 			throw new SAXException("Malformed content found.");
 		}
@@ -131,7 +134,7 @@ class CustomContentHandler implements IContentHandler {
 					type = a.getValue();
 				}
 			}
-			if (href != null && "http://relaxng.org/ns/structure/1.0".equals(schemaType)) {
+			if (href != null && XMLConstants.RELAXNG_NS_URI.equals(schemaType)) {
 				try {
 					parseRelaxNG(href, type);
 				} catch (IOException | ParserConfigurationException e) {

@@ -18,8 +18,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -35,10 +38,8 @@ public class RelaxNGParser {
     private Element root;
     private List<Element> elements;
     private List<Element> attributes;
-    private Map<String, Element> cachedDefinitions;
+    private Set<String> visited;
     private boolean divsRemoved;
-    private boolean choicesReduced;
-    private boolean optionalRemoved;
     private File baseURI;
 
     public RelaxNGParser(String file, Catalog catalog) throws SAXException, IOException, ParserConfigurationException {
@@ -50,28 +51,17 @@ public class RelaxNGParser {
         root = doc.getRootElement();
         defaultPrefix = root.getNamespace();
         defaultNamespace = root.getAttributeValue("xmlns");
-        if ("http://relaxng.org/ns/structure/1.0".equals(defaultNamespace)) {
+        if (XMLConstants.RELAXNG_NS_URI.equals(defaultNamespace)) {
             defaultNamespace = "";
         }
         removeForeign(root);
         replaceExternalRef(root);
         replaceIncludes(root);
-        nameAttribute(root);
         do {
             divsRemoved = false;
             removeDivs(root);
         } while (divsRemoved);
-        do {
-            choicesReduced = false;
-            reduceChoices(root);
-        } while (choicesReduced);
-        reduceChoices(root);
-        do {
-            optionalRemoved = false;
-            removeOptional(root);
-        } while (optionalRemoved);
-        removeAttributes(root);
-        removeDefines(root);
+        nameAttribute(root);
     }
 
     public Map<String, Map<String, String>> getElements() {
@@ -80,70 +70,54 @@ public class RelaxNGParser {
         harvestDefinitions(root);
         elements = new Vector<>();
         harvestElements(root);
-        cachedDefinitions = new Hashtable<>();
-        for (int i = 0; i < elements.size(); i++) {
-            Element element = elements.get(i);
-            replaceReferences(element);
+        Iterator<Element> it = elements.iterator();
+        while (it.hasNext()) {
+            Element e = it.next();
             attributes = new Vector<>();
-            harvestAttributes(element);
+            visited = new TreeSet<>();
+            getAttributes(e);
             Map<String, String> map = new Hashtable<>();
-            for (int j = 0; j < attributes.size(); j++) {
-                Element a = attributes.get(j);
-                map.put(a.getChild("name").getText(), getDefaultValue(a));
+            for (int i = 0; i < attributes.size(); i++) {
+                Element attribute = attributes.get(i);
+                List<Attribute> atts = attribute.getAttributes();
+                for (int j = 0; j < atts.size(); j++) {
+                    Attribute a = atts.get(j);
+                    if ("defaultvalue".equals(a.getLocalName())) {
+                        map.put(attribute.getChild("name").getText(), a.getValue());
+                    }
+                }
             }
-            result.put(element.getChild("name").getText(), map);
+            if (map.size() > 0) {
+                result.put(e.getChild("name").getText(), map);
+            }
         }
         return result;
     }
 
-    private String getDefaultValue(Element a) {
-        List<Attribute> atts = a.getAttributes();
-        Iterator<Attribute> it = atts.iterator();
-        while (it.hasNext()) {
-            Attribute at = it.next();
-            if ("defaultValue".equals(at.getLocalName())) {
-                return at.getValue();
-            }
+    private void getAttributes(Element e) {
+        if ("attribute".equals(e.getName())) {
+            attributes.add(e);
+            return;
         }
-        return null;
-    }
-
-    private void replaceReferences(Element e) {
-        List<XMLNode> newContent = new Vector<>();
-        List<XMLNode> content = e.getContent();
-        Iterator<XMLNode> it = content.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element child = (Element) node;
-                if ("ref".equals(child.getName())) {
-                    String name = child.getAttributeValue("name");
-                    if (definesElement(name)) {
-                        continue;
-                    }
-                    Element define = definitions.get(name);
-                    if (define != null) {
-                        if (cachedDefinitions.containsKey(name)) {
-                            define = cachedDefinitions.get(name);
-                        } else {
-                            replaceReferences(define);
-                            cachedDefinitions.put(name, define);
-                        }
-                        newContent.add(define);
-                    }
-                } else {
-                    newContent.add(node);
+        if ("ref".equals(e.getName())) {
+            String name = e.getAttributeValue("name");
+            if (!visited.contains(name)) {
+                visited.add(name);
+                Element definition = definitions.get(name);
+                if (definition != null) {
+                    getAttributes(definition);
                 }
-            } else {
-                newContent.add(node);
             }
+            return;
         }
-        e.setContent(newContent);
         List<Element> children = e.getChildren();
-        Iterator<Element> tt = children.iterator();
-        while (tt.hasNext()) {
-            Element child = tt.next();
-            replaceReferences(child);
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            Element child = it.next();
+            if ("element".equals(child.getName())) {
+                return;
+            }
+            getAttributes(child);
         }
     }
 
@@ -178,11 +152,7 @@ public class RelaxNGParser {
         }
     }
 
-    public Document getDocument() {
-        return doc;
-    }
-
-    public Element getRootElement() {
+    private Element getRootElement() {
         return root;
     }
 
@@ -300,7 +270,7 @@ public class RelaxNGParser {
     }
 
     private void harvestElements(Element e) {
-        if ("element".equals(e.getName())) {
+        if ("element".equals(e.getName()) && e.getChild("name") != null) {
             elements.add(e);
         }
         List<Element> children = e.getChildren();
@@ -310,20 +280,16 @@ public class RelaxNGParser {
         }
     }
 
-    private void harvestAttributes(Element e) {
-        if ("attribute".equals(e.getName())) {
-            attributes.add(e);
-        }
-        List<Element> children = e.getChildren();
-        Iterator<Element> it = children.iterator();
-        while (it.hasNext()) {
-            harvestAttributes(it.next());
-        }
-    }
-
     private void harvestDefinitions(Element e) {
         if ("define".equals(e.getName())) {
-            definitions.put(e.getAttributeValue("name"), e);
+            String name = e.getAttributeValue("name");
+            if (definitions.containsKey(name)) {
+                Element old = definitions.get(name);
+                old.addContent(e.getContent());
+                definitions.put(name, old);
+            } else {
+                definitions.put(name, e);
+            }
         }
         List<Element> children = e.getChildren();
         Iterator<Element> it = children.iterator();
@@ -356,163 +322,5 @@ public class RelaxNGParser {
         while (tt.hasNext()) {
             removeDivs(tt.next());
         }
-    }
-
-    private void removeOptional(Element e) {
-        List<XMLNode> newContent = new Vector<>();
-        List<XMLNode> content = e.getContent();
-        Iterator<XMLNode> it = content.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element child = (Element) node;
-                if ("optional".equals(child.getLocalName())) {
-                    newContent.addAll(child.getContent());
-                    optionalRemoved = true;
-                } else {
-                    newContent.add(node);
-                }
-            } else {
-                newContent.add(node);
-            }
-        }
-        e.setContent(newContent);
-        List<Element> children = e.getChildren();
-        Iterator<Element> tt = children.iterator();
-        while (tt.hasNext()) {
-            removeOptional(tt.next());
-        }
-    }
-
-    private void reduceChoices(Element e) {
-        List<XMLNode> newContent = new Vector<>();
-        List<XMLNode> content = e.getContent();
-        Iterator<XMLNode> it = content.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element child = (Element) node;
-                if ("choice".equals(child.getLocalName())) {
-                    if (child.getChildren().size() > 2) {
-                        Element choice = new Element("choice");
-                        choice.addContent(child.getChildren().get(0));
-                        choice.addContent(child.getChildren().get(1));
-                        child.getChildren().remove(0);
-                        child.getChildren().remove(0);
-                        child.getChildren().add(0, choice);
-                        choicesReduced = true;
-                    } else {
-                        newContent.add(node);
-                    }
-
-                } else {
-                    newContent.add(node);
-                }
-            } else {
-                newContent.add(node);
-            }
-        }
-        e.setContent(newContent);
-        List<Element> children = e.getChildren();
-        Iterator<Element> tt = children.iterator();
-        while (tt.hasNext()) {
-            reduceChoices(tt.next());
-        }
-    }
-
-    private void removeAttributes(Element e) {
-        List<XMLNode> newContent = new Vector<>();
-        List<XMLNode> content = e.getContent();
-        Iterator<XMLNode> it = content.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element child = (Element) node;
-                if ("attribute".equals(child.getLocalName())) {
-                    if (hasDefault(child)) {
-                        newContent.add(node);
-                    }
-                } else {
-                    newContent.add(node);
-                }
-            } else {
-                newContent.add(node);
-            }
-        }
-        e.setContent(newContent);
-        List<Element> children = e.getChildren();
-        Iterator<Element> tt = children.iterator();
-        while (tt.hasNext()) {
-            removeAttributes(tt.next());
-        }
-    }
-
-    private boolean hasDefault(Element e) {
-        List<Attribute> atts = e.getAttributes();
-        Iterator<Attribute> it = atts.iterator();
-        while (it.hasNext()) {
-            Attribute a = it.next();
-            if ("defaultValue".equals(a.getLocalName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void removeDefines(Element e) {
-        List<XMLNode> newContent = new Vector<>();
-        List<XMLNode> content = e.getContent();
-        Iterator<XMLNode> it = content.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element child = (Element) node;
-                if ("define".equals(child.getLocalName())) {
-                    if (hasContent(child)) {
-                        newContent.add(node);
-                    }
-                } else {
-                    newContent.add(node);
-                }
-            } else {
-                newContent.add(node);
-            }
-        }
-        e.setContent(newContent);
-        List<Element> children = e.getChildren();
-        Iterator<Element> tt = children.iterator();
-        while (tt.hasNext()) {
-            removeDefines(tt.next());
-        }
-    }
-
-    private boolean hasContent(Element define) {
-        if (define.getChildren().isEmpty()) {
-            return false;
-        }
-        if (define.getChildren().size() == 1 && "empty".equals(define.getChildren().get(0).getName())) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean definesElement(String name) {
-        if (definitions.containsKey(name)) {
-            Element define = definitions.get(name);
-            List<Element> children = define.getChildren();
-            for (int i = 0; i < children.size(); i++) {
-                Element child = children.get(i);
-                if ("element".equals(child.getName())) {
-                    return true;
-                }
-                if ("ref".equals(child.getName())) {
-                    String def = child.getAttributeValue("name");
-                    if (definesElement(def)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 }
