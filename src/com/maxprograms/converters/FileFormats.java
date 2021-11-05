@@ -124,6 +124,9 @@ public class FileFormats {
 				if (string.indexOf("!DOCTYPE TS>") != -1) {
 					return TS;
 				}
+				if (string.indexOf("<?xml-model") != -1 && string.indexOf("tc:dita:rng") != -1) {
+					return DITA;
+				}
 				if (string.indexOf("<map") != -1 || string.indexOf("<bookmap") != -1) {
 					return DITA;
 				}
