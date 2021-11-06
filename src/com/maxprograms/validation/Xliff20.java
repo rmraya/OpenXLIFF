@@ -409,6 +409,10 @@ public class Xliff20 {
 
 		if ("data".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
+			if (e.hasAttribute("xml:space") && !"preserve".equals(e.getAttributeValue("xml:space"))) {
+				reason = "<data> with wrong value in @xml:space";
+				return false;
+			}
 			if (inMatch) {
 				if (matchDataId.contains(id)) {
 					reason = "Duplicated \"id\" for <data> in <mtc:match>";
