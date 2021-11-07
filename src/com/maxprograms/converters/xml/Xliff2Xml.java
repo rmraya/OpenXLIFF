@@ -285,18 +285,13 @@ public class Xliff2Xml {
 		Iterator<XMLNode> it = nodes.iterator();
 		while (it.hasNext()) {
 			XMLNode n = it.next();
-			switch (n.getNodeType()) {
-			case XMLNode.ELEMENT_NODE:
+			if (n.getNodeType() == XMLNode.TEXT_NODE) {
+				content = content + addEntities(((TextNode) n).getText());
+			}
+			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element e = (Element) n;
 				String ph = extractText(e);
 				content = content + ph;
-				break;
-			case XMLNode.TEXT_NODE:
-				content = content + addEntities(((TextNode) n).getText());
-				break;
-			default:
-				// ignore
-				break;
 			}
 		}
 		return ts + content + "</" + name + ">";

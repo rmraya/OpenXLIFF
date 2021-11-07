@@ -58,9 +58,6 @@ public class Xml2Xliff {
 
 	private static final Logger LOGGER = System.getLogger(Xml2Xliff.class.getName());
 
-	private static final String STARTG = "%%START%%";
-	private static final String ENDG = "%%END%%";
-
 	static final String DOUBLEPRIME = "\u2033";
 	static final String MATHLT = "\u2039";
 	static final String MATHGT = "\u200B\u203A";
@@ -487,9 +484,6 @@ public class Xml2Xliff {
 				}
 			}
 			tagId = 0;
-			if (ditaBased) {
-				txt = prepareG(txt);
-			}
 			txt = addTags(txt);
 			if (segByElement) {
 				writeSegment(txt);
@@ -505,34 +499,6 @@ public class Xml2Xliff {
 				}
 			}
 		}
-	}
-
-	private static String prepareG(String string) {
-		int start = string.indexOf(STARTG);
-		if (start == -1) {
-			return string;
-		}
-		String txt = string;
-		StringBuilder result = new StringBuilder(txt.substring(0, start));
-		while (start != -1) {
-			txt = txt.substring(start + STARTG.length());
-			start = txt.indexOf(STARTG);
-			String element = txt.substring(0, start);
-			result.append(makeMrk(element));
-			txt = txt.substring(start + STARTG.length());
-			int end = txt.indexOf(ENDG);
-			String content = txt.substring(0, end);
-			result.append(content);
-			result.append("</mrk>");
-			end = txt.indexOf(ENDG, end + 1);
-			txt = txt.substring(end + ENDG.length());
-			start = txt.indexOf(STARTG);
-			if (start != -1) {
-				result.append(txt.substring(0, start));
-			}
-		}
-		result.append(txt);
-		return result.toString();
 	}
 
 	private static void writeSegment(String tagged) throws IOException, SAXException, ParserConfigurationException {
@@ -899,10 +865,6 @@ public class Xml2Xliff {
 		return result.toString();
 	}
 
-	private static String makeMrk(String element) {
-		return "<mrk mtype=\"protected\" mid=\"" + tagId++ + "\" ts=\"" + clean(element) + "\">";
-	}
-
 	private static String clean(String string) {
 		String result = string.replace("<", MATHLT);
 		result = result.replace(">", MATHGT);
@@ -1210,27 +1172,7 @@ public class Xml2Xliff {
 
 				removeComments(e);
 
-				text = text + STARTG;
-				text = text + "<" + e.getName();
-				List<Attribute> attributes = e.getAttributes();
-				for (int i = 0; i < attributes.size(); i++) {
-					Attribute a = attributes.get(i);
-					text = text + " " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"";
-				}
-				text = text + ">" + STARTG;
-				List<XMLNode> content = e.getContent();
-				for (int i = 0; i < content.size(); i++) {
-					XMLNode node = content.get(i);
-					if (node.getNodeType() == XMLNode.TEXT_NODE) {
-						TextNode tn = (TextNode) node;
-						text = text + cleanString(tn.getText());
-					} else {
-						Element el = (Element) node;
-						text = text + el.toString();
-					}
-				}
-				text = text + ENDG + "</" + e.getName() + ">" + ENDG;
-
+				text = text + parseElement(e);
 				return;
 			}
 			if (ditaBased && e.getAttributeValue("fluentaIgnore", "no").equals("yes")) {
@@ -1379,6 +1321,40 @@ public class Xml2Xliff {
 			// ignore
 			break;
 		}
+	}
+
+	private static Element parseElement(Element e) {
+		if (!isKnownElement(e.getName())) {
+			configureElement(e);
+		}
+		StringBuilder sb = new StringBuilder("<");
+		sb.append(e.getName());
+		List<Attribute> atts = e.getAttributes();
+		Iterator<Attribute> at = atts.iterator();
+		while (at.hasNext()) {
+			sb.append(' ');
+			sb.append(at.next().toString());
+		}
+		sb.append(">");
+		Element mrk = new Element("mrk");
+		mrk.setAttribute("ts", clean(sb.toString()));
+		String type = "protected";
+		if (!e.getAttributeValue("translate", "yes").equals("no")) {
+			type = "x-" + e.getName();
+		}
+		mrk.setAttribute("mtype", type);
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				mrk.addContent(node);
+			}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				mrk.addContent(parseElement((Element) node));
+			}
+		}
+		return mrk;
 	}
 
 	private static void configureElement(Element e) {
