@@ -21,12 +21,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -43,12 +42,17 @@ public class ToXliff2 {
 
 	private static Element root2;
 	private static int fileId;
+	private static int mrkCount;
 	private static String fileSrcLang;
 	private static String fileTgtLang;
 
 	private ToXliff2() {
 		// do not instantiate this class
-		// use run method instead
+		// use run or main methods instead
+	}
+
+	public static void main(String[] args) {
+		run(args[0], args[1], args[2]);
 	}
 
 	public static List<String> run(File xliffFile, String catalog) {
@@ -88,7 +92,7 @@ public class ToXliff2 {
 		return result;
 	}
 
-	private static void recurse(Element source, Element target) {
+	private static void recurse(Element source, Element target) throws SAXException {
 		if (source.getName().equals("xliff")) {
 			target.setAttribute("version", "2.0");
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.0");
@@ -309,25 +313,14 @@ public class ToXliff2 {
 				}
 			}
 
+			Element tagAttributes = new Element("mda:metadata");
+			tagAttributes.setAttribute("id", unit.getAttributeValue("id"));
+			unit.addContent(tagAttributes);
 			Element originalData = new Element("originalData");
 			unit.addContent(originalData);
 
 			Element src = source.getChild("source");
-			List<Element> tags = src.getChildren();
-			Set<String> tagSet = new TreeSet<>();
-			for (int i = 0; i < tags.size(); i++) {
-				Element tag = tags.get(i);
-				if ("ph".equals(tag.getName())) {
-					String id = "ph" + tag.getAttributeValue("id");
-					if (!tagSet.contains(id)) {
-						Element data = new Element("data");
-						data.setAttribute("id", id);
-						data.setContent(tag.getContent());
-						originalData.addContent(data);
-						tagSet.add("ph" + tag.getAttributeValue("id"));
-					}
-				}
-			}
+			harvestInline(originalData, tagAttributes, src);
 
 			Element segment = new Element("segment");
 			segment.setAttribute("id", source.getAttributeValue("id"));
@@ -340,42 +333,8 @@ public class ToXliff2 {
 				src2.setAttribute("xml:space", "preserve");
 			}
 			src2.setAttribute("xml:lang", fileSrcLang);
-			List<XMLNode> srcContent = src.getContent();
-			Iterator<XMLNode> nodes = srcContent.iterator();
-			while (nodes.hasNext()) {
-				XMLNode node = nodes.next();
-				if (node.getNodeType() == XMLNode.TEXT_NODE) {
-					src2.addContent(node);
-				}
-				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-					Element tag = (Element) node;
-					if (tag.getName().equals("ph")) {
-						Element ph = new Element("ph");
-						ph.setAttribute("id", "ph" + tag.getAttributeValue("id"));
-						ph.setAttribute("dataRef", "ph" + tag.getAttributeValue("id"));
-						src2.addContent(ph);
-					}
-					if (tag.getName().equals("g")) {
-						Element pc = new Element("pc");
-						pc.setAttribute("id", tag.getAttributeValue("id"));
-						pc.setContent(tag.getContent());
-						src2.addContent(pc);
-					}
-					if (tag.getName().equals("mrk")) {
-						Element mrk = new Element("mrk");
-						mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-						if (tag.getAttributeValue("mtype").equals("protected")) {
-							mrk.setAttribute("translate", "no");
-						}
-						String value = tag.getAttributeValue("ts");
-						if (!value.isEmpty()) {
-							mrk.setAttribute("value", value);
-						}
-						mrk.setContent(tag.getContent());
-						src2.addContent(mrk);
-					}
-				}
-			}
+			mrkCount = 1;
+			src2.setContent(harvestContent(src, tagAttributes));
 			if (!sourceNotes.isEmpty()) {
 				for (int i = 0; i < sourceNotes.size(); i++) {
 					Element note = sourceNotes.get(i);
@@ -395,6 +354,7 @@ public class ToXliff2 {
 			if (tgt == null) {
 				tgt = new Element("target");
 			}
+			harvestInline(originalData, tagAttributes, tgt);
 			Element tgt2 = new Element("target");
 			if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
 				tgt2.setAttribute("xml:space", "preserve");
@@ -402,50 +362,8 @@ public class ToXliff2 {
 			if (fileTgtLang != null && !fileTgtLang.isEmpty()) {
 				tgt2.setAttribute("xml:lang", fileTgtLang);
 			}
-			List<XMLNode> tgtContent = tgt.getContent();
-			nodes = tgtContent.iterator();
-			while (nodes.hasNext()) {
-				XMLNode node = nodes.next();
-				if (node.getNodeType() == XMLNode.TEXT_NODE) {
-					tgt2.addContent(node);
-				}
-				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-					Element tag = (Element) node;
-					if (tag.getName().equals("ph")) {
-						Element ph = new Element("ph");
-						String id = "ph" + tag.getAttributeValue("id");
-						ph.setAttribute("id", id);
-						if (!tagSet.contains(id)) {
-							Element data = new Element("data");
-							data.setAttribute("id", id);
-							data.setContent(ph.getContent());
-							originalData.addContent(data);
-							tagSet.add(id);
-						}
-						ph.setAttribute("dataRef", id);
-						tgt2.addContent(ph);
-					}
-					if (tag.getName().equals("g")) {
-						Element pc = new Element("pc");
-						pc.setAttribute("id", tag.getAttributeValue("id"));
-						pc.setContent(tag.getContent());
-						tgt2.addContent(pc);
-					}
-					if (tag.getName().equals("mrk")) {
-						Element mrk = new Element("mrk");
-						mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-						if (tag.getAttributeValue("mtype").equals("protected")) {
-							mrk.setAttribute("translate", "no");
-						}
-						String value = tag.getAttributeValue("ts");
-						if (!value.isEmpty()) {
-							mrk.setAttribute("value", value);
-						}
-						mrk.setContent(tag.getContent());
-						tgt2.addContent(mrk);
-					}
-				}
-			}
+			mrkCount = 1;
+			tgt2.setContent(harvestContent(tgt, tagAttributes));
 			if (!targetNotes.isEmpty()) {
 				for (int i = 0; i < targetNotes.size(); i++) {
 					Element note = targetNotes.get(i);
@@ -459,7 +377,9 @@ public class ToXliff2 {
 					tgt2.setContent(content);
 				}
 			}
-			segment.addContent(tgt2);
+			if (!tgt2.getContent().isEmpty()) {
+				segment.addContent(tgt2);
+			}
 
 			List<Element> matches = source.getChildren("alt-trans");
 			if (!matches.isEmpty()) {
@@ -484,82 +404,21 @@ public class ToXliff2 {
 						match.setAttribute("origin", origin);
 					}
 					Element tsrc = new Element("source");
-					List<XMLNode> content = altTrans.getChild("source").getContent();
-					Iterator<XMLNode> snodes = content.iterator();
-					while (snodes.hasNext()) {
-						XMLNode node = snodes.next();
-						if (node.getNodeType() == XMLNode.TEXT_NODE) {
-							tsrc.addContent(node);
-						}
-						if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-							Element tag = (Element) node;
-							if (tag.getName().equals("ph")) {
-								Element ph = new Element("ph");
-								String id = "ph" + tag.getAttributeValue("id");
-								ph.setAttribute("id", id);
-								if (!tagSet.contains(id)) {
-									Element data = new Element("data");
-									data.setAttribute("id", id);
-									data.setContent(ph.getContent());
-									originalData.addContent(data);
-									tagSet.add(id);
-								}
-								tsrc.addContent(ph);
-							}
-							if (tag.getName().equals("mrk")) {
-								Element mrk = new Element("mrk");
-								mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-								if (tag.getAttributeValue("mtype").equals("protected")) {
-									mrk.setAttribute("translate", "no");
-								}
-								mrk.setAttribute("value", tag.getAttributeValue("ts"));
-								mrk.setContent(tag.getContent());
-								tsrc.addContent(mrk);
-							}
-						}
-					}
+					mrkCount = 1;
+					tsrc.setContent(harvestContent(altTrans.getChild("source"), null));
 					match.addContent(tsrc);
 					Element ttgt = new Element("target");
-					content = altTrans.getChild("target").getContent();
-					snodes = content.iterator();
-					while (snodes.hasNext()) {
-						XMLNode node = snodes.next();
-						if (node.getNodeType() == XMLNode.TEXT_NODE) {
-							ttgt.addContent(node);
-						}
-						if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-							Element tag = (Element) node;
-							if (tag.getName().equals("ph")) {
-								Element ph = new Element("ph");
-								String id = "ph" + tag.getAttributeValue("id");
-								ph.setAttribute("id", id);
-								if (!tagSet.contains(id)) {
-									Element data = new Element("data");
-									data.setAttribute("id", id);
-									data.setContent(ph.getContent());
-									originalData.addContent(data);
-									tagSet.add(id);
-								}
-								ttgt.addContent(ph);
-							}
-							if (tag.getName().equals("mrk")) {
-								Element mrk = new Element("mrk");
-								mrk.setAttribute("id", "mrk" + tag.getAttributeValue("mid"));
-								if (tag.getAttributeValue("mtype").equals("protected")) {
-									mrk.setAttribute("translate", "no");
-								}
-								mrk.setAttribute("value", tag.getAttributeValue("ts"));
-								mrk.setContent(tag.getContent());
-								ttgt.addContent(mrk);
-							}
-						}
-					}
+					mrkCount = 1;
+					ttgt.setContent(harvestContent(altTrans.getChild("target"), null));
 					match.addContent(ttgt);
 					mtc.addContent(match);
 				}
 			}
 			if (originalData.getChildren("data").isEmpty()) {
 				unit.removeChild(originalData);
+			}
+			if (tagAttributes.getChildren("mda:metaGroup").isEmpty()) {
+				unit.removeChild(tagAttributes);
 			}
 		}
 
@@ -568,5 +427,207 @@ public class ToXliff2 {
 		while (it.hasNext()) {
 			recurse(it.next(), target);
 		}
+	}
+
+	private static void harvestInline(Element originalData, Element tagAttributes, Element tag) {
+		if ("ph".equals(tag.getName())) {
+			String id = "ph" + tag.getAttributeValue("id");
+			if (!containsTag(originalData, id)) {
+				Element data = new Element("data");
+				data.setAttribute("id", id);
+				data.setContent(tag.getContent());
+				originalData.addContent(data);
+				storeAttributes(tagAttributes, tag, id);
+			}
+			return;
+		}
+		if ("bpt".equals(tag.getName())) {
+			String id = "bpt" + tag.getAttributeValue("id");
+			if (!containsTag(originalData, id)) {
+				Element data = new Element("data");
+				data.setAttribute("id", id);
+				data.setContent(tag.getContent());
+				originalData.addContent(data);
+				storeAttributes(tagAttributes, tag, id);
+			}
+			return;
+		}
+		if ("ept".equals(tag.getName())) {
+			String id = "ept" + tag.getAttributeValue("id");
+			if (!containsTag(originalData, id)) {
+				Element data = new Element("data");
+				data.setAttribute("id", id);
+				data.setContent(tag.getContent());
+				originalData.addContent(data);
+				storeAttributes(tagAttributes, tag, id);
+			}
+			return;
+		}
+		if ("it".equals(tag.getName())) {
+			String id = "it" + tag.getAttributeValue("id");
+			if (!containsTag(originalData, id)) {
+				Element data = new Element("data");
+				data.setAttribute("id", id);
+				data.setContent(tag.getContent());
+				originalData.addContent(data);
+				storeAttributes(tagAttributes, tag, id);
+			}
+			return;
+		}
+		List<Element> children = tag.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			harvestInline(originalData, tagAttributes, it.next());
+		}
+	}
+
+	private static boolean containsTag(Element originalData, String id) {
+		List<Element> tags = originalData.getChildren("data");
+		Iterator<Element> it = tags.iterator();
+		while (it.hasNext()) {
+			Element tag = it.next();
+			if (tag.getAttributeValue("id").equals(id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void storeAttributes(Element tagAttributes, Element tag, String id) {
+		if (tagAttributes == null) {
+			return;
+		}
+		List<Attribute> atts = tag.getAttributes();
+		if (atts.size() > 1) {
+			Element group = new Element("mda:metaGroup");
+			group.setAttribute("category", "attributes");
+			group.setAttribute("id", id);
+			tagAttributes.addContent(group);
+			Iterator<Attribute> it = atts.iterator();
+			while (it.hasNext()) {
+				Attribute a = it.next();
+				if (!"id".equals(a.getName())) {
+					Element meta = new Element("mda:meta");
+					meta.setAttribute("type", a.getName());
+					meta.setText(a.getValue());
+					group.addContent(meta);
+				}
+			}
+		}
+	}
+
+	private static List<XMLNode> harvestContent(Element e, Element tagAttributes) throws SAXException {
+		if ("sub".equals(e.getName())) {
+			throw new SAXException("<sub> elements are not supported");
+		}
+		List<XMLNode> result = new ArrayList<>();
+		if ("ph".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "ph" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			result.add(ph);
+			return result;
+		}
+		if ("bpt".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "bpt" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			result.add(ph);
+			return result;
+		}
+		if ("ept".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "ept" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			result.add(ph);
+			return result;
+		}
+		if ("it".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "it" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			result.add(ph);
+			return result;
+		}
+		if ("bx".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "bx" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			storeAttributes(tagAttributes, e, id);
+			result.add(ph);
+			return result;
+		}
+		if ("ex".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "ex" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			storeAttributes(tagAttributes, e, id);
+			result.add(ph);
+			return result;
+		}
+		if ("mrk".equals(e.getName())) {
+			Element mrk = new Element("mrk");
+			String id = e.hasAttribute("mid") ? "mrk" + e.getAttributeValue("mid") : "auto" + mrkCount++;
+			mrk.setAttribute("id", id);
+			if (e.getAttributeValue("mtype").equals("protected")) {
+				mrk.setAttribute("translate", "no");
+			}
+			String value = e.getAttributeValue("ts");
+			if (!value.isEmpty()) {
+				mrk.setAttribute("value", value);
+			}
+			if (e.hasAttribute("comment")) {
+				storeAttributes(tagAttributes, e, id);
+			}
+			List<XMLNode> newContent = new ArrayList<>();
+			List<XMLNode> content = e.getContent();
+			Iterator<XMLNode> it = content.iterator();
+			while (it.hasNext()) {
+				XMLNode node = it.next();
+				if (node.getNodeType() == XMLNode.TEXT_NODE) {
+					newContent.add(node);
+				}
+				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+					newContent.addAll(harvestContent((Element) node, tagAttributes));
+				}
+			}
+			mrk.setContent(newContent);
+			result.add(mrk);
+			return result;
+		}
+		if ("g".equals(e.getName())) {
+			Element pc = new Element("pc");
+			String id = "g" + e.getAttributeValue("id");
+			storeAttributes(tagAttributes, e, id);
+			pc.setAttribute("id", id);
+			List<XMLNode> newContent = new ArrayList<>();
+			List<XMLNode> content = e.getContent();
+			Iterator<XMLNode> it = content.iterator();
+			while (it.hasNext()) {
+				XMLNode node = it.next();
+				if (node.getNodeType() == XMLNode.TEXT_NODE) {
+					newContent.add(node);
+				}
+				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+					newContent.addAll(harvestContent((Element) node, tagAttributes));
+				}
+			}
+			pc.setContent(newContent);
+			result.add(pc);
+			return result;
+		}
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				result.add(node);
+			}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element tag = (Element) node;
+				result.addAll(harvestContent(tag, tagAttributes));
+			}
+		}
+		return result;
 	}
 }
