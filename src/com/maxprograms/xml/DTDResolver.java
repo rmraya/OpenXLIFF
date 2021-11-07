@@ -22,6 +22,7 @@ import org.xml.sax.InputSource;
 
 public class DTDResolver implements EntityResolver {
 
+	@SuppressWarnings("resource")
 	@Override
 	public InputSource resolveEntity(String publicId, String systemId) throws IOException {
 		try {

@@ -249,6 +249,7 @@ public class Catalog implements EntityResolver2 {
         return uriRewrites;
     }
 
+    @SuppressWarnings("resource")
     @Override
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
         if (publicId != null) {

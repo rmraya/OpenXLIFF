@@ -83,7 +83,11 @@ public class RelaxNGParser {
                 for (int j = 0; j < atts.size(); j++) {
                     Attribute a = atts.get(j);
                     if ("defaultValue".equals(a.getLocalName())) {
-                        map.put(attribute.getChild("name").getText(), a.getValue());
+                        String name = attribute.getChild("name").getText();
+                        if (attribute.getChild("name").getText().indexOf(':') != -1 && !name.startsWith("xml:")) {
+                            continue;
+                        }
+                        map.put(name, a.getValue());
                     }
                 }
             }
