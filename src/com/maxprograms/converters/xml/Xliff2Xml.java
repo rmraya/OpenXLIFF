@@ -35,14 +35,17 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 public class Xliff2Xml {
@@ -59,6 +62,7 @@ public class Xliff2Xml {
 	private static boolean inCData;
 	private static boolean dita_based = false;
 	private static boolean IDML;
+	private static List<PI> skipped;
 
 	private Xliff2Xml() {
 		// do not instantiate this class
@@ -155,6 +159,16 @@ public class Xliff2Xml {
 			if (dita_based) {
 				try {
 					removeTranslate(outputFile);
+					if (skipped != null) {
+						for (int i = 0; i < skipped.size(); i++) {
+							PI pi = skipped.get(i);
+							JSONObject json = new JSONObject(pi.getData());
+							String file = json.getString("file");
+							File folder = new File(outputFile).getParentFile();
+							File destination = new File(folder, file);
+							Utils.decodeToFile(json.getString("base64"), destination.getAbsolutePath());
+						}
+					}
 				} catch (SAXException sax) {
 					LOGGER.log(Level.ERROR, "removeTranslate error: " + outputFile);
 					throw sax;
@@ -517,6 +531,7 @@ public class Xliff2Xml {
 				}
 			}
 		}
+		skipped = root.getChild("file").getPI("skipped");
 	}
 
 	private static void checkUntranslatable(Element unit) {

@@ -115,10 +115,9 @@ public class Resegmenter {
                                     ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
                                     Element ignorableSource = new Element("source");
                                     ignorable.addContent(ignorableSource);
-                                    List<XMLNode> list = e.getContent();
-                                    ignorableSource.addContent(list.get(0));
-                                    list.remove(0);
-                                    e.setContent(list);
+                                    Element firstTag = e.getChildren().get(0);
+                                    ignorableSource.addContent(firstTag);
+                                    e.removeChild(firstTag);
                                     root.addContent(ignorable);
                                 }
                                 Element lastIgnorable = null;
@@ -127,10 +126,10 @@ public class Resegmenter {
                                     lastIgnorable = new Element("ignorable");
                                     Element ignorableSource = new Element("source");
                                     lastIgnorable.addContent(ignorableSource);
-                                    List<XMLNode> list = e.getContent();
-                                    ignorableSource.addContent(list.get(list.size() - 1));
-                                    list.remove(list.size() - 1);
-                                    e.setContent(list);
+                                    List<Element> tags = e.getChildren();
+                                    Element lastTag = tags.get(tags.size() - 1);
+                                    ignorableSource.addContent(lastTag);
+                                    e.removeChild(lastTag);
                                 }
                                 Element newSeg = new Element("segment");
                                 if (!hasText(e)) {

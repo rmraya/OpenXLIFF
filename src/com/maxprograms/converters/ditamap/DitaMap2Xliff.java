@@ -48,6 +48,7 @@ import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 public class DitaMap2Xliff {
@@ -64,6 +65,7 @@ public class DitaMap2Xliff {
 	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
 	private static boolean elementsExcluded;
+	private static List<String> skipped;
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -95,6 +97,7 @@ public class DitaMap2Xliff {
 				parseDitaVal(ditaval, catalog);
 			}
 
+			skipped = new ArrayList<>();
 			for (int i = 0; i < filesMap.size(); i++) {
 				String file = filesMap.get(i);
 				String source = "";
@@ -135,7 +138,6 @@ public class DitaMap2Xliff {
 				skels.add(skl.getAbsolutePath());
 				File xlf = File.createTempFile("dita", ".xlf", new File(skeleton).getParentFile());
 				xlf.deleteOnExit();
-				xliffs.add(xlf.getAbsolutePath());
 
 				Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
 				Map<String, String> params2 = new HashMap<>();
@@ -158,9 +160,15 @@ public class DitaMap2Xliff {
 				}
 				List<String> res = Xml2Xliff.run(params2);
 				if (!Constants.SUCCESS.equals(res.get(0))) {
-					LOGGER.log(Level.ERROR, "Error converting \"" + source + "\" to XLIFF" );
+					if (res.size() == 3 && "EMPTY".equals(res.get(2))) {
+						// this DITA file does not contain text
+						skipped.add(filesMap.get(i));
+						continue;
+					}
+					LOGGER.log(Level.ERROR, "Error converting \"" + source + "\" to XLIFF");
 					return res;
 				}
+				xliffs.add(xlf.getAbsolutePath());
 				if (!source.equals(filesMap.get(i))) {
 					// original has conref
 					fixSource(xlf.getAbsolutePath(), filesMap.get(i));
@@ -675,7 +683,20 @@ public class DitaMap2Xliff {
 		newFile.clone(file);
 		newFile.setAttribute("datatype", "x-ditamap");
 		String old = file.getAttributeValue("original");
-		newFile.setAttribute("original", Utils.makeRelativePath(mapFile, old));
+		String relative = Utils.makeRelativePath(mapFile, old);
+		if (old.equals(mapFile)) {
+			// preserve DITA files without text
+			// put them in the map file
+			for (int i = 0; i < skipped.size(); i++) {
+				JSONObject json = new JSONObject();
+				String f = skipped.get(i);
+				json.put("file", Utils.makeRelativePath(mapFile, f));
+				json.put("base64", Utils.encodeFromFile(f));
+				PI pi = new PI("skipped", json.toString());
+				newFile.addContent(pi);
+			}
+		}
+		newFile.setAttribute("original", relative);
 		mergedRoot.addContent(newFile);
 		File f = new File(xliff);
 		Files.delete(Paths.get(f.toURI()));

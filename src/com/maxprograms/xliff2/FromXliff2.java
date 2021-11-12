@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,13 +96,18 @@ public class FromXliff2 {
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:1.2");
 			srcLang = source.getAttributeValue("srcLang");
 			trgLang = source.getAttributeValue("trgLang");
-
-			List<PI> encodings = source.getPI("encoding");
-			if (!encodings.isEmpty()) {
-				String encoding = encodings.get(0).getData();
-				if (!encoding.equalsIgnoreCase("UTF-8")) {
-					target.addContent(new PI("encoding", encoding));
-				}
+			
+			List<PI> piList = source.getPI();
+			for (int i=0 ; i<piList.size() ; i++) {
+				PI pi = piList.get(i);
+				if ("encoding".equals(pi.getTarget())) {
+					String encoding = pi.getData();
+					if (!encoding.equalsIgnoreCase(StandardCharsets.UTF_8.name())) {
+						target.addContent(new PI("encoding", encoding));
+					}
+					continue;	
+				} 
+				target.addContent(pi);
 			}
 		}
 

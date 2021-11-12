@@ -172,15 +172,14 @@ public class Xliff2DitaMap {
 		if (!e.getAttributeValue("fluentaIgnore").isEmpty()) {
 			e.removeAttribute("fluentaIgnore");
 		}
-		if (!e.getAttributeValue("keyref").isEmpty()
-				&& e.getAttributeValue("status").equals("removeContent")) { //$NON-NLS-3$
+		if (!e.getAttributeValue("keyref").isEmpty() && e.getAttributeValue("status").equals("removeContent")) {
 			e.setContent(new ArrayList<>());
 			e.removeAttribute("status");
 		}
-		if (!e.getAttributeValue("conref").isEmpty() && e.getAttributeValue("conaction").isEmpty()) { //$NON-NLS-6$
+		if (!e.getAttributeValue("conref").isEmpty() && e.getAttributeValue("conaction").isEmpty()) {
 			emptyElement(e);
 		}
-		if (!e.getAttributeValue("conkeyref").isEmpty() && e.getAttributeValue("conaction").isEmpty()) { //$NON-NLS-6$
+		if (!e.getAttributeValue("conkeyref").isEmpty() && e.getAttributeValue("conaction").isEmpty()) {
 			emptyElement(e);
 		}
 		if (e.getAttributeValue("status").equals("removeContent")) {

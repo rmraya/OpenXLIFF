@@ -222,9 +222,15 @@ public class Xml2Xliff {
 			}
 			output.close();
 			if (!containsText) {
+				LOGGER.log(Level.WARNING, inputFile + " does not contain text");
 				Files.deleteIfExists(new File(skeletonFile).toPath());
 				Files.deleteIfExists(new File(xliffFile).toPath());
-				throw new IOException("File does not contain translatable text");
+				result.add(Constants.ERROR);
+				result.add(inputFile + " does not contain text");
+				if (ditaBased) {
+					result.add("EMPTY");
+				}
+				return result;
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException
