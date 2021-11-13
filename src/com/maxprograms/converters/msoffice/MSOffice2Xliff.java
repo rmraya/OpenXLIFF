@@ -166,9 +166,11 @@ public class MSOffice2Xliff {
 			if (checkPairs(test)) {
 				start = first.getText();
 				end = last.getText();
-				content.remove(content.size() - 1);
-				content.remove(0);
-				source.setContent(content);
+				List<XMLNode> newContent = new ArrayList<>();
+				for (int i = 1; i < content.size() - 1; i++) {
+					newContent.add(content.get(i));
+				}
+				source.setContent(newContent);
 			}
 		}
 

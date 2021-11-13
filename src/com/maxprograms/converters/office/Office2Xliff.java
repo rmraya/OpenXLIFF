@@ -72,7 +72,6 @@ public class Office2Xliff {
 		String catalog = params.get("catalog");
 
 		try {
-
 			Document merged = new Document(null, "xliff", null, null);
 			mergedRoot = merged.getRootElement();
 			mergedRoot.setAttribute("version", "1.2");
