@@ -49,6 +49,8 @@ public class FromOpenXliff {
     private static Catalog catalog;
     private static Document skeleton;
     private static Map<String, Element> segments;
+    private static String tgtLang;
+    private static boolean hasTarget;
 
     private FromOpenXliff() {
         // do not instantiate this class
@@ -104,6 +106,9 @@ public class FromOpenXliff {
         }
         if (version.startsWith("2")) {
             recurse2x(rootElement);
+            if (hasTarget && rootElement.getAttributeValue("trgLang").isEmpty()) {
+                rootElement.setAttribute("trgLang", tgtLang);
+            }
         }
     }
 
@@ -240,6 +245,9 @@ public class FromOpenXliff {
                         }
                         seg.setAttribute("state", "final");
                     }
+                    if (!hasTarget && segment.getChild("target") != null ) {
+                        hasTarget = true;
+                    }
                     seg.removePI("OpenXLIFF");
                 }
             }
@@ -260,6 +268,9 @@ public class FromOpenXliff {
     }
 
     private static void recurseXliff(Element e) {
+        if ("file".equals(e.getName())) {
+            tgtLang = e.getAttributeValue("target-language");
+        }
         if ("trans-unit".equals(e.getName())) {
             segments.put(e.getAttributeValue("id"), e);
         } else {

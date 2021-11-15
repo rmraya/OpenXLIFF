@@ -153,14 +153,11 @@ public class ToOpenXliff {
                 if (!hasText(source)) {
                     return;
                 }
-                unit.addContent("\n        ");
                 unit.addContent(source);
-                unit.addContent("\n        ");
                 Element target = new Element("target");
                 tag = 1;
                 target.setContent(getContent2x(segment.getChild("target")));
                 unit.addContent(target);
-                unit.addContent("\n      ");
                 Element matchesHolder = root.getChild("mtc:matches");
                 if (matchesHolder != null) {
                     List<Element> matches = matchesHolder.getChildren("mtc:match");
@@ -181,9 +178,7 @@ public class ToOpenXliff {
                             Element altSource = new Element("source");
                             tag = 1;
                             altSource.setContent(getContent2x(match.getChild("source")));
-                            unit.addContent("\n        ");
                             altTrans.addContent(altSource);
-                            unit.addContent("\n        ");
                             Element altTarget = new Element("target");
                             tag = 1;
                             altTarget.setContent(getContent2x(match.getChild("target")));
@@ -258,23 +253,18 @@ public class ToOpenXliff {
                         result.add(ph);
                     }
                     if ("mrk".equals(name)) {
-                        boolean translate = e.getAttributeValue("translate").equals("yes");
+                        Element mrk = new Element("mrk");
+                        result.add(mrk);                        
+                        boolean translate = e.getAttributeValue("translate", "yes").equals("yes");
                         if (!translate) {
-                            Element mrk = new Element("mrk");
-                            mrk.setAttribute("mtype", "protected");
-                            mrk.setText(e.getText());
-                            result.add(mrk);
-                            continue;
+                            mrk.setAttribute("mtype", "protected");                        
                         }
                         String type = e.getAttributeValue("type");
                         if ("term".equals(type)) {
-                            Element mrk = new Element("mrk");
                             mrk.setAttribute("mtype", "term");
-                            mrk.setText(e.getText());
-                            result.add(mrk);
-                        } else {
-                            result.add(new TextNode(e.getText()));
                         }
+                        List<XMLNode> nested = getContent2x(e);
+                        mrk.setContent(nested);
                     }
                 }
             }
@@ -322,10 +312,7 @@ public class ToOpenXliff {
                             if (!hasText(source)) {
                                 return;
                             }
-                            unit.addContent("\n        ");
                             unit.addContent(source);
-                            unit.addContent("\n        ");
-
                             Element target = new Element("target");
                             Element tgt = root.getChild("target");
                             if (tgt != null) {
@@ -336,7 +323,6 @@ public class ToOpenXliff {
                                 }
                             }
                             unit.addContent(target);
-                            unit.addContent("\n      ");
                             units.add(unit);
                             e.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
                         }
@@ -357,9 +343,7 @@ public class ToOpenXliff {
                 if (!hasText(source)) {
                     return;
                 }
-                unit.addContent("\n        ");
                 unit.addContent(source);
-                unit.addContent("\n        ");
                 Element target = new Element("target");
                 tag = 1;
                 target.setContent(getContent1x(root.getChild("target")));
@@ -381,9 +365,7 @@ public class ToOpenXliff {
                     Element altSource = new Element("source");
                     tag = 1;
                     altSource.setContent(getContent1x(match.getChild("source")));
-                    unit.addContent("\n        ");
                     altTrans.addContent(altSource);
-                    unit.addContent("\n        ");
                     Element altTarget = new Element("target");
                     tag = 1;
                     altTarget.setContent(getContent1x(match.getChild("target")));
@@ -392,7 +374,6 @@ public class ToOpenXliff {
                         unit.addContent(altTrans);
                     }
                 }
-                unit.addContent("\n      ");
                 units.add(unit);
                 root.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
             }
