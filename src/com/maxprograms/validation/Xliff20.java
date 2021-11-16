@@ -85,8 +85,6 @@ public class Xliff20 {
 	private boolean inTarget;
 	private String fsPrefix = "fs";
 
-	private List<String> knownPrefixes = Arrays.asList("xlf", "mtc", "gls", "fs", "mda", "res", "ctr", "slr", "val",
-			"its", "my");
 	private List<String> knownTypes = Arrays.asList("fmt", "ui", "quote", "link", "image", "other");
 	private List<String> xlfSubTypes = Arrays.asList( "xlf:lb", "xlf:pb", "xlf:b", "xlf:i", "xlf:u", "xlf:var");
 	private List<String> fmtSubTypes = Arrays.asList("xlf:b", "xlf:i", "xlf:u", "xlf:lb", "xlf:pb");
@@ -357,11 +355,6 @@ public class Xliff20 {
 					reason = "Invalid \"subState\" attribute value: " + subState;
 					return false;
 				}
-				String prefix = subState.substring(0, index);
-				if (!knownPrefixes.contains(prefix)) {
-					reason = "Invalid prefix '" + prefix + "' in \"subState\" attribute";
-					return false;
-				}
 			}
 			segCount++;
 		}
@@ -494,10 +487,6 @@ public class Xliff20 {
 					return false;
 				}
 				String prefix = subType.substring(0, index);
-				if (!knownPrefixes.contains(prefix)) {
-					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
-					return false;
-				}
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
 						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <ph>";
@@ -584,10 +573,6 @@ public class Xliff20 {
 					return false;
 				}
 				String prefix = subType.substring(0, index);
-				if (!knownPrefixes.contains(prefix)) {
-					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
-					return false;
-				}
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
 						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <pc>";
@@ -659,10 +644,6 @@ public class Xliff20 {
 					return false;
 				}
 				String prefix = subType.substring(0, index);
-				if (!knownPrefixes.contains(prefix)) {
-					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
-					return false;
-				}
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
 						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <sc>";
@@ -774,10 +755,6 @@ public class Xliff20 {
 					return false;
 				}
 				String prefix = subType.substring(0, index);
-				if (!knownPrefixes.contains(prefix)) {
-					reason = "Invalid prefix '" + prefix + "' in \"subType\" attribute";
-					return false;
-				}
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
 						reason = "Invalid \"subType\" attribute value: \'" + subType + "\' in <ec>";
