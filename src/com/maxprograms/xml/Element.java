@@ -153,6 +153,10 @@ public class Element implements XMLNode {
 		List<XMLNode> newContent = new Vector<>();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
+			if (n == null) {
+				// should not happen!
+				continue;
+			}
 			if (n.getNodeType() == XMLNode.TEXT_NODE && !newContent.isEmpty()) {
 				if (newContent.get(newContent.size() - 1).getNodeType() == XMLNode.TEXT_NODE) {
 					TextNode t = (TextNode) newContent.get(newContent.size() - 1);
@@ -312,7 +316,7 @@ public class Element implements XMLNode {
 	}
 
 	public void setText(String text) {
-		content.clear();;
+		content.clear();
 		content.add(new TextNode(text));
 	}
 
