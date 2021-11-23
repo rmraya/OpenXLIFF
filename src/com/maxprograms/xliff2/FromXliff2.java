@@ -96,17 +96,17 @@ public class FromXliff2 {
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:1.2");
 			srcLang = source.getAttributeValue("srcLang");
 			trgLang = source.getAttributeValue("trgLang");
-			
+
 			List<PI> piList = source.getPI();
-			for (int i=0 ; i<piList.size() ; i++) {
+			for (int i = 0; i < piList.size(); i++) {
 				PI pi = piList.get(i);
 				if ("encoding".equals(pi.getTarget())) {
 					String encoding = pi.getData();
 					if (!encoding.equalsIgnoreCase(StandardCharsets.UTF_8.name())) {
 						target.addContent(new PI("encoding", encoding));
 					}
-					continue;	
-				} 
+					continue;
+				}
 				target.addContent(pi);
 			}
 		}
@@ -357,6 +357,17 @@ public class FromXliff2 {
 						}
 					}
 					altTrans.setAttribute("origin", match.getAttributeValue("origin", "unknown"));
+					Element matchData = match.getChild("originalData");
+					if (matchData != null) {
+						List<Element> dataList = matchData.getChildren("data");
+						Iterator<Element> it = dataList.iterator();
+						while (it.hasNext()) {
+							Element data = it.next();
+							if (!tags.containsKey(data.getAttributeValue("id"))) {
+								tags.put(data.getAttributeValue("id"), data.getText());
+							}
+						}
+					}
 					Element matchSrc = match.getChild("source");
 					Element s = new Element("source");
 					s.setContent(harvestContent(matchSrc, tags, attributes));
@@ -459,7 +470,7 @@ public class FromXliff2 {
 	private static Element processIniline(Element tag, Map<String, String> tags,
 			Map<String, List<String[]>> attributes) {
 		Element result = null;
-		if (tag.getName().equals("ph")) {
+		if ("ph".equals(tag.getName())) {
 			String id = tag.getAttributeValue("id");
 			if (id.startsWith("ph")) {
 				Element ph = new Element("ph");
@@ -539,8 +550,17 @@ public class FromXliff2 {
 				}
 				result = ex;
 			}
+			if (result == null) {
+				// may come from mtc:matches
+				result = new Element("ph");
+				result.setAttribute("id", id);
+				String dataRef = tag.getAttributeValue("dataRef");
+				if (tags.containsKey(dataRef)) {
+					result.addContent(tags.get(dataRef));
+				}
+			}
 		}
-		if (tag.getName().equals("pc")) {
+		if ("pc".equals(tag.getName())) {
 			String id = tag.getAttributeValue("id");
 			Element g = new Element("g");
 			g.setAttribute("id", id);
@@ -559,7 +579,7 @@ public class FromXliff2 {
 			g.setContent(newContent);
 			result = g;
 		}
-		if (tag.getName().equals("mrk")) {
+		if ("mrk".equals(tag.getName())) {
 			Element mrk = new Element("mrk");
 			String id = tag.getAttributeValue("id");
 			if (id.startsWith("mrk")) {
@@ -588,6 +608,24 @@ public class FromXliff2 {
 			}
 			mrk.setContent(newContent);
 			result = mrk;
+		}
+		if ("sc".equals(tag.getName())) {
+			result = new Element("bpt");
+			String id = tag.getAttributeValue("id");
+			String dataRef = tag.getAttributeValue("dataRef");
+			result.setAttribute("id", id);
+			if (tags.containsKey(dataRef)) {
+				result.addContent(tags.get(dataRef));
+			}
+		}
+		if ("ec".equals(tag.getName())) {
+			result = new Element("ept");
+			String id = tag.getAttributeValue("id");
+			String dataRef = tag.getAttributeValue("dataRef");
+			result.setAttribute("id", id);
+			if (tags.containsKey(dataRef)) {
+				result.addContent(tags.get(dataRef));
+			}
 		}
 		return result;
 	}
