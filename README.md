@@ -33,6 +33,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.16.0 | Improved support for XLIFF 2.0; Switched to Java 17 | November 23, 2021
 1.15.2 | MS Office and DITA fixes | November 13, 2021
 1.15.0 | Initial support for RELAX NG gammars | November 8, 2021
 1.14.0 | Improved segmentation for XLIFF 2.0 | October 3rd, 2021
