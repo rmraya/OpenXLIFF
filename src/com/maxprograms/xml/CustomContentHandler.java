@@ -53,20 +53,21 @@ class CustomContentHandler implements IContentHandler {
 
 	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
+		String string = new String(ch, start, length);
 		if (!inCDATA) {
 			if (current != null) {
-				current.addContent(new String(ch, start, length));
+				current.addContent(new TextNode(string));
 			} else {
 				if (prolog == null) {
 					prolog = new Vector<>();
 				}
-				prolog.add(new TextNode(new String(ch, start, length)));
+				prolog.add(new TextNode(string));
 			}
 		} else {
 			if (cdata == null) {
 				cdata = new StringBuffer();
 			}
-			cdata.append(new String(ch, start, length));
+			cdata.append(string);
 		}
 	}
 
