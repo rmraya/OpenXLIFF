@@ -311,8 +311,7 @@ public class Element implements XMLNode {
 	}
 
 	public void setContent(List<XMLNode> c) {
-		content.clear();
-		content.addAll(c);
+		content = c;
 	}
 
 	public void setText(String text) {
