@@ -321,6 +321,7 @@ public class Xliff20 {
 				}
 				sourceId.add(id);
 			}
+			segCount++;
 		}
 
 		if ("segment".equals(e.getLocalName())) {
@@ -841,12 +842,12 @@ public class Xliff20 {
 		List<Element> children = e.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			Element child = children.get(i);
-			if ("source".equals(child.getLocalName())) {
-
-			}
 			boolean result = recurse(child);
 			if (!result) {
 				return false;
+			}
+			if ("source".equals(child.getLocalName())) {
+				inSource = false;
 			}
 			if (result && "unit".equals(child.getName())) {
 				if (!unitSc.isEmpty()) {
