@@ -14,12 +14,12 @@ package com.maxprograms.stats;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -27,47 +27,12 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.xml.sax.SAXException;
+
 public class SvgStats {
 
-	protected class SegmentStatus {
-
-		private boolean approved;
-		private boolean translated;
-		private float match;
-
-		public SegmentStatus() {
-			approved = false;
-			translated = false;
-			match = 0;
-		}
-
-		public boolean isApproved() {
-			return approved;
-		}
-
-		public void setApproved(boolean approved) {
-			this.approved = approved;
-		}
-
-		public float getMatch() {
-			return match;
-		}
-
-		public void setMatch(float match) {
-			this.match = match;
-		}
-
-		public boolean isTranslated() {
-			return translated;
-		}
-
-		public void setTranslated(boolean translated) {
-			this.translated = translated;
-		}
-
-	}
-
 	private List<SegmentStatus> segmentsList;
+	private Map<String, Float> segmentMatches;
 	private int groupSize;
 	private int barWidth;
 	private int maxBars;
@@ -75,7 +40,8 @@ public class SvgStats {
 	private int offset;
 	private String stroke;
 
-	public void analyse(String file, String catalog) throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	public void analyse(String file, String catalog)
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Document document = builder.build(file);
@@ -87,7 +53,7 @@ public class SvgStats {
 		if (root.getAttributeValue("version").startsWith("1.")) {
 			parseXliff(root);
 		} else {
-			throw new IOException("Unsupported XLIFF version");
+			parseXliff2(root);
 		}
 		if (segmentsList.isEmpty()) {
 			throw new IOException("Empty XLIFF");
@@ -374,4 +340,50 @@ public class SvgStats {
 		}
 	}
 
+	private void parseXliff2(Element e) {
+		if ("unit".equals(e.getName())) {
+			segmentMatches = new HashMap<>();
+			Element matches = e.getChild("mtc:matches");
+			if (matches != null) {
+				List<Element> matchesList = matches.getChildren("mtc:match");
+				Iterator<Element> it = matchesList.iterator();
+				while (it.hasNext()) {
+					Element match = it.next();
+					String ref = match.getAttributeValue("ref");
+					if (ref.startsWith("#")) {
+						ref = ref.substring(1);
+					}
+					float quality = Float.parseFloat(match.getAttributeValue("matchQuality", "0"));
+					if (!segmentMatches.containsKey(ref)) {
+						segmentMatches.put(ref, quality);
+					} else {
+						float max = segmentMatches.get(ref);
+						if (quality > max) {
+							segmentMatches.put(ref, quality);
+						}
+					}
+				}
+			}
+		}
+		if ("segment".equals(e.getName())) {
+			Element src = e.getChild("source");
+			if (src.getContent().isEmpty()) {
+				return;
+			}
+			SegmentStatus status = new SegmentStatus();
+			String state = e.getAttributeValue("state", "initial");
+			status.setApproved("final".equals(state));
+			status.setTranslated(!"initial".equals(state));
+			String id = e.getAttributeValue("id");
+			if (segmentMatches.containsKey(id)) {
+				status.setMatch(segmentMatches.get(id));
+			}
+			segmentsList.add(status);
+		}
+		List<Element> children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			parseXliff2(it.next());
+		}
+	}
 }
