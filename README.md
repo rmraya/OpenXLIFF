@@ -33,9 +33,10 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
-1.16.0 | Improved support for XLIFF 2.0; Switched to Java 17 | November 23, 2021
-1.15.2 | MS Office and DITA fixes | November 13, 2021
-1.15.0 | Initial support for RELAX NG gammars | November 8, 2021
+1.17.0 | Improved validation of XLIFF 2.0; Added SVG statistics for XLIFF 2.0 | December 1st, 2021
+1.16.0 | Improved support for XLIFF 2.0; Switched to Java 17 | November 23rd, 2021
+1.15.2 | MS Office and DITA fixes | November 13th, 2021
+1.15.0 | Initial support for RELAX NG gammars | November 8th, 2021
 1.14.0 | Improved segmentation for XLIFF 2.0 | October 3rd, 2021
 1.13.0 | Improved DITA support | August 31st, 2021
 1.12.7 | Improved round trip 1.2 -> 2.0 -> 1.2; Ignored untranslatable SVG in DITA maps | July 4th, 2021
