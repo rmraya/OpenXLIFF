@@ -65,15 +65,7 @@ public class Text2Xliff {
 			tgtLang = "\" target-language=\"" + targetLanguage;
 		}
 
-		if (elementSegmentation == null) {
-			segByElement = false;
-		} else {
-			if (elementSegmentation.equals("yes")) {
-				segByElement = true;
-			} else {
-				segByElement = false;
-			}
-		}
+		segByElement = elementSegmentation == null ? false : elementSegmentation.equals("yes");
 
 		source = "";
 		try {
@@ -109,7 +101,7 @@ public class Text2Xliff {
 				if (breakOnCRLF) {
 					source = buffer.readLine();
 					while (source != null) {
-						if (source.trim().length() == 0) {
+						if (source.isBlank()) {
 							writeSkeleton(source + "\n");
 						} else {
 							writeSegment();
@@ -121,12 +113,12 @@ public class Text2Xliff {
 					while (line != null) {
 						line = line + "\n";
 
-						if (line.trim().length() == 0) {
+						if (line.isBlank()) {
 							// no text in this line
 							// segment separator
 							writeSkeleton(line);
 						} else {
-							while (line != null && line.trim().length() != 0) {
+							while (line != null && !line.isBlank()) {
 								source = source + line;
 								line = buffer.readLine();
 								if (line != null) {
