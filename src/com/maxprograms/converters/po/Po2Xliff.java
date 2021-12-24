@@ -113,7 +113,7 @@ public class Po2Xliff {
 					while (line != null) {
 						line = line + "\n";
 
-						if (line.trim().length() == 0) {
+						if (line.isBlank()) {
 							// no text in this line
 							// segment separator
 							writeSkeleton(line);

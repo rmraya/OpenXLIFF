@@ -107,7 +107,7 @@ public class Properties2Xliff {
 				String line;
 				while ((line = buffer.readLine()) != null) {
 
-					if (line.trim().length() == 0) {
+					if (line.isBlank()) {
 						// no text in this line
 						// segment separator
 						writeSkeleton(line + "\n");

@@ -23,7 +23,7 @@ public class StringConverter {
 	}
 
 	public static String encodeString(String string) {
-		if (string.length() == 0) {
+		if (string.isEmpty()) {
 			return "";
 		}
 		return toHexString(string.getBytes(StandardCharsets.UTF_8));
@@ -34,14 +34,14 @@ public class StringConverter {
 	}
 
 	public static String decodeString(String string) {
-		if (string.length() == 0) {
+		if (string.isEmpty()) {
 			return "";
 		}
 		return new String(toByteArray(string), StandardCharsets.UTF_8);
 	}
 
 	public static byte[] toByteArray(String data) {
-		if (data.length() == 0) {
+		if (data.isEmpty()) {
 			return new byte[0];
 		}
 		int count = data.length() / 2;

@@ -806,7 +806,7 @@ public class Xml2Xliff {
 		}
 
 		tagged = tagged.trim();
-		if (tagged.length() == 0) {
+		if (tagged.isEmpty()) {
 			return false;
 		}
 		for (int i = 0; i < tagged.length(); i++) {

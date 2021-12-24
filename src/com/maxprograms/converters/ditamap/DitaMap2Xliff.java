@@ -243,7 +243,7 @@ public class DitaMap2Xliff {
 						String id = "";
 						if (href.indexOf('#') != -1) {
 							file = href.substring(0, href.indexOf('#'));
-							if (file.length() == 0) {
+							if (file.isEmpty()) {
 								file = source;
 							} else {
 								File f = new File(file);
@@ -609,7 +609,7 @@ public class DitaMap2Xliff {
 			conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
 			if (conref.indexOf('#') != -1) {
 				String file = conref.substring(0, conref.indexOf('#'));
-				if (file.length() == 0) {
+				if (file.isEmpty()) {
 					file = source;
 				} else {
 					File f = new File(file);

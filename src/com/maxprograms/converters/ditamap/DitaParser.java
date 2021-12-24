@@ -314,7 +314,7 @@ public class DitaParser {
 				conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
 				if (conref.indexOf('#') != -1) {
 					String file = conref.substring(0, conref.indexOf('#'));
-					if (file.length() == 0) {
+					if (file.isEmpty()) {
 						file = parentFile;
 					} else {
 						file = Utils.getAbsolutePath(parentFile, file);

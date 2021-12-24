@@ -105,7 +105,7 @@ public class Mif2Xliff {
 				String line;
 
 				while ((line = buffer.readLine()) != null) {
-					if (line.length() == 0) {
+					if (line.isEmpty()) {
 						line = buffer.readLine();
 						continue;
 					}
