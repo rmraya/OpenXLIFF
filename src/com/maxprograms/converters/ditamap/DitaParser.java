@@ -88,7 +88,6 @@ public class DitaParser {
 	}
 
 	private Set<String> filesMap;
-	private SAXBuilder builder;
 	private Map<String, Set<String>> excludeTable;
 	private Map<String, Set<String>> includeTable;
 	private boolean filterAttributes;
@@ -105,6 +104,7 @@ public class DitaParser {
 	private static TreeSet<String> imageSet;
 
 	private boolean containsText;
+	private Catalog catalog;
 
 	protected List<String> run(Map<String, String> params)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
@@ -116,10 +116,10 @@ public class DitaParser {
 		pendingRecurse = new TreeSet<>();
 
 		String inputFile = params.get("source");
-		Catalog catalog = new Catalog(params.get("catalog"));
+		catalog = new Catalog(params.get("catalog"));
 		String ditaval = params.get("ditaval");
 
-		builder = new SAXBuilder();
+		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		Document doc = builder.build(inputFile);
 		String id = doc.getRootElement().getAttributeValue("id");
@@ -280,10 +280,13 @@ public class DitaParser {
 				try {
 					File file = new File(href);
 					if (file.exists()) {
-						Element root = builder.build(href).getRootElement();
-						if (root.getAttributeValue("translate", "yes").equals("yes")) {
+						SAXBuilder builder = new SAXBuilder();
+						builder.setEntityResolver(catalog);
+						Document d = builder.build(href);
+						Element referenceRoot = d.getRootElement();
+						if (referenceRoot.getAttributeValue("translate", "yes").equals("yes")) {
 							if (!recursed.contains(href)) {
-								recurse(root, href);
+								recurse(referenceRoot, href);
 								filesMap.add(href);
 								recursed.add(href);
 							}
@@ -327,7 +330,8 @@ public class DitaParser {
 							List<Element> children = e.getChildren();
 							Iterator<Element> ie = children.iterator();
 							while (ie.hasNext()) {
-								recurse(ie.next(), file);
+								Element child = ie.next();
+								recurse(child, file);
 							}
 						} else {
 							MessageFormat mf = new MessageFormat("@conref not found:  \"{0}\" in file {1}");
@@ -465,6 +469,8 @@ public class DitaParser {
 					href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 					String path = Utils.getAbsolutePath(parentFile, href);
 					File f = new File(path);
+					SAXBuilder builder = new SAXBuilder();
+					builder.setEntityResolver(catalog);
 					Element svg = builder.build(f).getRootElement();
 					if ("svg".equals(svg.getName()) && hasText(svg)) {
 						filesMap.add(path);
@@ -477,7 +483,8 @@ public class DitaParser {
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
-			recurse(it.next(), parentFile);
+			Element child = it.next();
+			recurse(child, parentFile);
 		}
 	}
 
@@ -489,7 +496,7 @@ public class DitaParser {
 		if ("title".equals(name) && translatableText(svg.getText().strip())) {
 			return true;
 		}
-		if ("desc".equals(name)&& translatableText(svg.getText().strip())) {
+		if ("desc".equals(name) && translatableText(svg.getText().strip())) {
 			return true;
 		}
 		List<Element> children = svg.getChildren();
@@ -503,7 +510,7 @@ public class DitaParser {
 	}
 
 	private static boolean translatableText(String string) {
-		for (int i=0 ; i<string.length() ; i++) {
+		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
 			if (Character.isSpaceChar(c)) {
 				continue;
@@ -719,6 +726,8 @@ public class DitaParser {
 	private Element getReferenced(String file, String id)
 			throws SAXException, IOException, ParserConfigurationException {
 		StringArray array = new StringArray(file, id);
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		String topicId = root.getAttributeValue("id");
@@ -790,6 +799,8 @@ public class DitaParser {
 
 	protected Element getConKeyReferenced(String file, String id)
 			throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		return locateReferenced(root, id);
