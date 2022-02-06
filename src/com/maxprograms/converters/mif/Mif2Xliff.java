@@ -75,138 +75,140 @@ public class Mif2Xliff {
 		try {
 			loadCharMap();
 			try (FileReader input = new FileReader(inputFile)) {
-				BufferedReader buffer = new BufferedReader(input);
+				try (BufferedReader buffer = new BufferedReader(input)) {
 
-				output = new FileOutputStream(xliffFile);
-				writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-				writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
-						+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-						+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"mif\">\n");
-				writeString("<header>\n");
-				writeString("   <skl>\n");
-				writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
-				writeString("   </skl>\n");
-				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
-						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
-				writeString("</header>\n");
-				writeString("<?encoding " + encoding + "?>\n");
-				writeString("<body>\n");
+					output = new FileOutputStream(xliffFile);
+					writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+					writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
+							+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+							+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
+					writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
+							+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"mif\">\n");
+					writeString("<header>\n");
+					writeString("   <skl>\n");
+					writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+					writeString("   </skl>\n");
+					writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+							+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
+					writeString("</header>\n");
+					writeString("<?encoding " + encoding + "?>\n");
+					writeString("<body>\n");
 
-				skeleton = new FileOutputStream(skeletonFile);
+					skeleton = new FileOutputStream(skeletonFile);
 
-				String type = null;
-				String content = null;
-				int starts;
-				int ends;
-				Stack<String> typesList = new Stack<>();
+					String type = null;
+					String content = null;
+					int starts;
+					int ends;
+					Stack<String> typesList = new Stack<>();
 
-				String line;
+					String line;
 
-				while ((line = buffer.readLine()) != null) {
-					if (line.isEmpty()) {
-						line = buffer.readLine();
-						continue;
-					}
-					char first = line.charAt(0);
-					int count = 0;
-					while (Character.isSpaceChar(first) && count < line.length()) {
-						first = line.charAt(count++);
-					}
-					if (first == '&' || first == '=') {
-						writeSkeleton(line + "\n");
-						line = buffer.readLine();
-						continue;
-					}
-					starts = line.indexOf('<');
-					ends = line.indexOf('>');
-
-					if (starts != -1 && first == '<') { // element starts here
-						String trimmed = line.substring(starts + 1);
-						int stops = trimmed.indexOf(' ');
-						if (ends == -1) {
-							// no clossing '>'
-							// compound element starts here
-							type = trimmed.substring(0, trimmed.length() - 1).toLowerCase();
-							typesList.push(type.toLowerCase());
-							if (type.equals("para")) {
-								inPara = true;
-							}
-						} else {
-							// the full element is defined in one line
-							// get the content
-							if (stops != -1) {
-								type = trimmed.substring(0, stops).toLowerCase();
-							} else {
-								// we are not in an element!
-								// ignore and let crash
-							}
+					while ((line = buffer.readLine()) != null) {
+						if (line.isEmpty()) {
+							line = buffer.readLine();
+							continue;
 						}
-						if (inPara) {
-							if (!translatable.contains(type)) {
-								if (!segment.isEmpty()) {
-									if (segment.endsWith("</ph>")) {
-										segment = segment.substring(0, segment.length() - 5);
-										segment += "\n" + cleanTag(line) + "</ph>";
+						char first = line.charAt(0);
+						int count = 0;
+						while (Character.isSpaceChar(first) && count < line.length()) {
+							first = line.charAt(count++);
+						}
+						if (first == '&' || first == '=') {
+							writeSkeleton(line + "\n");
+							line = buffer.readLine();
+							continue;
+						}
+						starts = line.indexOf('<');
+						ends = line.indexOf('>');
+
+						if (starts != -1 && first == '<') { // element starts here
+							String trimmed = line.substring(starts + 1);
+							int stops = trimmed.indexOf(' ');
+							if (ends == -1) {
+								// no clossing '>'
+								// compound element starts here
+								type = trimmed.substring(0, trimmed.length() - 1).toLowerCase();
+								typesList.push(type.toLowerCase());
+								if (type.equals("para")) {
+									inPara = true;
+								}
+							} else {
+								// the full element is defined in one line
+								// get the content
+								if (stops != -1) {
+									type = trimmed.substring(0, stops).toLowerCase();
+								} else {
+									// we are not in an element!
+									// ignore and let crash
+								}
+							}
+							if (inPara) {
+								if (!translatable.contains(type)) {
+									if (!segment.isEmpty()) {
+										if (segment.endsWith("</ph>")) {
+											segment = segment.substring(0, segment.length() - 5);
+											segment += "\n" + Utils.cleanString(line) + "</ph>";
+										} else {
+											segment += "<ph id=\"" + tagId++ + "\">" + Utils.cleanString(line)
+													+ "</ph>";
+										}
 									} else {
-										segment += "<ph id=\"" + tagId++ + "\">" + cleanTag(line) + "</ph>";
+										writeSkeleton(line + "\n");
 									}
 								} else {
-									writeSkeleton(line + "\n");
+									content = trimmed.substring(stops + 2, trimmed.lastIndexOf("'>"));
+									// remove comments at the end of the line
+									content = removeComments(content);
+									// check for ilegal characters
+									content = cleanString(replaceChars(content));
+									if (segment.isEmpty()) {
+										writeSkeleton("%%%" + segId + "%%%\n");
+									}
+									segment += content;
 								}
 							} else {
-								content = trimmed.substring(stops + 2, trimmed.lastIndexOf("'>"));
-								// remove comments at the end of the line
-								content = removeComments(content);
-								// check for ilegal characters
-								content = cleanString(replaceChars(content));
-								if (segment.isEmpty()) {
-									writeSkeleton("%%%" + segId + "%%%\n");
-								}
-								segment += content;
+								writeSkeleton(line + "\n");
 							}
-						} else {
+						}
+
+						if (ends != -1 && starts == -1) {
+							// close previous compound element
+							if (!typesList.isEmpty()) {
+								type = typesList.pop();
+							}
+							if (inPara && !segment.isEmpty()) {
+								if (segment.endsWith("</ph>")) {
+									segment = segment.substring(0, segment.length() - 5);
+									segment += "\n" + Utils.cleanString(line) + "</ph>";
+								} else {
+									segment += "<ph id=\"" + tagId++ + "\">" + Utils.cleanString(line) + "</ph>";
+								}
+							} else {
+								writeSkeleton(line + "\n");
+							}
+							if (type != null && type.equals("para")) {
+								if (!segment.isEmpty()) {
+									writeSegment();
+								}
+								inPara = false;
+								segment = "";
+								tagId = 1;
+							}
+						}
+
+						if (ends == -1 && starts == -1) {
+							// write comment to skeleton
 							writeSkeleton(line + "\n");
 						}
 					}
 
-					if (ends != -1 && starts == -1) {
-						// close previous compound element
-						if (!typesList.isEmpty()) {
-							type = typesList.pop();
-						}
-						if (inPara && !segment.isEmpty()) {
-							if (segment.endsWith("</ph>")) {
-								segment = segment.substring(0, segment.length() - 5);
-								segment += "\n" + cleanTag(line) + "</ph>";
-							} else {
-								segment += "<ph id=\"" + tagId++ + "\">" + cleanTag(line) + "</ph>";
-							}
-						} else {
-							writeSkeleton(line + "\n");
-						}
-						if (type != null && type.equals("para")) {
-							if (!segment.isEmpty()) {
-								writeSegment();
-							}
-							inPara = false;
-							segment = "";
-							tagId = 1;
-						}
-					}
+					skeleton.close();
 
-					if (ends == -1 && starts == -1) {
-						// write comment to skeleton
-						writeSkeleton(line + "\n");
-					}
+					writeString("</body>\n");
+					writeString("</file>\n");
+					writeString("</xliff>");
 				}
-
-				skeleton.close();
-
-				writeString("</body>\n");
-				writeString("</file>\n");
-				writeString("</xliff>");
 			}
 			output.close();
 			result.add(Constants.SUCCESS);
@@ -216,7 +218,6 @@ public class Mif2Xliff {
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
-
 		return result;
 	}
 
@@ -238,17 +239,6 @@ public class Mif2Xliff {
 			index = string.indexOf(token, index + newText.length());
 		}
 		return string;
-	}
-
-	/**
-	 * This method cleans the text that will be stored inside <ph>elements in the
-	 * XLIFF file *
-	 */
-	private static String cleanTag(String line) {
-		String s = line.replace("&", "&amp;");
-		s = s.replace("<", "&lt;");
-		s = s.replace(">", "&gt;");
-		return s;
 	}
 
 	/**
@@ -306,17 +296,19 @@ public class Mif2Xliff {
 	private static String cleanString(String s) {
 		int control = s.indexOf("\\x");
 		while (control != -1) {
-			String code = s.substring(control + 2, s.indexOf(' ', control));
-
+			int spaceIndex = s.indexOf(' ', control);
+			if (spaceIndex == -1 || spaceIndex > control + 4) {
+				control = s.indexOf("\\x", control + 1);
+				continue;
+			}
+			String code = s.substring(control + 2, spaceIndex);
 			String character = "" + getCharValue(Integer.valueOf(code, 16).intValue());
 			if (!character.isEmpty()) {
 				s = s.substring(0, control) + character + s.substring(1 + s.indexOf(' ', control));
 			}
-			control++;
-			control = s.indexOf("\\x", control);
+			control = s.indexOf("\\x", control + 1);
 		}
-
-		return cleanTag(s);
+		return Utils.cleanString(s);
 	}
 
 	private static void fillTranslatable() {
@@ -334,28 +326,28 @@ public class Mif2Xliff {
 
 	private static char getCharValue(int value) {
 		switch (value) {
-		case 0x04:
-			return '\u0004';
-		case 0x05:
-			return '\u0005';
-		case 0x08:
-			return '\u0008';
-		case 0x09:
-			return '\u0009';
-		case 0x0a:
-			return '\u0010';
-		case 0x10:
-			return '\u0016';
-		case 0x11:
-			return '\u0017';
-		case 0x12:
-			return '\u0018';
-		case 0x13:
-			return '\u0019';
-		case 0x14:
-			return '\u0020';
-		case 0x15:
-			return '\u0021';
+			case 0x04:
+				return '\u0004';
+			case 0x05:
+				return '\u0005';
+			case 0x08:
+				return '\u0008';
+			case 0x09:
+				return '\u0009';
+			case 0x0a:
+				return '\u0010';
+			case 0x10:
+				return '\u0016';
+			case 0x11:
+				return '\u0017';
+			case 0x12:
+				return '\u0018';
+			case 0x13:
+				return '\u0019';
+			case 0x14:
+				return '\u0020';
+			case 0x15:
+				return '\u0021';
 		}
 		if (value > 0x7f) {
 			String key = "\\x" + Integer.toHexString(value);
