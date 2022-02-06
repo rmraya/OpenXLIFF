@@ -132,7 +132,7 @@ public class Xliff2Mif {
 
 	private static void loadCharMap() throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder cbuilder = new SAXBuilder();
-		Document cdoc = cbuilder.build("xmlfilter/init_mif.xml");
+		Document cdoc = cbuilder.build(Xliff2Mif.class.getResource("init_mif.xml"));
 		charmap = new HashMap<>();
 		Element croot = cdoc.getRootElement();
 		List<Element> codes = croot.getChildren("char");
