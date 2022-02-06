@@ -33,6 +33,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.17.2 | Fixed support for FrameMaker MIF files | February 6th, 2022
 1.17.1 | Improved support for DITA | February 5th, 2022
 1.17.0 | Improved validation of XLIFF 2.0; Added SVG statistics for XLIFF 2.0 | December 1st, 2021
 1.16.0 | Improved support for XLIFF 2.0; Switched to Java 17 | November 23rd, 2021
