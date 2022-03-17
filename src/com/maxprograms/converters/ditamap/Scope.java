@@ -13,7 +13,7 @@ package com.maxprograms.converters.ditamap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class Scope {
 		String[] parts = name.split("\\s");
 		names.addAll(Arrays.asList(parts));
 		children = new ArrayList<>();
-		keys = new HashMap<>();
+		keys = new Hashtable<>();
 	}
 
 	public void addScope(Scope scope) {
@@ -72,6 +72,14 @@ public class Scope {
 				}
 			}
 		}
+		Iterator<Scope> it = children.iterator();
+		while (it.hasNext()) {
+			Scope child = it.next();
+			Key k = child.getKey(string);
+			if (k != null) {
+				return k;
+			}
+		}
 		return null;
 	}
 
@@ -80,7 +88,7 @@ public class Scope {
 	}
 
 	public Map<String, Key> getKeys() {
-		Map<String, Key> result = new HashMap<>();
+		Map<String, Key> result = new Hashtable<>();
 		Iterator<String> it = names.iterator();
 		while (it.hasNext()) {
 			String name = it.next();

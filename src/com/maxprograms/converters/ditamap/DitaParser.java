@@ -38,6 +38,7 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
@@ -106,7 +107,7 @@ public class DitaParser {
 	private boolean containsText;
 	private Catalog catalog;
 
-	protected List<String> run(Map<String, String> params)
+	public List<String> run(Map<String, String> params)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
 		List<String> result = new ArrayList<>();
 		filesMap = new TreeSet<>();
@@ -121,6 +122,7 @@ public class DitaParser {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(inputFile);
 		String id = doc.getRootElement().getAttributeValue("id");
 		List<PI> ish = doc.getPI("ish");
@@ -282,6 +284,7 @@ public class DitaParser {
 					if (file.exists()) {
 						SAXBuilder builder = new SAXBuilder();
 						builder.setEntityResolver(catalog);
+						builder.setErrorHandler(new SilentErrorHandler());
 						Document d = builder.build(href);
 						Element referenceRoot = d.getRootElement();
 						if (referenceRoot.getAttributeValue("translate", "yes").equals("yes")) {
@@ -471,6 +474,7 @@ public class DitaParser {
 					File f = new File(path);
 					SAXBuilder builder = new SAXBuilder();
 					builder.setEntityResolver(catalog);
+					builder.setErrorHandler(new SilentErrorHandler());
 					Element svg = builder.build(f).getRootElement();
 					if ("svg".equals(svg.getName()) && hasText(svg)) {
 						filesMap.add(path);
@@ -617,7 +621,7 @@ public class DitaParser {
 		return topicrefSet.contains(name);
 	}
 
-	protected static Element getMatched(String name, Element topicmeta) {
+	public static Element getMatched(String name, Element topicmeta) {
 		if (topicmeta.getName().equals(name)) {
 			return topicmeta;
 		}
@@ -636,7 +640,7 @@ public class DitaParser {
 		return null;
 	}
 
-	protected static boolean ditaClass(Element e, String string) {
+	public static boolean ditaClass(Element e, String string) {
 		String cls = e.getAttributeValue("class");
 		String[] parts = cls.split("\\s");
 		for (int i = 0; i < parts.length; i++) {
@@ -649,9 +653,10 @@ public class DitaParser {
 
 	private void parseDitaVal(String ditaval, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
-		SAXBuilder bder = new SAXBuilder();
-		bder.setEntityResolver(catalog);
-		Document doc = bder.build(ditaval);
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
+		Document doc = builder.build(ditaval);
 		Element root = doc.getRootElement();
 		if (root.getName().equals("val")) {
 			List<Element> props = root.getChildren("prop");
@@ -728,6 +733,7 @@ public class DitaParser {
 		StringArray array = new StringArray(file, id);
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		String topicId = root.getAttributeValue("id");
@@ -801,6 +807,7 @@ public class DitaParser {
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		return locateReferenced(root, id);

@@ -56,7 +56,6 @@ public class DitaMap2Xliff {
 	private static final Logger LOGGER = System.getLogger(DitaMap2Xliff.class.getName());
 
 	private static Element mergedRoot;
-	private static SAXBuilder builder;
 	private static boolean hasConref;
 	private static boolean hasXref;
 	private static boolean hasConKeyRef;
@@ -84,11 +83,6 @@ public class DitaMap2Xliff {
 			List<String> filesMap = parser.run(params);
 			rootScope = parser.getScope();
 
-			builder = new SAXBuilder();
-			builder.setEntityResolver(catalog);
-			builder.preserveCustomAttributes(true);
-			builder.setErrorHandler(new SilentErrorHandler());
-
 			List<String> xliffs = new ArrayList<>();
 			List<String> skels = new ArrayList<>();
 
@@ -102,7 +96,7 @@ public class DitaMap2Xliff {
 				String file = filesMap.get(i);
 				String source = "";
 				try {
-					source = checkConref(file);
+					source = checkConref(file, catalog);
 				} catch (SkipException skip) {
 					// skip untranslatable files
 					continue;
@@ -111,20 +105,20 @@ public class DitaMap2Xliff {
 				}
 				if (excludeTable != null) {
 					try {
-						source = removeFiltered(source);
+						source = removeFiltered(source, catalog);
 					} catch (Exception sax) {
 						// skip directly referenced images
 						continue;
 					}
 				}
 				try {
-					source = checkConKeyRef(source);
+					source = checkConKeyRef(source, catalog);
 				} catch (Exception sax) {
 					// skip directly referenced images
 					continue;
 				}
 				try {
-					source = checkXref(source);
+					source = checkXref(source, catalog);
 				} catch (Exception sax) {
 					// skip directly referenced images
 					continue;
@@ -171,7 +165,7 @@ public class DitaMap2Xliff {
 				xliffs.add(xlf.getAbsolutePath());
 				if (!source.equals(filesMap.get(i))) {
 					// original has conref
-					fixSource(xlf.getAbsolutePath(), filesMap.get(i));
+					fixSource(xlf.getAbsolutePath(), filesMap.get(i), catalog);
 				}
 			}
 
@@ -185,14 +179,36 @@ public class DitaMap2Xliff {
 			mergedRoot.addContent("\n");
 			mergedRoot.addContent(new PI("encoding", params.get("srcEncoding")));
 
+			XMLOutputter outputter = new XMLOutputter();
+
+			if (skipped.contains(mapFile)) {
+				SAXBuilder builder = new SAXBuilder();
+				builder.setEntityResolver(catalog);
+				builder.preserveCustomAttributes(true);	
+				Document doc = builder.build(xliffs.get(0));
+				Element root = doc.getRootElement();
+				Element file = root.getChild("file");
+				String original = file.getAttributeValue("original");
+				for (int i = 0; i < skipped.size(); i++) {
+					JSONObject json = new JSONObject();
+					String f = skipped.get(i);
+					json.put("file", Utils.makeRelativePath(original, f));
+					json.put("base64", Utils.encodeFromFile(f));
+					PI pi = new PI("skipped", json.toString());
+					file.addContent(pi);
+				}
+				try (FileOutputStream output = new FileOutputStream(xliffs.get(0))) {
+					outputter.output(doc, output);
+				}
+			}
+
 			for (int i = 0; i < xliffs.size(); i++) {
 				mergedRoot.addContent("\n");
-				addFile(xliffs.get(i), mapFile);
+				addFile(xliffs.get(i), mapFile, catalog);
 			}
 
 			// output final XLIFF
 
-			XMLOutputter outputter = new XMLOutputter();
 			Indenter.indent(mergedRoot, 2);
 			outputter.preserveSpace(true);
 			try (FileOutputStream output = new FileOutputStream(xliffFile)) {
@@ -207,15 +223,19 @@ public class DitaMap2Xliff {
 		return result;
 	}
 
-	private static String checkXref(String source)
+	private static String checkXref(String source, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException, SkipException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(source);
 		Element root = doc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
 		}
 		hasXref = false;
-		fixXref(root, source, doc);
+		fixXref(root, source, doc, catalog);
 		if (hasXref) {
 			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
 			File temp = File.createTempFile("temp", ".dita");
@@ -231,7 +251,7 @@ public class DitaMap2Xliff {
 		return source;
 	}
 
-	private static void fixXref(Element root, String source, Document doc) {
+	private static void fixXref(Element root, String source, Document doc, Catalog catalog) {
 		if (DitaParser.ditaClass(root, "topic/xref")) {
 			List<XMLNode> content = root.getContent();
 			if (content.isEmpty()) {
@@ -255,7 +275,7 @@ public class DitaMap2Xliff {
 						} else {
 							file = Utils.getAbsolutePath(source, file);
 						}
-						String title = getTitle(file, id);
+						String title = getTitle(file, id, catalog);
 						if (title != null) {
 							root.setText(title);
 							hasXref = true;
@@ -274,14 +294,14 @@ public class DitaMap2Xliff {
 			List<Element> children = root.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				fixXref(it.next(), source, doc);
+				fixXref(it.next(), source, doc, catalog);
 			}
 		}
 	}
 
-	private static String getTitle(String file, String id)
+	private static String getTitle(String file, String id, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
-		Element referenced = getReferenced(file, id);
+		Element referenced = getReferenced(file, id, catalog);
 		if (referenced != null) {
 			List<Element> children = referenced.getChildren();
 			Iterator<Element> it = children.iterator();
@@ -295,7 +315,11 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static String removeFiltered(String source) throws IOException, SAXException, ParserConfigurationException {
+	private static String removeFiltered(String source, Catalog catalog)
+			throws IOException, SAXException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
 		Document doc = builder.build(source);
 		Element root = doc.getRootElement();
 		elementsExcluded = false;
@@ -312,8 +336,6 @@ public class DitaMap2Xliff {
 			}
 			return temp.getAbsolutePath();
 		}
-		doc = null;
-		root = null;
 		return source;
 	}
 
@@ -330,11 +352,15 @@ public class DitaMap2Xliff {
 		}
 	}
 
-	private static String checkConKeyRef(String source) throws IOException, SAXException, ParserConfigurationException {
+	private static String checkConKeyRef(String source, Catalog catalog)
+			throws IOException, SAXException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
 		Document doc = builder.build(source);
 		Element root = doc.getRootElement();
 		hasConKeyRef = false;
-		fixConKeyRef(root, source, doc);
+		fixConKeyRef(root, source, doc, catalog);
 		if (hasConKeyRef) {
 			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
 			File temp = File.createTempFile("temp", ".dita");
@@ -350,7 +376,7 @@ public class DitaMap2Xliff {
 		return source;
 	}
 
-	private static void fixConKeyRef(Element e, String source, Document doc)
+	private static void fixConKeyRef(Element e, String source, Document doc, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException {
 		String conkeyref = e.getAttributeValue("conkeyref");
 		String conaction = e.getAttributeValue("conaction");
@@ -368,7 +394,7 @@ public class DitaMap2Xliff {
 					LOGGER.log(Level.WARNING, "Key not defined for conkeyref: \"" + conkeyref + "\"");
 					return;
 				}
-				Element ref = getConKeyReferenced(file, id);
+				Element ref = getConKeyReferenced(file, id, catalog);
 				if (ref != null) {
 					hasConKeyRef = true;
 					if (e.getChildren().isEmpty()) {
@@ -383,7 +409,7 @@ public class DitaMap2Xliff {
 					List<Element> children = e.getChildren();
 					Iterator<Element> its = children.iterator();
 					while (its.hasNext()) {
-						fixConKeyRef(its.next(), file, doc);
+						fixConKeyRef(its.next(), file, doc, catalog);
 					}
 				} else {
 					LOGGER.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Element with id=\"" + id
@@ -459,6 +485,10 @@ public class DitaMap2Xliff {
 				} else {
 					String href = k.getHref();
 					try {
+						SAXBuilder builder = new SAXBuilder();
+						builder.setEntityResolver(catalog);
+						builder.preserveCustomAttributes(true);
+						builder.setErrorHandler(new SilentErrorHandler());
 						Document d = builder.build(href);
 						Element r = d.getRootElement();
 						Element referenced = r;
@@ -488,7 +518,7 @@ public class DitaMap2Xliff {
 						List<Element> children = e.getChildren();
 						Iterator<Element> it = children.iterator();
 						while (it.hasNext()) {
-							fixConKeyRef(it.next(), source, doc);
+							fixConKeyRef(it.next(), source, doc, catalog);
 						}
 					} catch (Exception ex) {
 						// do nothing
@@ -499,7 +529,7 @@ public class DitaMap2Xliff {
 			List<Element> children = e.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				fixConKeyRef(it.next(), source, doc);
+				fixConKeyRef(it.next(), source, doc, catalog);
 			}
 		}
 	}
@@ -538,8 +568,12 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static Element getConKeyReferenced(String file, String id)
+	private static Element getConKeyReferenced(String file, String id, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		return locateReferenced(root, id);
@@ -562,8 +596,11 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static void fixSource(String xliff, String string)
+	private static void fixSource(String xliff, String string, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
 		Document doc = builder.build(xliff);
 		Element root = doc.getRootElement();
 		root.getChild("file").setAttribute("original", string);
@@ -574,15 +611,19 @@ public class DitaMap2Xliff {
 		}
 	}
 
-	private static String checkConref(String source)
+	private static String checkConref(String source, Catalog catalog)
 			throws SkipException, IOException, SAXException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(source);
 		Element root = doc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
 		}
 		hasConref = false;
-		fixConref(root, source, doc);
+		fixConref(root, source, doc, catalog);
 		if (hasConref) {
 			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
 			File temp = File.createTempFile("temp", ".dita");
@@ -598,7 +639,7 @@ public class DitaMap2Xliff {
 		return source;
 	}
 
-	private static void fixConref(Element e, String source, Document doc)
+	private static void fixConref(Element e, String source, Document doc, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException {
 		String conref = e.getAttributeValue("conref");
 		String conaction = e.getAttributeValue("conaction");
@@ -618,7 +659,7 @@ public class DitaMap2Xliff {
 					}
 				}
 				String id = conref.substring(conref.indexOf('#') + 1);
-				Element ref = getReferenced(file, id);
+				Element ref = getReferenced(file, id, catalog);
 				if (ref != null) {
 					hasConref = true;
 					if (e.getChildren().isEmpty()) {
@@ -633,7 +674,7 @@ public class DitaMap2Xliff {
 					List<Element> children = e.getChildren();
 					Iterator<Element> its = children.iterator();
 					while (its.hasNext()) {
-						fixConref(its.next(), file, doc);
+						fixConref(its.next(), file, doc, catalog);
 					}
 				}
 			}
@@ -641,13 +682,16 @@ public class DitaMap2Xliff {
 			List<Element> children = e.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				fixConref(it.next(), source, doc);
+				fixConref(it.next(), source, doc, catalog);
 			}
 		}
 	}
 
-	private static Element getReferenced(String file, String id)
+	private static Element getReferenced(String file, String id, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		String topicId = root.getAttributeValue("id");
@@ -674,8 +718,11 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static void addFile(String xliff, String mapFile)
+	private static void addFile(String xliff, String mapFile, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
 		Document doc = builder.build(xliff);
 		Element root = doc.getRootElement();
 		Element file = root.getChild("file");
@@ -704,9 +751,10 @@ public class DitaMap2Xliff {
 
 	private static void parseDitaVal(String ditaval, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
-		SAXBuilder bder = new SAXBuilder();
-		bder.setEntityResolver(catalog);
-		Document doc = bder.build(ditaval);
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
+		Document doc = builder.build(ditaval);
 		Element root = doc.getRootElement();
 		if (root.getName().equals("val")) {
 			List<Element> props = root.getChildren("prop");

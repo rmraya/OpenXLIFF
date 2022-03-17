@@ -119,22 +119,13 @@ public class Xml2Xliff {
 		String elementSegmentation = params.get("paragraph");
 		String initSegmenter = params.get("srxFile");
 		String isInDesign = params.get("InDesign");
-		if (isInDesign != null) {
-			inDesign = true;
-		} else {
-			inDesign = false;
-		}
+		inDesign = isInDesign != null;
 		String isResx = params.get("resx");
-		if (isResx != null) {
-			resx = true;
-		} else {
-			resx = false;
-		}
+		resx = isResx != null;
 		String dita = params.get("dita_based");
 		if (dita != null) {
 			ditaBased = dita.equalsIgnoreCase("yes");
 		}
-
 		boolean generic = false;
 		String isGeneric = params.get("generic");
 		if (isGeneric != null && isGeneric.equals("yes")) {
@@ -222,13 +213,14 @@ public class Xml2Xliff {
 			}
 			output.close();
 			if (!containsText) {
-				LOGGER.log(Level.WARNING, inputFile + " does not contain text");
 				Files.deleteIfExists(new File(skeletonFile).toPath());
 				Files.deleteIfExists(new File(xliffFile).toPath());
 				result.add(Constants.ERROR);
 				result.add(inputFile + " does not contain text");
-				if (ditaBased) {
+				if (ditaBased || rootElement.equals("svg")) {
 					result.add("EMPTY");
+				} else {
+					LOGGER.log(Level.WARNING, inputFile + " does not contain text");
 				}
 				return result;
 			}

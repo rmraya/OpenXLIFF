@@ -36,6 +36,7 @@ import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.SilentErrorHandler;
 
 import org.xml.sax.SAXException;
 
@@ -43,7 +44,6 @@ public class ScopeBuilder {
 
 	private static final Logger LOGGER = System.getLogger(ScopeBuilder.class.getName());
 
-	private SAXBuilder builder;
 	private Scope currentScope;
 	private Set<String> recursed;
 	private static Map<String, Set<String>> excludeTable;
@@ -59,8 +59,9 @@ public class ScopeBuilder {
 
 		recursed = new TreeSet<>();
 
-		builder = new SAXBuilder();
+		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
 		Document doc = builder.build(inputFile);
 		Element root = doc.getRootElement();
 
@@ -86,7 +87,9 @@ public class ScopeBuilder {
 		}
 
 		String scope = e.getAttributeValue("keyscope");
+		Scope oldScope = null;
 		if (!scope.isEmpty()) {
+			oldScope = currentScope;
 			Scope c = new Scope(scope);
 			currentScope.addScope(c);
 			currentScope = c;
@@ -104,11 +107,11 @@ public class ScopeBuilder {
 					if (f.exists() && f.isFile()) {
 						String format = e.getAttributeValue("format", "dita");
 						if (format.startsWith("dita") && !DitaParser.ditaClass(e, "topic/image")) {
+							SAXBuilder builder = new SAXBuilder();
+							builder.setErrorHandler(new SilentErrorHandler());
 							Element root = builder.build(f).getRootElement();
-							Scope old = currentScope;
 							recursed.add(path);
 							recurse(root, path);
-							currentScope = old;
 						}
 					}
 				}
@@ -155,17 +158,19 @@ public class ScopeBuilder {
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
-			Scope old = currentScope;
 			recurse(it.next(), parentFile);
-			currentScope = old;
+		}
+		if (!scope.isEmpty()) {
+			currentScope = oldScope;
 		}
 	}
 
 	private static void parseDitaVal(String ditaval, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
-		SAXBuilder bder = new SAXBuilder();
-		bder.setEntityResolver(catalog);
-		Document doc = bder.build(ditaval);
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
+		Document doc = builder.build(ditaval);
 		Element root = doc.getRootElement();
 		if (root.getName().equals("val")) {
 			List<Element> props = root.getChildren("prop");
