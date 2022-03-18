@@ -33,6 +33,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+1.17.5 | Updated DITA keyscope handling | March 18th, 2022
 1.17.4 | Fixed handling of nested untranslatables in DITA; Improved XLIFF 2.0 support | March 6th, 2022
 1.17.2 | Fixed support for FrameMaker MIF files | February 6th, 2022
 1.17.1 | Improved support for DITA | February 5th, 2022
