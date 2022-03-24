@@ -79,12 +79,6 @@ Version | Comment | Release Date
 1.1.0 | Incorporated XLIFFChecker code| November 20th, 2018
 1.0.0 | Initial Release | November 12th, 2018
 
-## Downloads
-
-Ready to use binaries for Windows, Linux and macOS are available for download at [https://www.maxprograms.com/products/openxliff.html](https://www.maxprograms.com/products/openxliff.html)  
-
-If you prefer to use a graphical interface instead of the command line, get installers for **XLIFF Manager** at [https://www.maxprograms.com/products/xliffmanager.html](https://www.maxprograms.com/products/xliffmanager.html)
-
 ## Supported File Formats
 
 OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
