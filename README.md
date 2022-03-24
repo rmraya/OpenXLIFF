@@ -10,7 +10,6 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
-- **[Downloads](https://github.com/rmraya/OpenXLIFF#downloads)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
 - **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
 - **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
