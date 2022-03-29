@@ -32,6 +32,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+2.0.0 | Moved server code to [XLIFF Manager](https://github.com/rmraya/XLIFFManager) project| March 29th, 2022
 1.17.5 | Updated DITA keyscope handling | March 18th, 2022
 1.17.4 | Fixed handling of nested untranslatables in DITA; Improved XLIFF 2.0 support | March 6th, 2022
 1.17.2 | Fixed support for FrameMaker MIF files | February 6th, 2022
@@ -124,6 +125,15 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 - Checkout this repository.
 - Point your JAVA_HOME variable to JDK 17
 - Run `ant` to generate a binary distribution in `./dist`
+
+### Steps for building
+
+``` bash
+  git clone https://github.com/rmraya/OpenXLIFF.git
+  cd OpenXLIFF
+  ant
+```
+A binary distribution will be created in `/dist` folder.
 
 ## Converting Documents to XLIFF
 
