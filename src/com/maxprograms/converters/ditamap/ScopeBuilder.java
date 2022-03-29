@@ -46,12 +46,15 @@ public class ScopeBuilder {
 
 	private Scope currentScope;
 	private Set<String> recursed;
+
+	private Catalog catalog;
 	private static Map<String, Set<String>> excludeTable;
 	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
 
 	public Scope buildScope(String inputFile, String ditavalFile, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		this.catalog = catalog;
 
 		if (ditavalFile != null) {
 			parseDitaVal(ditavalFile, catalog);
@@ -108,6 +111,7 @@ public class ScopeBuilder {
 						String format = e.getAttributeValue("format", "dita");
 						if (format.startsWith("dita") && !DitaParser.ditaClass(e, "topic/image")) {
 							SAXBuilder builder = new SAXBuilder();
+							builder.setEntityResolver(catalog);
 							builder.setErrorHandler(new SilentErrorHandler());
 							Element root = builder.build(f).getRootElement();
 							recursed.add(path);
