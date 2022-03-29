@@ -24,11 +24,11 @@ module openxliff {
 	exports com.maxprograms.converters.mif;
 	exports com.maxprograms.converters.rc;
 	exports com.maxprograms.converters.sdlxliff;
+	exports com.maxprograms.converters.sdlppx;
 	exports com.maxprograms.converters.txml;
 	exports com.maxprograms.converters.plaintext;
 	exports com.maxprograms.languages;
 	exports com.maxprograms.segmenter;
-	exports com.maxprograms.server;
 	exports com.maxprograms.stats;
 	exports com.maxprograms.xliff2;
 	exports com.maxprograms.validation;
@@ -43,6 +43,5 @@ module openxliff {
 	requires java.logging;
 	requires java.net.http;
 	requires transitive json;
-	requires transitive jdk.httpserver;
 	requires transitive java.xml;
 }

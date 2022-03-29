@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="dist" name="OpenXLIFF">
-    <property name="target" value="11" />
-    <property name="source" value="11" />
+    <property name="target" value="17" />
+    <property name="source" value="17" />
     <property name="build.compiler" value="javac10+" />
     <path id="OpenXLIFF.classpath">
         <pathelement location="lib/dtd.jar" />
@@ -47,7 +47,6 @@
         <copy file="merge.bat" todir="dist" />
         <copy file="xliffchecker.bat" todir="dist" />
         <copy file="analysis.bat" todir="dist" />
-        <copy file="server.bat" todir="dist" />
         <copy file="join.bat" todir="dist" />
     </target>
     <target name="copyShells" unless="isWindows">
@@ -56,7 +55,6 @@
         <copy file="merge.sh" todir="dist" />
         <copy file="xliffchecker.sh" todir="dist" />
         <copy file="analysis.sh" todir="dist" />
-        <copy file="server.sh" todir="dist" />
         <copy file="join.sh" todir="dist" />
     </target>
     <target name="dist" depends="link,copyBats,copyShells">
