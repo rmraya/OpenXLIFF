@@ -316,44 +316,48 @@ public class DitaParser {
 			}
 		} else {
 			String conref = e.getAttributeValue("conref");
-			if (!conref.isEmpty()) {
-				conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
-				if (conref.indexOf('#') != -1) {
-					String file = conref.substring(0, conref.indexOf('#'));
-					if (file.isEmpty()) {
-						file = parentFile;
-					} else {
-						file = Utils.getAbsolutePath(parentFile, file);
-					}
-					String id = conref.substring(conref.indexOf('#') + 1);
-					try {
-						Element ref = getReferenced(file, id);
-						if (ref != null) {
-							e.setContent(ref.getContent());
-							List<Element> children = e.getChildren();
-							Iterator<Element> ie = children.iterator();
-							while (ie.hasNext()) {
-								Element child = ie.next();
-								recurse(child, file);
-							}
-						} else {
-							MessageFormat mf = new MessageFormat("@conref not found:  \"{0}\" in file {1}");
-							LOGGER.log(Level.WARNING, mf.format(new Object[] { conref, parentFile }));
-						}
-					} catch (Exception ex) {
-						MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
-						LOGGER.log(Level.WARNING, mf.format(new Object[] { conref, parentFile }));
-					}
-					return;
-				}
-				LOGGER.log(Level.WARNING, "@conref without fragment identifier: " + conref);
-			}
-
 			String conkeyref = e.getAttributeValue("conkeyref");
 			String conaction = e.getAttributeValue("conaction");
 			if (!conaction.isEmpty()) { // it's a conref push
 				conkeyref = "";
 			}
+			if (!conref.isEmpty()) {
+				if ("#".equals(conref)) {
+					LOGGER.log(Level.WARNING, "Invalid @conref at " + parentFile);
+				} else {
+					conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
+					if (conref.indexOf('#') != -1) {
+						String file = conref.substring(0, conref.indexOf('#'));
+						if (file.isEmpty()) {
+							file = parentFile;
+						} else {
+							file = Utils.getAbsolutePath(parentFile, file);
+						}
+						String id = conref.substring(conref.indexOf('#') + 1);
+						try {
+							Element ref = getReferenced(file, id);
+							if (ref != null) {
+								e.setContent(ref.getContent());
+								List<Element> children = e.getChildren();
+								Iterator<Element> ie = children.iterator();
+								while (ie.hasNext()) {
+									Element child = ie.next();
+									recurse(child, file);
+								}
+							} else {
+								MessageFormat mf = new MessageFormat("@conref not found:  \"{0}\" in file {1}");
+								LOGGER.log(Level.WARNING, mf.format(new Object[] { conref, parentFile }));
+							}
+						} catch (Exception ex) {
+							MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
+							LOGGER.log(Level.WARNING, mf.format(new Object[] { conref, parentFile }));
+						}
+						return;
+					}
+					LOGGER.log(Level.WARNING, "@conref without fragment identifier: " + conref);
+				}
+			}
+
 			if (!conkeyref.isEmpty()) {
 				String key = conkeyref.substring(0, conkeyref.indexOf('/'));
 				String id = conkeyref.substring(conkeyref.indexOf('/') + 1);

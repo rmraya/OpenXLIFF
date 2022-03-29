@@ -184,7 +184,7 @@ public class DitaMap2Xliff {
 			if (skipped.contains(mapFile)) {
 				SAXBuilder builder = new SAXBuilder();
 				builder.setEntityResolver(catalog);
-				builder.preserveCustomAttributes(true);	
+				builder.preserveCustomAttributes(true);
 				Document doc = builder.build(xliffs.get(0));
 				Element root = doc.getRootElement();
 				Element file = root.getChild("file");
@@ -646,7 +646,7 @@ public class DitaMap2Xliff {
 		if (!conaction.isEmpty()) { // it's a conref push
 			conref = "";
 		}
-		if (!conref.isEmpty()) {
+		if (!conref.isEmpty() && !"#".equals(conref)) {
 			conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
 			if (conref.indexOf('#') != -1) {
 				String file = conref.substring(0, conref.indexOf('#'));
