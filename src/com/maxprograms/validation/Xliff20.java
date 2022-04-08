@@ -338,6 +338,10 @@ public class Xliff20 {
 				reason = "Missing <target> in <segment> with \"state\" other than \"initial\"";
 				return false;
 			}
+			if ("initial".equals(currentState) && target != null) {
+				reason = "<segment> element with state=\"initial\" has <target> child";
+				return false;
+			}
 			if ("final".equals(currentState)) {
 				if (!validateInlineElements(e)) {
 					return false;
