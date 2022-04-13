@@ -100,15 +100,15 @@ public class ToXliff2 {
 			target.setAttribute("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
 
 			List<PI> piList = source.getPI();
-			for (int i=0 ; i<piList.size() ; i++) {
+			for (int i = 0; i < piList.size(); i++) {
 				PI pi = piList.get(i);
 				if ("encoding".equals(pi.getTarget())) {
 					String encoding = pi.getData();
 					if (!encoding.equalsIgnoreCase(StandardCharsets.UTF_8.name())) {
 						target.addContent(new PI("encoding", encoding));
 					}
-					continue;	
-				} 
+					continue;
+				}
 				target.addContent(pi);
 			}
 		}
@@ -384,6 +384,11 @@ public class ToXliff2 {
 			}
 			if (!tgt2.getContent().isEmpty()) {
 				segment.addContent(tgt2);
+				if (!"final".equals(segment.getAttributeValue("state", "initial"))) {
+					segment.setAttribute("state", "translated");
+				}
+			} else {
+				segment.setAttribute("state", "initial");
 			}
 
 			List<Element> matches = source.getChildren("alt-trans");
