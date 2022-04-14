@@ -8,7 +8,7 @@ OpenXLIFF Filters uses these third party libraries:
 
 ## JSON-java
 - Available from  https://github.com/stleary/JSON-java
-- Published under a [custom license](https://raw.githubusercontent.com/stleary/JSON-java/master/LICENSE)
+- Published under a [custom license](https://raw.githubusercontent.com/rmraya/OpenXLIFF/master/licenses/json/LICENSE)
 
 ## jsoup
 - Available from https://jsoup.org
