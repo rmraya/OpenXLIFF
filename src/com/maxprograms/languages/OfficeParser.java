@@ -18,12 +18,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 
 public class OfficeParser {
     
-    private HashMap<String, String> languageMap;
+    private Map<String, String> languageMap;
     
     public OfficeParser() throws IOException {
+        languageMap = new HashMap<>();        
         URL url = RegistryParser.class.getResource("Office.txt");
         loadMap(url);
     }
@@ -37,7 +39,6 @@ public class OfficeParser {
     }
 
     private void loadMap(URL url) throws IOException {
-        languageMap = new HashMap<>();
         try (InputStream input = url.openStream()) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_16LE))) {
                 String line = "";

@@ -37,13 +37,14 @@ public class RegistryParser {
 			try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8))) {
 				String line = "";
 				entries = new ArrayList<>();
-				String buffer = "";
+				StringBuilder buffer = new StringBuilder();
 				while ((line = reader.readLine()) != null) {
 					if (line.trim().equals("%%")) {
-						entries.add(new RegistryEntry(buffer.replaceAll("\n ", " ")));
-						buffer = "";
+						entries.add(new RegistryEntry(buffer.toString()));
+						buffer = new StringBuilder();
 					} else {
-						buffer = buffer + line + "\n";
+						buffer.append(line);
+						buffer.append('\n');
 					}
 				}
 			}
@@ -71,6 +72,7 @@ public class RegistryParser {
 						description = description.substring(0, description.indexOf('|') - 1);
 					}
 					if (subtag.equals("el")) {
+						// official description is "Modern Greek (1453-)", use a familiar name
 						description = "Greek";
 					}
 					description = description.replaceAll("\\(.*\\)", "");
