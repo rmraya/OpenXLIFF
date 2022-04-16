@@ -124,7 +124,7 @@ public class SAXBuilder {
 
 	public Document build(URL url) throws SAXException, IOException, ParserConfigurationException {
 		if ("file".equals(url.getProtocol())) {
-			if (resolver instanceof Catalog) {
+			if (resolver instanceof Catalog cat) {
 				File f = new File(url.toString());
 				String parent = f.getParentFile().getAbsolutePath();
 				if (parent.lastIndexOf("file:") != -1) {
@@ -143,7 +143,7 @@ public class SAXBuilder {
 		boolean clearHandler = false;
 		if (contentHandler == null) {
 			contentHandler = new CustomContentHandler();
-			if (resolver != null && resolver instanceof Catalog) {
+			if (resolver instanceof Catalog) {
 				contentHandler.setCatalog((Catalog)resolver);
 			}
 			clearHandler = true;

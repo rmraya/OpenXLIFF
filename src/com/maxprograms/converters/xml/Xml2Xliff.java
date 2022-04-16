@@ -1397,10 +1397,7 @@ public class Xml2Xliff {
 		if (inline.containsKey(name)) {
 			return true;
 		}
-		if (ignore.containsKey(name)) {
-			return true;
-		}
-		return false;
+		return ignore.containsKey(name);
 	}
 
 	private static void removeComments(Element e) {

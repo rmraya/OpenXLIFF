@@ -152,8 +152,7 @@ public class YandexTranslator implements MTEngine {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof YandexTranslator) {
-            YandexTranslator yt = (YandexTranslator) obj;
+        if (obj instanceof YandexTranslator yt) {
             return srcLang.equals(yt.getSourceLanguage()) && tgtLang.equals(yt.getTargetLanguage());
         }
         return false;

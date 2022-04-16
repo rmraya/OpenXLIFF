@@ -42,9 +42,8 @@ public class Language implements Comparable<Language>, Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Language) {
-			Language l = (Language) obj;
-			return code.equals(l.getCode()) && description.equals(l.getDescription());
+		if (obj instanceof Language lang) {
+			return code.equals(lang.getCode()) && description.equals(lang.getDescription());
 		}
 		return false;
 	}

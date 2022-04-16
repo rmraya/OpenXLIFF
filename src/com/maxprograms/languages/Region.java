@@ -39,9 +39,8 @@ public class Region implements Comparable<Region> {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof Region) {
-			Region r = (Region) obj;
-			return code.equals(r.getCode()) && description.equals(r.getDescription());
+		if (obj instanceof Region reg) {
+			return code.equals(reg.getCode()) && description.equals(reg.getDescription());
 		}
 		return false;
 	}

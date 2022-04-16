@@ -111,8 +111,7 @@ public class MyMemoryTranslator implements MTEngine {
     
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MyMemoryTranslator) {
-            MyMemoryTranslator mm = (MyMemoryTranslator) obj;
+        if (obj instanceof MyMemoryTranslator mm) {
             return srcLang.equals(mm.getSourceLanguage()) && tgtLang.equals(mm.getTargetLanguage());
         }
         return false;

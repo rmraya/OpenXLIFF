@@ -132,8 +132,7 @@ public class AzureTranslator implements MTEngine {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof AzureTranslator) {
-            AzureTranslator az = (AzureTranslator) obj;
+        if (obj instanceof AzureTranslator az) {
             return srcLang.equals(az.getSourceLanguage()) && tgtLang.equals(az.getTargetLanguage());
         }
         return false;

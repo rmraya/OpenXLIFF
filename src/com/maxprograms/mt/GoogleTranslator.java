@@ -144,8 +144,7 @@ public class GoogleTranslator implements MTEngine {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GoogleTranslator) {
-            GoogleTranslator gt = (GoogleTranslator) obj;
+        if (obj instanceof GoogleTranslator gt) {
             return srcLang.equals(gt.getSourceLanguage()) && tgtLang.equals(gt.getTargetLanguage());
         }
         return false;

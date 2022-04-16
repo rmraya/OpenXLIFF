@@ -156,18 +156,14 @@ public class RegistryParser {
 				return "";
 			}
 			Language lang = languages.get(parts[0].toLowerCase());
-			if (parts[1].length() == 2) {
+			if (parts[1].length() == 2 && regions.containsKey(parts[1].toUpperCase())) {
 				// could be a country code
-				if (regions.containsKey(parts[1].toUpperCase())) {
-					return lang.getDescription() + " (" + regions.get(parts[1].toUpperCase()).getDescription() + ")";
-				}
+				return lang.getDescription() + " (" + regions.get(parts[1].toUpperCase()).getDescription() + ")";
 			}
-			if (parts[1].length() == 3) {
+			if (parts[1].length() == 3 && regions.containsKey(parts[1])) {
 				// could be a UN region code
-				if (regions.containsKey(parts[1])) {
-					Region reg = regions.get(parts[1]);
-					return lang.getDescription() + " (" + reg.getDescription() + ")";
-				}
+				Region reg = regions.get(parts[1]);
+				return lang.getDescription() + " (" + reg.getDescription() + ")";
 			}
 			if (parts[1].length() == 4) {
 				// could have script
@@ -181,10 +177,10 @@ public class RegistryParser {
 			}
 			// try with a variant
 			if (variants.containsKey(parts[1].toLowerCase())) {
-				Variant var = variants.get(parts[1].toLowerCase());
-				if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+				Variant variant = variants.get(parts[1].toLowerCase());
+				if (variant != null && variant.getPrefix().equals(parts[0].toLowerCase())) {
 					// variant is valid for the language code
-					return lang.getDescription() + " (" + var.getDescription() + ")";
+					return lang.getDescription() + " (" + variant.getDescription() + ")";
 				}
 			}
 		} else if (parts.length == 3) {
@@ -207,28 +203,25 @@ public class RegistryParser {
 						return lang.getDescription() + " (" + scr.getDescription() + ", " + reg.getDescription() + ")";
 					}
 					if (variants.containsKey(parts[2].toLowerCase())) {
-						Variant var = variants.get(parts[2].toLowerCase());
-						if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+						Variant variant = variants.get(parts[2].toLowerCase());
+						if (variant != null && variant.getPrefix().equals(parts[0].toLowerCase())) {
 							// variant is valid for the language code
-							return lang.getDescription() + " (" + scr.getDescription() + ", " + var.getDescription()
+							return lang.getDescription() + " (" + scr.getDescription() + ", " + variant.getDescription()
 									+ ")";
 						}
 					}
 				}
 			} else {
 				// could be region + variant
-				if (parts[1].length() == 2 || parts[1].length() == 3) {
-					// could be a region code
-					if (regions.containsKey(parts[1].toUpperCase())) {
-						// check if next part is a variant
-						Region reg = regions.get(parts[1].toUpperCase());
-						if (variants.containsKey(parts[2].toLowerCase())) {
-							Variant var = variants.get(parts[2].toLowerCase());
-							if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
-								// variant is valid for the language code
-								return lang.getDescription() + " (" + reg.getDescription() + " - "
-										+ var.getDescription() + ")";
-							}
+				if ((parts[1].length() == 2 || parts[1].length() == 3) && regions.containsKey(parts[1].toUpperCase())) {
+					// could be a region code, check if next part is a variant
+					Region reg = regions.get(parts[1].toUpperCase());
+					if (variants.containsKey(parts[2].toLowerCase())) {
+						Variant variant = variants.get(parts[2].toLowerCase());
+						if (variant != null && variant.getPrefix().equals(parts[0].toLowerCase())) {
+							// variant is valid for the language code
+							return lang.getDescription() + " (" + reg.getDescription() + " - "
+									+ variant.getDescription() + ")";
 						}
 					}
 				}
@@ -250,17 +243,13 @@ public class RegistryParser {
 				return "";
 			}
 			Language lang = languages.get(parts[0].toLowerCase());
-			if (parts[1].length() == 2) {
+			if (parts[1].length() == 2 && regions.containsKey(parts[1].toUpperCase())) {
 				// could be a country code
-				if (regions.containsKey(parts[1].toUpperCase())) {
-					return parts[0].toLowerCase() + "-" + parts[1].toUpperCase();
-				}
+				return parts[0].toLowerCase() + "-" + parts[1].toUpperCase();
 			}
-			if (parts[1].length() == 3) {
+			if (parts[1].length() == 3 && regions.containsKey(parts[1])) {
 				// could be a UN region code
-				if (regions.containsKey(parts[1])) {
-					return parts[0].toLowerCase() + "-" + parts[1];
-				}
+				return parts[0].toLowerCase() + "-" + parts[1];
 			}
 			if (parts[1].length() == 4) {
 				// could have script
@@ -274,10 +263,10 @@ public class RegistryParser {
 			}
 			// try with a variant
 			if (variants.containsKey(parts[1].toLowerCase())) {
-				Variant var = variants.get(parts[1].toLowerCase());
-				if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+				Variant variant = variants.get(parts[1].toLowerCase());
+				if (variant != null && variant.getPrefix().equals(parts[0].toLowerCase())) {
 					// variant is valid for the language code
-					return parts[0].toLowerCase() + "-" + var.getCode();
+					return parts[0].toLowerCase() + "-" + variant.getCode();
 				}
 			}
 		} else if (parts.length == 3) {
@@ -300,26 +289,23 @@ public class RegistryParser {
 						return lang.getCode() + "-" + scr.getCode() + "-" + reg.getCode();
 					}
 					if (variants.containsKey(parts[2].toLowerCase())) {
-						Variant var = variants.get(parts[2].toLowerCase());
-						if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
+						Variant variant = variants.get(parts[2].toLowerCase());
+						if (variant != null && variant.getPrefix().equals(parts[0].toLowerCase())) {
 							// variant is valid for the language code
-							return lang.getCode() + "-" + scr.getCode() + "-" + var.getCode();
+							return lang.getCode() + "-" + scr.getCode() + "-" + variant.getCode();
 						}
 					}
 				}
 			} else {
 				// could be region + variant
-				if (parts[1].length() == 2 || parts[1].length() == 3) {
-					// could be a region code
-					if (regions.containsKey(parts[1].toUpperCase())) {
-						// check if next part is a variant
-						Region reg = regions.get(parts[1].toUpperCase());
-						if (variants.containsKey(parts[2].toLowerCase())) {
-							Variant var = variants.get(parts[2].toLowerCase());
-							if (var != null && var.getPrefix().equals(parts[0].toLowerCase())) {
-								// variant is valid for the language code
-								return lang.getCode() + "-" + reg.getCode() + "-" + var.getCode();
-							}
+				if ((parts[1].length() == 2 || parts[1].length() == 3) && regions.containsKey(parts[1].toUpperCase())) {
+					// could be a region code, check if next part is a variant
+					Region reg = regions.get(parts[1].toUpperCase());
+					if (variants.containsKey(parts[2].toLowerCase())) {
+						Variant variant = variants.get(parts[2].toLowerCase());
+						if (variant != null && variant.getPrefix().equals(parts[0].toLowerCase())) {
+							// variant is valid for the language code
+							return lang.getCode() + "-" + reg.getCode() + "-" + variant.getCode();
 						}
 					}
 				}

@@ -476,8 +476,7 @@ public class Merge {
 					child = joinGroup(child);
 					Element tu = new Element("trans-unit");
 					tu.clone(child);
-					children.remove(i);
-					children.add(i, tu);
+					children.set(i, tu);
 					e.setContent(children);
 				} else {
 					removeGroups(child, d);

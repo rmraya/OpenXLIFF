@@ -101,39 +101,41 @@ public class XMLOutputter {
 		for (int i = 0; i < length; i++) {
 			XMLNode n = list.get(i);
 			switch (n.getNodeType()) {
-			case XMLNode.PROCESSING_INSTRUCTION_NODE:
-				PI pi = (PI) n;
-				writeString(output, "<?" + pi.getTarget() + " " + pi.getData() + "?>");
-				if (!preserve) {
-					writeString(output, "\n");
-				}
-				break;
-			case XMLNode.DOCUMENT_NODE:
-				// DOCTYPE already written
-				break;
-			case XMLNode.ELEMENT_NODE:
-				traverse(output, (Element) n);
-				break;
-			case XMLNode.COMMENT_NODE:
-				Comment c = (Comment) n;
-				if (!preserve) {
-					writeString(output, "\n<!-- " + c.getText() + " -->");
-				} else {
-					writeString(output, "<!-- " + c.getText() + " -->");
-				}
-				break;
-			case XMLNode.CDATA_SECTION_NODE:
-				CData cd = (CData) n;
-				writeString(output, "<![CDATA[" + cd.getData() + "]]>");
-				break;
-			case XMLNode.TEXT_NODE:
-			TextNode tn = (TextNode) n;
-			String text = cleanString(tn.getText());
-				writeString(output, text);
-				break;
-			default:
-				// should never happen
-				LOGGER.log(Level.WARNING, "Header contains wrong content type.");
+				case XMLNode.PROCESSING_INSTRUCTION_NODE:
+					PI pi = (PI) n;
+					writeString(output, "<?" + pi.getTarget() + " " + pi.getData() + "?>");
+					if (!preserve) {
+						writeString(output, "\n");
+					}
+					break;
+				case XMLNode.DOCUMENT_NODE:
+					// DOCTYPE already written
+					break;
+				case XMLNode.ELEMENT_NODE:
+					traverse(output, (Element) n);
+					break;
+				case XMLNode.COMMENT_NODE:
+					Comment c = (Comment) n;
+					if (!preserve) {
+						writeString(output, "\n<!-- " + c.getText() + " -->");
+					} else {
+						writeString(output, "<!-- " + c.getText() + " -->");
+					}
+					break;
+				case XMLNode.CDATA_SECTION_NODE:
+					CData cd = (CData) n;
+					writeString(output, "<![CDATA[" + cd.getData() + "]]>");
+					break;
+				case XMLNode.TEXT_NODE:
+					TextNode tn = (TextNode) n;
+					String text = cleanString(tn.getText());
+					if (text != null) {
+						writeString(output, text);
+					}
+					break;
+				default:
+					// should never happen
+					LOGGER.log(Level.WARNING, "Header contains wrong content type.");
 			}
 		}
 	}
@@ -157,43 +159,43 @@ public class XMLOutputter {
 			for (int i = 0; i < list.size(); i++) {
 				XMLNode n = list.get(i);
 				switch (n.getNodeType()) {
-				case XMLNode.ELEMENT_NODE:
-					traverse(output, (Element) n);
-					break;
-				case XMLNode.TEXT_NODE:
-					TextNode tn = (TextNode) n;
-					String text = cleanString(tn.getText());
-					if (text == null) {
-						text = "";
-					}
-					if (escape) {
-						text = text.replaceAll("\"", "&quot;");
-						text = text.replaceAll("'", "&apos;");
-					}
-					if (preserve) {
-						writeString(output, text);
-					} else {
-						writeString(output, normalize(text));
-					}
-					break;
-				case XMLNode.PROCESSING_INSTRUCTION_NODE:
-					PI pi = (PI) n;
-					writeString(output, "<?" + pi.getTarget() + " " + pi.getData() + "?>");
-					break;
-				case XMLNode.COMMENT_NODE:
-					Comment c = (Comment) n;
-					if (!preserve) {
-						writeString(output, "\n<!-- " + c.getText() + " -->");
-					} else {
-						writeString(output, "<!-- " + c.getText() + " -->");
-					}
-					break;
-				case XMLNode.CDATA_SECTION_NODE:
-					writeString(output, n.toString());
-					break;
-				default:
-					// should never happen
-					LOGGER.log(Level.WARNING, "Unknown node type.");
+					case XMLNode.ELEMENT_NODE:
+						traverse(output, (Element) n);
+						break;
+					case XMLNode.TEXT_NODE:
+						TextNode tn = (TextNode) n;
+						String text = cleanString(tn.getText());
+						if (text == null) {
+							text = "";
+						}
+						if (escape) {
+							text = text.replaceAll("\"", "&quot;");
+							text = text.replaceAll("'", "&apos;");
+						}
+						if (preserve) {
+							writeString(output, text);
+						} else {
+							writeString(output, normalize(text));
+						}
+						break;
+					case XMLNode.PROCESSING_INSTRUCTION_NODE:
+						PI pi = (PI) n;
+						writeString(output, "<?" + pi.getTarget() + " " + pi.getData() + "?>");
+						break;
+					case XMLNode.COMMENT_NODE:
+						Comment c = (Comment) n;
+						if (!preserve) {
+							writeString(output, "\n<!-- " + c.getText() + " -->");
+						} else {
+							writeString(output, "<!-- " + c.getText() + " -->");
+						}
+						break;
+					case XMLNode.CDATA_SECTION_NODE:
+						writeString(output, n.toString());
+						break;
+					default:
+						// should never happen
+						LOGGER.log(Level.WARNING, "Unknown node type.");
 				}
 			}
 			if (!preserve) {

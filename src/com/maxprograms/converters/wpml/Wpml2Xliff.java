@@ -139,99 +139,99 @@ public class Wpml2Xliff {
         while (it.hasNext()) {
             XMLNode node = it.next();
             switch (node.getNodeType()) {
-            case XMLNode.ELEMENT_NODE:
-                Element child = (Element) node;
-                if ("header".equals(child.getName()) || "source".equals(child.getName())
-                        || "target".equals(child.getName())) {
-                    continue;
-                } else if ("trans-unit".equals(child.getName())) {
-                    ArrayList<XMLNode> newContent = new ArrayList<>();
-                    Element src = new Element("source");
-                    src.setContent(child.getChild("source").getContent());
-                    removeCdata(src);
-                    fixHtmlTags(src);
-                    if (!containsText(src)) {
+                case XMLNode.ELEMENT_NODE:
+                    Element child = (Element) node;
+                    if ("header".equals(child.getName()) || "source".equals(child.getName())
+                            || "target".equals(child.getName())) {
                         continue;
-                    }
-                    List<List<XMLNode>> array = new ArrayList<>();
-                    List<XMLNode> currentContent = new ArrayList<>();
-                    List<XMLNode> srcContent = src.getContent();
-                    Iterator<XMLNode> st = srcContent.iterator();
-                    while (st.hasNext()) {
-                        XMLNode n = st.next();
-                        if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-                            currentContent.add(n);
-                        }
-                        if (n.getNodeType() == XMLNode.TEXT_NODE) {
-                            String string = ((TextNode) n).getText();
-                            StringBuilder builder = new StringBuilder();
-                            for (int i = 0; i < string.length(); i++) {
-                                char c = string.charAt(i);
-                                if (c == '\n') {
-                                    currentContent.add(new TextNode(builder.toString()));
-                                    array.add(currentContent);
-                                    List<XMLNode> newLine = new ArrayList<>();
-                                    newLine.add(new TextNode("\n"));
-                                    array.add(newLine);
-                                    currentContent = new ArrayList<>();
-                                    builder = new StringBuilder();
-                                } else {
-                                    builder.append(c);
-                                }
-                            }
-                            currentContent.add(new TextNode(builder.toString()));
-                        }
-                    }
-                    if (!currentContent.isEmpty()) {
-                        array.add(currentContent);
-                    }
-                    for (int i = 0; i < array.size(); i++) {
-                        Element source = new Element("source");
-                        source.setContent(array.get(i));
-                        if (!containsText(source)) {
-                            newContent.add(new TextNode(getText(source)));
+                    } else if ("trans-unit".equals(child.getName())) {
+                        ArrayList<XMLNode> newContent = new ArrayList<>();
+                        Element src = new Element("source");
+                        src.setContent(child.getChild("source").getContent());
+                        removeCdata(src);
+                        fixHtmlTags(src);
+                        if (!containsText(src)) {
                             continue;
                         }
-                        if (paragraphSegmentation) {
-                            Element unit = new Element("trans-unit");
-                            unit.setAttribute("id", "" + segId);
-                            newRoot.addContent(unit);
-                            unit.addContent(source);
-                            newContent.add(new TextNode("%%%" + segId++ + "%%%"));
-                        } else {
-                            Element segmented = segmenter.segment(source);
-                            List<Element> list = segmented.getChildren("mrk");
-                            Iterator<Element> mt = list.iterator();
-                            while (mt.hasNext()) {
-                                Element mrk = mt.next();
+                        List<List<XMLNode>> array = new ArrayList<>();
+                        List<XMLNode> currentContent = new ArrayList<>();
+                        List<XMLNode> srcContent = src.getContent();
+                        Iterator<XMLNode> st = srcContent.iterator();
+                        while (st.hasNext()) {
+                            XMLNode n = st.next();
+                            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+                                currentContent.add(n);
+                            }
+                            if (n.getNodeType() == XMLNode.TEXT_NODE) {
+                                String string = ((TextNode) n).getText();
+                                StringBuilder builder = new StringBuilder();
+                                for (int i = 0; i < string.length(); i++) {
+                                    char c = string.charAt(i);
+                                    if (c == '\n') {
+                                        currentContent.add(new TextNode(builder.toString()));
+                                        array.add(currentContent);
+                                        List<XMLNode> newLine = new ArrayList<>();
+                                        newLine.add(new TextNode("\n"));
+                                        array.add(newLine);
+                                        currentContent = new ArrayList<>();
+                                        builder = new StringBuilder();
+                                    } else {
+                                        builder.append(c);
+                                    }
+                                }
+                                currentContent.add(new TextNode(builder.toString()));
+                            }
+                        }
+                        if (!currentContent.isEmpty()) {
+                            array.add(currentContent);
+                        }
+                        for (int i = 0; i < array.size(); i++) {
+                            Element source = new Element("source");
+                            source.setContent(array.get(i));
+                            if (!containsText(source)) {
+                                newContent.add(new TextNode(getText(source)));
+                                continue;
+                            }
+                            if (paragraphSegmentation) {
                                 Element unit = new Element("trans-unit");
                                 unit.setAttribute("id", "" + segId);
                                 newRoot.addContent(unit);
-                                Element segment = new Element("source");
-                                segment.setContent(mrk.getContent());
-                                unit.addContent(segment);
+                                unit.addContent(source);
                                 newContent.add(new TextNode("%%%" + segId++ + "%%%"));
+                            } else {
+                                Element segmented = segmenter.segment(source);
+                                List<Element> list = segmented.getChildren("mrk");
+                                Iterator<Element> mt = list.iterator();
+                                while (mt.hasNext()) {
+                                    Element mrk = mt.next();
+                                    Element unit = new Element("trans-unit");
+                                    unit.setAttribute("id", "" + segId);
+                                    newRoot.addContent(unit);
+                                    Element segment = new Element("source");
+                                    segment.setContent(mrk.getContent());
+                                    unit.addContent(segment);
+                                    newContent.add(new TextNode("%%%" + segId++ + "%%%"));
+                                }
                             }
                         }
+                        Element target = child.getChild("target");
+                        if (target == null) {
+                            target = new Element("target");
+                            child.addContent(target);
+                        }
+                        target.setContent(newContent);
+                    } else {
+                        Element newChild = new Element(child.getName());
+                        newChild.setAttributes(child.getAttributes());
+                        newRoot.addContent(newChild);
+                        recurse(child, newChild);
                     }
-                    Element target = child.getChild("target");
-                    if (target == null) {
-                        target = new Element("target");
-                        child.addContent(target);
-                    }
-                    target.setContent(newContent);
-                } else {
-                    Element newChild = new Element(child.getName());
-                    newChild.setAttributes(child.getAttributes());
-                    newRoot.addContent(newChild);
-                    recurse(child, newChild);
-                }
-                break;
-            case XMLNode.TEXT_NODE:
-                newRoot.addContent(node);
-                break;
-            default:
-                // do nothing
+                    break;
+                case XMLNode.TEXT_NODE:
+                    newRoot.addContent(node);
+                    break;
+                default:
+                    // do nothing
             }
         }
 
@@ -259,7 +259,7 @@ public class Wpml2Xliff {
         while (it.hasNext()) {
             XMLNode n = it.next();
             if (n.getNodeType() == XMLNode.TEXT_NODE) {
-                String t = ((TextNode)n).getText();
+                String t = ((TextNode) n).getText();
                 if (!t.isBlank()) {
                     return true;
                 }
@@ -275,16 +275,15 @@ public class Wpml2Xliff {
         while (it.hasNext()) {
             XMLNode node = it.next();
             switch (node.getNodeType()) {
-            case XMLNode.ELEMENT_NODE:
-            case XMLNode.TEXT_NODE:
-                newContent.add(node);
-                break;
-            case XMLNode.CDATA_SECTION_NODE:
-                CData cdata = (CData) node;
-                newContent.add(new TextNode(cdata.getData()));
-                break;
-            default:
-                // do nothing
+                case XMLNode.ELEMENT_NODE, XMLNode.TEXT_NODE:
+                    newContent.add(node);
+                    break;
+                case XMLNode.CDATA_SECTION_NODE:
+                    CData cdata = (CData) node;
+                    newContent.add(new TextNode(cdata.getData()));
+                    break;
+                default:
+                    // do nothing
             }
         }
         e.setContent(newContent);

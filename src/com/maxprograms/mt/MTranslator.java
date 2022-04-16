@@ -42,6 +42,7 @@ public class MTranslator {
             MTEngine e = engines.get(i);
             if (e.equals(engine)) {
                 engines.remove(i);
+                break;
             }
         }
     }

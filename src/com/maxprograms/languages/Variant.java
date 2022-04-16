@@ -45,9 +45,8 @@ public class Variant implements Comparable<Variant> {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof Variant) {
-			Variant s = (Variant) obj;
-			return code.equals(s.getCode()) && description.equals(s.getDescription()) && prefix.equals(s.getPrefix());
+		if (obj instanceof Variant variant) {
+			return code.equals(variant.getCode()) && description.equals(variant.getDescription()) && prefix.equals(variant.getPrefix());
 		}
 		return false;
 	}

@@ -129,8 +129,7 @@ public class DeepLTranslator implements MTEngine {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof DeepLTranslator) {
-			DeepLTranslator dl = (DeepLTranslator) obj;
+		if (obj instanceof DeepLTranslator dl) {
 			return srcLang.equals(dl.getSourceLanguage()) && tgtLang.equals(dl.getTargetLanguage());
 		}
 		return false;

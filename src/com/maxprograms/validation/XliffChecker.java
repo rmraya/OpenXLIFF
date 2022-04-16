@@ -128,9 +128,9 @@ public class XliffChecker {
 		}
 		String help = "Usage:\n\n" + launcher
 				+ "[-help] -file xliffFile [-catalog catalogFile] \n\n"
-				+ "Where:\n\n" 
+				+ "Where:\n\n"
 				+ "   -help:      (optional) Display this help information and exit\n"
-				+ "   -file:      XLIFF file to validate\n" 
+				+ "   -file:      XLIFF file to validate\n"
 				+ "   -catalog:   (optional) XML catalog to use for processing\n";
 		System.out.println(help);
 	}
@@ -1070,51 +1070,42 @@ public class XliffChecker {
 			}
 			int day = Integer.parseInt("" + date.charAt(8) + date.charAt(9));
 			switch (month) {
-			case 1:
-			case 3:
-			case 5:
-			case 7:
-			case 8:
-			case 10:
-			case 12:
-				if (day < 1 || day > 31) {
-					return false;
-				}
-				break;
-			case 4:
-			case 6:
-			case 9:
-			case 11:
-				if (day < 1 || day > 30) {
-					return false;
-				}
-				break;
-			case 2:
-				// check for leap years
-				if (year % 4 == 0) {
-					if (year % 100 == 0) {
-						// not all centuries are leap years
-						if (year % 400 == 0) {
-							if (day < 1 || day > 29) {
-								return false;
-							}
-						} else {
-							// not leap year
-							if (day < 1 || day > 28) {
-								return false;
-							}
-						}
-					}
-					if (day < 1 || day > 29) {
+				case 1, 3, 5, 7, 8, 10, 12:
+					if (day < 1 || day > 31) {
 						return false;
 					}
-				} else if (day < 1 || day > 28) {
+					break;
+				case 4, 6, 9, 11:
+					if (day < 1 || day > 30) {
+						return false;
+					}
+					break;
+				case 2:
+					// check for leap years
+					if (year % 4 == 0) {
+						if (year % 100 == 0) {
+							// not all centuries are leap years
+							if (year % 400 == 0) {
+								if (day < 1 || day > 29) {
+									return false;
+								}
+							} else {
+								// not leap year
+								if (day < 1 || day > 28) {
+									return false;
+								}
+							}
+						}
+						if (day < 1 || day > 29) {
+							return false;
+						}
+					} else if (day < 1 || day > 28) {
+						return false;
+					}
+					break;
+				default:
+					// wrong month
 					return false;
-				}
-				break;
-			default:
-				// wrong month
-				return false;
 			}
 			int hour = Integer.parseInt("" + date.charAt(11) + date.charAt(12));
 			if (hour < 0 || hour > 23) {

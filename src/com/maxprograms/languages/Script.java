@@ -39,9 +39,8 @@ public class Script implements Comparable<Script> {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof Script) {
-			Script s = (Script) obj;
-			return code.equals(s.getCode()) && description.equals(s.getDescription());
+		if (obj instanceof Script script) {
+			return code.equals(script.getCode()) && description.equals(script.getDescription());
 		}
 		return false;
 	}
