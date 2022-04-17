@@ -40,7 +40,7 @@ public class RegistryParser {
 				StringBuilder buffer = new StringBuilder();
 				while ((line = reader.readLine()) != null) {
 					if (line.trim().equals("%%")) {
-						entries.add(new RegistryEntry(buffer.toString()));
+						entries.add(new RegistryEntry(buffer.toString().replace("\n  ", " ")));
 						buffer = new StringBuilder();
 					} else {
 						buffer.append(line);
