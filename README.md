@@ -32,6 +32,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+2.1.0 | Updated dependencies and improved validation of XLIFF 2.x | April 21st, 2022
 2.0.0 | Moved server code to [XLIFF Manager](https://github.com/rmraya/XLIFFManager) project| March 29th, 2022
 1.17.5 | Updated DITA keyscope handling | March 18th, 2022
 1.17.4 | Fixed handling of nested untranslatables in DITA; Improved XLIFF 2.0 support | March 6th, 2022
