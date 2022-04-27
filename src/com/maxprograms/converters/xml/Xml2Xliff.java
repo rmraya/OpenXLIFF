@@ -769,44 +769,48 @@ public class Xml2Xliff {
 		return r.toString();
 	}
 
-	private static boolean containsText(String string) {
-		String tagged = string;
-		int start = tagged.indexOf("<mrk ");
-		int end = tagged.indexOf("</mrk>");
-		if (ditaBased) {
-			while (start != -1 && end != -1) {
-				tagged = tagged.substring(0, start) + tagged.substring(end + 6);
-				start = tagged.indexOf("<mrk ");
-				if (start != -1) {
-					end = tagged.indexOf("</mrk>", start + 5);
-				} else {
-					end = -1;
-				}
-			}
-			tagged = tagged.replace("</mrk>", ""); // removed nested ends of <mrk>
-		}
-		start = tagged.indexOf("<ph");
-		end = tagged.indexOf("</ph>");
-
-		while (start != -1 && end != -1) {
-			tagged = tagged.substring(0, start) + tagged.substring(end + 5);
-			start = tagged.indexOf("<ph");
-			if (start != -1) {
-				end = tagged.indexOf("</ph>", start + 4);
-			} else {
-				end = -1;
-			}
-		}
-
-		tagged = tagged.strip();
-		if (tagged.isEmpty()) {
+	private static boolean containsText(String string) throws IOException, ParserConfigurationException, SAXException {
+		if (string.strip().isEmpty()) {
 			return false;
 		}
-		for (int i = 0; i < tagged.length(); i++) {
-			int c = tagged.charAt(i);
-			if (" \u00A0\r\n\f\t\u2028\u2029,.;\":<>¿?¡!()[]{}=+/*\u00AB\u00BB\u201C\u201D\u201E\uFF00"
-					.indexOf(c) == -1) {
-				return true;
+		String source = "<holder>" + string.strip() + "</holder>";
+		SAXBuilder b = new SAXBuilder();
+		Document d = null;
+		try {
+			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
+		} catch (SAXException sax) {
+			LOGGER.log(Level.ERROR, "Broken segment: " + string);
+			throw sax;
+		}
+		return containsText(d.getRootElement());
+	}
+
+	private static boolean containsText(Element e) {
+		if ("ph".equals(e.getName()) || "bpt".equals(e.getName()) || "ept".equals(e.getName())
+				|| "it".equals(e.getName())) {
+			return false;
+		}
+		if ("no".equals(e.getAttributeValue("translate", "yes"))) {
+			return false;
+		}
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				String nodeText = ((TextNode) node).getText().strip();
+				for (int i = 0; i < nodeText.length(); i++) {
+					int c = nodeText.charAt(i);
+					if (" \u00A0\r\n\f\t\u2028\u2029,.;\":<>¿?¡!()[]{}=+/*\u00AB\u00BB\u201C\u201D\u201E\uFF00"
+							.indexOf(c) == -1) {
+						return true;
+					}
+				}
+			}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				if (containsText((Element) node)) {
+					return true;
+				}
 			}
 		}
 		return false;
