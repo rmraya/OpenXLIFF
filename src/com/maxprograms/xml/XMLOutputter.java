@@ -33,7 +33,7 @@ public class XMLOutputter {
 	private boolean skipLinefeed;
 	private boolean writeBOM;
 
-	private static final Logger LOGGER = System.getLogger(XMLOutputter.class.getName());
+	private static Logger logger = System.getLogger(XMLOutputter.class.getName());
 
 	public void output(Document sdoc, OutputStream output) throws IOException {
 		if (defaultEncoding.equals(StandardCharsets.UTF_16LE)) {
@@ -135,7 +135,7 @@ public class XMLOutputter {
 					break;
 				default:
 					// should never happen
-					LOGGER.log(Level.WARNING, "Header contains wrong content type.");
+					logger.log(Level.WARNING, "Header contains wrong content type.");
 			}
 		}
 	}
@@ -195,7 +195,7 @@ public class XMLOutputter {
 						break;
 					default:
 						// should never happen
-						LOGGER.log(Level.WARNING, "Unknown node type.");
+						logger.log(Level.WARNING, "Unknown node type.");
 				}
 			}
 			if (!preserve) {

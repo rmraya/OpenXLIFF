@@ -505,7 +505,7 @@ public class ToOpenXliff {
         for (int i = 0; i < change.size(); i++) {
             String name = change.get(i);
             Attribute a = e.getAttribute(name);
-            e.setAttribute(name.replaceAll("\\:", "__"), a.getValue());
+            e.setAttribute(name.replace(":", "__"), a.getValue());
             e.removeAttribute(name);
         }
         List<Element> children = e.getChildren();

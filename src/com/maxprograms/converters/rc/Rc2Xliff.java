@@ -262,7 +262,7 @@ public class Rc2Xliff {
 		do {
 			lastWord = lastWord.trim();
 			if (lastWord.equals("CONTROL") || lastWord.equals("LTEXT") || lastWord.equals("CTEXT")
-					|| lastWord.equals("RTEXT") || lastWord.equals("AUTO3STATE") || //$NON-NLS-2$
+					|| lastWord.equals("RTEXT") || lastWord.equals("AUTO3STATE") || 
 					lastWord.equals("AUTOCHECKBOX") || lastWord.equals("AUTORADIOBUTTON") || lastWord.equals("CHECKBOX")
 					|| lastWord.equals("PUSHBOX") || lastWord.equals("PUSHBUTTON") || lastWord.equals("DEFPUSHBUTTON")
 					|| lastWord.equals("RADIOBUTTON") || lastWord.equals("STATE3") || lastWord.equals("USERBUTTON")
@@ -283,10 +283,10 @@ public class Rc2Xliff {
 
 	private static boolean isEndControlStatement(String word) {
 		// list of all posible controls and END keyword
-		String[] controls = new String[] { "END", "CONTROL", "LTEXT", "CTEXT", "RTEXT", "AUTO3STATE", "AUTOCHECKBOX", //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-				"AUTORADIOBUTTON", "CHECKBOX", "PUSHBOX", "PUSHBUTTON", "DEFPUSHBUTTON", //$NON-NLS-5$
-				"RADIOBUTTON", "STATE3", "USERBUTTON", "GROUPBOX", "EDITTEXT", "BEDIT", //$NON-NLS-5$ //$NON-NLS-6$
-				"IEDIT", "HEDIT", "COMBOBOX", "LISTBOX", "SCROLLBAR", "ICON" }; //$NON-NLS-5$ //$NON-NLS-6$
+		String[] controls = new String[] { "END", "CONTROL", "LTEXT", "CTEXT", "RTEXT", "AUTO3STATE", "AUTOCHECKBOX",   
+				"AUTORADIOBUTTON", "CHECKBOX", "PUSHBOX", "PUSHBUTTON", "DEFPUSHBUTTON", 
+				"RADIOBUTTON", "STATE3", "USERBUTTON", "GROUPBOX", "EDITTEXT", "BEDIT",  
+				"IEDIT", "HEDIT", "COMBOBOX", "LISTBOX", "SCROLLBAR", "ICON" };  
 
 		for (int i = 0; i < controls.length; i++) {
 			if (controls[i].equals(word)) {

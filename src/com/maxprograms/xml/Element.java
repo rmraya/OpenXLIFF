@@ -32,7 +32,7 @@ public class Element implements XMLNode {
 	private List<XMLNode> content;
 	private Map<String, Attribute> attsTable;
 
-	private static final Logger LOGGER = System.getLogger(Element.class.getName());
+	private static Logger logger = System.getLogger(Element.class.getName());
 
 	public Element() {
 		name = "";
@@ -109,7 +109,7 @@ public class Element implements XMLNode {
 					break;
 				default:
 					// should never happen
-					LOGGER.log(Level.WARNING, "Element contains wrong content type.");
+					logger.log(Level.WARNING, "Element contains wrong content type.");
 			}
 		}
 	}

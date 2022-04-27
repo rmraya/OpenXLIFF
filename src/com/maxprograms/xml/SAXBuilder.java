@@ -130,7 +130,7 @@ public class SAXBuilder {
 				if (parent.lastIndexOf("file:") != -1) {
 					parent = parent.substring(parent.lastIndexOf("file:") + 5);
 				}
-				((Catalog) resolver).currentDocumentBase(parent);
+				cat.currentDocumentBase(parent);
 			}
 		}
 		XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
@@ -143,8 +143,8 @@ public class SAXBuilder {
 		boolean clearHandler = false;
 		if (contentHandler == null) {
 			contentHandler = new CustomContentHandler();
-			if (resolver instanceof Catalog) {
-				contentHandler.setCatalog((Catalog)resolver);
+			if (resolver instanceof Catalog catalog) {
+				contentHandler.setCatalog(catalog);
 			}
 			clearHandler = true;
 		}

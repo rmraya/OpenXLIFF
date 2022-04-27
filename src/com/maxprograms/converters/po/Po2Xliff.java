@@ -49,7 +49,7 @@ public class Po2Xliff {
 	private static String newContext;
 	private static List<String> pluralTargets;
 	private static int plurals;
-	private static String plural_source;
+	private static String pluralSource;
 
 	private Po2Xliff() {
 		// do not instantiate this class
@@ -71,7 +71,7 @@ public class Po2Xliff {
 		}
 
 		source = "";
-		plural_source = "";
+		pluralSource = "";
 		pluralTargets = new ArrayList<>();
 		target = "";
 		comment = "";
@@ -170,10 +170,10 @@ public class Po2Xliff {
 								if (line.startsWith("msgid_plural")) {
 									// get plural source
 									line = line.substring(12);
-									plural_source = line.substring(line.indexOf('\"') + 1, line.lastIndexOf('\"'));
+									pluralSource = line.substring(line.indexOf('\"') + 1, line.lastIndexOf('\"'));
 									line = buffer.readLine();
 									while (line.startsWith("\"")) {
-										plural_source = plural_source + "\n"
+										pluralSource = pluralSource + "\n"
 												+ line.substring(line.indexOf('\"') + 1, line.lastIndexOf('\"'));
 										line = buffer.readLine();
 									}
@@ -228,7 +228,7 @@ public class Po2Xliff {
 											parsePlural(line);
 										}
 									}
-									if (plural_source.isEmpty()) {
+									if (pluralSource.isEmpty()) {
 										writeSegment();
 									}
 								}
@@ -285,7 +285,7 @@ public class Po2Xliff {
 	}
 
 	private static void writeSegment() throws IOException {
-		if (!plural_source.isEmpty()) {
+		if (!pluralSource.isEmpty()) {
 			writeString("   <group restype=\"x-gettext-plurals\" id=\"" + segId + "\">\n");
 			if (!context.isEmpty()) {
 				writeString("      <context-group name=\"x-po-entry-header#" + contextId++
@@ -348,13 +348,13 @@ public class Po2Xliff {
 						+ approved + "\">\n");
 				if (cformat) {
 					writeString("         <source xml:lang=\"" + sourceLanguage + "\">"
-							+ parseString(Utils.cleanString(plural_source)) + "</source>\n");
+							+ parseString(Utils.cleanString(pluralSource)) + "</source>\n");
 					if (target.length() > 0 || approved.equals("yes")) {
 						writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 					}
 				} else {
 					writeString("         <source xml:lang=\"" + sourceLanguage + "\">"
-							+ Utils.cleanString(plural_source) + "</source>\n");
+							+ Utils.cleanString(pluralSource) + "</source>\n");
 					if (target.length() > 0 || approved.equals("yes")) {
 						writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
 					}
@@ -418,7 +418,7 @@ public class Po2Xliff {
 		writeSkeleton("%%%" + segId++ + "%%%\n");
 
 		source = "";
-		plural_source = "";
+		pluralSource = "";
 		pluralTargets.clear();
 		target = "";
 		comment = "";

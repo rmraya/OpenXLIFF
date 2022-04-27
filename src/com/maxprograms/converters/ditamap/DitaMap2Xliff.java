@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
 
 public class DitaMap2Xliff {
 
-	private static final Logger LOGGER = System.getLogger(DitaMap2Xliff.class.getName());
+	private static Logger logger = System.getLogger(DitaMap2Xliff.class.getName());
 
 	private static Element mergedRoot;
 	private static boolean hasConref;
@@ -159,7 +159,7 @@ public class DitaMap2Xliff {
 						skipped.add(filesMap.get(i));
 						continue;
 					}
-					LOGGER.log(Level.ERROR, "Error converting \"" + source + "\" to XLIFF");
+					logger.log(Level.ERROR, "Error converting \"" + source + "\" to XLIFF");
 					return res;
 				}
 				xliffs.add(xlf.getAbsolutePath());
@@ -216,7 +216,7 @@ public class DitaMap2Xliff {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (Exception e) {
-			LOGGER.log(Level.ERROR, "Error converting DITA Map", e);
+			logger.log(Level.ERROR, "Error converting DITA Map", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -391,7 +391,7 @@ public class DitaMap2Xliff {
 				Key k = rootScope.getKey(key);
 				String file = k.getHref();
 				if (file == null) {
-					LOGGER.log(Level.WARNING, "Key not defined for conkeyref: \"" + conkeyref + "\"");
+					logger.log(Level.WARNING, "Key not defined for conkeyref: \"" + conkeyref + "\"");
 					return;
 				}
 				Element ref = getConKeyReferenced(file, id, catalog);
@@ -412,11 +412,11 @@ public class DitaMap2Xliff {
 						fixConKeyRef(its.next(), file, doc, catalog);
 					}
 				} else {
-					LOGGER.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Element with id=\"" + id
+					logger.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Element with id=\"" + id
 							+ "\" not found in \"" + file + "\"");
 				}
 			} else {
-				LOGGER.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Bad format.");
+				logger.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Bad format.");
 			}
 
 		} else if (!keyref.isEmpty() && e.getContent().isEmpty() && keyref.indexOf('/') == -1) {

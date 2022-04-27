@@ -44,7 +44,7 @@ import org.xml.sax.SAXException;
 
 public class Idml2Xliff {
 
-	private static final Logger LOGGER = System.getLogger(Idml2Xliff.class.getName());
+	private static Logger logger = System.getLogger(Idml2Xliff.class.getName());
 
 	private static Element mergedRoot;
 	private static String inputFile;
@@ -286,7 +286,7 @@ public class Idml2Xliff {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			LOGGER.log(Level.ERROR, "Error converting IDML file", e);
+			logger.log(Level.ERROR, "Error converting IDML file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

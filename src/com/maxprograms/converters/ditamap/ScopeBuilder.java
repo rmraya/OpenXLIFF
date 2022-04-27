@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 
 public class ScopeBuilder {
 
-	private static final Logger LOGGER = System.getLogger(ScopeBuilder.class.getName());
+	private static Logger logger = System.getLogger(ScopeBuilder.class.getName());
 
 	private Scope currentScope;
 	private Set<String> recursed;
@@ -135,13 +135,13 @@ public class ScopeBuilder {
 				if (!keyref.isEmpty()) {
 					if (!currentScope.addKey(new Key(key, keyref, parentFile))) {
 						MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
-						LOGGER.log(Level.WARNING, mf.format(new Object[] { key, keyref }));
+						logger.log(Level.WARNING, mf.format(new Object[] { key, keyref }));
 					}
 				} else {
 					if (href.isEmpty()) {
 						if (!currentScope.addKey(new Key(key, parentFile, topicmeta, parentFile))) {
 							MessageFormat mf = new MessageFormat("Duplicate key definition: {0}");
-							LOGGER.log(Level.WARNING, mf.format(new Object[] { key }));
+							logger.log(Level.WARNING, mf.format(new Object[] { key }));
 						}
 					} else {
 						try {
@@ -150,7 +150,7 @@ public class ScopeBuilder {
 							if (f.exists() && f.isFile()
 									&& !currentScope.addKey(new Key(key, path, topicmeta, parentFile))) {
 								MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
-								LOGGER.log(Level.WARNING, mf.format(new Object[] { key, path }));
+								logger.log(Level.WARNING, mf.format(new Object[] { key, path }));
 							}
 						} catch (IOException ioe) {
 							// ignore files that can't be parsed

@@ -41,7 +41,7 @@ public class EncodingResolver {
 		// do not instantiate this class
 	}
 
-	private static final Logger LOGGER = System.getLogger(EncodingResolver.class.getName());
+	private static Logger logger = System.getLogger(EncodingResolver.class.getName());
 
 	public static Charset getEncoding(String fileName, String fileType) {
 		if (fileType == null || fileName == null) {
@@ -63,7 +63,7 @@ public class EncodingResolver {
 			try {
 				return getXMLEncoding(fileName);
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, "Error detecting XML encoding", e);
+				logger.log(Level.ERROR, "Error detecting XML encoding", e);
 			}
 		} else if (fileType.equals(FileFormats.SDLPPX)) {
 			return StandardCharsets.UTF_8;
@@ -71,13 +71,13 @@ public class EncodingResolver {
 			try {
 				return getRCEncoding(fileName);
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, "Error detecting XML encoding", e);
+				logger.log(Level.ERROR, "Error detecting XML encoding", e);
 			}
 		} else if (fileType.equals(FileFormats.HTML)) {
 			try {
 				return getHTMLEncoding(fileName);
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, "Error detecting HTML encoding", e);
+				logger.log(Level.ERROR, "Error detecting HTML encoding", e);
 			}
 		} else if (fileType.equals(FileFormats.SRT)) {
 			try {
@@ -87,13 +87,13 @@ public class EncodingResolver {
 				}
 				return StandardCharsets.UTF_8;
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, "Error detecting SRT encoding", e);
+				logger.log(Level.ERROR, "Error detecting SRT encoding", e);
 			}
 		} else if (fileType.equals(FileFormats.JSON)) {
 			try {
 				return getJSONEncoding(fileName);
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, "Error detecting JSON encoding", e);
+				logger.log(Level.ERROR, "Error detecting JSON encoding", e);
 			}
 		}
 		return null;

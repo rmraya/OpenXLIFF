@@ -43,7 +43,7 @@ public class Join {
 		// do not instantiate this class
 	}
 
-	private static final Logger LOGGER = System.getLogger(Join.class.getName());
+	private static Logger logger = System.getLogger(Join.class.getName());
 
 	private static List<String> list;
 	private static String target = "";
@@ -68,7 +68,7 @@ public class Join {
 					String file = array[h];
 					File f = new File(file);
 					if (!f.exists()) {
-						LOGGER.log(Level.ERROR, "File '" + file + "' does not exist.'");
+						logger.log(Level.ERROR, "File '" + file + "' does not exist.'");
 						System.exit(1);
 					}
 					list.add(array[h]);
@@ -81,7 +81,7 @@ public class Join {
 		try {
 			join(list, target);
 		} catch (IOException | SAXException | ParserConfigurationException ex) {
-			LOGGER.log(Level.ERROR, ex.getMessage(), ex);
+			logger.log(Level.ERROR, ex.getMessage(), ex);
 		}
 	}
 

@@ -98,7 +98,7 @@ public class Story2Xliff {
 			while (ia.hasNext()) {
 				Attribute a = ia.next();
 				writeSkeleton(
-						" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-5$
+						" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\"");
 			}
 			writeSkeleton(">");
 
@@ -115,7 +115,7 @@ public class Story2Xliff {
 						while (ia.hasNext()) {
 							Attribute a = ia.next();
 							writeSkeleton(" " + a.getName() + "=\""
-									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-3$
+									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\"");
 						}
 						writeSkeleton(">");
 						processStory(e);
@@ -267,7 +267,7 @@ public class Story2Xliff {
 						while (ia.hasNext()) {
 							Attribute a = ia.next();
 							writeSkeleton(" " + a.getName() + "=\""
-									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-3$
+									+ Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
 						}
 						writeSkeleton(">");
 						processStory(e);
@@ -293,7 +293,7 @@ public class Story2Xliff {
 		while (ia.hasNext()) {
 			Attribute a = ia.next();
 			writeSkeleton(
-					" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""); //$NON-NLS-5$
+					" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
 		}
 		writeSkeleton(">");
 		String source = "<ph>";
@@ -517,7 +517,7 @@ public class Story2Xliff {
 			while (ia.hasNext()) {
 				Attribute a = ia.next();
 				result = result + " " + a.getName() + "=\""
-						+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\""; //$NON-NLS-3$
+						+ Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"";
 			}
 			if (e.getContent().isEmpty()) {
 				result = result + " />";

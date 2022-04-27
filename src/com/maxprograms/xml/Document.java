@@ -34,7 +34,7 @@ public class Document implements XMLNode {
 	private Map<String, String> entities;
 	private List<String> attributes;
 
-	private static final Logger LOGGER = System.getLogger(Document.class.getName());
+	private static Logger logger = System.getLogger(Document.class.getName());
 
 	@Override
 	public short getNodeType() {
@@ -91,7 +91,7 @@ public class Document implements XMLNode {
 					break;
 				default:
 					// should never happen
-					LOGGER.log(Level.WARNING, "Prolog contains wrong content type.");
+					logger.log(Level.WARNING, "Prolog contains wrong content type.");
 				}
 			}
 		}
@@ -265,7 +265,7 @@ public class Document implements XMLNode {
 				break;
 			default:
 				// should never happen
-				LOGGER.log(Level.WARNING, "Prolog contains wrong content type.");
+				logger.log(Level.WARNING, "Prolog contains wrong content type.");
 			}
 		}
 	}

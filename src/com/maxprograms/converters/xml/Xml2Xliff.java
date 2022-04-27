@@ -56,7 +56,7 @@ import org.xml.sax.SAXException;
 
 public class Xml2Xliff {
 
-	private static final Logger LOGGER = System.getLogger(Xml2Xliff.class.getName());
+	private static Logger logger = System.getLogger(Xml2Xliff.class.getName());
 
 	static final String DOUBLEPRIME = "\u2033";
 	static final String MATHLT = "\u2039";
@@ -220,14 +220,14 @@ public class Xml2Xliff {
 				if (ditaBased || rootElement.equals("svg")) {
 					result.add("EMPTY");
 				} else {
-					LOGGER.log(Level.WARNING, inputFile + " does not contain text");
+					logger.log(Level.WARNING, inputFile + " does not contain text");
 				}
 				return result;
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException
 				| IllegalArgumentException e) {
-			LOGGER.log(Level.ERROR, "Error converting XML file", e);
+			logger.log(Level.ERROR, "Error converting XML file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -418,7 +418,7 @@ public class Xml2Xliff {
 				result = d.rootElement.getName();
 			}
 		} catch (Exception e) {
-			// LOGGER.log(Level.WARNING, "Error getting root element from DTD " + file);
+			// do nothing
 		}
 		return result;
 	}
@@ -526,7 +526,7 @@ public class Xml2Xliff {
 		try {
 			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
 		} catch (SAXException sax) {
-			LOGGER.log(Level.ERROR, "Broken segment: " + source);
+			logger.log(Level.ERROR, "Broken segment: " + source);
 			throw sax;
 		}
 		Element r = d.getRootElement();
@@ -779,7 +779,7 @@ public class Xml2Xliff {
 		try {
 			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
 		} catch (SAXException sax) {
-			LOGGER.log(Level.ERROR, "Broken segment: " + string);
+			logger.log(Level.ERROR, "Broken segment: " + string);
 			throw sax;
 		}
 		return containsText(d.getRootElement());
@@ -1391,7 +1391,7 @@ public class Xml2Xliff {
 				return;
 			}
 		}
-		LOGGER.log(Level.WARNING, "Unknown element: " + e.getName());
+		logger.log(Level.WARNING, "Unknown element: " + e.getName());
 	}
 
 	private static boolean isKnownElement(String name) {

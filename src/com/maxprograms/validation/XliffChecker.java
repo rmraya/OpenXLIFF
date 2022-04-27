@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
 
 public class XliffChecker {
 
-	private static Logger LOGGER = System.getLogger(XliffChecker.class.getName());
+	private static Logger logger = System.getLogger(XliffChecker.class.getName());
 	private String reason;
 	private String version;
 
@@ -93,31 +93,31 @@ public class XliffChecker {
 			return;
 		}
 		if (file.isEmpty()) {
-			LOGGER.log(Level.ERROR, "Missing '-file' parameter.");
+			logger.log(Level.ERROR, "Missing '-file' parameter.");
 			return;
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			if (!catalogFolder.exists()) {
-				LOGGER.log(Level.ERROR, "'catalog' folder not found.");
+				logger.log(Level.ERROR, "'catalog' folder not found.");
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, "Catalog file does not exist.");
 			return;
 		}
 		try {
 			XliffChecker instance = new XliffChecker();
 			if (!instance.validate(file, catalog)) {
-				LOGGER.log(Level.ERROR, "Invalid XLIFF. Reason: " + instance.getReason());
+				logger.log(Level.ERROR, "Invalid XLIFF. Reason: " + instance.getReason());
 				return;
 			}
-			LOGGER.log(Level.INFO, "File is valid XLIFF " + instance.getVersion());
+			logger.log(Level.INFO, "File is valid XLIFF " + instance.getVersion());
 		} catch (IOException e) {
-			LOGGER.log(Level.ERROR, "Error creating validator", e);
+			logger.log(Level.ERROR, "Error creating validator", e);
 		}
 	}
 
@@ -248,16 +248,16 @@ public class XliffChecker {
 		attributesTable.put("header", new HashSet<>()); // this element doesn't have attributes
 		attributesTable.put("skl", new HashSet<>()); // this element doesn't have attributes
 
-		Set<String> internal_fileSet = new HashSet<>();
-		internal_fileSet.add("form");
-		internal_fileSet.add("crc");
-		attributesTable.put("internal-file", internal_fileSet);
+		Set<String> internalFileSet = new HashSet<>();
+		internalFileSet.add("form");
+		internalFileSet.add("crc");
+		attributesTable.put("internal-file", internalFileSet);
 
-		Set<String> external_fileSet = new HashSet<>();
-		external_fileSet.add("href");
-		external_fileSet.add("uid");
-		external_fileSet.add("crc");
-		attributesTable.put("external-file", external_fileSet);
+		Set<String> externalFileSet = new HashSet<>();
+		externalFileSet.add("href");
+		externalFileSet.add("uid");
+		externalFileSet.add("crc");
+		attributesTable.put("external-file", externalFileSet);
 
 		attributesTable.put("glossary", new HashSet<>()); // this element doesn't have attributes
 		attributesTable.put("reference", new HashSet<>()); // this element doesn't have attributes
@@ -290,9 +290,9 @@ public class XliffChecker {
 		toolSet.add("tool-company");
 		attributesTable.put("tool", toolSet);
 
-		Set<String> count_groupSet = new HashSet<>();
-		count_groupSet.add("name");
-		attributesTable.put("count-group", count_groupSet);
+		Set<String> countGroupSet = new HashSet<>();
+		countGroupSet.add("name");
+		attributesTable.put("count-group", countGroupSet);
 
 		Set<String> countSet = new HashSet<>();
 		countSet.add("count-type");
@@ -300,11 +300,11 @@ public class XliffChecker {
 		countSet.add("unit");
 		attributesTable.put("count", countSet);
 
-		Set<String> context_groupSet = new HashSet<>();
-		context_groupSet.add("crc");
-		context_groupSet.add("name");
-		context_groupSet.add("purpose");
-		attributesTable.put("context-group", context_groupSet);
+		Set<String> contextGroupSet = new HashSet<>();
+		contextGroupSet.add("crc");
+		contextGroupSet.add("name");
+		contextGroupSet.add("purpose");
+		attributesTable.put("context-group", contextGroupSet);
 
 		Set<String> contextSet = new HashSet<>();
 		contextSet.add("context-type");
@@ -312,9 +312,9 @@ public class XliffChecker {
 		contextSet.add("crc");
 		attributesTable.put("context", contextSet);
 
-		Set<String> prop_groupSet = new HashSet<>();
-		prop_groupSet.add("name");
-		attributesTable.put("prop-group", prop_groupSet);
+		Set<String> propGroupSet = new HashSet<>();
+		propGroupSet.add("name");
+		attributesTable.put("prop-group", propGroupSet);
 
 		Set<String> propSet = new HashSet<>();
 		propSet.add("prop-type");
@@ -354,36 +354,36 @@ public class XliffChecker {
 		}
 		attributesTable.put("group", groupSet);
 
-		Set<String> trans_unitSet = new HashSet<>();
-		trans_unitSet.add("id");
-		trans_unitSet.add("approved");
-		trans_unitSet.add("translate");
-		trans_unitSet.add("reformat");
-		trans_unitSet.add("datatype");
-		trans_unitSet.add("ts");
-		trans_unitSet.add("phase-name");
-		trans_unitSet.add("restype");
-		trans_unitSet.add("resname");
-		trans_unitSet.add("extradata");
-		trans_unitSet.add("help-id");
-		trans_unitSet.add("menu");
-		trans_unitSet.add("menu-option");
-		trans_unitSet.add("menu-name");
-		trans_unitSet.add("coord");
-		trans_unitSet.add("font");
-		trans_unitSet.add("css-style");
-		trans_unitSet.add("style");
-		trans_unitSet.add("exstyle");
-		trans_unitSet.add("extype");
-		trans_unitSet.add("maxbytes");
-		trans_unitSet.add("minbytes");
-		trans_unitSet.add("size-unit");
-		trans_unitSet.add("maxheight");
-		trans_unitSet.add("minheight");
-		trans_unitSet.add("maxwidth");
-		trans_unitSet.add("minwidth");
-		trans_unitSet.add("charclass");
-		attributesTable.put("trans-unit", trans_unitSet);
+		Set<String> transUnitSet = new HashSet<>();
+		transUnitSet.add("id");
+		transUnitSet.add("approved");
+		transUnitSet.add("translate");
+		transUnitSet.add("reformat");
+		transUnitSet.add("datatype");
+		transUnitSet.add("ts");
+		transUnitSet.add("phase-name");
+		transUnitSet.add("restype");
+		transUnitSet.add("resname");
+		transUnitSet.add("extradata");
+		transUnitSet.add("help-id");
+		transUnitSet.add("menu");
+		transUnitSet.add("menu-option");
+		transUnitSet.add("menu-name");
+		transUnitSet.add("coord");
+		transUnitSet.add("font");
+		transUnitSet.add("css-style");
+		transUnitSet.add("style");
+		transUnitSet.add("exstyle");
+		transUnitSet.add("extype");
+		transUnitSet.add("maxbytes");
+		transUnitSet.add("minbytes");
+		transUnitSet.add("size-unit");
+		transUnitSet.add("maxheight");
+		transUnitSet.add("minheight");
+		transUnitSet.add("maxwidth");
+		transUnitSet.add("minwidth");
+		transUnitSet.add("charclass");
+		attributesTable.put("trans-unit", transUnitSet);
 
 		Set<String> sourceSet = new HashSet<>();
 		sourceSet.add("ts");
@@ -406,63 +406,63 @@ public class XliffChecker {
 		}
 		attributesTable.put("target", targetSet);
 
-		Set<String> alt_transSet = new HashSet<>();
+		Set<String> altTransSet = new HashSet<>();
 		if (!version.equals("1.1")) {
-			alt_transSet.add("mid");
+			altTransSet.add("mid");
 		}
-		alt_transSet.add("match-quality");
-		alt_transSet.add("tool");
-		alt_transSet.add("tool-id");
-		alt_transSet.add("crc");
-		alt_transSet.add("datatype");
-		alt_transSet.add("ts");
-		alt_transSet.add("restype");
-		alt_transSet.add("resname");
-		alt_transSet.add("extradata");
-		alt_transSet.add("help-id");
-		alt_transSet.add("menu");
-		alt_transSet.add("menu-option");
-		alt_transSet.add("menu-name");
-		alt_transSet.add("coord");
-		alt_transSet.add("font");
-		alt_transSet.add("css-style");
-		alt_transSet.add("style");
-		alt_transSet.add("exstyle");
-		alt_transSet.add("extype");
-		alt_transSet.add("origin");
+		altTransSet.add("match-quality");
+		altTransSet.add("tool");
+		altTransSet.add("tool-id");
+		altTransSet.add("crc");
+		altTransSet.add("datatype");
+		altTransSet.add("ts");
+		altTransSet.add("restype");
+		altTransSet.add("resname");
+		altTransSet.add("extradata");
+		altTransSet.add("help-id");
+		altTransSet.add("menu");
+		altTransSet.add("menu-option");
+		altTransSet.add("menu-name");
+		altTransSet.add("coord");
+		altTransSet.add("font");
+		altTransSet.add("css-style");
+		altTransSet.add("style");
+		altTransSet.add("exstyle");
+		altTransSet.add("extype");
+		altTransSet.add("origin");
 		if (!version.equals("1.1")) {
-			alt_transSet.add("phase-name");
-			alt_transSet.add("alttranstype");
+			altTransSet.add("phase-name");
+			altTransSet.add("alttranstype");
 		}
-		attributesTable.put("alt-trans", alt_transSet);
+		attributesTable.put("alt-trans", altTransSet);
 
-		Set<String> bin_unitSet = new HashSet<>();
-		bin_unitSet.add("id");
-		bin_unitSet.add("mime-type");
-		bin_unitSet.add("approved");
-		bin_unitSet.add("translate");
-		bin_unitSet.add("reformat");
-		bin_unitSet.add("ts");
-		bin_unitSet.add("phase-name");
-		bin_unitSet.add("restype");
-		bin_unitSet.add("resname");
-		attributesTable.put("bin-unit", bin_unitSet);
+		Set<String> binUnitSet = new HashSet<>();
+		binUnitSet.add("id");
+		binUnitSet.add("mime-type");
+		binUnitSet.add("approved");
+		binUnitSet.add("translate");
+		binUnitSet.add("reformat");
+		binUnitSet.add("ts");
+		binUnitSet.add("phase-name");
+		binUnitSet.add("restype");
+		binUnitSet.add("resname");
+		attributesTable.put("bin-unit", binUnitSet);
 
-		Set<String> bin_sourceSet = new HashSet<>();
-		bin_sourceSet.add("ts");
-		attributesTable.put("bin-source", bin_sourceSet);
+		Set<String> binSourceSet = new HashSet<>();
+		binSourceSet.add("ts");
+		attributesTable.put("bin-source", binSourceSet);
 
-		Set<String> bin_targetSet = new HashSet<>();
-		bin_targetSet.add("mime-type");
-		bin_targetSet.add("ts");
-		bin_targetSet.add("state");
-		bin_targetSet.add("phase-name");
-		bin_targetSet.add("restype");
-		bin_targetSet.add("resname");
+		Set<String> binTargetSet = new HashSet<>();
+		binTargetSet.add("mime-type");
+		binTargetSet.add("ts");
+		binTargetSet.add("state");
+		binTargetSet.add("phase-name");
+		binTargetSet.add("restype");
+		binTargetSet.add("resname");
 		if (!version.equals("1.1")) {
-			bin_targetSet.add("state-qualifier");
+			binTargetSet.add("state-qualifier");
 		}
-		attributesTable.put("bin-target", bin_targetSet);
+		attributesTable.put("bin-target", binTargetSet);
 
 		if (!version.equals("1.1")) {
 			Set<String> seg_sourceSet = new HashSet<>();

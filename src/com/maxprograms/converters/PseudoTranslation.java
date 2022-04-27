@@ -16,12 +16,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -34,7 +36,7 @@ import org.xml.sax.SAXException;
 
 public class PseudoTranslation {
 
-    private static final Logger LOGGER = System.getLogger(PseudoTranslation.class.getName());
+    private static Logger logger = System.getLogger(PseudoTranslation.class.getName());
     private static String tgtLang = "";
 
     public static void main(String[] args) {
@@ -63,21 +65,21 @@ public class PseudoTranslation {
         if (catalog.isEmpty()) {
             File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
             if (!catalogFolder.exists()) {
-                LOGGER.log(Level.ERROR, "'catalog' folder not found.");
+                logger.log(Level.ERROR, "'catalog' folder not found.");
                 return;
             }
             catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
         }
         File catalogFile = new File(catalog);
         if (!catalogFile.exists()) {
-            LOGGER.log(Level.ERROR, "Catalog file does not exist.");
+            logger.log(Level.ERROR, "Catalog file does not exist.");
             return;
         }
 
         try {
             pseudoTranslate(xliff, catalog);
-        } catch (SAXException | IOException | ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {
+            logger.log(Level.ERROR, e);
         }
     }
 
@@ -96,8 +98,9 @@ public class PseudoTranslation {
     }
 
     public static void pseudoTranslate(String xliff, String catalog)
-            throws SAXException, IOException, ParserConfigurationException {
+            throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
         SAXBuilder builder = new SAXBuilder();
+        builder.setEntityResolver(new Catalog(catalog));
         Document doc = builder.build(xliff);
         Element root = doc.getRootElement();
         recurse(root);
@@ -142,10 +145,8 @@ public class PseudoTranslation {
                 while (it.hasNext()) {
                     XMLNode node = it.next();
                     newContent.add(node);
-                    if (node instanceof Element e) {
-                        if ("source".equals(e.getName())) {
-                            newContent.add(target);
-                        }
+                    if (node instanceof Element e && "source".equals(e.getName())) {
+                        newContent.add(target);
                     }
                 }
                 root.setContent(newContent);

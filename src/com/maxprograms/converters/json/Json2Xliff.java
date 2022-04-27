@@ -10,7 +10,7 @@
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
 
- package com.maxprograms.converters.json;
+package com.maxprograms.converters.json;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,7 +39,6 @@ import org.xml.sax.SAXException;
 
 public class Json2Xliff {
 
-    private static String sourceLanguage;
     private static boolean paragraphSegmentation;
     private static Segmenter segmenter;
     private static int id;
@@ -59,7 +58,7 @@ public class Json2Xliff {
         String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
         String skeletonFile = params.get("skeleton");
-        sourceLanguage = params.get("srcLang");
+        String sourceLanguage = params.get("srcLang");
         String targetLanguage = params.get("tgtLang");
         String encoding = params.get("srcEncoding");
         String paragraph = params.get("paragraph");
@@ -84,7 +83,7 @@ public class Json2Xliff {
             JSONObject json = loadFile(inputFile, encoding);
             parseJson(json);
 
-            if (segments.size() == 0) {
+            if (segments.isEmpty()) {
                 result.add(Constants.ERROR);
                 result.add("Nothing to translate.");
                 return result;

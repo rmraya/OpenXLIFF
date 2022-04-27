@@ -62,7 +62,7 @@ import org.xml.sax.SAXException;
 
 public class Merge {
 
-	private static final Logger LOGGER = System.getLogger(Merge.class.getName());
+	private static Logger logger = System.getLogger(Merge.class.getName());
 
 	private static List<Element> segments;
 	protected static HashSet<String> fileSet;
@@ -81,7 +81,7 @@ public class Merge {
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
 			if (arg.equals("-version")) {
-				LOGGER.log(Level.INFO, () -> "Version: " + Constants.VERSION + " Build: " + Constants.BUILD);
+				logger.log(Level.INFO, () -> "Version: " + Constants.VERSION + " Build: " + Constants.BUILD);
 				return;
 			}
 			if (arg.equals("-help")) {
@@ -109,32 +109,32 @@ public class Merge {
 			return;
 		}
 		if (xliff.isEmpty()) {
-			LOGGER.log(Level.ERROR, "Missing '-xliff' parameter.");
+			logger.log(Level.ERROR, "Missing '-xliff' parameter.");
 			return;
 		}
 		if (target.isEmpty()) {
 			try {
 				target = getTargetFile(xliff);
 			} catch (IOException | SAXException | ParserConfigurationException e) {
-				LOGGER.log(Level.ERROR, "Error getting target file", e);
+				logger.log(Level.ERROR, "Error getting target file", e);
 				return;
 			}
 		}
 		if (target.isEmpty()) {
-			LOGGER.log(Level.ERROR, "Missing '-target' parameter.");
+			logger.log(Level.ERROR, "Missing '-target' parameter.");
 			return;
 		}
 		if (catalog.isEmpty()) {
 			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
 			if (!catalogFolder.exists()) {
-				LOGGER.log(Level.ERROR, "'catalog' folder not found.");
+				logger.log(Level.ERROR, "'catalog' folder not found.");
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();			
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, "Catalog file does not exist.");
 			return;
 		}
 
@@ -149,7 +149,7 @@ public class Merge {
 			result = TmxExporter.export(xliff, tmx, catalog);
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
-			LOGGER.log(Level.ERROR, "Merge error: " + result.get(1));
+			logger.log(Level.ERROR, "Merge error: " + result.get(1));
 		}
 	}
 
@@ -183,7 +183,7 @@ public class Merge {
 				File f = new File(target);
 				if (f.exists()) {
 					if (!f.isDirectory()) {
-						LOGGER.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
+						logger.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
 						result.add(Constants.ERROR);
 						result.add("'" + f.getAbsolutePath() + "' is not a directory");
 						return result;
@@ -228,13 +228,13 @@ public class Merge {
 				File f = new File(paramsList.get(i).get("xliff"));
 				Files.deleteIfExists(Paths.get(f.toURI()));
 				if (!Constants.SUCCESS.equals(res.get(0))) {
-					LOGGER.log(Level.ERROR, res.get(1));
+					logger.log(Level.ERROR, res.get(1));
 					return res;
 				}
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException ex) {
-			LOGGER.log(Level.ERROR, ex.getMessage(), ex);
+			logger.log(Level.ERROR, ex.getMessage(), ex);
 			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
 		}
@@ -404,7 +404,7 @@ public class Merge {
 				Files.delete(Paths.get(temporary.toURI()));
 			}
 		} catch (Exception e) {
-			LOGGER.log(Level.ERROR, "Error merging XLIFF", e);
+			logger.log(Level.ERROR, "Error merging XLIFF", e);
 			result = new ArrayList<>();
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());

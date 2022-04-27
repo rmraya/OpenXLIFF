@@ -50,7 +50,7 @@ import org.xml.sax.SAXException;
 
 public class Xliff2Xml {
 
-	private static final Logger LOGGER = System.getLogger(Xliff2Xml.class.getName());
+	private static Logger logger = System.getLogger(Xliff2Xml.class.getName());
 
 	private static String xliffFile;
 	private static Map<String, Element> segments;
@@ -60,8 +60,8 @@ public class Xliff2Xml {
 	private static boolean inDesign = false;
 	private static boolean inAttribute;
 	private static boolean inCData;
-	private static boolean dita_based = false;
-	private static boolean IDML;
+	private static boolean ditaBased = false;
+	private static boolean isIdml;
 	private static List<PI> skipped;
 
 	private Xliff2Xml() {
@@ -81,11 +81,11 @@ public class Xliff2Xml {
 		}
 		String isIDML = params.get("IDML");
 		if (isIDML != null) {
-			IDML = true;
+			isIdml = true;
 		}
 		String isDitaBased = params.get("dita_based");
 		if (isDitaBased != null) {
-			dita_based = true;
+			ditaBased = true;
 		}
 		try {
 			catalog = new Catalog(params.get("catalog"));
@@ -156,7 +156,7 @@ public class Xliff2Xml {
 					}
 				}
 			}
-			if (dita_based) {
+			if (ditaBased) {
 				try {
 					removeTranslate(outputFile);
 					if (skipped != null) {
@@ -170,7 +170,7 @@ public class Xliff2Xml {
 						}
 					}
 				} catch (SAXException sax) {
-					LOGGER.log(Level.ERROR, "removeTranslate error: " + outputFile);
+					logger.log(Level.ERROR, "removeTranslate error: " + outputFile);
 					throw sax;
 				}
 			}
@@ -179,7 +179,7 @@ public class Xliff2Xml {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			LOGGER.log(Level.ERROR, "Error merging file", e);
+			logger.log(Level.ERROR, "Error merging file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -249,7 +249,7 @@ public class Xliff2Xml {
 		if (element.getName().equals("ph")) {
 			return fixEntities(element);
 		}
-		if (dita_based && element.getName().equals("mrk")) {
+		if (ditaBased && element.getName().equals("mrk")) {
 			return cleanMrk(element);
 		}
 		while (i.hasNext()) {
@@ -267,7 +267,7 @@ public class Xliff2Xml {
 					result = result + ((TextNode) n).getText();
 				} else {
 					String text = ((TextNode) n).getText();
-					if (IDML && text.indexOf('\n') != -1) {
+					if (isIdml && text.indexOf('\n') != -1) {
 						text = text.replaceAll("\\n", "");
 					}
 					result = result + addEntities(text);
@@ -501,7 +501,7 @@ public class Xliff2Xml {
 
 		while (i.hasNext()) {
 			Element unit = i.next();
-			if (dita_based) {
+			if (ditaBased) {
 				checkUntranslatable(unit);
 			}
 			segments.put(unit.getAttributeValue("id"), unit);

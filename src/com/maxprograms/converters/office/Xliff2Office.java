@@ -43,7 +43,7 @@ import org.xml.sax.SAXException;
 
 public class Xliff2Office {
 
-	private static final Logger LOGGER = System.getLogger(Xliff2Office.class.getName());
+	private static Logger logger = System.getLogger(Xliff2Office.class.getName());
 
 	private static Map<String, String> filesTable;
 	private static boolean isEmbedded = false;
@@ -101,7 +101,7 @@ public class Xliff2Office {
 							Map<String, String> table = new HashMap<>();
 							String s = filesTable.get(name);
 							if (s == null) {
-								LOGGER.log(Level.WARNING, "Skeleton not found for file " + name);
+								logger.log(Level.WARNING, "Skeleton not found for file " + name);
 								continue;
 							}
 							table.put("xliff", s);
@@ -162,7 +162,7 @@ public class Xliff2Office {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			LOGGER.log(Level.ERROR, "Error converting Office file", e);
+			logger.log(Level.ERROR, "Error converting Office file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

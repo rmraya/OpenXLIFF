@@ -19,17 +19,17 @@ import org.xml.sax.SAXParseException;
 
 public class CustomErrorHandler implements org.xml.sax.ErrorHandler {
 
-	private static final Logger LOGGER = System.getLogger(CustomErrorHandler.class.getName());
+	private static Logger logger = System.getLogger(CustomErrorHandler.class.getName());
 
 	@Override
 	public void warning(SAXParseException exception) throws SAXException {
-		LOGGER.log(Level.WARNING,
+		logger.log(Level.WARNING,
 				exception.getLineNumber() + ":" + exception.getColumnNumber() + " " + exception.getMessage());
 	}
 
 	@Override
 	public void error(SAXParseException exception) throws SAXException {
-		LOGGER.log(Level.ERROR,
+		logger.log(Level.ERROR,
 				exception.getLineNumber() + ":" + exception.getColumnNumber() + " " + exception.getMessage());
 		throw new SAXException("[Error] " + exception.getLineNumber() + ":" + exception.getColumnNumber() + " "
 				+ exception.getMessage());
@@ -37,7 +37,7 @@ public class CustomErrorHandler implements org.xml.sax.ErrorHandler {
 
 	@Override
 	public void fatalError(SAXParseException exception) throws SAXException {
-		LOGGER.log(Level.ERROR,
+		logger.log(Level.ERROR,
 				exception.getLineNumber() + ":" + exception.getColumnNumber() + " " + exception.getMessage());
 		throw new SAXException("[Fatal Error] " + exception.getLineNumber() + ":" + exception.getColumnNumber() + " "
 				+ exception.getMessage());

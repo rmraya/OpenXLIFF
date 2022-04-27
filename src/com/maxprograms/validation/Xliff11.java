@@ -31,7 +31,7 @@ import com.maxprograms.xml.XMLOutputter;
 
 public class Xliff11 {
 
-	private static final Logger LOGGER = System.getLogger(Xliff11.class.getName());
+	private static Logger logger = System.getLogger(Xliff11.class.getName());
 	private String reason = "";
 
 	public boolean validate(Document document, String catalog) {
@@ -49,7 +49,7 @@ public class Xliff11 {
 					outputter.output(document, output);
 				}
 			} catch (IOException e) {
-				LOGGER.log(Level.ERROR, e);
+				logger.log(Level.ERROR, e);
 				reason = "Error adding namespace declaration";
 				return false;
 			}
@@ -59,7 +59,7 @@ public class Xliff11 {
 				builder.setEntityResolver(new Catalog(catalog));
 				builder.build(temp);
 			} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-				LOGGER.log(Level.ERROR, e);
+				logger.log(Level.ERROR, e);
 				reason = e.getMessage();
 				return false;
 			}

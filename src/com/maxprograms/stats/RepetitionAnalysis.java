@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 
 public class RepetitionAnalysis {
 
-	private static final Logger LOGGER = System.getLogger(RepetitionAnalysis.class.getName());
+	private static Logger logger = System.getLogger(RepetitionAnalysis.class.getName());
 
 	private String srcLang;
 	private Map<String, List<Element>> segments;
@@ -73,7 +73,7 @@ public class RepetitionAnalysis {
 			return;
 		}
 		if (file.isEmpty()) {
-			LOGGER.log(Level.ERROR, "Missing '-file' parameter.");
+			logger.log(Level.ERROR, "Missing '-file' parameter.");
 			return;
 		}
 		if (catalog.isEmpty()) {
@@ -82,14 +82,14 @@ public class RepetitionAnalysis {
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			LOGGER.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, "Catalog file does not exist.");
 			return;
 		}
 		try {
 			RepetitionAnalysis instance = new RepetitionAnalysis();
 			instance.analyse(file, catalog);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			LOGGER.log(Level.ERROR, "Error analyzing file", e);
+			logger.log(Level.ERROR, "Error analyzing file", e);
 		}
 	}
 
@@ -388,30 +388,30 @@ public class RepetitionAnalysis {
 					Element e = it.next();
 					String type = e.getAttributeValue("type", "new");
 					if (type.equals("new")) {
-						newSegs += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						newSegs += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.equals("ice")) {
-						iceSegs += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						iceSegs += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.equals("exact")) {
-						matches += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.equals("95")) {
-						matches95 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches95 += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.equals("85")) {
-						matches85 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches85 += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.equals("75")) {
-						matches75 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches75 += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.equals("50")) {
-						matches50 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						matches50 += Integer.parseInt(e.getAttributeValue("words"));
 					}
 					if (type.startsWith("rep")) {
-						repeated += Integer.valueOf(e.getAttributeValue("words")).intValue();
+						repeated += Integer.parseInt(e.getAttributeValue("words"));
 					}
-					untrSegs += Integer.valueOf(e.getAttributeValue("untranslatable")).intValue();
+					untrSegs += Integer.parseInt(e.getAttributeValue("untranslatable"));
 				}
 				writeString(out, "<tr>");
 				writeString(out, "<td class=\"center\">" + (i + 1) + "</td>" + "<td class=\"left\">" + files.get(i)
@@ -576,7 +576,7 @@ public class RepetitionAnalysis {
 					Element e = it.next();
 					String approved = e.getAttributeValue("approved");
 					String translated = e.getAttributeValue("translated");
-					int words = Integer.valueOf(e.getAttributeValue("words")).intValue();
+					int words = Integer.parseInt(e.getAttributeValue("words"));
 					if (approved.equals("yes")) {
 						numapproved += words;
 					} else {
@@ -587,7 +587,7 @@ public class RepetitionAnalysis {
 					} else {
 						nottranslated += words;
 					}
-					untranslatable += Integer.valueOf(e.getAttributeValue("untranslatable")).intValue();
+					untranslatable += Integer.parseInt(e.getAttributeValue("untranslatable"));
 				}
 				allnumapproved = allnumapproved + numapproved;
 				allnumtranslated = allnumtranslated + numtranslated;
@@ -634,9 +634,9 @@ public class RepetitionAnalysis {
 			Element trans = i.next();
 			String quality = trans.getAttributeValue("match-quality");
 			try {
-				Integer value = Integer.valueOf(quality);
-				if (value.intValue() > max) {
-					max = value.intValue();
+				Integer value = Integer.parseInt(quality);
+				if (value > max) {
+					max = value;
 				}
 			} catch (Exception e1) {
 				// do nothing here
@@ -861,28 +861,28 @@ public class RepetitionAnalysis {
 			Element e = it.next();
 			String type = e.getAttributeValue("type", "new");
 			if (type.equals("ice")) {
-				iceSegs += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				iceSegs += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.equals("new")) {
-				newSegs += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				newSegs += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.equals("exact")) {
-				matches += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.equals("95")) {
-				matches95 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches95 += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.equals("85")) {
-				matches85 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches85 += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.equals("75")) {
-				matches75 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches75 += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.equals("50")) {
-				matches50 += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				matches50 += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (type.startsWith("rep")) {
-				repeated += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				repeated += Integer.parseInt(e.getAttributeValue("words"));
 			}
 		}
 
@@ -896,12 +896,12 @@ public class RepetitionAnalysis {
 			String approved = e.getAttributeValue("approved");
 			String translated = e.getAttributeValue("translated");
 			if (approved.equals("yes")) {
-				numapproved += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				numapproved += Integer.parseInt(e.getAttributeValue("words"));
 			}
 			if (translated.equals("yes")) {
-				numtranslated += Integer.valueOf(e.getAttributeValue("words")).intValue();
+				numtranslated += Integer.parseInt(e.getAttributeValue("words"));
 			}
-			allwords += Integer.valueOf(e.getAttributeValue("words")).intValue();
+			allwords += Integer.parseInt(e.getAttributeValue("words"));
 		}
 
 		int[] result = new int[11];
