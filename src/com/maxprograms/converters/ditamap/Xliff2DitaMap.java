@@ -130,8 +130,13 @@ public class Xliff2DitaMap {
 
 	private static void cleanAttributes(Element r) {
 		r.removeAttribute("class");
+		r.removeAttribute("xmlns:ditaarch");
 		r.removeAttribute("ditaarch:DITAArchVersion");
 		r.removeAttribute("domains");
+		if ("removeContent".equals(r.getAttributeValue("status"))) {
+			r.setContent(new ArrayList<>());
+			r.removeAttribute("status");
+		}
 		List<Element> children = r.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			cleanAttributes(children.get(i));
@@ -172,19 +177,11 @@ public class Xliff2DitaMap {
 		if (!e.getAttributeValue("fluentaIgnore").isEmpty()) {
 			e.removeAttribute("fluentaIgnore");
 		}
-		if (!e.getAttributeValue("keyref").isEmpty() && e.getAttributeValue("status").equals("removeContent")) {
-			e.setContent(new ArrayList<>());
-			e.removeAttribute("status");
-		}
 		if (!e.getAttributeValue("conref").isEmpty() && e.getAttributeValue("conaction").isEmpty()) {
 			emptyElement(e);
 		}
 		if (!e.getAttributeValue("conkeyref").isEmpty() && e.getAttributeValue("conaction").isEmpty()) {
 			emptyElement(e);
-		}
-		if (e.getAttributeValue("status").equals("removeContent")) {
-			e.setContent(new ArrayList<>());
-			e.removeAttribute("status");
 		}
 		List<Element> list = e.getChildren();
 		for (int i = 0; i < list.size(); i++) {
