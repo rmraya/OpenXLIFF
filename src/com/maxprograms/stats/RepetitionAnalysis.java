@@ -175,10 +175,8 @@ public class RepetitionAnalysis {
 			FromXliff2.run(fileName, temp.getAbsolutePath(), catalog);
 			doc = builder.build(temp);
 			root = doc.getRootElement();
-			svgStats.analyse(temp.getAbsolutePath(), catalog);
-		} else {
-			svgStats.analyse(fileName, catalog);
 		}
+		svgStats.analyse(fileName, catalog);
 		segments = new HashMap<>();
 		files = new ArrayList<>();
 

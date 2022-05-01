@@ -94,6 +94,9 @@ public class SvgStats {
 			xLimit = (int) (Math.ceil(listSize / 100.0) * 100);
 			maxBars = 400 * listSize / xLimit;
 			groupSize = listSize / maxBars;
+			if (groupSize < 1) {
+				groupSize = 1;
+			}
 		}
 	}
 
