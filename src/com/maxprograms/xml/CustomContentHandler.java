@@ -121,7 +121,6 @@ class CustomContentHandler implements IContentHandler {
 			List<Attribute> atts = getPseudoAttributes(data);
 			Iterator<Attribute> it = atts.iterator();
 			String href = null;
-			String type = null;
 			String schemaType = null;
 			while (it.hasNext()) {
 				Attribute a = it.next();
@@ -131,13 +130,10 @@ class CustomContentHandler implements IContentHandler {
 				if ("schematypens".equals(a.getName())) {
 					schemaType = a.getValue();
 				}
-				if ("type".equals(a.getName())) {
-					type = a.getValue();
-				}
 			}
 			if (href != null && XMLConstants.RELAXNG_NS_URI.equals(schemaType)) {
 				try {
-					parseRelaxNG(href, type);
+					parseRelaxNG(href);
 				} catch (IOException | ParserConfigurationException e) {
 					throw new SAXException(e);
 				}
@@ -389,7 +385,7 @@ class CustomContentHandler implements IContentHandler {
 		this.catalog = catalog;
 	}
 
-	private void parseRelaxNG(String href, String type) throws SAXException, IOException, ParserConfigurationException {
+	private void parseRelaxNG(String href) throws SAXException, IOException, ParserConfigurationException {
 		if (catalog != null) {
 			String system = catalog.matchSystem(null, href);
 			if (system != null) {

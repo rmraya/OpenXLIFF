@@ -169,8 +169,8 @@ public class XMLOutputter {
 							text = "";
 						}
 						if (escape) {
-							text = text.replaceAll("\"", "&quot;");
-							text = text.replaceAll("'", "&apos;");
+							text = text.replace("\"", "&quot;");
+							text = text.replace("'", "&apos;");
 						}
 						if (preserve) {
 							writeString(output, text);

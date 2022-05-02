@@ -666,7 +666,7 @@ public class MSOffice2Xliff {
 		value = value.replace("&", "&amp;amp;");
 		value = value.replace("<", "&amp;lt;");
 		value = value.replace(">", "&amp;gt;");
-		value = value.replaceAll("\"", "&quot;");
+		value = value.replace("\"", "&quot;");
 		return value;
 	}
 

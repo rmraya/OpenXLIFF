@@ -807,10 +807,8 @@ public class Xml2Xliff {
 					}
 				}
 			}
-			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-				if (containsText((Element) node)) {
-					return true;
-				}
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE && containsText((Element) node)) {
+				return true;
 			}
 		}
 		return false;
@@ -871,7 +869,7 @@ public class Xml2Xliff {
 	private static String clean(String string) {
 		String result = string.replace("<", MATHLT);
 		result = result.replace(">", MATHGT);
-		result = result.replaceAll("\"", DOUBLEPRIME);
+		result = result.replace("\"", DOUBLEPRIME);
 		return replaceAmp(result);
 	}
 
@@ -957,7 +955,7 @@ public class Xml2Xliff {
 		}
 		s = s.replace("%%%/ph%%%", "</ph>");
 		s = s.replace("%%%ph", "<ph");
-		s = s.replaceAll("\"%%%&amp;", "\">&amp;");
+		s = s.replace("\"%%%&amp;", "\">&amp;");
 		return XMLUtils.validChars(s);
 	}
 
@@ -1453,7 +1451,7 @@ public class Xml2Xliff {
 		}
 		result = result.replace(">", "&gt;");
 		result = result.replace("<", "&lt;");
-		result = result.replaceAll("\"", "&quot;");
+		result = result.replace("\"", "&quot;");
 		return result;
 	}
 
@@ -1516,7 +1514,7 @@ public class Xml2Xliff {
 		}
 		if (line.startsWith("<?")) {
 			line = line.substring(2, line.indexOf("?>"));
-			line = line.replaceAll("\'", "\"");
+			line = line.replace("\'", "\"");
 			StringTokenizer tokenizer = new StringTokenizer(line);
 			while (tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();

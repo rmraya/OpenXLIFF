@@ -668,12 +668,10 @@ public class XliffChecker {
 				return false;
 			}
 			targetLanguage = e.getAttributeValue("target-language");
-			if (!targetLanguage.isEmpty()) {
-				if (!checkLanguage(targetLanguage)) {
-					MessageFormat mf = new MessageFormat("Invalid target language: {0}");
-					reason = mf.format(new Object[] { targetLanguage });
-					return false;
-				}
+			if (!targetLanguage.isEmpty() && !checkLanguage(targetLanguage)) {
+				MessageFormat mf = new MessageFormat("Invalid target language: {0}");
+				reason = mf.format(new Object[] { targetLanguage });
+				return false;
 			}
 		}
 
@@ -707,20 +705,16 @@ public class XliffChecker {
 
 			// check for valid segment reference
 			String mid = e.getAttributeValue("mid");
-			if (!mid.isEmpty()) {
-				if (!midTable.containsKey(mid)) {
-					reason = "Incorrect segment referenced in <alt-trans> element.";
-					return false;
-				}
+			if (!mid.isEmpty() && !midTable.containsKey(mid)) {
+				reason = "Incorrect segment referenced in <alt-trans> element.";
+				return false;
 			}
 
 			// check for declared <tool>
 			String tool = e.getAttributeValue("tool-id");
-			if (!tool.isEmpty()) {
-				if (!toolsTable.containsKey(tool)) {
-					reason = "Undeclared <tool> referenced in <alt-trans> element.";
-					return false;
-				}
+			if (!tool.isEmpty() && !toolsTable.containsKey(tool)) {
+				reason = "Undeclared <tool> referenced in <alt-trans> element.";
+				return false;
 			}
 			// create tables to check if <it> tags are duplicated
 			altSrcItTable = new ConcurrentHashMap<>();
@@ -732,11 +726,9 @@ public class XliffChecker {
 				|| e.getLocalName().equals("bin-unit") || e.getLocalName().equals("target")
 				|| e.getLocalName().equals("bin-target") || e.getLocalName().equals("alt-trans")) {
 			String phase = e.getAttributeValue("phase-name");
-			if (!phase.isEmpty()) {
-				if (!phasesTable.containsKey(phase)) {
-					reason = "Undeclared <phase> referenced in <alt-trans> element.";
-					return false;
-				}
+			if (!phase.isEmpty() && !phasesTable.containsKey(phase)) {
+				reason = "Undeclared <phase> referenced in <alt-trans> element.";
+				return false;
 			}
 		}
 

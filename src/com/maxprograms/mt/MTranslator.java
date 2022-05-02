@@ -128,10 +128,10 @@ public class MTranslator {
     }
 
     private static String unclean(String string) {
-        String result = string.replaceAll("&gt;", ">");
-        result = result.replaceAll("&lt;", "<");
-        result = result.replaceAll("&quot;", "\"");
-        return result.replaceAll("&amp;", "&");
+        String result = string.replace("&gt;", ">");
+        result = result.replace("&lt;", "<");
+        result = result.replace("&quot;", "\"");
+        return result.replace("&amp;", "&");
     }
 
     private static String pureText(Element seg) {

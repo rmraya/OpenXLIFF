@@ -42,7 +42,7 @@ public class Attribute implements XMLNode, Comparable<Attribute> {
 
 	@Override
 	public String toString() {
-		return name + "=\"" + XMLUtils.cleanText(value).replaceAll("\"", "&quot;") + "\"";
+		return name + "=\"" + XMLUtils.cleanText(value).replace("\"", "&quot;") + "\"";
 	}
 
 	@Override

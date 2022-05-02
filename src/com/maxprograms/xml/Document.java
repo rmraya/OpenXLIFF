@@ -116,7 +116,6 @@ public class Document implements XMLNode {
 			XMLNode node = content.get(i);
 			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
 				root = e;
-				content.remove(i);
 				content.set(i, e);
 			}
 		}

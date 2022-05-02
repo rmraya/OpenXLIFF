@@ -342,10 +342,8 @@ public class Xliff20 {
 				reason = "<segment> element with state=\"initial\" has <target> child";
 				return false;
 			}
-			if ("final".equals(currentState)) {
-				if (!validateInlineElements(e)) {
-					return false;
-				}
+			if ("final".equals(currentState) && !validateInlineElements(e)) {
+				return false;
 			}
 			String subState = e.getAttributeValue("subState");
 			if (!subState.isEmpty()) {
@@ -452,10 +450,8 @@ public class Xliff20 {
 					cantDelete.add(id);
 				}
 			}
-			if (inTarget) {
-				if (e.getAttributeValue("canDelete", "yes").equals("no")) {
-					cantDelete.remove(id);
-				}
+			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
+				cantDelete.remove(id);
 			}
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
@@ -852,17 +848,13 @@ public class Xliff20 {
 			if ("source".equals(child.getLocalName())) {
 				inSource = false;
 			}
-			if (result && "source".equals(child.getName())) {
-				if (!unitSc.isEmpty()) {
-					reason = "<sc> element without matching <ec> in <source>";
-					return false;
-				}
+			if (result && "source".equals(child.getName()) && !unitSc.isEmpty()) {
+				reason = "<sc> element without matching <ec> in <source>";
+				return false;
 			}
-			if (result && "target".equals(child.getName())) {
-				if (!unitSc.isEmpty()) {
-					reason = "<sc> element without matching <ec> in <target>";
-					return false;
-				}
+			if (result && "target".equals(child.getName()) && !unitSc.isEmpty()) {
+				reason = "<sc> element without matching <ec> in <target>";
+				return false;
 			}
 		}
 

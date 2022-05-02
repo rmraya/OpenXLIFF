@@ -265,7 +265,7 @@ public class Html2Xliff {
 	}
 
 	private static void writeSegment(String segment) throws IOException, SAXException, ParserConfigurationException {
-		segment = segment.replaceAll("\u2029", "");
+		segment = segment.replace("\u2029", "");
 		String pure = removePH(segment);
 		if (pure.trim().isEmpty()) {
 			writeSkeleton(phContent(segment));
@@ -533,7 +533,7 @@ public class Html2Xliff {
 		}
 		s = s.replace("%%%/ph%%%", "</ph>");
 		s = s.replace("%%%ph", "<ph");
-		s = s.replaceAll("\"%%%&amp;", "\">&amp;");
+		s = s.replace("\"%%%&amp;", "\">&amp;");
 		return s;
 	}
 
@@ -1040,10 +1040,10 @@ public class Html2Xliff {
 
 		for (int i = 0; i < length; i++) {
 			char c = string.charAt(i);
-			if (string.substring(i).startsWith("<ph")) {
+			if (string.startsWith("<ph", 1)) {
 				inTag = true;
 			}
-			if (string.substring(i).startsWith("</ph>")) {
+			if (string.startsWith("</ph>", i)) {
 				inTag = false;
 				i = i + 4;
 				continue;

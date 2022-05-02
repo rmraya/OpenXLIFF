@@ -346,7 +346,7 @@ public class Xliff2Po {
 	}
 
 	private static String addQuotes(String string) {
-		return string.replaceAll("\n", "\"\n\"");
+		return string.replace("\n", "\"\n\"");
 	}
 
 	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
