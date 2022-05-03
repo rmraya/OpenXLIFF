@@ -334,14 +334,10 @@ public class Xliff20 {
 			}
 			String currentState = e.getAttributeValue("state", "initial");
 			Element target = e.getChild("target");
-			if (!currentState.equals("initial") && target == null) {
-				reason = "Missing <target> in <segment> with \"state\" other than \"initial\"";
+			if (target == null && !"initial".equals(currentState)) {
+				reason = "<segment> element without <target> has state set to " + currentState;
 				return false;
-			}
-			if ("initial".equals(currentState) && target != null) {
-				reason = "<segment> element with state=\"initial\" has <target> child";
-				return false;
-			}
+			}			
 			if ("final".equals(currentState) && !validateInlineElements(e)) {
 				return false;
 			}
