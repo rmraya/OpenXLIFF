@@ -263,6 +263,9 @@ public class ToOpenXliff {
                         if ("term".equals(type)) {
                             mrk.setAttribute("mtype", "term");
                         }
+                        if (e.hasAttribute("value")) {
+                            mrk.setAttribute("ts", e.getAttributeValue("value"));
+                        }
                         List<XMLNode> nested = getContent2x(e);
                         mrk.setContent(nested);
                     }
@@ -442,6 +445,9 @@ public class ToOpenXliff {
                             Element mrk = new Element("mrk");
                             mrk.setAttribute("mtype", mtype);
                             mrk.setText(e.getText());
+                            if (e.hasAttribute("ts")) {
+                                mrk.setAttribute(e.getAttribute("ts"));
+                            }
                             result.add(mrk);
                         } else {
                             result.add(new TextNode(e.getText()));

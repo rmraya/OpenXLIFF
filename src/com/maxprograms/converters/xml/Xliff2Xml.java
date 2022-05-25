@@ -166,7 +166,7 @@ public class Xliff2Xml {
 							String file = json.getString("file");
 							File folder = new File(outputFile).getParentFile();
 							File destination = new File(folder, file);
-							Utils.decodeToFile(json.getString("base64"), destination.getAbsolutePath());
+							Utils.decodeToFile(json.getString("base64"), destination.getCanonicalPath());
 						}
 					}
 				} catch (SAXException sax) {

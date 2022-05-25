@@ -49,6 +49,7 @@
         <copy file="analysis.bat" todir="dist" />
         <copy file="join.bat" todir="dist" />
         <copy file="pseudotranslate.bat" todir="dist" />
+        <copy file="copysources.bat" todir="dist" />
     </target>
     <target name="copyShells" unless="isWindows">
         <description>Copy .sh to /dist</description>
@@ -58,6 +59,7 @@
         <copy file="analysis.sh" todir="dist" />
         <copy file="join.sh" todir="dist" />
         <copy file="pseudotranslate.sh" todir="dist" />
+        <copy file="copysources.sh" todir="dist" />
     </target>
     <target name="dist" depends="link,copyBats,copyShells">
         <description>Prepare distribution</description>

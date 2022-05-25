@@ -109,6 +109,24 @@ public class FromOpenXliff {
             if (hasTarget && rootElement.getAttributeValue("trgLang").isEmpty()) {
                 rootElement.setAttribute("trgLang", tgtLang);
             }
+            if (tgtLang != null) {
+                setTargetLang(rootElement);
+            }            
+        }
+    }
+
+    private static void setTargetLang(Element root) {
+        if ("segment".equals(root.getName()) || "ignorable".equals(root.getName())) {
+            Element target = root.getChild("target");
+            if (target != null) {
+                target.setAttribute("xml:lang", tgtLang);
+                return;
+            }
+        }
+        List<Element> children = root.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            setTargetLang(it.next());
         }
     }
 
@@ -139,7 +157,7 @@ public class FromOpenXliff {
                                 Element mrk = ToOpenXliff.locateMrk(target, e.getAttributeValue("mid"));
                                 mrk.setContent(segment.getChild("target").getContent());
                                 if (!mrk.getChildren().isEmpty()) {
-                                    replaceTags(mrk);
+                                    replaceTags(mrk, 1);
                                 }
                             }
                             e.removePI("OpenXLIFF");
@@ -159,7 +177,7 @@ public class FromOpenXliff {
                         }
                         target.clone(segment.getChild("target"));
                         if (!target.getChildren().isEmpty()) {
-                            replaceTags(target);
+                            replaceTags(target, 1);
                         }
                         root.setAttribute("approved", "yes");
                     }
@@ -176,10 +194,12 @@ public class FromOpenXliff {
         }
     }
 
-    private static void replaceTags(Element target) throws SAXException, IOException, ParserConfigurationException {
+    private static void replaceTags(Element target, int version)
+            throws SAXException, IOException, ParserConfigurationException {
         StringBuilder sb = new StringBuilder();
         sb.append("<target>");
         List<XMLNode> content = target.getContent();
+        int auto = 1;
         Iterator<XMLNode> it = content.iterator();
         while (it.hasNext()) {
             XMLNode node = it.next();
@@ -189,7 +209,24 @@ public class FromOpenXliff {
             }
             if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element e = (Element) node;
-                sb.append(e.getText());
+                if ("mrk".equals(e.getName())) {
+                    if (version == 1) {
+                        sb.append(e.toString());
+                    } else {
+                        Element mrk = new Element("mrk");
+                        mrk.setAttribute("id", e.hasAttribute("mid") ? e.getAttributeValue("mid") : ("auto" + auto++));
+                        mrk.setContent(e.getContent());
+                        if (e.hasAttribute("ts")) {
+                            mrk.setAttribute("value", e.getAttributeValue("ts"));
+                        }
+                        if ("protected".equals(e.getAttributeValue("mtype"))) {
+                            mrk.setAttribute("translate", "no");
+                        }
+                        sb.append(mrk.toString());
+                    }
+                } else {
+                    sb.append(e.getText());
+                }
             }
         }
         sb.append("</target>");
@@ -210,6 +247,7 @@ public class FromOpenXliff {
             if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element e = (Element) node;
                 if (!hasSegSource && e.getName().equals("source")) {
+                    newContent.add(new TextNode("\n      "));
                     newContent.add(new Element("target"));
                 }
                 if (hasSegSource && e.getName().equals("seg-source")) {
@@ -241,11 +279,11 @@ public class FromOpenXliff {
                             target.setAttribute("xml:space", "preserve");
                         }
                         if (!target.getChildren().isEmpty()) {
-                            replaceTags(target);
+                            replaceTags(target, 2);
                         }
                         seg.setAttribute("state", "final");
                     }
-                    if (!hasTarget && segment.getChild("target") != null ) {
+                    if (!hasTarget && segment.getChild("target") != null) {
                         hasTarget = true;
                     }
                     seg.removePI("OpenXLIFF");

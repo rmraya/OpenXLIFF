@@ -11,12 +11,14 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
-- **[Converting Documents to XLIFF](https://github.com/rmraya/OpenXLIFF#converting-documents-to-xliff)**  
-- **[Converting XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#converting-xliff-to-original-format)**
+- **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
+- **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
 - **[XLIFF Validation Service](https://github.com/rmraya/OpenXLIFF#xliff-validation-service)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
-- **[Joining multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#joining-multiple-xliff-files)**
+- **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
+- **[Pseudo-translate XLIFF file]((https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**)
+- **[Copy Source to Target]((https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**)
 
 ## Related Projects
 
@@ -137,7 +139,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 ```
 A binary distribution will be created in `/dist` folder.
 
-## Converting Documents to XLIFF
+## Convert Document to XLIFF
 
 You can use the library in your own Java code. Conversion to XLIFF is handled by the class `com.maxprograms.converters.Convert`.
 
@@ -208,7 +210,7 @@ The `XML` type handles multiple document formats, like `XHTML`, `SVG` or `DocBoo
 
 Default XML catalog and SRX file are provided. You can also use custom versions if required.
 
-## Converting XLIFF to Original Format
+## Convert XLIFF to Original Format
 
 You can convert XLIFF files created with OpenXLIFF Filters to original format using class `com.maxprograms.converters.Merge` in your Java code.
 
@@ -280,7 +282,7 @@ Where:
 
 The HTML report is generated in the folder where the XLIFF file is located and its name is the name of the XLIFF plus `.log.html`.
 
-## Joining multiple XLIFF files
+## Join multiple XLIFF files
 
 You can combine several XLIFF files into a larger one using the class `com.maxprograms.converters.Join` from your Java code or using the provided scripts.
 
@@ -298,3 +300,39 @@ Usage:
 ```
 
 The merge process automatically splits the files when converting back to original format.
+
+## Pseudo-translate XLIFF file
+
+You can pseudo-translate  all untranslated segments using the class `com.maxprograms.converters.PseudoTranslation` from your Java code or using the provided scripts.
+
+Running `.\pseudotranslate.bat` or `./pseudotranslate.sh` without parameters displays help for pseudo-translating an XLIFF file.
+
+```text
+Usage:
+
+   pseudotranslate.bat [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -xliff:     XLIFF file to pseudo-translate
+   -catalog:   (optional) XML catalog to use for processing
+```
+
+## Copy Source to Target
+
+You can copy the content of `<source>` elements to new `<target>` elements for all untranslated segments using the class `com.maxprograms.converters.CopySources` from your Java code or using the provided scripts.
+
+Running `.\copysources.bat` or `./copysources.sh` without parameters displays help for copying source to target in an XLIFF file.
+
+```text
+Usage:
+
+   copysources.bat [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -xliff:     XLIFF file to process
+   -catalog:   (optional) XML catalog to use for processing
+```

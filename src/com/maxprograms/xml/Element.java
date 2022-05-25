@@ -310,6 +310,10 @@ public class Element implements XMLNode {
 		attsTable.put(attributeName, a);
 	}
 
+	public void setAttribute(Attribute a) {
+		attsTable.put(a.getName(), a);
+	}
+
 	public void setContent(List<XMLNode> c) {
 		content = c;
 	}

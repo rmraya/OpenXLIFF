@@ -582,9 +582,9 @@ public class ToXliff2 {
 			if (e.getAttributeValue("mtype").equals("protected")) {
 				mrk.setAttribute("translate", "no");
 			}
-			String value = e.getAttributeValue("ts");
-			if (!value.isEmpty()) {
-				mrk.setAttribute("value", value);
+			String ts = e.getAttributeValue("ts");
+			if (!ts.isEmpty()) {
+				mrk.setAttribute("value", ts);
 			}
 			if (e.hasAttribute("comment")) {
 				storeAttributes(tagAttributes, e, id);
