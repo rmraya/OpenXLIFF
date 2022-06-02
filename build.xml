@@ -50,6 +50,7 @@
         <copy file="join.bat" todir="dist" />
         <copy file="pseudotranslate.bat" todir="dist" />
         <copy file="copysources.bat" todir="dist" />
+        <copy file="removetargets.bat" todir="dist" />
     </target>
     <target name="copyShells" unless="isWindows">
         <description>Copy .sh to /dist</description>
@@ -60,6 +61,7 @@
         <copy file="join.sh" todir="dist" />
         <copy file="pseudotranslate.sh" todir="dist" />
         <copy file="copysources.sh" todir="dist" />
+        <copy file="removetargets.sh" todir="dist" />
     </target>
     <target name="dist" depends="link,copyBats,copyShells">
         <description>Prepare distribution</description>
