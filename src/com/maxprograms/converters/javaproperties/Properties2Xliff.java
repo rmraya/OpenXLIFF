@@ -176,7 +176,7 @@ public class Properties2Xliff {
 		for (int i = 0; i < segments.length; i++) {
 			if (!segments[i].trim().isEmpty()) {
 				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
-						+ "      <source xml:lang=\"" + sourceLanguage + "\">" + Utils.cleanString(segments[i])
+						+ "      <source>" + Utils.cleanString(segments[i])
 						+ "</source>\n");
 				writeString("   </trans-unit>\n");
 				writeSkeleton("%%%" + segId++ + "%%%");

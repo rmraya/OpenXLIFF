@@ -103,6 +103,7 @@ public class DitaParser {
 	private static TreeSet<String> xrefSet;
 	private static TreeSet<String> linkSet;
 	private static TreeSet<String> imageSet;
+	private List<String> ignored;
 
 	private boolean containsText;
 	private Catalog catalog;
@@ -115,6 +116,7 @@ public class DitaParser {
 		usedKeys = new HashMap<>();
 		recursed = new TreeSet<>();
 		pendingRecurse = new TreeSet<>();
+		ignored = new ArrayList<>();
 
 		String inputFile = params.get("source");
 		catalog = new Catalog(params.get("catalog"));
@@ -294,7 +296,8 @@ public class DitaParser {
 								recursed.add(href);
 							}
 						} else {
-							MessageFormat mf = new MessageFormat("Ignored Referenced File: {0}");
+							ignored.add(file.getAbsolutePath());
+							MessageFormat mf = new MessageFormat("Ignored Untranslatable File: {0}");
 							logger.log(Level.WARNING, mf.format(new Object[] { href }));
 						}
 					} else {
@@ -836,6 +839,10 @@ public class DitaParser {
 
 	public Scope getScope() {
 		return rootScope;
+	}
+
+	public List<String> getIgnored() {
+		return ignored;
 	}
 
 }

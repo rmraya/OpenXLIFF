@@ -215,8 +215,8 @@ public class Jscript2xliff {
 		if (segment.isEmpty()) {
 			return;
 		}
-		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n" + "      <source xml:lang=\""
-				+ sourceLanguage + "\">" + Utils.cleanString(segment) + "</source>\n" + "   </trans-unit>\n");
+		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n      <source>"
+				+ Utils.cleanString(segment) + "</source>\n" + "   </trans-unit>\n");
 		writeSkeleton("%%%" + segId++ + "%%%");
 	}
 

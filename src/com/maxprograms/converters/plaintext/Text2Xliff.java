@@ -169,8 +169,7 @@ public class Text2Xliff {
 				writeSkeleton(segments[i]);
 			} else {
 				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
-						+ "      <source xml:lang=\"" + sourceLanguage + "\">" + Utils.cleanString(segments[i])
-						+ "</source>\n");
+						+ "      <source>" + Utils.cleanString(segments[i]) + "</source>\n");
 				writeString("   </trans-unit>\n");
 				writeSkeleton("%%%" + segId++ + "%%%\n");
 			}

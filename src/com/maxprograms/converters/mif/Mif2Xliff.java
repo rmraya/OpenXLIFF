@@ -257,8 +257,8 @@ public class Mif2Xliff {
 			ph = ph.substring(ph.indexOf('>') + 1, ph.length() - 5);
 			writeSkeleton(restoreTags(ph) + "\n");
 		}
-		writeString("   <trans-unit id=\"" + segId++ + "\" xml:space=\"preserve\">\n" + "      <source xml:lang=\""
-				+ sourceLanguage + "\">" + segment + "</source>\n" + "   </trans-unit>\n");
+		writeString("   <trans-unit id=\"" + segId++ + "\" xml:space=\"preserve\">\n      <source>" + segment
+				+ "</source>\n   </trans-unit>\n");
 	}
 
 	/**

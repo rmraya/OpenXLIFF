@@ -141,7 +141,7 @@ public class Srt2Xliff {
     private static void writeSegment(String string) throws IOException {
         writeSkeleton("%%%" + segId + "%%%\n\n");
         writeString("<trans-unit id=\"" + segId++ + "\" xml:space=\"preserve\">\n");
-        writeString("<source xml:lang=\"" + sourceLanguage + "\">" + getText(string.trim()) + "</source>\n");
+        writeString("<source>" + getText(string.trim()) + "</source>\n");
         writeString("<note>" + segTime + "</note>\n");
         writeString("</trans-unit>\n");
     }

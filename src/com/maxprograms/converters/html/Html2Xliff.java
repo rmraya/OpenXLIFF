@@ -284,7 +284,7 @@ public class Html2Xliff {
 		writeSkeleton(first);
 		tagId = 0;
 		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
-				+ "      <source xml:lang=\"" + sourceLanguage + "\">");
+				+ "      <source>");
 		if (keepFormat) {
 			writeString(segment);
 		} else {

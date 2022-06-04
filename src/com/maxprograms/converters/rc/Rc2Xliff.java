@@ -118,8 +118,8 @@ public class Rc2Xliff {
 		if (segment.isEmpty()) {
 			return;
 		}
-		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n" + "      <source xml:lang=\""
-				+ sourceLanguage + "\">" + Utils.cleanString(segment) + "</source>\n" + "   </trans-unit>\n");
+		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n      <source>"
+				+ Utils.cleanString(segment) + "</source>\n   </trans-unit>\n");
 		writeSkeleton("%%%" + segId++ + "%%%");
 	}
 
@@ -262,7 +262,7 @@ public class Rc2Xliff {
 		do {
 			lastWord = lastWord.trim();
 			if (lastWord.equals("CONTROL") || lastWord.equals("LTEXT") || lastWord.equals("CTEXT")
-					|| lastWord.equals("RTEXT") || lastWord.equals("AUTO3STATE") || 
+					|| lastWord.equals("RTEXT") || lastWord.equals("AUTO3STATE") ||
 					lastWord.equals("AUTOCHECKBOX") || lastWord.equals("AUTORADIOBUTTON") || lastWord.equals("CHECKBOX")
 					|| lastWord.equals("PUSHBOX") || lastWord.equals("PUSHBUTTON") || lastWord.equals("DEFPUSHBUTTON")
 					|| lastWord.equals("RADIOBUTTON") || lastWord.equals("STATE3") || lastWord.equals("USERBUTTON")
@@ -283,10 +283,10 @@ public class Rc2Xliff {
 
 	private static boolean isEndControlStatement(String word) {
 		// list of all posible controls and END keyword
-		String[] controls = new String[] { "END", "CONTROL", "LTEXT", "CTEXT", "RTEXT", "AUTO3STATE", "AUTOCHECKBOX",   
-				"AUTORADIOBUTTON", "CHECKBOX", "PUSHBOX", "PUSHBUTTON", "DEFPUSHBUTTON", 
-				"RADIOBUTTON", "STATE3", "USERBUTTON", "GROUPBOX", "EDITTEXT", "BEDIT",  
-				"IEDIT", "HEDIT", "COMBOBOX", "LISTBOX", "SCROLLBAR", "ICON" };  
+		String[] controls = new String[] { "END", "CONTROL", "LTEXT", "CTEXT", "RTEXT", "AUTO3STATE", "AUTOCHECKBOX",
+				"AUTORADIOBUTTON", "CHECKBOX", "PUSHBOX", "PUSHBUTTON", "DEFPUSHBUTTON",
+				"RADIOBUTTON", "STATE3", "USERBUTTON", "GROUPBOX", "EDITTEXT", "BEDIT",
+				"IEDIT", "HEDIT", "COMBOBOX", "LISTBOX", "SCROLLBAR", "ICON" };
 
 		for (int i = 0; i < controls.length; i++) {
 			if (controls[i].equals(word)) {
@@ -592,50 +592,50 @@ public class Rc2Xliff {
 					break;
 				}
 				switch (position) {
-				case 0: // id
-					dataLength = 0;
-					position++;
-					break;
-				case 1: // type
-					if (word.equals("0x403") || word.equals("0x1234")) {
+					case 0: // id
+						dataLength = 0;
 						position++;
-					} else {
-						position = 6;
-					}
-					writeSkeleton(stack);
-					stack = "";
-					break;
-
-				case 2: // length
-					if (validateNumber(word)) {
-						dataLength = Integer.parseInt(word);
-						position++;
-					} else {
-						position = 6;
-					}
-					break;
-				case 3: // end of align 0
-					position++;
-					break;
-				case 4: // first time data
-					if (word.charAt(0) == '\"') { // case "/000"
-						position = 0;
+						break;
+					case 1: // type
+						if (word.equals("0x403") || word.equals("0x1234")) {
+							position++;
+						} else {
+							position = 6;
+						}
 						writeSkeleton(stack);
 						stack = "";
 						break;
-					}
-					stack = "";
-					writeSkeleton("###" + segId + "###,0 \r\n");
-					// go to the next case now without break
-				case 5: // midle of data
-					extractString(word, dataLength);
-					position = 0;
-					stack = "";
-					break;
-				case 6: // not string
-					writeSkeleton(stack);
-					stack = "";
-					break;
+
+					case 2: // length
+						if (validateNumber(word)) {
+							dataLength = Integer.parseInt(word);
+							position++;
+						} else {
+							position = 6;
+						}
+						break;
+					case 3: // end of align 0
+						position++;
+						break;
+					case 4: // first time data
+						if (word.charAt(0) == '\"') { // case "/000"
+							position = 0;
+							writeSkeleton(stack);
+							stack = "";
+							break;
+						}
+						stack = "";
+						writeSkeleton("###" + segId + "###,0 \r\n");
+						// go to the next case now without break
+					case 5: // midle of data
+						extractString(word, dataLength);
+						position = 0;
+						stack = "";
+						break;
+					case 6: // not string
+						writeSkeleton(stack);
+						stack = "";
+						break;
 				}
 			}
 		}

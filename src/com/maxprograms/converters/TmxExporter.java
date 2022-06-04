@@ -71,7 +71,7 @@ public class TmxExporter {
 			builder.setEntityResolver(new Catalog(catalog));
 			Document doc = builder.build(xliff);
 			Element root = doc.getRootElement();
-			if (root.getAttributeValue("version").equals("2.0")) {
+			if (root.getAttributeValue("version").startsWith("2.")) {
 				File tmpXliff = File.createTempFile("temp", ".xlf", new File(xliff).getParentFile());
 				FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
 				doc = builder.build(tmpXliff);

@@ -317,14 +317,12 @@ public class Po2Xliff {
 			writeString("      <trans-unit id=\"" + segId + " [0]\" xml:space=\"preserve\" approved=\"" + approved
 					+ "\">\n");
 			if (cformat) {
-				writeString("         <source xml:lang=\"" + sourceLanguage + "\">"
-						+ parseString(Utils.cleanString(source)) + "</source>\n");
+				writeString("         <source>" + parseString(Utils.cleanString(source)) + "</source>\n");
 				if (target.length() > 0 || approved.equals("yes")) {
 					writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 				}
 			} else {
-				writeString("         <source xml:lang=\"" + sourceLanguage + "\">" + Utils.cleanString(source)
-						+ "</source>\n");
+				writeString("         <source>" + Utils.cleanString(source) + "</source>\n");
 				if (target.length() > 0 || approved.equals("yes")) {
 					writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
 				}
@@ -347,14 +345,12 @@ public class Po2Xliff {
 				writeString("      <trans-unit id=\"" + segId + " [" + i + "]\" xml:space=\"preserve\" approved=\""
 						+ approved + "\">\n");
 				if (cformat) {
-					writeString("         <source xml:lang=\"" + sourceLanguage + "\">"
-							+ parseString(Utils.cleanString(pluralSource)) + "</source>\n");
+					writeString("         <source>" + parseString(Utils.cleanString(pluralSource)) + "</source>\n");
 					if (target.length() > 0 || approved.equals("yes")) {
 						writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 					}
 				} else {
-					writeString("         <source xml:lang=\"" + sourceLanguage + "\">"
-							+ Utils.cleanString(pluralSource) + "</source>\n");
+					writeString("         <source>" + Utils.cleanString(pluralSource) + "</source>\n");
 					if (target.length() > 0 || approved.equals("yes")) {
 						writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
 					}
@@ -377,8 +373,7 @@ public class Po2Xliff {
 			writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"" + approved + "\""
 					+ restype + ">\n");
 			if (cformat) {
-				writeString("      <source xml:lang=\"" + sourceLanguage + "\">"
-						+ parseString(Utils.cleanString(source)) + "</source>\n");
+				writeString("      <source>" + parseString(Utils.cleanString(source)) + "</source>\n");
 				if (target.length() > 0 || approved.equals("yes")) {
 					writeString("      <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 				}
@@ -386,8 +381,7 @@ public class Po2Xliff {
 				if (source.trim().isEmpty()) {
 					source = target;
 				}
-				writeString("      <source xml:lang=\"" + sourceLanguage + "\">" + Utils.cleanString(source)
-						+ "</source>\n");
+				writeString("      <source>" + Utils.cleanString(source) + "</source>\n");
 				if (target.length() > 0 || approved.equals("yes")) {
 					writeString("      <target>" + Utils.cleanString(target) + "</target>\n");
 				}

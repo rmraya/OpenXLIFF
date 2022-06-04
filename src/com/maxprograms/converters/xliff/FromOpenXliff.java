@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -51,6 +52,7 @@ public class FromOpenXliff {
     private static Map<String, Element> segments;
     private static String tgtLang;
     private static boolean hasTarget;
+    private static int auto;
 
     private FromOpenXliff() {
         // do not instantiate this class
@@ -59,6 +61,7 @@ public class FromOpenXliff {
 
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
+        tgtLang = "";
         String xliffFile = params.get("xliff");
         String sklFile = params.get("skeleton");
         String outputFile = params.get("backfile");
@@ -105,32 +108,18 @@ public class FromOpenXliff {
             recurse1x(rootElement);
         }
         if (version.startsWith("2")) {
+            tgtLang = rootElement.getAttributeValue("trgLang");
             recurse2x(rootElement);
             if (hasTarget && rootElement.getAttributeValue("trgLang").isEmpty()) {
                 rootElement.setAttribute("trgLang", tgtLang);
             }
-            if (tgtLang != null) {
-                setTargetLang(rootElement);
-            }            
-        }
-    }
-
-    private static void setTargetLang(Element root) {
-        if ("segment".equals(root.getName()) || "ignorable".equals(root.getName())) {
-            Element target = root.getChild("target");
-            if (target != null) {
-                target.setAttribute("xml:lang", tgtLang);
-                return;
-            }
-        }
-        List<Element> children = root.getChildren();
-        Iterator<Element> it = children.iterator();
-        while (it.hasNext()) {
-            setTargetLang(it.next());
         }
     }
 
     private static void recurse1x(Element root) throws SAXException, IOException, ParserConfigurationException {
+        if ("file".equals(root.getName())) {
+            tgtLang = root.getAttributeValue("target-language");
+        }
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             Element segSource = root.getChild("seg-source");
             if (segSource != null) {
@@ -199,7 +188,7 @@ public class FromOpenXliff {
         StringBuilder sb = new StringBuilder();
         sb.append("<target>");
         List<XMLNode> content = target.getContent();
-        int auto = 1;
+        auto = 1;
         Iterator<XMLNode> it = content.iterator();
         while (it.hasNext()) {
             XMLNode node = it.next();
@@ -213,15 +202,7 @@ public class FromOpenXliff {
                     if (version == 1) {
                         sb.append(e.toString());
                     } else {
-                        Element mrk = new Element("mrk");
-                        mrk.setAttribute("id", e.hasAttribute("mid") ? e.getAttributeValue("mid") : ("auto" + auto++));
-                        mrk.setContent(e.getContent());
-                        if (e.hasAttribute("ts")) {
-                            mrk.setAttribute("value", e.getAttributeValue("ts"));
-                        }
-                        if ("protected".equals(e.getAttributeValue("mtype"))) {
-                            mrk.setAttribute("translate", "no");
-                        }
+                        Element mrk = processMrk(e);
                         sb.append(mrk.toString());
                     }
                 } else {
@@ -234,6 +215,44 @@ public class FromOpenXliff {
         String string = sb.toString();
         Document d = builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
         target.setContent(d.getRootElement().getContent());
+    }
+
+    private static Element processMrk(Element e) {
+        Element mrk = new Element("mrk");
+        mrk.setAttribute("id", e.hasAttribute("mid") ? e.getAttributeValue("mid") : ("auto" + auto++));
+        if (e.hasAttribute("ts")) {
+            mrk.setAttribute("value", e.getAttributeValue("ts"));
+        }
+        String mtype = e.getAttributeValue("mtype");
+        if ("protected".equals(mtype)) {
+            mrk.setAttribute("translate", "no");
+        }
+        if (Arrays.asList("generic", "comment", "term").contains(mtype)) {
+            mrk.setAttribute("type", mtype);
+        } else {
+            mrk.setAttribute("type", "oxlf:" + mtype.replace(":", "_"));
+        }
+        List<XMLNode> newContent = new Vector<>();
+        List<XMLNode> content = e.getContent();
+        Iterator<XMLNode> it = content.iterator();
+        while (it.hasNext()) {
+            XMLNode node = it.next();
+            if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                newContent.add(node);
+            }
+            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element child = (Element) node;
+                if ("mrk".equals(child.getName())) {
+                    Element processed = processMrk(child);
+                    newContent.add(processed);
+                } else {
+                    String text = child.getText();
+                    newContent.add(new TextNode(text));
+                }
+            }
+        }
+        mrk.setContent(newContent);
+        return mrk;
     }
 
     private static void addtarget(Element root) {
@@ -305,8 +324,11 @@ public class FromOpenXliff {
         recurseXliff(xliff.getRootElement());
     }
 
-    private static void recurseXliff(Element e) {
-        if ("file".equals(e.getName())) {
+    private static void recurseXliff(Element e) throws IOException {
+        if ("xliff".equals(e.getName()) && !"1.2".equals(e.getAttributeValue("version"))) {
+            throw new IOException("Wrong XLIFF version");
+        }
+        if ("file".equals(e.getName()) && tgtLang.isEmpty()) {
             tgtLang = e.getAttributeValue("target-language");
         }
         if ("trans-unit".equals(e.getName())) {

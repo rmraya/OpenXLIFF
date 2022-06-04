@@ -35,6 +35,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
+import com.maxprograms.converters.ILogger;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xml.Attribute;
@@ -65,6 +66,7 @@ public class DitaMap2Xliff {
 	private static boolean filterAttributes;
 	private static boolean elementsExcluded;
 	private static List<String> skipped;
+	public static ILogger dataLogger;
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -79,6 +81,9 @@ public class DitaMap2Xliff {
 			Catalog catalog = new Catalog(params.get("catalog"));
 			String mapFile = params.get("source");
 
+			if (dataLogger != null) {
+				dataLogger.setStage("Harvesting Keys");
+			}
 			DitaParser parser = new DitaParser();
 			List<String> filesMap = parser.run(params);
 			rootScope = parser.getScope();
@@ -91,9 +96,15 @@ public class DitaMap2Xliff {
 				parseDitaVal(ditaval, catalog);
 			}
 
+			if (dataLogger != null) {
+				dataLogger.setStage("Processing Files");
+			}
 			skipped = new ArrayList<>();
 			for (int i = 0; i < filesMap.size(); i++) {
 				String file = filesMap.get(i);
+				if (dataLogger != null) {
+					dataLogger.log(new File(file).getName());
+				}
 				String source = "";
 				try {
 					source = checkConref(file, catalog);
@@ -178,10 +189,14 @@ public class DitaMap2Xliff {
 					"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd");
 			mergedRoot.addContent("\n");
 			mergedRoot.addContent(new PI("encoding", params.get("srcEncoding")));
+			List<String> ignored = parser.getIgnored();
 
 			XMLOutputter outputter = new XMLOutputter();
 
 			if (skipped.contains(mapFile)) {
+				if (dataLogger != null) {
+					dataLogger.setStage("Adding skipped files");
+				}
 				SAXBuilder builder = new SAXBuilder();
 				builder.setEntityResolver(catalog);
 				builder.preserveCustomAttributes(true);
@@ -192,6 +207,20 @@ public class DitaMap2Xliff {
 				for (int i = 0; i < skipped.size(); i++) {
 					JSONObject json = new JSONObject();
 					String f = skipped.get(i);
+					if (dataLogger != null) {
+						dataLogger.log(new File(f).getName());
+					}
+					json.put("file", Utils.makeRelativePath(original, f));
+					json.put("base64", Utils.encodeFromFile(f));
+					PI pi = new PI("skipped", json.toString());
+					file.addContent(pi);
+				}
+				for (int i = 0; i < ignored.size(); i++) {
+					JSONObject json = new JSONObject();
+					String f = ignored.get(i);
+					if (dataLogger != null) {
+						dataLogger.log(new File(f).getName());
+					}
 					json.put("file", Utils.makeRelativePath(original, f));
 					json.put("base64", Utils.encodeFromFile(f));
 					PI pi = new PI("skipped", json.toString());
@@ -204,14 +233,18 @@ public class DitaMap2Xliff {
 
 			for (int i = 0; i < xliffs.size(); i++) {
 				mergedRoot.addContent("\n");
-				addFile(xliffs.get(i), mapFile, catalog);
+				addFile(xliffs.get(i), mapFile, catalog, ignored);
 			}
 
 			// output final XLIFF
 
 			Indenter.indent(mergedRoot, 2);
 			outputter.preserveSpace(true);
-			try (FileOutputStream output = new FileOutputStream(xliffFile)) {
+			File xliff = new File(xliffFile);
+			if (!xliff.getParentFile().exists()) {
+				Files.createDirectories(xliff.getParentFile().toPath());
+			}
+			try (FileOutputStream output = new FileOutputStream(xliff)) {
 				outputter.output(merged, output);
 			}
 			result.add(Constants.SUCCESS);
@@ -718,7 +751,7 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static void addFile(String xliff, String mapFile, Catalog catalog)
+	private static void addFile(String xliff, String mapFile, Catalog catalog, List<String> ignored)
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -734,9 +767,27 @@ public class DitaMap2Xliff {
 		if (old.equals(mapFile)) {
 			// preserve DITA files without text
 			// put them in the map file
+			if (dataLogger != null) {
+				dataLogger.setStage("Adding Skipped Files");
+			}
 			for (int i = 0; i < skipped.size(); i++) {
-				JSONObject json = new JSONObject();
 				String f = skipped.get(i);
+				if (dataLogger != null) {
+					dataLogger.log(new File(f).getName());
+				}
+				JSONObject json = new JSONObject();
+				json.put("file", Utils.makeRelativePath(mapFile, f));
+				json.put("base64", Utils.encodeFromFile(f));
+				PI pi = new PI("skipped", json.toString());
+				newFile.addContent(pi);
+			}
+			// add files with translate="no"
+			for (int i = 0; i < ignored.size(); i++) {
+				String f = ignored.get(i);
+				if (dataLogger != null) {
+					dataLogger.log(new File(f).getName());
+				}
+				JSONObject json = new JSONObject();
 				json.put("file", Utils.makeRelativePath(mapFile, f));
 				json.put("base64", Utils.encodeFromFile(f));
 				PI pi = new PI("skipped", json.toString());

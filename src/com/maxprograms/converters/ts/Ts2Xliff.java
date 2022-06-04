@@ -37,7 +37,7 @@ public class Ts2Xliff {
 	private static String sourceLanguage;
 	private static int segId;
 	private static FileOutputStream output;
-	
+
 	private Ts2Xliff() {
 		// do not instantiate this class
 		// use run method instead
@@ -109,10 +109,10 @@ public class Ts2Xliff {
 			target.setAttribute("id", "" + segId);
 			String targetText = getTarget(target);
 			Element comment = e.getChild("comment");
-			String approved = (target.getAttributeValue("type").isEmpty() && !targetText.trim().isEmpty()) ? "yes" 
-					: "no"; 
+			String approved = (target.getAttributeValue("type").isEmpty() && !targetText.trim().isEmpty()) ? "yes"
+					: "no";
 			writeString("<trans-unit id=\"" + segId++ + "\" approved=\"" + approved + "\" xml:space=\"preserve\">\n");
-			writeString("<source xml:lang=\"" + sourceLanguage + "\">" + getText(source) + "</source>\n");
+			writeString("<source>" + getText(source) + "</source>\n");
 			writeString("<target>" + targetText + "</target>\n");
 			if (comment != null) {
 				writeString("<note>" + getText(comment) + "</note>\n");

@@ -510,7 +510,7 @@ public class Xml2Xliff {
 			restype = " restype=\"x-cdata\"";
 		}
 		String seg = "   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\" " + restype + ">\n"
-				+ "      <source xml:lang=\"" + sourceLanguage + "\">" + tagged + "</source>\n   </trans-unit>\n";
+				+ "      <source>" + tagged + "</source>\n   </trans-unit>\n";
 
 		String clean = tidy(seg);
 		String dirt = startText + "%%%" + segId++ + "%%%\n" + endText;

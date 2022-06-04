@@ -254,14 +254,17 @@ public class ToOpenXliff {
                     }
                     if ("mrk".equals(name)) {
                         Element mrk = new Element("mrk");
-                        result.add(mrk);                        
+                        result.add(mrk);
                         boolean translate = e.getAttributeValue("translate", "yes").equals("yes");
                         if (!translate) {
-                            mrk.setAttribute("mtype", "protected");                        
-                        }
-                        String type = e.getAttributeValue("type");
-                        if ("term".equals(type)) {
-                            mrk.setAttribute("mtype", "term");
+                            mrk.setAttribute("mtype", "protected");
+                        } else {
+                            String type = e.getAttributeValue("type");
+                            if (type.startsWith("oxlf:")) {
+                                mrk.setAttribute("mtype", type.substring(5).replace("_",":"));
+                            } else {
+                                mrk.setAttribute("mtype", "x-other");
+                            }
                         }
                         if (e.hasAttribute("value")) {
                             mrk.setAttribute("ts", e.getAttributeValue("value"));
@@ -440,18 +443,8 @@ public class ToOpenXliff {
                         result.add(ph);
                     }
                     if ("mrk".equals(name)) {
-                        String mtype = e.getAttributeValue("mtype");
-                        if ("protected".equals(mtype) || "term".equals(mtype)) {
-                            Element mrk = new Element("mrk");
-                            mrk.setAttribute("mtype", mtype);
-                            mrk.setText(e.getText());
-                            if (e.hasAttribute("ts")) {
-                                mrk.setAttribute(e.getAttribute("ts"));
-                            }
-                            result.add(mrk);
-                        } else {
-                            result.add(new TextNode(e.getText()));
-                        }
+                        // add <mrk> as is
+                        result.add(e);
                     }
                 }
             }

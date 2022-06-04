@@ -115,8 +115,8 @@ public class Json2Xliff {
                 for (int i = 0; i < segments.size(); i++) {
                     writeString(out,
                             "   <trans-unit id=\"" + i + "\" xml:space=\"preserve\" approved=\"no\">\n"
-                                    + "      <source xml:lang=\"" + sourceLanguage + "\">"
-                                    + Utils.cleanString(segments.get(i)) + "</source>\n   </trans-unit>\n");
+                                    + "      <source>" + Utils.cleanString(segments.get(i))
+                                    + "</source>\n   </trans-unit>\n");
                 }
 
                 writeString(out, "</body>\n");
