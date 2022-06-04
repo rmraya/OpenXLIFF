@@ -10,7 +10,7 @@
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
 
- package com.maxprograms.converters;
+package com.maxprograms.converters;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,9 +35,9 @@ import com.maxprograms.xml.XMLOutputter;
 import org.xml.sax.SAXException;
 
 public class CopySources {
-    
+
     private static Logger logger = System.getLogger(CopySources.class.getName());
-    private static String tgtLang = "";
+
     public static void main(String[] args) {
 
         String[] arguments = Utils.fixPath(args);
@@ -112,28 +112,19 @@ public class CopySources {
     }
 
     private static void recurse(Element root) {
-        if ("xliff".equals(root.getName()) && root.hasAttribute("trgLang")) {
-            tgtLang = root.getAttributeValue("trgLang");
-        }
-        if ("file".equals(root.getName()) && root.hasAttribute("target-language")) {
-            tgtLang = root.getAttributeValue("target-language");
-        }
         if (("file".equals(root.getName()) || "group".equals(root.getName()) || "trans-unit".equals(root.getName())
                 || "unit".equals(root.getName()))
                 && "no".equals(root.getAttributeValue("translate"))) {
             return;
         }
         if (("trans-unit".equals(root.getName()) && root.getChild("seg-source") == null)
-                || "segment".equals(root.getName())) {
+                || "segment".equals(root.getName()) || "ignorable".equals(root.getName())) {
             Element target = root.getChild("target");
             if (target == null) {
                 Element source = root.getChild("source");
                 target = translate(source);
                 if ("preserve".equals(source.getAttributeValue("xml:space"))) {
                     target.setAttribute("xml:space", "preserve");
-                }
-                if (!tgtLang.isEmpty()) {
-                    target.setAttribute("xml:lang", tgtLang);
                 }
                 if ("segment".equals(root.getName())) {
                     root.setAttribute("state", "translated");
