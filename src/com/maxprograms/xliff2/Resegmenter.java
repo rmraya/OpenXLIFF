@@ -23,6 +23,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Document;
@@ -33,13 +35,9 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
-import org.xml.sax.SAXException;
-
 public class Resegmenter {
 
     private static Segmenter segmenter;
-    private static String srcLang;
-    private static String tgtLang;
 
     private Resegmenter() {
         // do not instantiate this class
@@ -85,10 +83,6 @@ public class Resegmenter {
     }
 
     private static void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
-        if ("xliff".equals(root.getName())) {
-            srcLang = root.getAttributeValue("srcLang");
-            tgtLang = root.getAttributeValue("trgLang");
-        }
         if ("unit".equals(root.getName())) {
             if (root.getChildren("segment").size() == 1) {
                 Element segment = root.getChild("segment");
@@ -114,6 +108,7 @@ public class Resegmenter {
                                     Element ignorable = new Element("ignorable");
                                     ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
                                     Element ignorableSource = new Element("source");
+                                    ignorableSource.setAttribute("xml:space", "preserve");
                                     ignorable.addContent(ignorableSource);
                                     Element firstTag = e.getChildren().get(0);
                                     ignorableSource.addContent(firstTag);
@@ -125,6 +120,7 @@ public class Resegmenter {
                                     // ends with tag
                                     lastIgnorable = new Element("ignorable");
                                     Element ignorableSource = new Element("source");
+                                    ignorableSource.setAttribute("xml:space", "preserve");
                                     lastIgnorable.addContent(ignorableSource);
                                     List<Element> tags = e.getChildren();
                                     Element lastTag = tags.get(tags.size() - 1);
@@ -139,14 +135,15 @@ public class Resegmenter {
                                 root.addContent(newSeg);
                                 Element newSource = new Element("source");
                                 newSource.setAttribute("xml:space", source.getAttributeValue("xml:space", "default"));
-                                newSource.setAttribute("xml:lang", srcLang);
+                                if ("ignorable".equals(newSeg.getName())) {
+                                    newSource.setAttribute("xml:space", "preserve");
+                                }
                                 newSeg.addContent(newSource);
                                 newSource.addContent(e.getContent());
                                 if (isSourceCopy) {
                                     Element newTarget = new Element("target");
                                     newTarget.setAttribute("xml:space",
                                             source.getAttributeValue("xml:space", "default"));
-                                    newTarget.setAttribute("xml:lang", tgtLang);
                                     newSeg.addContent(newTarget);
                                     newTarget.addContent(e.getContent());
                                 }

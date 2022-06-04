@@ -19,6 +19,7 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -92,7 +93,7 @@ public class ToXliff2 {
 		return result;
 	}
 
-	private static void recurse(Element source, Element target) throws SAXException {
+	private static void recurse(Element source, Element target) throws SAXException, IOException {
 		if (source.getName().equals("xliff")) {
 			target.setAttribute("version", "2.0");
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.0");
@@ -337,7 +338,6 @@ public class ToXliff2 {
 			if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
 				src2.setAttribute("xml:space", "preserve");
 			}
-			src2.setAttribute("xml:lang", fileSrcLang);
 			mrkCount = 1;
 			src2.setContent(harvestContent(src, tagAttributes));
 			if (!sourceNotes.isEmpty()) {
@@ -363,9 +363,6 @@ public class ToXliff2 {
 			Element tgt2 = new Element("target");
 			if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
 				tgt2.setAttribute("xml:space", "preserve");
-			}
-			if (fileTgtLang != null && !fileTgtLang.isEmpty()) {
-				tgt2.setAttribute("xml:lang", fileTgtLang);
 			}
 			mrkCount = 1;
 			tgt2.setContent(harvestContent(tgt, tagAttributes));
@@ -526,7 +523,7 @@ public class ToXliff2 {
 		}
 	}
 
-	private static List<XMLNode> harvestContent(Element e, Element tagAttributes) throws SAXException {
+	private static List<XMLNode> harvestContent(Element e, Element tagAttributes) throws SAXException, IOException {
 		if ("sub".equals(e.getName())) {
 			throw new SAXException("<sub> elements are not supported");
 		}
@@ -579,8 +576,17 @@ public class ToXliff2 {
 			Element mrk = new Element("mrk");
 			String id = e.hasAttribute("mid") ? "mrk" + e.getAttributeValue("mid") : "auto" + mrkCount++;
 			mrk.setAttribute("id", id);
-			if (e.getAttributeValue("mtype").equals("protected")) {
+			String mtype = e.getAttributeValue("mtype");
+			if (mtype.isEmpty()) {
+				throw new IOException("Invalid <mrk> element: " + e.toString());
+			}
+			if (mtype.equals("protected")) {
 				mrk.setAttribute("translate", "no");
+			}
+			if (Arrays.asList("generic", "comment", "term").contains(mtype)) {
+				mrk.setAttribute("type", mtype);
+			} else {
+				mrk.setAttribute("type", "oxlf:" + mtype.replace(":", "_"));
 			}
 			String ts = e.getAttributeValue("ts");
 			if (!ts.isEmpty()) {

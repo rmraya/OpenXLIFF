@@ -28,6 +28,8 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -38,8 +40,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 import com.maxprograms.xml.XMLUtils;
-
-import org.xml.sax.SAXException;
 
 public class FromXliff2 {
 
@@ -301,7 +301,6 @@ public class FromXliff2 {
 			joinedTarget = removeComments(joinedTarget);
 
 			Element src = new Element("source");
-			src.setAttribute("xml:lang", srcLang);
 			src.setContent(harvestContent(joinedSource, tags, attributes));
 			if (preserve) {
 				transUnit.addContent("\n        ");
@@ -309,9 +308,6 @@ public class FromXliff2 {
 			transUnit.addContent(src);
 
 			Element tgt = new Element("target");
-			if (trgLang != null && !trgLang.isEmpty()) {
-				tgt.setAttribute("xml:lang", trgLang);
-			}
 			if (!joinedTarget.getContent().isEmpty()) {
 				tgt.setContent(harvestContent(joinedTarget, tags, attributes));
 			}
@@ -592,7 +588,12 @@ public class FromXliff2 {
 			if (tag.getAttributeValue("translate", "yes").equals("no")) {
 				mrk.setAttribute("mtype", "protected");
 			} else {
-				mrk.setAttribute("mtype", "term");
+				String mtype = "x-other";
+				String type = tag.getAttributeValue("type");
+				if (type.startsWith("oxlf:")) {
+					mtype = type.substring(5).replace("_", ":");
+				}
+				mrk.setAttribute("mtype", mtype);
 			}
 			List<XMLNode> newContent = new ArrayList<>();
 			List<XMLNode> content = tag.getContent();
