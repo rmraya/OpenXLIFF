@@ -165,7 +165,13 @@ public class Xliff2Xml {
 							JSONObject json = new JSONObject(pi.getData());
 							String file = json.getString("file");
 							File folder = new File(outputFile).getParentFile();
+							if (!folder.exists()) {
+								Files.createDirectories(folder.toPath());
+							}
 							File destination = new File(folder, file);
+							if (!destination.getParentFile().exists()) {
+								Files.createDirectories(destination.getParentFile().toPath());
+							}
 							Utils.decodeToFile(json.getString("base64"), destination.getCanonicalPath());
 						}
 					}
@@ -255,27 +261,27 @@ public class Xliff2Xml {
 		while (i.hasNext()) {
 			XMLNode n = i.next();
 			switch (n.getNodeType()) {
-			case XMLNode.ELEMENT_NODE:
-				Element e = (Element) n;
-				String ph = extractText(e);
-				result = result + ph;
-				break;
-			case XMLNode.TEXT_NODE:
-				if (inAttribute) {
-					result = result + addEntities(((TextNode) n).getText()).replaceAll("\"", "&quot;");
-				} else if (inCData) {
-					result = result + ((TextNode) n).getText();
-				} else {
-					String text = ((TextNode) n).getText();
-					if (isIdml && text.indexOf('\n') != -1) {
-						text = text.replaceAll("\\n", "");
+				case XMLNode.ELEMENT_NODE:
+					Element e = (Element) n;
+					String ph = extractText(e);
+					result = result + ph;
+					break;
+				case XMLNode.TEXT_NODE:
+					if (inAttribute) {
+						result = result + addEntities(((TextNode) n).getText()).replaceAll("\"", "&quot;");
+					} else if (inCData) {
+						result = result + ((TextNode) n).getText();
+					} else {
+						String text = ((TextNode) n).getText();
+						if (isIdml && text.indexOf('\n') != -1) {
+							text = text.replaceAll("\\n", "");
+						}
+						result = result + addEntities(text);
 					}
-					result = result + addEntities(text);
-				}
-				break;
-			default:
-				// ignore
-				break;
+					break;
+				default:
+					// ignore
+					break;
 			}
 		}
 		return result;
