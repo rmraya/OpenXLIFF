@@ -23,6 +23,8 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -32,12 +34,9 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
-import org.xml.sax.SAXException;
-
 public class PseudoTranslation {
 
     private static Logger logger = System.getLogger(PseudoTranslation.class.getName());
-    private static String tgtLang = "";
 
     public static void main(String[] args) {
 
@@ -113,12 +112,6 @@ public class PseudoTranslation {
     }
 
     private static void recurse(Element root) {
-        if ("xliff".equals(root.getName()) && root.hasAttribute("trgLang")) {
-            tgtLang = root.getAttributeValue("trgLang");
-        }
-        if ("file".equals(root.getName()) && root.hasAttribute("target-language")) {
-            tgtLang = root.getAttributeValue("target-language");
-        }
         if (("file".equals(root.getName()) || "group".equals(root.getName()) || "trans-unit".equals(root.getName())
                 || "unit".equals(root.getName()))
                 && "no".equals(root.getAttributeValue("translate"))) {
@@ -132,9 +125,6 @@ public class PseudoTranslation {
                 target = translate(source);
                 if ("preserve".equals(source.getAttributeValue("xml:space"))) {
                     target.setAttribute("xml:space", "preserve");
-                }
-                if (!tgtLang.isEmpty()) {
-                    target.setAttribute("xml:lang", tgtLang);
                 }
                 if ("segment".equals(root.getName())) {
                     root.setAttribute("state", "translated");
