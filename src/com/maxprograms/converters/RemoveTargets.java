@@ -12,7 +12,6 @@
 package com.maxprograms.converters;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
@@ -30,11 +29,11 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
-import com.maxprograms.xml.XMLOutputter;;
+import com.maxprograms.xml.XMLOutputter;
 
 public class RemoveTargets {
 
-    private static Logger logger = System.getLogger(CopySources.class.getName());
+    private static Logger logger = System.getLogger(RemoveTargets.class.getName());
 
     public static void main(String[] args) {
         String[] arguments = Utils.fixPath(args);
@@ -80,7 +79,7 @@ public class RemoveTargets {
     }
 
     private static void removeTargets(String xliff, String catalog)
-            throws FileNotFoundException, IOException, SAXException, ParserConfigurationException, URISyntaxException {
+            throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(new Catalog(catalog));
         Document doc = builder.build(xliff);

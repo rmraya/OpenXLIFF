@@ -41,7 +41,6 @@ public class Po2Xliff {
 	private static boolean fuzzy;
 	private static boolean cformat;
 
-	private static String sourceLanguage;
 	private static int segId;
 	private static int domainId;
 	private static int contextId = 1;
@@ -62,7 +61,7 @@ public class Po2Xliff {
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
 		String skeletonFile = params.get("skeleton");
-		sourceLanguage = params.get("srcLang");
+		String sourceLanguage = params.get("srcLang");
 		String targetLanguage = params.get("tgtLang");
 		String srcEncoding = params.get("srcEncoding");
 		String tgtLang = "";

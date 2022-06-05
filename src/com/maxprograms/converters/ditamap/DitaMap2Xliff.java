@@ -66,7 +66,7 @@ public class DitaMap2Xliff {
 	private static boolean filterAttributes;
 	private static boolean elementsExcluded;
 	private static List<String> skipped;
-	public static ILogger dataLogger;
+	private static ILogger dataLogger;
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -74,7 +74,7 @@ public class DitaMap2Xliff {
 	}
 
 	public static List<String> run(Map<String, String> params) {
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<>();		
 		try {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
@@ -875,5 +875,9 @@ public class DitaMap2Xliff {
 			}
 		}
 		return false;
+	}
+
+	public static void setDataLogger(ILogger dataLogger) {
+		DitaMap2Xliff.dataLogger = dataLogger;
 	}
 }

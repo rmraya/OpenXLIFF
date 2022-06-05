@@ -30,7 +30,6 @@ public class Jscript2xliff {
 
 	private static FileOutputStream output;
 	private static FileOutputStream skeleton;
-	private static String sourceLanguage;
 	private static int segId;
 
 	private Jscript2xliff() {
@@ -44,7 +43,7 @@ public class Jscript2xliff {
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
 		String skeletonFile = params.get("skeleton");
-		sourceLanguage = params.get("srcLang");
+		String sourceLanguage = params.get("srcLang");
 		String targetLanguage = params.get("tgtLang");
 		String encoding = params.get("srcEncoding");
 		String tgtLang = "";

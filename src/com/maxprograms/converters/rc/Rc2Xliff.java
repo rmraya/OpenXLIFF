@@ -34,7 +34,6 @@ public class Rc2Xliff {
 	private static FileOutputStream output;
 	private static FileOutputStream skeleton;
 	private static String lastWord = "";
-	private static String sourceLanguage;
 	private static int segId;
 	private static String stack;
 	private static int blockStack;
@@ -50,7 +49,7 @@ public class Rc2Xliff {
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
 		String skeletonFile = params.get("skeleton");
-		sourceLanguage = params.get("srcLang");
+		String sourceLanguage = params.get("srcLang");
 		String targetLanguage = params.get("tgtLang");
 		String srcEncoding = params.get("srcEncoding");
 		String tgtLang = "";

@@ -44,8 +44,6 @@ public class ToXliff2 {
 	private static Element root2;
 	private static int fileId;
 	private static int mrkCount;
-	private static String fileSrcLang;
-	private static String fileTgtLang;
 
 	private ToXliff2() {
 		// do not instantiate this class
@@ -115,9 +113,9 @@ public class ToXliff2 {
 		}
 
 		if (source.getName().equals("file")) {
-			fileSrcLang = source.getAttributeValue("source-language");
+			String fileSrcLang = source.getAttributeValue("source-language");
 			root2.setAttribute("srcLang", fileSrcLang);
-			fileTgtLang = source.getAttributeValue("target-language");
+			String fileTgtLang = source.getAttributeValue("target-language");
 			if (!fileTgtLang.isEmpty()) {
 				root2.setAttribute("trgLang", fileTgtLang);
 			}
