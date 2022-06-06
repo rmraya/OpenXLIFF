@@ -19,6 +19,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
 - **[Copy Source to Target](https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**
+- **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
 
 ## Related Projects
 
@@ -330,6 +331,24 @@ Running `.\copysources.bat` or `./copysources.sh` without parameters displays he
 Usage:
 
    copysources.bat [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -xliff:     XLIFF file to process
+   -catalog:   (optional) XML catalog to use for processing
+```
+
+## Remove All Targets
+
+You can remove`<target>` elements from all `<segment>` or `<trns-unit>` elements using the class `com.maxprograms.converters.RemoveTargets` from your Java code or using the provided scripts.
+
+Running `.\removetargets.bat` or `./removetargets.sh` without parameters displays help for copying source to target in an XLIFF file.
+
+```text
+Usage:
+
+   removetargets.bat [-help] -xliff xliffFile [-catalog catalogFile]
 
 Where:
 
