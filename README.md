@@ -341,7 +341,7 @@ Where:
 
 ## Remove All Targets
 
-You can remove`<target>` elements from all `<segment>` or `<trns-unit>` elements using the class `com.maxprograms.converters.RemoveTargets` from your Java code or using the provided scripts.
+You can remove`<target>` elements from all `<segment>` or `<trans-unit>` elements using the class `com.maxprograms.converters.RemoveTargets` from your Java code or using the provided scripts.
 
 Running `.\removetargets.bat` or `./removetargets.sh` without parameters displays help for copying source to target in an XLIFF file.
 
