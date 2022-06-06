@@ -286,7 +286,7 @@ The HTML report is generated in the folder where the XLIFF file is located and i
 
 ## Join multiple XLIFF files
 
-You can combine several XLIFF files into a larger one using the class `com.maxprograms.converters.Join` from your Java code or using the provided scripts.
+You can combine several XLIFF files into a larger one using class `com.maxprograms.converters.Join` from your Java code or using the provided scripts.
 
 Running `.\join.bat` or `./join.sh` without parameters displays help for joining files.
 
@@ -305,7 +305,7 @@ The merge process automatically splits the files when converting back to origina
 
 ## Pseudo-translate XLIFF file
 
-You can pseudo-translate  all untranslated segments using the class `com.maxprograms.converters.PseudoTranslation` from your Java code or using the provided scripts.
+You can pseudo-translate  all untranslated segments using class `com.maxprograms.converters.PseudoTranslation` from your Java code or using the provided scripts.
 
 Running `.\pseudotranslate.bat` or `./pseudotranslate.sh` without parameters displays help for pseudo-translating an XLIFF file.
 
@@ -323,7 +323,7 @@ Where:
 
 ## Copy Source to Target
 
-You can copy the content of `<source>` elements to new `<target>` elements for all untranslated segments using the class `com.maxprograms.converters.CopySources` from your Java code or using the provided scripts.
+You can copy the content of `<source>` elements to new `<target>` elements for all untranslated segments using class `com.maxprograms.converters.CopySources` from your Java code or using the provided scripts.
 
 Running `.\copysources.bat` or `./copysources.sh` without parameters displays help for copying source to target in an XLIFF file.
 
@@ -341,7 +341,7 @@ Where:
 
 ## Remove All Targets
 
-You can remove`<target>` elements from all `<segment>` or `<trans-unit>` elements using the class `com.maxprograms.converters.RemoveTargets` from your Java code or using the provided scripts.
+You can remove`<target>` elements from all `<segment>` or `<trans-unit>` elements using class `com.maxprograms.converters.RemoveTargets` from your Java code or using the provided scripts.
 
 Running `.\removetargets.bat` or `./removetargets.sh` without parameters displays help for copying source to target in an XLIFF file.
 
