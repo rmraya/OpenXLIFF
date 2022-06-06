@@ -30,6 +30,8 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
@@ -37,8 +39,6 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.SilentErrorHandler;
-
-import org.xml.sax.SAXException;
 
 public class ScopeBuilder {
 

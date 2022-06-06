@@ -31,6 +31,8 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.ILogger;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
@@ -47,6 +49,8 @@ import org.xml.sax.SAXException;
 public class DitaParser {
 
 	private static Logger logger = System.getLogger(DitaParser.class.getName());
+
+	private static ILogger dataLogger;
 
 	protected class StringArray implements Comparable<StringArray> {
 		private String file;
@@ -104,7 +108,7 @@ public class DitaParser {
 	private static TreeSet<String> linkSet;
 	private static TreeSet<String> imageSet;
 	private List<String> ignored;
-
+	private Map<StringArray, Element> referenceChache;
 	private boolean containsText;
 	private Catalog catalog;
 
@@ -117,6 +121,7 @@ public class DitaParser {
 		recursed = new TreeSet<>();
 		pendingRecurse = new TreeSet<>();
 		ignored = new ArrayList<>();
+		referenceChache = new HashMap<>();
 
 		String inputFile = params.get("source");
 		catalog = new Catalog(params.get("catalog"));
@@ -134,6 +139,12 @@ public class DitaParser {
 		}
 
 		ScopeBuilder sbuilder = new ScopeBuilder();
+		if (dataLogger != null) {
+			if (dataLogger.isCancelled()) {
+				throw new IOException(Constants.CANCELLED);
+			}
+			dataLogger.log("Building key scopes");
+		}
 		rootScope = sbuilder.buildScope(inputFile, ditaval, catalog);
 
 		if (ditaval != null) {
@@ -144,6 +155,13 @@ public class DitaParser {
 		filesMap.add(inputFile);
 
 		Element root = doc.getRootElement();
+
+		if (dataLogger != null) {
+			if (dataLogger.isCancelled()) {
+				throw new IOException(Constants.CANCELLED);
+			}
+			dataLogger.log(new File(inputFile).getName());
+		}
 
 		recurse(root, inputFile);
 		recursed.add(inputFile);
@@ -170,6 +188,12 @@ public class DitaParser {
 				String file = st.next();
 				if (!recursed.contains(file)) {
 					try {
+						if (dataLogger != null) {
+							if (dataLogger.isCancelled()) {
+								throw new IOException(Constants.CANCELLED);
+							}
+							dataLogger.log(new File(file).getName());
+						}
 						Element e = builder.build(file).getRootElement();
 						if ("svg".equals(e.getName())) {
 							containsText = false;
@@ -284,6 +308,12 @@ public class DitaParser {
 				try {
 					File file = new File(href);
 					if (file.exists()) {
+						if (dataLogger != null) {
+							if (dataLogger.isCancelled()) {
+								throw new IOException(Constants.CANCELLED);
+							}
+							dataLogger.log(file.getName());
+						}
 						SAXBuilder builder = new SAXBuilder();
 						builder.setEntityResolver(catalog);
 						builder.setErrorHandler(new SilentErrorHandler());
@@ -479,6 +509,12 @@ public class DitaParser {
 					href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 					String path = Utils.getAbsolutePath(parentFile, href);
 					File f = new File(path);
+					if (dataLogger != null) {
+						if (dataLogger.isCancelled()) {
+							throw new IOException(Constants.CANCELLED);
+						}
+						dataLogger.log(f.getName());
+					}
 					SAXBuilder builder = new SAXBuilder();
 					builder.setEntityResolver(catalog);
 					builder.setErrorHandler(new SilentErrorHandler());
@@ -660,6 +696,12 @@ public class DitaParser {
 
 	private void parseDitaVal(String ditaval, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		if (dataLogger != null) {
+			if (dataLogger.isCancelled()) {
+				throw new IOException(Constants.CANCELLED);
+			}
+			dataLogger.log(new File(ditaval).getName());
+		}
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		builder.setErrorHandler(new SilentErrorHandler());
@@ -738,6 +780,15 @@ public class DitaParser {
 	private Element getReferenced(String file, String id)
 			throws SAXException, IOException, ParserConfigurationException {
 		StringArray array = new StringArray(file, id);
+		if (referenceChache.containsKey(array)) {
+			return referenceChache.get(array);
+		}
+		if (dataLogger != null) {
+			if (dataLogger.isCancelled()) {
+				throw new IOException(Constants.CANCELLED);
+			}
+			dataLogger.log(new File(file).getName());
+		}
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		builder.setErrorHandler(new SilentErrorHandler());
@@ -753,6 +804,7 @@ public class DitaParser {
 				recurse(root, file);
 				searchedConref.remove(array);
 			}
+			referenceChache.put(array, root);
 			return root;
 		}
 		Element result = locate(root, topicId, id);
@@ -765,6 +817,7 @@ public class DitaParser {
 				recurse(result, file);
 				searchedConref.remove(array);
 			}
+			referenceChache.put(array, result);
 		}
 		return result;
 	}
@@ -812,12 +865,25 @@ public class DitaParser {
 
 	protected Element getConKeyReferenced(String file, String id)
 			throws SAXException, IOException, ParserConfigurationException {
+		StringArray array = new StringArray(file, id);
+		if (referenceChache.containsKey(array)) {
+			return referenceChache.get(array);
+		}
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		builder.setErrorHandler(new SilentErrorHandler());
+		if (dataLogger != null) {
+			if (dataLogger.isCancelled()) {
+				throw new IOException(Constants.CANCELLED);
+			}
+			dataLogger.log(new File(file).getName());
+		}
 		Document doc = builder.build(file);
-		Element root = doc.getRootElement();
-		return locateReferenced(root, id);
+		Element result = locateReferenced(doc.getRootElement(), id);
+		if (result != null) {
+			referenceChache.put(array, result);
+		}
+		return result;
 	}
 
 	private Element locateReferenced(Element root, String id) {
@@ -845,4 +911,7 @@ public class DitaParser {
 		return ignored;
 	}
 
+	public static void setDataLogger(ILogger dataLogger) {
+		DitaParser.dataLogger = dataLogger;
+	}
 }

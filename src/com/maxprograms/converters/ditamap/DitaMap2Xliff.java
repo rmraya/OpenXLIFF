@@ -74,17 +74,23 @@ public class DitaMap2Xliff {
 	}
 
 	public static List<String> run(Map<String, String> params) {
-		List<String> result = new ArrayList<>();		
+		List<String> result = new ArrayList<>();
 		try {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
 			Catalog catalog = new Catalog(params.get("catalog"));
 			String mapFile = params.get("source");
 
-			if (dataLogger != null) {
-				dataLogger.setStage("Harvesting Keys");
-			}
 			DitaParser parser = new DitaParser();
+			if (dataLogger != null) {
+				if (dataLogger.isCancelled()) {
+					result.add("1");
+					result.add(Constants.CANCELLED);
+					return result;
+				}
+				dataLogger.setStage("Harvesting Keys");
+				DitaParser.setDataLogger(dataLogger);
+			}
 			List<String> filesMap = parser.run(params);
 			rootScope = parser.getScope();
 
@@ -97,12 +103,22 @@ public class DitaMap2Xliff {
 			}
 
 			if (dataLogger != null) {
+				if (dataLogger.isCancelled()) {
+					result.add("1");
+					result.add(Constants.CANCELLED);
+					return result;
+				}
 				dataLogger.setStage("Processing Files");
 			}
 			skipped = new ArrayList<>();
 			for (int i = 0; i < filesMap.size(); i++) {
 				String file = filesMap.get(i);
 				if (dataLogger != null) {
+					if (dataLogger.isCancelled()) {
+						result.add("1");
+						result.add(Constants.CANCELLED);
+						return result;
+					}
 					dataLogger.log(new File(file).getName());
 				}
 				String source = "";
@@ -195,6 +211,11 @@ public class DitaMap2Xliff {
 
 			if (skipped.contains(mapFile)) {
 				if (dataLogger != null) {
+					if (dataLogger.isCancelled()) {
+						result.add("1");
+						result.add(Constants.CANCELLED);
+						return result;
+					}
 					dataLogger.setStage("Adding skipped files");
 				}
 				SAXBuilder builder = new SAXBuilder();
@@ -208,6 +229,11 @@ public class DitaMap2Xliff {
 					JSONObject json = new JSONObject();
 					String f = skipped.get(i);
 					if (dataLogger != null) {
+						if (dataLogger.isCancelled()) {
+							result.add("1");
+							result.add(Constants.CANCELLED);
+							return result;
+						}
 						dataLogger.log(new File(f).getName());
 					}
 					json.put("file", Utils.makeRelativePath(original, f));
@@ -219,6 +245,11 @@ public class DitaMap2Xliff {
 					JSONObject json = new JSONObject();
 					String f = ignored.get(i);
 					if (dataLogger != null) {
+						if (dataLogger.isCancelled()) {
+							result.add("1");
+							result.add(Constants.CANCELLED);
+							return result;
+						}
 						dataLogger.log(new File(f).getName());
 					}
 					json.put("file", Utils.makeRelativePath(original, f));
@@ -768,11 +799,17 @@ public class DitaMap2Xliff {
 			// preserve DITA files without text
 			// put them in the map file
 			if (dataLogger != null) {
+				if (dataLogger.isCancelled()) {
+					throw new IOException(Constants.CANCELLED);
+				}
 				dataLogger.setStage("Adding Skipped Files");
 			}
 			for (int i = 0; i < skipped.size(); i++) {
 				String f = skipped.get(i);
 				if (dataLogger != null) {
+					if (dataLogger.isCancelled()) {
+						throw new IOException(Constants.CANCELLED);
+					}
 					dataLogger.log(new File(f).getName());
 				}
 				JSONObject json = new JSONObject();
@@ -785,6 +822,9 @@ public class DitaMap2Xliff {
 			for (int i = 0; i < ignored.size(); i++) {
 				String f = ignored.get(i);
 				if (dataLogger != null) {
+					if (dataLogger.isCancelled()) {
+						throw new IOException(Constants.CANCELLED);
+					}
 					dataLogger.log(new File(f).getName());
 				}
 				JSONObject json = new JSONObject();
