@@ -143,7 +143,7 @@ public class Wpml2Xliff {
                     Element child = (Element) node;
                     if ("header".equals(child.getName()) || "source".equals(child.getName())
                             || "target".equals(child.getName())) {
-                        continue;
+                        // continue
                     } else if ("trans-unit".equals(child.getName())) {
                         ArrayList<XMLNode> newContent = new ArrayList<>();
                         Element src = new Element("source");

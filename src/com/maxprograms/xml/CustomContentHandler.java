@@ -157,8 +157,8 @@ class CustomContentHandler implements IContentHandler {
 	protected static List<Attribute> getPseudoAttributes(String string) {
 		String data = string.trim();
 		List<Attribute> result = new Vector<>();
-		String name = "";
-		String value = "";
+		StringBuilder name = new StringBuilder();
+		StringBuilder value = new StringBuilder();
 		boolean inName = true;
 		boolean inValue = false;
 		char delimiter = '\"';
@@ -168,24 +168,21 @@ class CustomContentHandler implements IContentHandler {
 				if (c == '=' || Character.isWhitespace(c)) {
 					inName = false;
 				} else {
-					name = name + c;
+					name.append( c);
 				}
 			}
 			if (inValue) {
 				if (c == delimiter) {
 					inValue = false;
-					result.add(new Attribute(name, value));
-					name = "";
-					value = "";
+					result.add(new Attribute(name.toString(), value.toString()));
+					name = new StringBuilder();
+					value = new StringBuilder();
 					continue;
 				}
-				value = value + c;
+				value.append(c);
 			}
 			if (!inName && !inValue) {
-				if (Character.isWhitespace(c)) {
-					continue;
-				}
-				if (c == '=') {
+				if (Character.isWhitespace(c) || c == '=') {
 					continue;
 				}
 				if (c == '\"' || c == '\'') {
@@ -193,7 +190,7 @@ class CustomContentHandler implements IContentHandler {
 					inValue = true;
 					continue;
 				}
-				name = name + c;
+				name.append(c);
 				inName = true;
 			}
 		}

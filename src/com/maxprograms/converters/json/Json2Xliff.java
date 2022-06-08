@@ -170,12 +170,14 @@ public class Json2Xliff {
     private static String parseText(String string) {
         if (!paragraphSegmentation) {
             String[] segs = segmenter.segment(string);
-            String result = "";
+            StringBuilder result = new StringBuilder();
             for (int i = 0; i < segs.length; i++) {
                 segments.add(segs[i]);
-                result = result + "%%%" + id++ + "%%%";
+                result.append("%%%");
+                result.append(id++);
+                result.append("%%%");
             }
-            return result;
+            return result.toString();
         }
         segments.add(string);
         return "%%%" + id++ + "%%%";

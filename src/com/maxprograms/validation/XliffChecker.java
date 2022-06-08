@@ -465,9 +465,9 @@ public class XliffChecker {
 		attributesTable.put("bin-target", binTargetSet);
 
 		if (!version.equals("1.1")) {
-			Set<String> seg_sourceSet = new HashSet<>();
-			seg_sourceSet.add("ts");
-			attributesTable.put("seg-source", seg_sourceSet);
+			Set<String> segSourceSet = new HashSet<>();
+			segSourceSet.add("ts");
+			attributesTable.put("seg-source", segSourceSet);
 		}
 
 		Set<String> gSet = new HashSet<>();
@@ -592,12 +592,8 @@ public class XliffChecker {
 			List<Attribute> atts = e.getAttributes();
 			for (int i = 0; i < atts.size(); i++) {
 				Attribute att = atts.get(i);
-				if ("xmlns".equals(att.getLocalName())) {
-					// attribute from XML standard
-					continue;
-				}
-				if (!att.getNamespace().isEmpty()) {
-					// attribute from another namespace
+				if ("xmlns".equals(att.getLocalName()) || !att.getNamespace().isEmpty()) {
+					// attribute from XML standard or from another namespace
 					continue;
 				}
 				Set<String> set = attributesTable.get(e.getLocalName());

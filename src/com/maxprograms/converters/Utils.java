@@ -180,21 +180,22 @@ public class Utils {
 
 	public static String[] fixPath(String[] args) {
 		List<String> result = new ArrayList<>();
-		String current = "";
+		StringBuilder current = new StringBuilder();
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
 			if (arg.startsWith("-")) {
 				if (!current.isEmpty()) {
-					result.add(current.trim());
-					current = "";
+					result.add(current.toString().trim());
+					current = new StringBuilder();
 				}
 				result.add(arg);
 			} else {
-				current = current + " " + arg;
+				current.append(' ');
+				current.append(arg);
 			}
 		}
 		if (!current.isEmpty()) {
-			result.add(current.trim());
+			result.add(current.toString().trim());
 		}
 		return result.toArray(new String[result.size()]);
 	}

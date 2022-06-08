@@ -52,8 +52,6 @@ import org.xml.sax.SAXException;
 public class Office2Xliff {
 
 	private static Element mergedRoot;
-	private static ZipInputStream in;
-	private static ZipOutputStream out;
 	private static String inputFile;
 	private static String skeleton;
 	private static boolean isPPTX;
@@ -82,106 +80,99 @@ public class Office2Xliff {
 			mergedRoot.addContent("\n");
 
 			try {
-				out = new ZipOutputStream(new FileOutputStream(skeleton));
-				in = new ZipInputStream(new FileInputStream(inputFile));
-			} catch (IOException e) {
-				result.add(Constants.ERROR);
-				if (params.get("format").equals(FileFormats.OFF)) {
-					result.add("Selected file is not a Microsoft Office 2007 document.");
-				} else {
-					result.add("Wrong document type.");
-				}
-				return result;
-			}
-			ZipEntry entry = null;
-			while ((entry = in.getNextEntry()) != null) {
-				if (entry.getName().matches(".*\\.[xX][mM][lL]") && !(entry.getName().matches(".*slideMaster.*")
-						|| entry.getName().matches(".*slideLayout.*") || entry.getName().matches(".*handoutMaster.*")
-						|| entry.getName().matches(".*notesMaster.*"))) {
-					File f = new File(entry.getName());
-					String name = f.getName();
-					File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".xml");
-					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-						byte[] buf = new byte[1024];
-						int len;
-						while ((len = in.read(buf)) > 0) {
-							output.write(buf, 0, len);
-						}
-					}
-					if (name.equals("content.xml")) {
-						cleanTags(tmp.getAbsolutePath(), catalog);
-					}
-					try {
-						Map<String, String> table = new HashMap<>();
-						table.put("source", tmp.getAbsolutePath());
-						table.put("xliff", tmp.getAbsolutePath() + ".xlf");
-						table.put("skeleton", tmp.getAbsolutePath() + ".skl");
-						table.put("catalog", params.get("catalog"));
-						table.put("srcLang", params.get("srcLang"));
-						String tgtLang = params.get("tgtLang");
-						if (tgtLang != null) {
-							table.put("tgtLang", tgtLang);
-						}
-						table.put("srcEncoding", params.get("srcEncoding"));
-						table.put("paragraph", params.get("paragraph"));
-						table.put("srxFile", params.get("srxFile"));
-						table.put("format", params.get("format"));
-						List<String> res = null;
-						if (params.get("format").equals(FileFormats.OFF)) {
-							res = MSOffice2Xliff.run(table);
-							if (tmp.getName().indexOf("slide") != -1) {
-								isPPTX = true;
-							}
-						} else {
-							res = Xml2Xliff.run(table);
-						}
-						if (Constants.SUCCESS.equals(res.get(0))) {
-							if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {
-								updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
-								addFile(tmp.getAbsolutePath() + ".xlf");
-								ZipEntry content = new ZipEntry(entry.getName() + ".skl");
-								content.setMethod(ZipEntry.DEFLATED);
-								out.putNextEntry(content);
-								try (FileInputStream input = new FileInputStream(tmp.getAbsolutePath() + ".skl")) {
-									byte[] array = new byte[1024];
+				try (ZipInputStream in = new ZipInputStream(new FileInputStream(inputFile))) {
+					try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(skeleton))) {
+						ZipEntry entry = null;
+						while ((entry = in.getNextEntry()) != null) {
+							if (entry.getName().matches(".*\\.[xX][mM][lL]")
+									&& !(entry.getName().matches(".*slideMaster.*")
+											|| entry.getName().matches(".*slideLayout.*")
+											|| entry.getName().matches(".*handoutMaster.*")
+											|| entry.getName().matches(".*notesMaster.*"))) {
+								File f = new File(entry.getName());
+								String name = f.getName();
+								File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".xml");
+								try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
+									byte[] buf = new byte[1024];
 									int len;
-									while ((len = input.read(array)) > 0) {
-										out.write(array, 0, len);
+									while ((len = in.read(buf)) > 0) {
+										output.write(buf, 0, len);
 									}
-									out.closeEntry();
 								}
+								if (name.equals("content.xml")) {
+									cleanTags(tmp.getAbsolutePath(), catalog);
+								}
+								try {
+									Map<String, String> table = new HashMap<>();
+									table.put("source", tmp.getAbsolutePath());
+									table.put("xliff", tmp.getAbsolutePath() + ".xlf");
+									table.put("skeleton", tmp.getAbsolutePath() + ".skl");
+									table.put("catalog", params.get("catalog"));
+									table.put("srcLang", params.get("srcLang"));
+									String tgtLang = params.get("tgtLang");
+									if (tgtLang != null) {
+										table.put("tgtLang", tgtLang);
+									}
+									table.put("srcEncoding", params.get("srcEncoding"));
+									table.put("paragraph", params.get("paragraph"));
+									table.put("srxFile", params.get("srxFile"));
+									table.put("format", params.get("format"));
+									List<String> res = null;
+									if (params.get("format").equals(FileFormats.OFF)) {
+										res = MSOffice2Xliff.run(table);
+										if (tmp.getName().indexOf("slide") != -1) {
+											isPPTX = true;
+										}
+									} else {
+										res = Xml2Xliff.run(table);
+									}
+									if (Constants.SUCCESS.equals(res.get(0))) {
+										if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {
+											updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
+											addFile(tmp.getAbsolutePath() + ".xlf");
+											ZipEntry content = new ZipEntry(entry.getName() + ".skl");
+											content.setMethod(ZipEntry.DEFLATED);
+											out.putNextEntry(content);
+											try (FileInputStream input = new FileInputStream(
+													tmp.getAbsolutePath() + ".skl")) {
+												byte[] array = new byte[1024];
+												int len;
+												while ((len = input.read(array)) > 0) {
+													out.write(array, 0, len);
+												}
+												out.closeEntry();
+											}
+										} else {
+											saveEntry(out, entry, tmp.getAbsolutePath());
+										}
+										File skl = new File(tmp.getAbsolutePath() + ".skl");
+										Files.delete(Paths.get(skl.toURI()));
+										File xlf = new File(tmp.getAbsolutePath() + ".xlf");
+										Files.delete(Paths.get(xlf.toURI()));
+									} else {
+										saveEntry(out, entry, tmp.getAbsolutePath());
+									}
+								} catch (IOException e) {
+									// do nothing
+									saveEntry(out, entry, tmp.getAbsolutePath());
+								}
+								Files.delete(Paths.get(tmp.toURI()));
 							} else {
-								saveEntry(entry, tmp.getAbsolutePath());
+								// not an XML file
+								File tmp = File.createTempFile("zip", ".tmp");
+								try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
+									byte[] buf = new byte[1024];
+									int len;
+									while ((len = in.read(buf)) > 0) {
+										output.write(buf, 0, len);
+									}
+								}
+								saveEntry(out, entry, tmp.getAbsolutePath());
+								Files.delete(Paths.get(tmp.toURI()));
 							}
-							File skl = new File(tmp.getAbsolutePath() + ".skl");
-							Files.delete(Paths.get(skl.toURI()));
-							File xlf = new File(tmp.getAbsolutePath() + ".xlf");
-							Files.delete(Paths.get(xlf.toURI()));
-						} else {
-							saveEntry(entry, tmp.getAbsolutePath());
-						}
-					} catch (IOException e) {
-						// do nothing
-						saveEntry(entry, tmp.getAbsolutePath());
-					}
-					Files.delete(Paths.get(tmp.toURI()));
-				} else {
-					// not an XML file
-					File tmp = File.createTempFile("zip", ".tmp");
-					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-						byte[] buf = new byte[1024];
-						int len;
-						while ((len = in.read(buf)) > 0) {
-							output.write(buf, 0, len);
 						}
 					}
-					saveEntry(entry, tmp.getAbsolutePath());
-					Files.delete(Paths.get(tmp.toURI()));
 				}
-			}
-			try {
-				in.close();
-				out.close();
 			} catch (IOException e) {
 				result.add(Constants.ERROR);
 				if (params.get("format").equals(FileFormats.OFF)) {
@@ -191,6 +182,7 @@ public class Office2Xliff {
 				}
 				return result;
 			}
+
 			// sort the slides if it is PPTX
 
 			if (params.get("format").equals(FileFormats.OFF) && isPPTX) {
@@ -338,7 +330,7 @@ public class Office2Xliff {
 		return root.getChild("file").getChild("body").getChildren("trans-unit").size();
 	}
 
-	private static void saveEntry(ZipEntry entry, String name) throws IOException {
+	private static void saveEntry(ZipOutputStream out, ZipEntry entry, String name) throws IOException {
 		ZipEntry content = new ZipEntry(entry.getName());
 		content.setMethod(ZipEntry.DEFLATED);
 		out.putNextEntry(content);

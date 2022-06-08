@@ -71,13 +71,13 @@ public class AutoConfiguration {
 	}
 
 	private static void recurse(Element r) {
-		String text = "";
+		StringBuilder text = new StringBuilder();
 		List<XMLNode> content = r.getContent();
 		Iterator<XMLNode> i = content.iterator();
 		while (i.hasNext()) {
 			XMLNode n = i.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				text = text + ((TextNode) n).getText().trim();
+				text.append(((TextNode) n).getText().trim());
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element e = (Element) n;

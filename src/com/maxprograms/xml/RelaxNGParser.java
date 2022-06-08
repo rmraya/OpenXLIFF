@@ -174,10 +174,8 @@ public class RelaxNGParser {
             }
             if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element child = (Element) node;
-                if (!defaultPrefix.equals(child.getNamespace())) {
-                    continue;
-                }
-                if (!defaultNamespace.equals(child.getAttributeValue("xmlns"))) {
+                if (!defaultPrefix.equals(child.getNamespace())
+                        || !defaultNamespace.equals(child.getAttributeValue("xmlns"))) {
                     continue;
                 }
                 removeForeign(child);
