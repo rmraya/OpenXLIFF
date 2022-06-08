@@ -190,7 +190,7 @@ public class ToOpenXliff {
                     }
                 }
                 units.add(unit);
-                segment.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
+                segment.addContent(new PI(Constants.TOOLNAME, unit.getAttributeValue("id")));
             }
             return;
         }
@@ -261,7 +261,7 @@ public class ToOpenXliff {
                         } else {
                             String type = e.getAttributeValue("type");
                             if (type.startsWith("oxlf:")) {
-                                mrk.setAttribute("mtype", type.substring(5).replace("_",":"));
+                                mrk.setAttribute("mtype", type.substring(5).replace("_", ":"));
                             } else {
                                 mrk.setAttribute("mtype", "x-other");
                             }
@@ -330,7 +330,7 @@ public class ToOpenXliff {
                             }
                             unit.addContent(target);
                             units.add(unit);
-                            e.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
+                            e.addContent(new PI(Constants.TOOLNAME, unit.getAttributeValue("id")));
                         }
                     }
                 }
@@ -381,7 +381,7 @@ public class ToOpenXliff {
                     }
                 }
                 units.add(unit);
-                root.addContent(new PI("OpenXLIFF", unit.getAttributeValue("id")));
+                root.addContent(new PI(Constants.TOOLNAME, unit.getAttributeValue("id")));
             }
             return;
         }

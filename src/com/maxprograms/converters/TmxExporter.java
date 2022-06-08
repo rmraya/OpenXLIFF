@@ -109,14 +109,14 @@ public class TmxExporter {
 						"<!DOCTYPE tmx PUBLIC \"-//LISA OSCAR:1998//DTD for Translation Memory eXchange//EN\" \"tmx14.dtd\" >\n");
 				writeString(output, "<tmx version=\"1.4\">\n");
 				writeString(output,
-						"<header \n" + 
-								"      creationtool=\"" + Constants.TOOLID + "\" \n" + 
-								"      creationtoolversion=\"" + Constants.VERSION +"\" \n" + 
-								"      srclang=\"" + sourceLang + "\" \n" + 
-								"      adminlang=\"en\"  \n" + "      datatype=\"xml\" \n" + 
-								"      o-tmf=\"XLIFF\" \n" + 
-								"      segtype=\"block\"\n" + ">\n" + 
-						"</header>\n");
+						"<header \n" +
+								"      creationtool=\"" + Constants.TOOLID + "\" \n" +
+								"      creationtoolversion=\"" + Constants.VERSION + "\" \n" +
+								"      srclang=\"" + sourceLang + "\" \n" +
+								"      adminlang=\"en\"  \n      datatype=\"xml\" \n" +
+								"      o-tmf=\"XLIFF\" \n" +
+								"      segtype=\"block\"\n>\n" +
+								"</header>\n");
 				writeString(output, "<body>\n");
 
 				List<Element> files = root.getChildren("file");
@@ -177,8 +177,9 @@ public class TmxExporter {
 			if (tgtLang.isEmpty()) {
 				tgtLang = targetLang;
 			}
-			writeString(output, "<tu creationtool=\"OpenXLIFF\" creationtoolversion=\"" + Constants.VERSION
-					+ "\" tuid=\"" + id + "\" creationdate=\"" + today + "\">\n");
+			writeString(output,
+					"<tu creationtool=\"" + Constants.TOOLNAME + "\" creationtoolversion=\"" + Constants.VERSION
+							+ "\" tuid=\"" + id + "\" creationdate=\"" + today + "\">\n");
 
 			String customer = docProperties.get("customer");
 			String project = docProperties.get("project");
@@ -230,15 +231,15 @@ public class TmxExporter {
 			while (i.hasNext()) {
 				XMLNode o = i.next();
 				switch (o.getNodeType()) {
-				case XMLNode.TEXT_NODE:
-					text.append(o.toString());
-					break;
-				case XMLNode.ELEMENT_NODE:
-					Element e = (Element) o;
-					text.append(extractText(e));
-					break;
-				default:
-					// ignore
+					case XMLNode.TEXT_NODE:
+						text.append(o.toString());
+						break;
+					case XMLNode.ELEMENT_NODE:
+						Element e = (Element) o;
+						text.append(extractText(e));
+						break;
+					default:
+						// ignore
 				}
 			}
 			return text.toString();
@@ -271,20 +272,20 @@ public class TmxExporter {
 			while (i.hasNext()) {
 				XMLNode o = i.next();
 				switch (o.getNodeType()) {
-				case XMLNode.TEXT_NODE:
-					text.append(o.toString());
-					break;
-				case XMLNode.ELEMENT_NODE:
-					Element e = (Element) o;
-					if (e.getName().equals("sub")) {
-						text.append(extractText(e));
-					}
-					if (!e.getName().equals("mrk")) {
-						text.append(extractText(e));
-					}
-					break;
-				default:
-					// ignore
+					case XMLNode.TEXT_NODE:
+						text.append(o.toString());
+						break;
+					case XMLNode.ELEMENT_NODE:
+						Element e = (Element) o;
+						if (e.getName().equals("sub")) {
+							text.append(extractText(e));
+						}
+						if (!e.getName().equals("mrk")) {
+							text.append(extractText(e));
+						}
+						break;
+					default:
+						// ignore
 				}
 			}
 			return text + "</ph>";
@@ -304,7 +305,7 @@ public class TmxExporter {
 				int i = match;
 				match++;
 				String text = "<bpt type=\"xliff-" + src.getName() + "\" i=\"" + i + "\">" + XMLUtils.cleanText(open)
-				+ "</bpt>";
+						+ "</bpt>";
 				Iterator<XMLNode> k = l.iterator();
 				while (k.hasNext()) {
 					XMLNode n = k.next();
@@ -342,14 +343,14 @@ public class TmxExporter {
 			while (i.hasNext()) {
 				XMLNode o = i.next();
 				switch (o.getNodeType()) {
-				case XMLNode.TEXT_NODE:
-					text.append(o.toString());
-					break;
-				case XMLNode.ELEMENT_NODE:
-					text.append(extractText((Element) o));
-					break;
-				default:
-					// ignore
+					case XMLNode.TEXT_NODE:
+						text.append(o.toString());
+						break;
+					case XMLNode.ELEMENT_NODE:
+						text.append(extractText((Element) o));
+						break;
+					default:
+						// ignore
 				}
 			}
 			text.append("</it>");
@@ -378,14 +379,14 @@ public class TmxExporter {
 			while (i.hasNext()) {
 				XMLNode o = i.next();
 				switch (o.getNodeType()) {
-				case XMLNode.TEXT_NODE:
-					text.append( o.toString());
-					break;
-				case XMLNode.ELEMENT_NODE:
-					text.append(extractText((Element) o));
-					break;
-				default:
-					// ignore
+					case XMLNode.TEXT_NODE:
+						text.append(o.toString());
+						break;
+					case XMLNode.ELEMENT_NODE:
+						text.append(extractText((Element) o));
+						break;
+					default:
+						// ignore
 				}
 			}
 			text.append("</");
@@ -402,17 +403,17 @@ public class TmxExporter {
 			while (i.hasNext()) {
 				XMLNode o = i.next();
 				switch (o.getNodeType()) {
-				case XMLNode.TEXT_NODE:
-					text.append(o.toString());
-					break;
-				case XMLNode.ELEMENT_NODE:
-					Element e = (Element) o;
-					if (!e.getName().equals("mrk")) {
-						text.append(extractText(e));
-					}
-					break;
-				default:
-					// ignore
+					case XMLNode.TEXT_NODE:
+						text.append(o.toString());
+						break;
+					case XMLNode.ELEMENT_NODE:
+						Element e = (Element) o;
+						if (!e.getName().equals("mrk")) {
+							text.append(extractText(e));
+						}
+						break;
+					default:
+						// ignore
 				}
 			}
 			text.append("</sub>");
@@ -433,12 +434,12 @@ public class TmxExporter {
 					}
 					name = name + ts.charAt(i);
 				}
-				return "<ph type=\"mrk-protected\" " + " x=\"" + XMLUtils.cleanText(src.getAttributeValue("mid", "-"))
-				+ "\"" + ">" + XMLUtils.cleanText(ts) + "</ph>" + XMLUtils.cleanText(src.getText())
-				+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name + ">") + "</ph>";
+				return "<ph type=\"mrk-protected\" x=\"" + XMLUtils.cleanText(src.getAttributeValue("mid", "-"))
+						+ "\">" + XMLUtils.cleanText(ts) + "</ph>" + XMLUtils.cleanText(src.getText())
+						+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name + ">") + "</ph>";
 			}
 			return "<hi type=\"" + src.getAttributeValue("mtype", "xliff-mrk") + "\">"
-			+ XMLUtils.cleanText(src.getText()) + "</hi>";
+					+ XMLUtils.cleanText(src.getText()) + "</hi>";
 		}
 		return null;
 	}
