@@ -35,16 +35,17 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+2.4.0 | Added remove all targets; Added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
 2.3.0 | Added copy source to target; Fixed DITA conversion and merge | May 25th, 2022 
 2.2.0 | Added pseudo-translation | May 11th, 2022
 2.1.0 | Updated dependencies and improved validation of XLIFF 2.x | April 21st, 2022
-2.0.0 | Moved server code to [XLIFF Manager](https://github.com/rmraya/XLIFFManager) project| March 29th, 2022
-1.17.5 | Updated DITA keyscope handling | March 18th, 2022
+2.0.0 | Moved server code to [XLIFF Manager](https://github.com/rmraya/XLIFFManager) project| March 29th, 2022
+1.17.5 | Updated DITA keyscope handling | March 18th, 2022
 1.17.4 | Fixed handling of nested untranslatables in DITA; Improved XLIFF 2.0 support | March 6th, 2022
 1.17.2 | Fixed support for FrameMaker MIF files | February 6th, 2022
 1.17.1 | Improved support for DITA | February 5th, 2022
 1.17.0 | Improved validation of XLIFF 2.0; Added SVG statistics for XLIFF 2.0 | December 1st, 2021
-1.16.0 | Improved support for XLIFF 2.0; Switched to Java 17 | November 23rd, 2021
+1.16.0 | Improved support for XLIFF 2.0; Switched to Java 17 | November 23rd, 2021
 1.15.2 | MS Office and DITA fixes | November 13th, 2021
 1.15.0 | Initial support for RELAX NG gammars | November 8th, 2021
 1.14.0 | Improved segmentation for XLIFF 2.0 | October 3rd, 2021
@@ -52,7 +53,7 @@ Version | Comment | Release Date
 1.12.7 | Improved round trip 1.2 -> 2.0 -> 1.2; Ignored untranslatable SVG in DITA maps | July 4th, 2021
 1.12.6 | Improved validation; updated language management | June 19th, 2021
 1.12.5 | Improved support for bilingual files | February 3rd, 2021
-1.12.4 | Allowed concurrent access for [XLIFF Validation](https://github.com/rmraya/XLIFFValidation) | January 22nd, 2021
+1.12.4 | Allowed concurrent access for [XLIFF Validation](https://github.com/rmraya/XLIFFValidation) | January 22nd, 2021
 1.12.3 | Improved support for Trados Studio packages | January 1st, 2021
 1.12.2 | Suppressed output for confirmed empty targets | December 7th, 2020
 1.12.1 | Improved conversion of XLIFF 1.2 files | December 3rd, 2020
@@ -71,7 +72,7 @@ Version | Comment | Release Date
 1.7.0 | Major code cleanup; Changed segmentation model for XLIFF 2.0 | January 1st, 2020
 1.6.0 | Added support for XLIFF files from WPML WordPress Plugin | December 1st, 2019
 1.5.2 | Improved segmenter performance | October 29th, 2019
-1.5.1 | Fixed catalog on Windows | September 22nd, 2019
+1.5.1 | Fixed catalog on Windows | September 22nd, 2019
 1.5.0 | Improved support for empty &lt;xref/> elements in DITA; improved support for XML catalogs | September 5th, 2019
 1.4.2 | Added option to join XLIFF files; Fixed merge errors in XLIFF 2.0; added tool info to XLIFF files; cleaned DITA attributes on merging | August 14th, 2019
 1.4.1 | Improved performance embedding skeleton; added Apache Ant building option; renamed module to 'openxliff' | July 25th, 2019
