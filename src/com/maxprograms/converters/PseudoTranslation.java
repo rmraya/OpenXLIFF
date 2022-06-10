@@ -117,29 +117,29 @@ public class PseudoTranslation {
                 && "no".equals(root.getAttributeValue("translate"))) {
             return;
         }
+        if ("trans-unit".equals(root.getName()) && "yes".equals(root.getAttributeValue("approved"))) {
+            return;
+        }
+        if ("segment".equals(root.getName()) && "final".equals(root.getAttributeValue("state"))) {
+            return;
+        }
         if (("trans-unit".equals(root.getName()) && root.getChild("seg-source") == null)
                 || "segment".equals(root.getName())) {
             Element target = root.getChild("target");
             if (target == null) {
-                Element source = root.getChild("source");
-                target = translate(source);
-                if ("preserve".equals(source.getAttributeValue("xml:space"))) {
-                    target.setAttribute("xml:space", "preserve");
-                }
-                if ("segment".equals(root.getName())) {
-                    root.setAttribute("state", "translated");
-                }
-                List<XMLNode> newContent = new Vector<>();
-                List<XMLNode> content = root.getContent();
-                Iterator<XMLNode> it = content.iterator();
-                while (it.hasNext()) {
-                    XMLNode node = it.next();
-                    newContent.add(node);
-                    if (node instanceof Element e && "source".equals(e.getName())) {
-                        newContent.add(target);
-                    }
-                }
-                root.setContent(newContent);
+                addTarget(root);
+                target = root.getChild("target");
+            }
+            if (!target.getContent().isEmpty()) {
+                return;
+            }
+            Element source = root.getChild("source");
+            target.setContent(translate(source).getContent());
+            if ("preserve".equals(source.getAttributeValue("xml:space"))) {
+                target.setAttribute("xml:space", "preserve");
+            }
+            if ("segment".equals(root.getName())) {
+                root.setAttribute("state", "translated");
             }
         }
         List<Element> children = root.getChildren();
@@ -147,6 +147,24 @@ public class PseudoTranslation {
         while (it.hasNext()) {
             recurse(it.next());
         }
+    }
+
+    private static void addTarget(Element root) {
+        List<XMLNode> newContent = new Vector<>();
+        List<XMLNode> content = root.getContent();
+        Iterator<XMLNode> it = content.iterator();
+        while (it.hasNext()) {
+            XMLNode node = it.next();
+            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                newContent.add(node);
+                if ("source".equals(((Element) node).getName())) {
+                    newContent.add(new Element("target"));
+                }
+            } else {
+                newContent.add(node);
+            }
+        }
+        root.setContent(newContent);
     }
 
     private static Element translate(Element source) {
