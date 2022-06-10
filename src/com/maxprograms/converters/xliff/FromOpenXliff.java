@@ -140,7 +140,7 @@ public class FromOpenXliff {
                     if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
                         Element e = (Element) node;
                         if ("mrk".equals(e.getName()) && "seg".equals(e.getAttributeValue("mtype"))) {
-                            String pi = e.getPI(Constants.TOOLNAME).get(0).getData();
+                            String pi = e.getPI(Constants.TOOLID).get(0).getData();
                             Element segment = segments.get(pi);
                             if (segment.getAttributeValue("approved").equals("yes")) {
                                 Element mrk = ToOpenXliff.locateMrk(target, e.getAttributeValue("mid"));
@@ -149,12 +149,12 @@ public class FromOpenXliff {
                                     replaceTags(mrk, 1);
                                 }
                             }
-                            e.removePI(Constants.TOOLNAME);
+                            e.removePI(Constants.TOOLID);
                         }
                     }
                 }
             } else {
-                List<PI> instructions = root.getPI(Constants.TOOLNAME);
+                List<PI> instructions = root.getPI(Constants.TOOLID);
                 if (!instructions.isEmpty()) {
                     String pi = instructions.get(0).getData();
                     Element segment = segments.get(pi);
@@ -170,7 +170,7 @@ public class FromOpenXliff {
                         }
                         root.setAttribute("approved", "yes");
                     }
-                    root.removePI(Constants.TOOLNAME);
+                    root.removePI(Constants.TOOLID);
                 }
             }
             return;
@@ -283,7 +283,7 @@ public class FromOpenXliff {
             Iterator<Element> it = children.iterator();
             while (it.hasNext()) {
                 Element seg = it.next();
-                List<PI> list = seg.getPI(Constants.TOOLNAME);
+                List<PI> list = seg.getPI(Constants.TOOLID);
                 if (!list.isEmpty()) {
                     String pi = list.get(0).getData();
                     Element segment = segments.get(pi);
@@ -305,7 +305,7 @@ public class FromOpenXliff {
                     if (!hasTarget && segment.getChild("target") != null) {
                         hasTarget = true;
                     }
-                    seg.removePI(Constants.TOOLNAME);
+                    seg.removePI(Constants.TOOLID);
                 }
             }
         }

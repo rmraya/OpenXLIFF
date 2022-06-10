@@ -190,7 +190,7 @@ public class ToOpenXliff {
                     }
                 }
                 units.add(unit);
-                segment.addContent(new PI(Constants.TOOLNAME, unit.getAttributeValue("id")));
+                segment.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
             }
             return;
         }
@@ -330,7 +330,7 @@ public class ToOpenXliff {
                             }
                             unit.addContent(target);
                             units.add(unit);
-                            e.addContent(new PI(Constants.TOOLNAME, unit.getAttributeValue("id")));
+                            e.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
                         }
                     }
                 }
@@ -381,7 +381,7 @@ public class ToOpenXliff {
                     }
                 }
                 units.add(unit);
-                root.addContent(new PI(Constants.TOOLNAME, unit.getAttributeValue("id")));
+                root.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
             }
             return;
         }
