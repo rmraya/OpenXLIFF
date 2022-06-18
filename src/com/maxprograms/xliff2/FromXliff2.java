@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -117,6 +118,14 @@ public class FromXliff2 {
 			file.setAttribute("source-language", srcLang);
 			if (!trgLang.isEmpty()) {
 				file.setAttribute("target-language", trgLang);
+			}
+			List<Attribute> atts = source.getAttributes();
+			Iterator<Attribute> at = atts.iterator();
+			while (at.hasNext()) {
+				Attribute a = at.next();
+				if (a.getName().startsWith("xmlns:")) {
+					file.setAttribute(a);
+				}
 			}
 			Element header = new Element("header");
 			file.addContent(header);
@@ -228,6 +237,17 @@ public class FromXliff2 {
 		if (source.getName().equals("unit")) {
 			Element transUnit = new Element("trans-unit");
 			transUnit.setAttribute("id", source.getAttributeValue("id"));
+			if ("no".equals(source.getAttributeValue("translate"))) {
+				transUnit.setAttribute("translate", "no");
+			}
+			List<Attribute> atts = source.getAttributes();
+			Iterator<Attribute> at = atts.iterator();
+			while (at.hasNext()) {
+				Attribute a = at.next();
+				if (a.getName().indexOf(':') != -1 && !a.getName().startsWith("xml:")) {
+					transUnit.setAttribute(a);
+				}
+			}
 			target.addContent(transUnit);
 
 			Map<String, String> tags = new HashMap<>();
@@ -265,6 +285,7 @@ public class FromXliff2 {
 			Element joinedTarget = new Element("target");
 			boolean approved = false;
 			boolean preserve = false;
+			boolean hasTarget = false;
 
 			List<Element> children = source.getChildren();
 			Iterator<Element> et = children.iterator();
@@ -278,6 +299,7 @@ public class FromXliff2 {
 					joinedSource.addContent(src.getContent());
 					Element tgt = child.getChild("target");
 					if (tgt != null) {
+						hasTarget = true;
 						joinedTarget.addContent(tgt.getContent());
 					}
 					if (tgt == null && child.getName().equals("ignorable")) {
@@ -311,7 +333,7 @@ public class FromXliff2 {
 			if (!joinedTarget.getContent().isEmpty()) {
 				tgt.setContent(harvestContent(joinedTarget, tags, attributes));
 			}
-			if (!tgt.getContent().isEmpty() || approved) {
+			if (hasTarget) {
 				if (preserve) {
 					transUnit.addContent("\n        ");
 				}
@@ -481,6 +503,18 @@ public class FromXliff2 {
 				}
 				result = ph;
 			}
+			if (id.startsWith("x")) {
+				Element x = new Element("x");
+				x.setAttribute("id", id.substring("x".length()));
+				if (attributes != null && attributes.containsKey(id)) {
+					List<String[]> list = attributes.get(id);
+					for (int i = 0; i < list.size(); i++) {
+						String[] pair = list.get(i);
+						x.setAttribute(pair[0], pair[1]);
+					}
+				}
+				result = x;
+			}
 			if (id.startsWith("bpt")) {
 				Element bpt = new Element("bpt");
 				bpt.setAttribute("id", id.substring("bpt".length()));
@@ -559,7 +593,7 @@ public class FromXliff2 {
 		if ("pc".equals(tag.getName())) {
 			String id = tag.getAttributeValue("id");
 			Element g = new Element("g");
-			g.setAttribute("id", id);
+			g.setAttribute("id", id.substring("g".length()));
 			List<XMLNode> newContent = new ArrayList<>();
 			List<XMLNode> content = tag.getContent();
 			for (int i = 0; i < content.size(); i++) {

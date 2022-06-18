@@ -146,17 +146,17 @@ public class Sdl2Xliff {
 							writeStr("<trans-unit id=\"" + root.getAttributeValue("id") + ':'
 									+ mrk.getAttributeValue("mid") + "\" xml:space=\"preserve\">\n");
 							// write new source
-							writeStr("<source>");
+							writeStr("        <source>");
 							recurseSource(mrk);
 							writeStr("</source>\n");
 							if (targets.containsKey(mrk.getAttributeValue("mid"))) {
 								// write new target
 								Element tmrk = targets.get(mrk.getAttributeValue("mid"));
-								writeStr("<target>");
+								writeStr("        <target>");
 								recurseTarget(tmrk);
 								writeStr("</target>\n");
 							}
-							writeStr("</trans-unit>\n");
+							writeStr("      </trans-unit>\n");
 						}
 					}
 				}

@@ -168,10 +168,8 @@ public class Join {
 			writeString(output, ">\n");
 
 			Iterator<String> it = xliffs.iterator();
-			int count = 0;
 			while (it.hasNext()) {
 				String xliff = it.next();
-				count++;
 				Document doc = builder.build(xliff);
 				Element root = doc.getRootElement();
 				List<Element> files1 = root.getChildren("file");
@@ -180,7 +178,6 @@ public class Join {
 					Element file = files1.get(i);
 					String original = file.getAttributeValue("original");
 					file.setAttribute("original", Utils.makeRelativePath(treeRoot, original));
-					file.setAttribute("id", count + "-" + (i + 1));
 					Indenter.indent(file, 2, 2);
 					writeString(output, "  ");
 					file.writeBytes(output, StandardCharsets.UTF_8);

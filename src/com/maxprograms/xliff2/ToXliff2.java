@@ -122,6 +122,14 @@ public class ToXliff2 {
 			Element file = new Element("file");
 			file.setAttribute("id", "" + fileId++);
 			file.setAttribute("original", source.getAttributeValue("original"));
+			List<Attribute> atts = source.getAttributes();
+			Iterator<Attribute> at = atts.iterator();
+			while (at.hasNext()) {
+				Attribute a = at.next();
+				if (a.getName().startsWith("xmlns:")) {
+					file.setAttribute(a);
+				}
+			}
 
 			Element fileMetadata = new Element("mda:metadata");
 			Element typeGroup = new Element("mda:metaGroup");
@@ -169,7 +177,6 @@ public class ToXliff2 {
 				for (int i = 0; i < propGroups.size(); i++) {
 					Element sgroup = propGroups.get(i);
 					Element tgroup = new Element("mda:metaGroup");
-					tgroup.setAttribute("id", "" + i);
 					tgroup.setAttribute("category", sgroup.getAttributeValue("name"));
 					List<Element> props = sgroup.getChildren("prop");
 					Iterator<Element> it = props.iterator();
@@ -295,6 +302,14 @@ public class ToXliff2 {
 			if (source.getAttributeValue("translate", "yes").equals("no")) {
 				unit.setAttribute("translate", "no");
 			}
+			List<Attribute> atts = source.getAttributes();
+			Iterator<Attribute> at = atts.iterator();
+			while (at.hasNext()) {
+				Attribute a = at.next();
+				if (a.getName().indexOf(':') != -1 && !a.getName().startsWith("xml:")) {
+					unit.setAttribute(a);
+				}
+			}
 			target.addContent(unit);
 
 			List<Element> sourceNotes = new ArrayList<>();
@@ -354,12 +369,14 @@ public class ToXliff2 {
 			segment.addContent(src2);
 
 			Element tgt = source.getChild("target");
+			boolean hasTarget = true;
 			if (tgt == null) {
 				tgt = new Element("target");
+				hasTarget = false;
 			}
 			harvestInline(originalData, tagAttributes, tgt);
 			Element tgt2 = new Element("target");
-			if (source.getAttributeValue("xml:space", "default").equals("preserve")) {
+			if ("preserve".equals(source.getAttributeValue("xml:space"))) {
 				tgt2.setAttribute("xml:space", "preserve");
 			}
 			mrkCount = 1;
@@ -378,12 +395,14 @@ public class ToXliff2 {
 				}
 			}
 			if (!tgt2.getContent().isEmpty()) {
-				segment.addContent(tgt2);
 				if (!"final".equals(segment.getAttributeValue("state", "initial"))) {
 					segment.setAttribute("state", "translated");
 				}
 			} else {
 				segment.setAttribute("state", "initial");
+			}
+			if (hasTarget) {
+				segment.addContent(tgt2);
 			}
 
 			List<Element> matches = source.getChildren("alt-trans");
@@ -477,6 +496,11 @@ public class ToXliff2 {
 				originalData.addContent(data);
 				storeAttributes(tagAttributes, tag, id);
 			}
+			return;
+		}
+		if ("x".equals(tag.getName())) {
+			String id = "x" + tag.getAttributeValue("id");
+			storeAttributes(tagAttributes, tag, id);
 			return;
 		}
 		List<Element> children = tag.getChildren();
@@ -628,6 +652,13 @@ public class ToXliff2 {
 			}
 			pc.setContent(newContent);
 			result.add(pc);
+			return result;
+		}
+		if ("x".equals(e.getName())) {
+			Element ph = new Element("ph");
+			String id = "x" + e.getAttributeValue("id");
+			ph.setAttribute("id", id);
+			result.add(ph);
 			return result;
 		}
 		List<XMLNode> content = e.getContent();

@@ -35,6 +35,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 Version | Comment | Release Date
 --------|---------|-------------
+2.4.2 | Improved support for Trados Studio Packages | june 18th, 2022
 2.4.1 | Fixed conversion of third party XLIFF files | June 10th, 2022
 2.4.0 | Added remove all targets; Added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
 2.3.0 | Added copy source to target; Fixed DITA conversion and merge | May 25th, 2022 
