@@ -43,6 +43,7 @@ public class Json2Xliff {
     private static Segmenter segmenter;
     private static int id;
     private static List<String> segments;
+    private static JsonConfig config;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -62,20 +63,18 @@ public class Json2Xliff {
         String targetLanguage = params.get("tgtLang");
         String encoding = params.get("srcEncoding");
         String paragraph = params.get("paragraph");
+        paragraphSegmentation = paragraph != null ? paragraph.equals("yes") : false;
         String initSegmenter = params.get("srxFile");
         String catalog = params.get("catalog");
         String tgtLang = "";
         if (targetLanguage != null) {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
-
-        if (paragraph == null) {
-            paragraphSegmentation = false;
-        } else {
-            paragraphSegmentation = paragraph.equals("yes");
-        }
-
         try {
+
+            String configFile = params.get("config");
+            config = configFile != null ? JsonConfig.parseFile(configFile) : null;
+
             if (!paragraphSegmentation) {
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
             }
