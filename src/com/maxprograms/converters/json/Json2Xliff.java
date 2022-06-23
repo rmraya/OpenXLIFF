@@ -258,7 +258,7 @@ public class Json2Xliff {
 
     private static void fixHtmlTags(Element src) {
         int count = 0;
-        Pattern pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*[/]?>");
+        Pattern pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*[/]?>");
         Pattern endPattern = Pattern.compile("</[A-Za-z0-9]+>");
 
         String e = normalise(src.getText());
