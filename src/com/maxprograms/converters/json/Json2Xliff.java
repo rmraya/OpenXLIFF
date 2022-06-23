@@ -109,7 +109,7 @@ public class Json2Xliff {
                         + "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 
                 writeString(out, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-                        + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"json\">\n");
+                        + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"x-json\">\n");
                 writeString(out, "<header>\n");
                 writeString(out, "   <skl>\n");
                 writeString(out, "      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");

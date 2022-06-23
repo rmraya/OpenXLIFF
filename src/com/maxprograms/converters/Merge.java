@@ -363,7 +363,7 @@ public class Merge {
 				result = Xliff2Html.run(params);
 			} else if (dataType.equals(FileFormats.JS) || dataType.equals("javascript")) {
 				result = Xliff2jscript.run(params);
-			} else if (dataType.equals(FileFormats.JSON) || dataType.equals("json")) {
+			} else if (dataType.equals(FileFormats.JSON) || dataType.endsWith("json")) {
 				result = Xliff2json.run(params);
 			} else if (dataType.equals(FileFormats.JAVA) || dataType.equals("javapropertyresourcebundle")
 					|| dataType.equals("javalistresourcebundle")) {
