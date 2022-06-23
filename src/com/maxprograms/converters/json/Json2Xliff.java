@@ -14,6 +14,7 @@ package com.maxprograms.converters.json;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -26,24 +27,30 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
-import com.maxprograms.segmenter.Segmenter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
+
+import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.Utils;
+import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.xml.Element;
+import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
 
 public class Json2Xliff {
 
     private static boolean paragraphSegmentation;
     private static Segmenter segmenter;
     private static int id;
-    private static List<String> segments;
-    private static JsonConfig config;
+    private static List<Element> segments;
+    private static int bomLength = 0;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -63,7 +70,7 @@ public class Json2Xliff {
         String targetLanguage = params.get("tgtLang");
         String encoding = params.get("srcEncoding");
         String paragraph = params.get("paragraph");
-        paragraphSegmentation = paragraph != null ? paragraph.equals("yes") : false;
+        paragraphSegmentation = "yes".equals(paragraph);
         String initSegmenter = params.get("srxFile");
         String catalog = params.get("catalog");
         String tgtLang = "";
@@ -71,16 +78,18 @@ public class Json2Xliff {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
         try {
-
-            String configFile = params.get("config");
-            config = configFile != null ? JsonConfig.parseFile(configFile) : null;
-
+            checkBOM(inputFile);
+            JSONObject json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
             }
-
-            JSONObject json = loadFile(inputFile, encoding);
-            parseJson(json);
+            String configFile = params.get("config");
+            if (configFile != null) {
+                JsonConfig config = JsonConfig.parseFile(configFile);
+                parseJson(json, config);
+            } else {
+                parseJson(json);
+            }
 
             if (segments.isEmpty()) {
                 result.add(Constants.ERROR);
@@ -112,10 +121,7 @@ public class Json2Xliff {
                 writeString(out, "<body>\n");
 
                 for (int i = 0; i < segments.size(); i++) {
-                    writeString(out,
-                            "   <trans-unit id=\"" + i + "\" xml:space=\"preserve\" approved=\"no\">\n"
-                                    + "      <source>" + Utils.cleanString(segments.get(i))
-                                    + "</source>\n   </trans-unit>\n");
+                    writeString(out, "  " + segments.get(i).toString() + "\n  ");
                 }
 
                 writeString(out, "</body>\n");
@@ -133,28 +139,73 @@ public class Json2Xliff {
         return result;
     }
 
+    private static void checkBOM(String fileName) throws IOException {
+        // check the first three bytes of the document
+        byte[] array = new byte[3];
+        try (FileInputStream inputStream = new FileInputStream(fileName)) {
+            if (inputStream.read(array) == -1) {
+                throw new IOException((new File(fileName).getName() + " is empty."));
+            }
+        }
+        byte[] feff = { -1, -2 }; // UTF-16BE
+        byte[] fffe = { -2, -1 }; // UTF-16LE
+        byte[] efbbbf = { -17, -69, -65 }; // UTF-8
+        if ((array[0] == feff[0] && array[1] == feff[1]) || (array[0] == fffe[0] && array[1] == fffe[1])
+                || (array[0] == efbbbf[0] && array[1] == efbbbf[1])) {
+            // there is a BOM
+            bomLength = 1;
+        }
+    }
+
     private static void writeString(FileOutputStream out, String string) throws IOException {
         out.write(string.getBytes(StandardCharsets.UTF_8));
     }
 
     protected static JSONObject loadFile(String file, String charset) throws IOException {
         StringBuilder builder = new StringBuilder();
+        boolean first = true;
         try (FileReader stream = new FileReader(new File(file), Charset.forName(charset))) {
             try (BufferedReader reader = new BufferedReader(stream)) {
                 String line = "";
                 while ((line = reader.readLine()) != null) {
+                    if (!first) {
+                        builder.append('\n');
+                    }
                     builder.append(line);
-                    builder.append('\n');
+                    first = false;
                 }
             }
         }
-        return new JSONObject(builder.toString());
+        return new JSONObject(builder.toString().substring(bomLength));
     }
 
     private static void parseJson(JSONObject json) {
-        Iterator<String> keys = json.keys();
-        while (keys.hasNext()) {
-            String key = keys.next();
+        Iterator<String> it = json.keys();
+        while (it.hasNext()) {
+            String key = it.next();
+            Object obj = json.get(key);
+            if (obj instanceof JSONObject) {
+                parseJson(json.getJSONObject(key));
+            } else if (obj instanceof String) {
+                json.put(key, parseText(json.getString(key)));
+            } else if (obj instanceof JSONArray) {
+                parseArray(json.getJSONArray(key));
+            }
+        }
+    }
+
+    private static void parseJson(JSONObject json, JsonConfig config) {
+        List<String> translatableKeys = config.getSourceKeys();
+        for (int i = 0; i < translatableKeys.size(); i++) {
+            String sourceKey = translatableKeys.get(i);
+            if (json.has(sourceKey)) {
+
+                break;
+            }
+        }
+        Iterator<String> it = json.keys();
+        while (it.hasNext()) {
+            String key = it.next();
             Object obj = json.get(key);
             if (obj instanceof JSONObject) {
                 parseJson(json.getJSONObject(key));
@@ -171,14 +222,24 @@ public class Json2Xliff {
             String[] segs = segmenter.segment(string);
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < segs.length; i++) {
-                segments.add(segs[i]);
-                result.append("%%%");
-                result.append(id++);
-                result.append("%%%");
+                result.append(addSegment(segs[i]));
             }
             return result.toString();
         }
-        segments.add(string);
+        return addSegment(string);
+    }
+
+    private static String addSegment(String string) {
+        Element segment = new Element("trans-unit");
+        segment.setAttribute("id", "" + id);
+        segment.setAttribute("xml:space", "preserve");
+        segment.addContent("\n    ");
+        Element source = new Element("source");
+        source.setText(string);
+        segment.addContent(source);
+        fixHtmlTags(source);
+        segment.addContent("\n  ");
+        segments.add(segment);
         return "%%%" + id++ + "%%%";
     }
 
@@ -194,4 +255,99 @@ public class Json2Xliff {
             }
         }
     }
+
+    private static void fixHtmlTags(Element src) {
+        int count = 0;
+        Pattern pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*[/]?>");
+        Pattern endPattern = Pattern.compile("</[A-Za-z0-9]+>");
+
+        String e = normalise(src.getText());
+
+        Matcher matcher = pattern.matcher(e);
+        if (matcher.find()) {
+            List<XMLNode> newContent = new Vector<>();
+            List<XMLNode> content = src.getContent();
+            Iterator<XMLNode> it = content.iterator();
+            while (it.hasNext()) {
+                XMLNode node = it.next();
+                if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                    TextNode t = (TextNode) node;
+                    String text = normalise(t.getText());
+                    matcher = pattern.matcher(text);
+                    if (matcher.find()) {
+                        matcher.reset();
+                        while (matcher.find()) {
+                            int start = matcher.start();
+                            int end = matcher.end();
+
+                            String s = text.substring(0, start);
+                            newContent.add(new TextNode(s));
+
+                            String tag = text.substring(start, end);
+                            Element ph = new Element("ph");
+                            ph.setAttribute("id", "" + count++);
+                            ph.setText(tag);
+                            newContent.add(ph);
+
+                            text = text.substring(end);
+                            matcher = pattern.matcher(text);
+                        }
+                        newContent.add(new TextNode(text));
+                    } else {
+                        newContent.add(node);
+                    }
+                } else {
+                    newContent.add(node);
+                }
+            }
+            src.setContent(newContent);
+        }
+        matcher = endPattern.matcher(e);
+        if (matcher.find()) {
+            List<XMLNode> newContent = new Vector<>();
+            List<XMLNode> content = src.getContent();
+            Iterator<XMLNode> it = content.iterator();
+            while (it.hasNext()) {
+                XMLNode node = it.next();
+                if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                    TextNode t = (TextNode) node;
+                    String text = normalise(t.getText());
+                    matcher = endPattern.matcher(text);
+                    if (matcher.find()) {
+                        matcher.reset();
+                        while (matcher.find()) {
+                            int start = matcher.start();
+                            int end = matcher.end();
+
+                            String s = text.substring(0, start);
+                            newContent.add(new TextNode(s));
+
+                            String tag = text.substring(start, end);
+                            Element ph = new Element("ph");
+                            ph.setAttribute("id", "" + count++);
+                            ph.setText(tag);
+                            newContent.add(ph);
+
+                            text = text.substring(end);
+                            matcher = endPattern.matcher(text);
+                        }
+                        newContent.add(new TextNode(text));
+                    } else {
+                        newContent.add(node);
+                    }
+                } else {
+                    newContent.add(node);
+                }
+            }
+            src.setContent(newContent);
+        }
+    }
+
+    private static String normalise(String string) {
+        String result = string;
+        result = result.replace('\n', ' ');
+        result = result.replaceAll("\\s(\\s)+", " ");
+        return result;
+    }
+
 }

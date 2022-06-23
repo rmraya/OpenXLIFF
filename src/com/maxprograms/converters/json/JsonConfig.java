@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
 import org.json.JSONArray;
@@ -29,11 +28,13 @@ import org.json.JSONObject;
 public class JsonConfig {
 
     Map<String, JSONObject> translatableKeys;
-    List<String> ignorableKeys;;
+    List<String> ignorableKeys;
+    List<String> sourceKeys;
 
     private JsonConfig() {
         translatableKeys = new HashMap<>();
         ignorableKeys = new Vector<>();
+        sourceKeys = new Vector<>();
     }
 
     public static JsonConfig parseFile(String configFile) throws FileNotFoundException, IOException, JSONException {
@@ -46,9 +47,9 @@ public class JsonConfig {
                 while ((line = buffer.readLine()) != null) {
                     if (!first) {
                         sb.append('\n');
-                        first = false;
                     }
                     sb.append(line);
+                    first = false;
                 }
             }
         }
@@ -59,6 +60,7 @@ public class JsonConfig {
             if (translatable.has("sourceKey")) {
                 String sourceKey = translatable.getString("sourceKey");
                 config.translatableKeys.put(sourceKey, translatable);
+                config.sourceKeys.add(sourceKey);
             } else {
                 throw new IOException("Missing \"sourceKey\" in configuration object");
             }
@@ -70,11 +72,11 @@ public class JsonConfig {
         return config;
     }
 
-    public Set<String> getSourceKeys() {
-        return translatableKeys.keySet();
+    public List<String> getSourceKeys() {
+        return sourceKeys;
     }
 
     public List<String> getIgnorableKeys() {
-        return ignorableKeys;   
+        return ignorableKeys;
     }
 }
