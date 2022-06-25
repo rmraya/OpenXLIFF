@@ -58,11 +58,19 @@ public class Xliff2json {
 
         try {
             loadSegments(xliffFile, catalog);
-            JSONObject json = Json2Xliff.loadFile(sklFile, encoding);
-            parseJson(json);
+            Object json = Json2Xliff.loadFile(sklFile, encoding);
+            if (json instanceof JSONObject) {
+                parseJson((JSONObject) json);
+            } else {
+                parseArray((JSONArray) json);
+            }
 
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
-                out.write(json.toString(4).getBytes(StandardCharsets.UTF_8));
+                if (json instanceof JSONObject) {
+                    out.write(((JSONObject) json).toString(2).getBytes(StandardCharsets.UTF_8));
+                } else {
+                    out.write(((JSONArray) json).toString(2).getBytes(StandardCharsets.UTF_8));
+                }
             }
 
             result.add(Constants.SUCCESS);
@@ -124,12 +132,11 @@ public class Xliff2json {
             String code = line.substring(0, line.indexOf("%%%"));
             line = line.substring(line.indexOf("%%%") + 3);
             Element segment = segments.get(code);
-
             if (segment != null) {
                 Element target = segment.getChild("target");
                 Element source = segment.getChild("source");
                 if (target != null) {
-                    if (segment.getAttributeValue("approved").equals("yes")) {
+                    if ("yes".equals(segment.getAttributeValue("approved"))) {
                         builder.append(extractText(target));
                     } else {
                         builder.append(extractText(source));
@@ -138,7 +145,7 @@ public class Xliff2json {
                     builder.append(extractText(source));
                 }
             } else {
-                throw new IOException("segment " + code + " not found");
+                throw new IOException("Segment " + code + " not found");
             }
             index = line.indexOf("%%%");
         }

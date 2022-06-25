@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -26,6 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.SAXBuilder;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -82,17 +85,20 @@ public class FileFormats {
 			String string = "";
 
 			Charset bom = EncodingResolver.getBOM(fileName);
-
+			int bomLength = 0;
 			if (bom != null) {
 				byte[] efbbbf = { -17, -69, -65 }; // UTF-8
 				String utf8 = new String(efbbbf);
 				string = new String(array, bom);
 				if (string.startsWith("\uFFFE")) {
 					string = string.substring("\uFFFE".length());
+					bomLength = "\uFFFE".length();
 				} else if (string.startsWith("\uFEFF")) {
 					string = string.substring("\uFEFF".length());
+					bomLength = "\uFEFF".length();
 				} else if (string.startsWith(utf8)) {
 					string = string.substring(utf8.length());
+					bomLength = utf8.length();
 				}
 			} else {
 				string = new String(array);
@@ -226,7 +232,8 @@ public class FileFormats {
 			if (string.indexOf(" --> ") != -1 && string.indexOf(':') != -1) {
 				return SRT;
 			}
-			if (string.indexOf('{') != -1 && string.indexOf(':') != -1 && loadJSON(file) != null) {
+			if ((string.indexOf('{') != -1 && string.indexOf(':') != -1) || string.indexOf('[') != -1) {
+				loadJSON(file, bom, bomLength);
 				return JSON;
 			}
 		} catch (Exception e) {
@@ -388,16 +395,35 @@ public class FileFormats {
 		return formats;
 	}
 
-	private static JSONObject loadJSON(File file) throws IOException {
+	private static Object loadJSON(File file, Charset charset, int bomLength) throws IOException, JSONException {
 		StringBuilder sb = new StringBuilder();
-		try (FileReader reader = new FileReader(file)) {
+		if (charset == null) {
+			charset = StandardCharsets.UTF_8;
+		}
+		try (FileReader reader = new FileReader(file, charset)) {
 			try (BufferedReader buffered = new BufferedReader(reader)) {
 				String line = "";
+				boolean first = true;
 				while ((line = buffered.readLine()) != null) {
+					if (!first) {
+						sb.append('\n');
+					}
 					sb.append(line);
+					first = false;
 				}
 			}
 		}
-		return new JSONObject(sb.toString());
+		for (int i = bomLength; i < sb.length(); i++) {
+            if (sb.charAt(i) == '[') {
+                return new JSONArray(sb.toString().substring(bomLength));
+            }
+            if (sb.charAt(i) == '{') {
+                return new JSONObject(sb.toString().substring(bomLength));
+            }
+            if (!Character.isSpaceChar(sb.charAt(i))) {
+                break;
+            }
+        }
+		throw new IOException("Selected file is not JSON");
 	}
 }

@@ -14,7 +14,6 @@ package com.maxprograms.converters.json;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -38,6 +37,7 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Element;
@@ -78,17 +78,25 @@ public class Json2Xliff {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
         try {
-            checkBOM(inputFile);
-            JSONObject json = loadFile(inputFile, encoding);
+            bomLength = EncodingResolver.getBOM(inputFile) == null ? 0 : 1;
+            Object json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
             }
             String configFile = params.get("config");
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
-                parseJson(json, config);
+                if (json instanceof JSONObject) {
+                    parseJson((JSONObject) json, config);
+                } else {
+                    parseArray((JSONArray) json, config);
+                }
             } else {
-                parseJson(json);
+                if (json instanceof JSONObject) {
+                    parseJson((JSONObject) json);
+                } else {
+                    parseArray((JSONArray) json);
+                }
             }
 
             if (segments.isEmpty()) {
@@ -98,7 +106,11 @@ public class Json2Xliff {
             }
 
             try (FileOutputStream out = new FileOutputStream(skeletonFile)) {
-                out.write(json.toString(4).getBytes(StandardCharsets.UTF_8));
+                if (json instanceof JSONObject) {
+                    out.write(((JSONObject) json).toString(2).getBytes(StandardCharsets.UTF_8));
+                } else {
+                    out.write(((JSONArray) json).toString(2).getBytes(StandardCharsets.UTF_8));
+                }
             }
 
             try (FileOutputStream out = new FileOutputStream(xliffFile)) {
@@ -139,29 +151,11 @@ public class Json2Xliff {
         return result;
     }
 
-    private static void checkBOM(String fileName) throws IOException {
-        // check the first three bytes of the document
-        byte[] array = new byte[3];
-        try (FileInputStream inputStream = new FileInputStream(fileName)) {
-            if (inputStream.read(array) == -1) {
-                throw new IOException((new File(fileName).getName() + " is empty."));
-            }
-        }
-        byte[] feff = { -1, -2 }; // UTF-16BE
-        byte[] fffe = { -2, -1 }; // UTF-16LE
-        byte[] efbbbf = { -17, -69, -65 }; // UTF-8
-        if ((array[0] == feff[0] && array[1] == feff[1]) || (array[0] == fffe[0] && array[1] == fffe[1])
-                || (array[0] == efbbbf[0] && array[1] == efbbbf[1])) {
-            // there is a BOM
-            bomLength = 1;
-        }
-    }
-
     private static void writeString(FileOutputStream out, String string) throws IOException {
         out.write(string.getBytes(StandardCharsets.UTF_8));
     }
 
-    protected static JSONObject loadFile(String file, String charset) throws IOException {
+    protected static Object loadFile(String file, String charset) throws IOException {
         StringBuilder builder = new StringBuilder();
         boolean first = true;
         try (FileReader stream = new FileReader(new File(file), Charset.forName(charset))) {
@@ -176,7 +170,18 @@ public class Json2Xliff {
                 }
             }
         }
-        return new JSONObject(builder.toString().substring(bomLength));
+        for (int i = bomLength; i < builder.length(); i++) {
+            if (builder.charAt(i) == '[') {
+                return new JSONArray(builder.toString().substring(bomLength));
+            }
+            if (builder.charAt(i) == '{') {
+                return new JSONObject(builder.toString().substring(bomLength));
+            }
+            if (!Character.isSpaceChar(builder.charAt(i))) {
+                break;
+            }
+        }
+        throw new IOException("Selected file is not supported");
     }
 
     private static void parseJson(JSONObject json) {
@@ -232,15 +237,48 @@ public class Json2Xliff {
     private static String addSegment(String string) {
         Element segment = new Element("trans-unit");
         segment.setAttribute("id", "" + id);
-        segment.setAttribute("xml:space", "preserve");
         segment.addContent("\n    ");
         Element source = new Element("source");
         source.setText(string);
         segment.addContent(source);
         fixHtmlTags(source);
+        String start = "";
+        String end = "";
+        if (!source.getChildren().isEmpty()) {
+            int tagCount = source.getChildren().size();
+            List<XMLNode> content = source.getContent();
+            if (tagCount == 1) {
+                if (content.get(0).getNodeType() == XMLNode.ELEMENT_NODE) {
+                    Element startTag = (Element) content.get(0);
+                    start = startTag.getText();
+                    content.remove(startTag);
+                    source.setContent(content);
+                }
+                if (content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
+                    Element endTag = (Element) content.get(content.size() - 1);
+                    end = endTag.getText();
+                    content.remove(endTag);
+                    source.setContent(content);
+                }
+            }
+            if (tagCount == 2 && content.get(0).getNodeType() == XMLNode.ELEMENT_NODE
+                    && content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element startTag = (Element) content.get(0);
+                start = startTag.getText();
+                Element endTag = (Element) content.get(content.size() - 1);
+                end = endTag.getText();
+                content.remove(endTag);
+                content.remove(startTag);
+                source.setContent(content);
+            }
+        } else {
+            // restore spaces normalized when fixing HTML tags
+            source.setText(string);
+            segment.setAttribute("xml:space", "preserve");
+        }
         segment.addContent("\n  ");
         segments.add(segment);
-        return "%%%" + id++ + "%%%";
+        return start + "%%%" + id++ + "%%%" + end;
     }
 
     private static void parseArray(JSONArray array) {
@@ -252,6 +290,20 @@ public class Json2Xliff {
                 parseArray(array.getJSONArray(i));
             } else if (obj instanceof JSONObject) {
                 parseJson(array.getJSONObject(i));
+            }
+        }
+    }
+
+    private static void parseArray(JSONArray array, JsonConfig config) {
+        // TODO check nested translatable objects
+        for (int i = 0; i < array.length(); i++) {
+            Object obj = array.get(i);
+            if (obj instanceof String) {
+                array.put(i, parseText(array.getString(i)));
+            } else if (obj instanceof JSONArray) {
+                parseArray(array.getJSONArray(i), config);
+            } else if (obj instanceof JSONObject) {
+                parseJson(array.getJSONObject(i), config);
             }
         }
     }
@@ -281,8 +333,9 @@ public class Json2Xliff {
                             int end = matcher.end();
 
                             String s = text.substring(0, start);
-                            newContent.add(new TextNode(s));
-
+                            if (!s.isEmpty()) {
+                                newContent.add(new TextNode(s));
+                            }
                             String tag = text.substring(start, end);
                             Element ph = new Element("ph");
                             ph.setAttribute("id", "" + count++);
@@ -292,9 +345,13 @@ public class Json2Xliff {
                             text = text.substring(end);
                             matcher = pattern.matcher(text);
                         }
-                        newContent.add(new TextNode(text));
+                        if (!text.isEmpty()) {
+                            newContent.add(new TextNode(text));
+                        }
                     } else {
-                        newContent.add(node);
+                        if (!((TextNode) node).getText().isEmpty()) {
+                            newContent.add(node);
+                        }
                     }
                 } else {
                     newContent.add(node);
@@ -320,7 +377,9 @@ public class Json2Xliff {
                             int end = matcher.end();
 
                             String s = text.substring(0, start);
-                            newContent.add(new TextNode(s));
+                            if (!s.isEmpty()) {
+                                newContent.add(new TextNode(s));
+                            }
 
                             String tag = text.substring(start, end);
                             Element ph = new Element("ph");
@@ -331,9 +390,13 @@ public class Json2Xliff {
                             text = text.substring(end);
                             matcher = endPattern.matcher(text);
                         }
-                        newContent.add(new TextNode(text));
+                        if (!text.isEmpty()) {
+                            newContent.add(new TextNode(text));
+                        }
                     } else {
-                        newContent.add(node);
+                        if (!((TextNode) node).getText().isEmpty()) {
+                            newContent.add(node);
+                        }
                     }
                 } else {
                     newContent.add(node);
