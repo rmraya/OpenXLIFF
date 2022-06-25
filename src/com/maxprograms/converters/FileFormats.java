@@ -85,20 +85,16 @@ public class FileFormats {
 			String string = "";
 
 			Charset bom = EncodingResolver.getBOM(fileName);
-			int bomLength = 0;
 			if (bom != null) {
 				byte[] efbbbf = { -17, -69, -65 }; // UTF-8
 				String utf8 = new String(efbbbf);
 				string = new String(array, bom);
 				if (string.startsWith("\uFFFE")) {
 					string = string.substring("\uFFFE".length());
-					bomLength = "\uFFFE".length();
 				} else if (string.startsWith("\uFEFF")) {
 					string = string.substring("\uFEFF".length());
-					bomLength = "\uFEFF".length();
 				} else if (string.startsWith(utf8)) {
 					string = string.substring(utf8.length());
-					bomLength = utf8.length();
 				}
 			} else {
 				string = new String(array);
@@ -233,7 +229,7 @@ public class FileFormats {
 				return SRT;
 			}
 			if ((string.indexOf('{') != -1 && string.indexOf(':') != -1) || string.indexOf('[') != -1) {
-				loadJSON(file, bom, bomLength);
+				loadJSON(file, bom);
 				return JSON;
 			}
 		} catch (Exception e) {
@@ -395,8 +391,9 @@ public class FileFormats {
 		return formats;
 	}
 
-	private static Object loadJSON(File file, Charset charset, int bomLength) throws IOException, JSONException {
+	private static Object loadJSON(File file, Charset charset) throws IOException, JSONException {
 		StringBuilder sb = new StringBuilder();
+		int bomLength = charset == null ? 0 : 1;
 		if (charset == null) {
 			charset = StandardCharsets.UTF_8;
 		}
