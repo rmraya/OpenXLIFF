@@ -59,15 +59,15 @@ public class Xliff2json {
         try {
             loadSegments(xliffFile, catalog);
             Object json = Json2Xliff.loadFile(sklFile, encoding);
-            if (json instanceof JSONObject) {
-                parseJson((JSONObject) json);
+            if (json instanceof JSONObject obj) {
+                parseJson(obj);
             } else {
                 parseArray((JSONArray) json);
             }
 
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
-                if (json instanceof JSONObject) {
-                    out.write(((JSONObject) json).toString(2).getBytes(StandardCharsets.UTF_8));
+                if (json instanceof JSONObject obj) {
+                    out.write(obj.toString(2).getBytes(StandardCharsets.UTF_8));
                 } else {
                     out.write(((JSONArray) json).toString(2).getBytes(StandardCharsets.UTF_8));
                 }

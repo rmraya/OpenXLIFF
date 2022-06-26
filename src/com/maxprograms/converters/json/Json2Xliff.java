@@ -23,9 +23,11 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +35,7 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -86,14 +89,14 @@ public class Json2Xliff {
             String configFile = params.get("config");
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
-                if (json instanceof JSONObject) {
-                    parseJson((JSONObject) json, config);
+                if (json instanceof JSONObject obj) {
+                    parseJson(obj, config);
                 } else {
                     parseArray((JSONArray) json, config);
                 }
             } else {
-                if (json instanceof JSONObject) {
-                    parseJson((JSONObject) json);
+                if (json instanceof JSONObject obj) {
+                    parseJson(obj);
                 } else {
                     parseArray((JSONArray) json);
                 }
@@ -106,8 +109,8 @@ public class Json2Xliff {
             }
 
             try (FileOutputStream out = new FileOutputStream(skeletonFile)) {
-                if (json instanceof JSONObject) {
-                    out.write(((JSONObject) json).toString(2).getBytes(StandardCharsets.UTF_8));
+                if (json instanceof JSONObject obj) {
+                    out.write(obj.toString(2).getBytes(StandardCharsets.UTF_8));
                 } else {
                     out.write(((JSONArray) json).toString(2).getBytes(StandardCharsets.UTF_8));
                 }
@@ -189,37 +192,113 @@ public class Json2Xliff {
         while (it.hasNext()) {
             String key = it.next();
             Object obj = json.get(key);
-            if (obj instanceof JSONObject) {
-                parseJson(json.getJSONObject(key));
-            } else if (obj instanceof String) {
-                json.put(key, parseText(json.getString(key)));
-            } else if (obj instanceof JSONArray) {
-                parseArray(json.getJSONArray(key));
+            if (obj instanceof JSONObject js) {
+                parseJson(js);
+            } else if (obj instanceof String string) {
+                json.put(key, parseText(string));
+            } else if (obj instanceof JSONArray array) {
+                parseArray(array);
             }
         }
     }
 
-    private static void parseJson(JSONObject json, JsonConfig config) {
+    private static void parseJson(JSONObject json, JsonConfig config) throws IOException {
         List<String> translatableKeys = config.getSourceKeys();
+        List<String> ignorable = config.getIgnorableKeys();
+        Set<String> parsedKeys = new HashSet<>();
         for (int i = 0; i < translatableKeys.size(); i++) {
             String sourceKey = translatableKeys.get(i);
             if (json.has(sourceKey)) {
-
-                break;
+                JSONObject configuration = config.getConfiguration(sourceKey);
+                if (configuration == null) {
+                    throw new IOException("Wrong configuration for source key " + sourceKey);
+                }
+                String sourceText = json.getString(sourceKey);
+                String targetKey = configuration.has(JsonConfig.TARGETKEY)
+                        ? configuration.getString(JsonConfig.TARGETKEY)
+                        : "";
+                String targetText = json.has(targetKey) ? json.getString(targetKey) : "";
+                String idKey = configuration.has(JsonConfig.IDKEY) ? configuration.getString(JsonConfig.IDKEY) : "";
+                String id = json.has(idKey) ? json.getString(idKey) : "";
+                String noteKey = configuration.has(JsonConfig.NOTEKEY) ? configuration.getString(JsonConfig.NOTEKEY)
+                        : "";
+                String[] notes = configuration.has(noteKey) ? harvestNotes(configuration.get(noteKey))
+                        : new String[] {};
+                parsedKeys.add(sourceKey);
+                if (!targetKey.isEmpty()) {
+                    parsedKeys.add(targetKey);
+                }
+                if (!idKey.isEmpty()) {
+                    parsedKeys.add(idKey);
+                }
+                if (!noteKey.isEmpty()) {
+                    parsedKeys.add(noteKey);
+                }
+                Element unit = makeUnit(sourceText, targetText, id, notes);
             }
         }
         Iterator<String> it = json.keys();
         while (it.hasNext()) {
             String key = it.next();
-            Object obj = json.get(key);
-            if (obj instanceof JSONObject) {
-                parseJson(json.getJSONObject(key));
-            } else if (obj instanceof String) {
-                json.put(key, parseText(json.getString(key)));
-            } else if (obj instanceof JSONArray) {
-                parseArray(json.getJSONArray(key));
+            if (!parsedKeys.contains(key) && !ignorable.contains(key)) {
+                Object object = json.get(key);
+                if (object instanceof JSONObject jsobj) {
+                    parseJson(jsobj, config);
+                } else if (object instanceof String string) {
+                    json.put(key, string);
+                } else if (object instanceof JSONArray array) {
+                    parseArray(array, config);
+                }
             }
         }
+    }
+
+    private static Element makeUnit(String sourceText, String targetText, String id, String[] notes)
+            throws IOException {
+        if (!id.isEmpty()) {
+            validateId(id);
+        }
+        return null;
+    }
+
+    private static void validateId(String id) throws IOException {
+        String[] nameStart = new String[] { ":", "[A-Z]", "_", "[a-z]", "[\\u00C0-\\u00D6]", "[\\u00D8-\\u00F6]",
+                "[\\u00F8-\\u02FF]", "[\\u0370-\\u037D]", "[\\u037F-\\u1FFF]", "[\\u200C-\\u200D]", "[\\u2070-\\u218F]",
+                "[\\u2C00-\\u2FEF]", "[\\u3001-\\uD7FF]", "[\\uF900-\\uFDCF]", "[\\uFDF0-\\uFFFD]",
+                "[\\u10000-\\uEFFFF]" };
+        String[] nameChar = new String[] { ":", "[A-Z]", "_", "[a-z]", "[-]", "[.]", "[0-9]", "\u00B7",
+                "[\\u00C0-\\u00D6]", "[\\u00D8-\\u00F6]", "[\\u00F8-\\u02FF]", "[\\u0370-\\u037D]", "[\\u037F-\\u1FFF]",
+                "[\\u200C-\\u200D]", "[\\u2070-\\u218F]", "[\\u2C00-\\u2FEF]", "[\\u3001-\\uD7FF]", "[\\uF900-\\uFDCF]",
+                "[\\uFDF0-\\uFFFD]", "[\\u10000-\\uEFFFF]", "[\\u0300-\\u036F]", "[\\u203F-\\u2040]" };
+        boolean first = false;
+        String firstChar = "" + id.charAt(0);
+        for (int i = 0; i < nameStart.length; i++) {
+            if (firstChar.matches(nameStart[i])) {
+                first = true;
+                break;
+            }
+        }
+        if (!first) {
+            throw new IOException("Invalid initial character for \"id\": " + id.charAt(0));
+        }
+        for (int i = 1; i < id.length(); i++) {
+            boolean rest = false;
+            String nextChar = "" + id.charAt(i);
+            for (int j = 0; j < nameStart.length; j++) {
+                String expr = nameChar[j];
+                if (nextChar.matches(expr)) {
+                    rest = true;
+                    break;
+                }
+            }
+            if (!rest) {
+                throw new IOException("Invalid character for \"id\": " + id.charAt(i));
+            }
+        }
+    }
+
+    private static String[] harvestNotes(Object object) {
+        return new String[] {};
     }
 
     private static String parseText(String string) {
@@ -284,33 +363,33 @@ public class Json2Xliff {
     private static void parseArray(JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
-            if (obj instanceof String) {
-                array.put(i, parseText(array.getString(i)));
-            } else if (obj instanceof JSONArray) {
-                parseArray(array.getJSONArray(i));
-            } else if (obj instanceof JSONObject) {
-                parseJson(array.getJSONObject(i));
+            if (obj instanceof String string) {
+                array.put(i, parseText(string));
+            } else if (obj instanceof JSONArray arr) {
+                parseArray(arr);
+            } else if (obj instanceof JSONObject json) {
+                parseJson(json);
             }
         }
     }
 
-    private static void parseArray(JSONArray array, JsonConfig config) {
+    private static void parseArray(JSONArray array, JsonConfig config) throws JSONException, IOException {
         // TODO check nested translatable objects
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
-            if (obj instanceof String) {
-                array.put(i, parseText(array.getString(i)));
-            } else if (obj instanceof JSONArray) {
-                parseArray(array.getJSONArray(i), config);
-            } else if (obj instanceof JSONObject) {
-                parseJson(array.getJSONObject(i), config);
+            if (obj instanceof String string) {
+                array.put(i, parseText(string));
+            } else if (obj instanceof JSONArray arr) {
+                parseArray(arr, config);
+            } else if (obj instanceof JSONObject json) {
+                parseJson(json, config);
             }
         }
     }
 
     private static void fixHtmlTags(Element src) {
         int count = 0;
-        Pattern pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*[/]?>");
+        Pattern pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
         Pattern endPattern = Pattern.compile("</[A-Za-z0-9]+>");
 
         String e = normalise(src.getText());

@@ -266,7 +266,7 @@ public class Convert {
 			}
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
-			logger.log(Level.ERROR, "Conversion error", result.get(1));
+			logger.log(Level.ERROR, "Conversion error: {0}", result.get(1));
 		}
 	}
 
