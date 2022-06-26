@@ -128,7 +128,7 @@ public class GoogleTranslator implements MTEngine {
 
     private static String removeEntities(String string) {
         String result = string;
-        Pattern p = Pattern.compile("\\&\\#[0-9]+\\;");
+        Pattern p = Pattern.compile("\\&\\#[\\d]+\\;");
         Matcher m = p.matcher(result);
         while (m.find()) {
             int from = m.start();
