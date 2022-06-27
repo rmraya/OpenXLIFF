@@ -28,9 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -44,8 +41,6 @@ import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Element;
-import com.maxprograms.xml.TextNode;
-import com.maxprograms.xml.XMLNode;
 
 public class Json2Xliff {
 
@@ -53,6 +48,7 @@ public class Json2Xliff {
     private static Segmenter segmenter;
     private static int id;
     private static List<Element> segments;
+    private static Set<String> ids;
     private static int bomLength = 0;
 
     private Json2Xliff() {
@@ -65,6 +61,7 @@ public class Json2Xliff {
 
         id = 0;
         segments = new ArrayList<>();
+        ids = new HashSet<>();
 
         String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
@@ -136,7 +133,7 @@ public class Json2Xliff {
                 writeString(out, "<body>\n");
 
                 for (int i = 0; i < segments.size(); i++) {
-                    writeString(out, "  " + segments.get(i).toString() + "\n  ");
+                    writeString(out, "  " + segments.get(i).toString() + "\n");
                 }
 
                 writeString(out, "</body>\n");
@@ -213,13 +210,14 @@ public class Json2Xliff {
                 if (configuration == null) {
                     throw new IOException("Wrong configuration for source key " + sourceKey);
                 }
-                String sourceText = json.getString(sourceKey);
+                ElementHolder sourceHolder = ElementBuilder.buildElement("source", json.getString(sourceKey));
                 String targetKey = configuration.has(JsonConfig.TARGETKEY)
                         ? configuration.getString(JsonConfig.TARGETKEY)
                         : "";
                 String targetText = json.has(targetKey) ? json.getString(targetKey) : "";
                 String idKey = configuration.has(JsonConfig.IDKEY) ? configuration.getString(JsonConfig.IDKEY) : "";
-                String id = json.has(idKey) ? json.getString(idKey) : "";
+                String idString = json.has(idKey) ? json.getString(idKey) : "";
+                validateId(idString);
                 String noteKey = configuration.has(JsonConfig.NOTEKEY) ? configuration.getString(JsonConfig.NOTEKEY)
                         : "";
                 String[] notes = configuration.has(noteKey) ? harvestNotes(configuration.get(noteKey))
@@ -234,7 +232,30 @@ public class Json2Xliff {
                 if (!noteKey.isEmpty()) {
                     parsedKeys.add(noteKey);
                 }
-                Element unit = makeUnit(sourceText, targetText, id, notes);
+                Element transUnit = new Element("trans-unit");
+                if (idString.isEmpty()) {
+                    transUnit.setAttribute("id", "" + id);
+                } else {
+                    if (ids.contains(idString)) {
+                       // TODO throw new IOException("Duplicated \"id\" specified: " + idString);
+                    }
+                    transUnit.setAttribute("id", idString);
+                    ids.add(idString);
+                }
+                transUnit.addContent("\n    ");
+                transUnit.addContent(sourceHolder.getElement());
+                if (targetText.isEmpty()) {
+                    json.put(sourceKey, sourceHolder.getStart() + "%%%" +
+                            (idString.isEmpty() ? "" + id++ : idString) + "%%%" + sourceHolder.getEnd());
+                } else {
+                    ElementHolder targetHolder = ElementBuilder.buildElement("target", targetText);
+                    transUnit.addContent("\n    ");
+                    transUnit.addContent(targetHolder.getElement());
+                    json.put(targetKey, targetHolder.getStart() + "%%%" +
+                            (idString.isEmpty() ? "" + id++ : idString) + "%%%" + targetHolder.getEnd());
+                }
+                transUnit.addContent("\n  ");
+                segments.add(transUnit);
             }
         }
         Iterator<String> it = json.keys();
@@ -251,14 +272,6 @@ public class Json2Xliff {
                 }
             }
         }
-    }
-
-    private static Element makeUnit(String sourceText, String targetText, String id, String[] notes)
-            throws IOException {
-        if (!id.isEmpty()) {
-            validateId(id);
-        }
-        return null;
     }
 
     private static void validateId(String id) throws IOException {
@@ -317,47 +330,11 @@ public class Json2Xliff {
         Element segment = new Element("trans-unit");
         segment.setAttribute("id", "" + id);
         segment.addContent("\n    ");
-        Element source = new Element("source");
-        source.setText(string);
-        segment.addContent(source);
-        fixHtmlTags(source);
-        String start = "";
-        String end = "";
-        if (!source.getChildren().isEmpty()) {
-            int tagCount = source.getChildren().size();
-            List<XMLNode> content = source.getContent();
-            if (tagCount == 1) {
-                if (content.get(0).getNodeType() == XMLNode.ELEMENT_NODE) {
-                    Element startTag = (Element) content.get(0);
-                    start = startTag.getText();
-                    content.remove(startTag);
-                    source.setContent(content);
-                }
-                if (content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
-                    Element endTag = (Element) content.get(content.size() - 1);
-                    end = endTag.getText();
-                    content.remove(endTag);
-                    source.setContent(content);
-                }
-            }
-            if (tagCount == 2 && content.get(0).getNodeType() == XMLNode.ELEMENT_NODE
-                    && content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element startTag = (Element) content.get(0);
-                start = startTag.getText();
-                Element endTag = (Element) content.get(content.size() - 1);
-                end = endTag.getText();
-                content.remove(endTag);
-                content.remove(startTag);
-                source.setContent(content);
-            }
-        } else {
-            // restore spaces normalized when fixing HTML tags
-            source.setText(string);
-            segment.setAttribute("xml:space", "preserve");
-        }
+        ElementHolder holder = ElementBuilder.buildElement("source", string);
+        segment.addContent(holder.getElement());
         segment.addContent("\n  ");
         segments.add(segment);
-        return start + "%%%" + id++ + "%%%" + end;
+        return holder.getStart() + "%%%" + id++ + "%%%" + holder.getEnd();
     }
 
     private static void parseArray(JSONArray array) {
@@ -385,111 +362,6 @@ public class Json2Xliff {
                 parseJson(json, config);
             }
         }
-    }
-
-    private static void fixHtmlTags(Element src) {
-        int count = 0;
-        Pattern pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
-        Pattern endPattern = Pattern.compile("</[A-Za-z0-9]+>");
-
-        String e = normalise(src.getText());
-
-        Matcher matcher = pattern.matcher(e);
-        if (matcher.find()) {
-            List<XMLNode> newContent = new Vector<>();
-            List<XMLNode> content = src.getContent();
-            Iterator<XMLNode> it = content.iterator();
-            while (it.hasNext()) {
-                XMLNode node = it.next();
-                if (node.getNodeType() == XMLNode.TEXT_NODE) {
-                    TextNode t = (TextNode) node;
-                    String text = normalise(t.getText());
-                    matcher = pattern.matcher(text);
-                    if (matcher.find()) {
-                        matcher.reset();
-                        while (matcher.find()) {
-                            int start = matcher.start();
-                            int end = matcher.end();
-
-                            String s = text.substring(0, start);
-                            if (!s.isEmpty()) {
-                                newContent.add(new TextNode(s));
-                            }
-                            String tag = text.substring(start, end);
-                            Element ph = new Element("ph");
-                            ph.setAttribute("id", "" + count++);
-                            ph.setText(tag);
-                            newContent.add(ph);
-
-                            text = text.substring(end);
-                            matcher = pattern.matcher(text);
-                        }
-                        if (!text.isEmpty()) {
-                            newContent.add(new TextNode(text));
-                        }
-                    } else {
-                        if (!((TextNode) node).getText().isEmpty()) {
-                            newContent.add(node);
-                        }
-                    }
-                } else {
-                    newContent.add(node);
-                }
-            }
-            src.setContent(newContent);
-        }
-        matcher = endPattern.matcher(e);
-        if (matcher.find()) {
-            List<XMLNode> newContent = new Vector<>();
-            List<XMLNode> content = src.getContent();
-            Iterator<XMLNode> it = content.iterator();
-            while (it.hasNext()) {
-                XMLNode node = it.next();
-                if (node.getNodeType() == XMLNode.TEXT_NODE) {
-                    TextNode t = (TextNode) node;
-                    String text = normalise(t.getText());
-                    matcher = endPattern.matcher(text);
-                    if (matcher.find()) {
-                        matcher.reset();
-                        while (matcher.find()) {
-                            int start = matcher.start();
-                            int end = matcher.end();
-
-                            String s = text.substring(0, start);
-                            if (!s.isEmpty()) {
-                                newContent.add(new TextNode(s));
-                            }
-
-                            String tag = text.substring(start, end);
-                            Element ph = new Element("ph");
-                            ph.setAttribute("id", "" + count++);
-                            ph.setText(tag);
-                            newContent.add(ph);
-
-                            text = text.substring(end);
-                            matcher = endPattern.matcher(text);
-                        }
-                        if (!text.isEmpty()) {
-                            newContent.add(new TextNode(text));
-                        }
-                    } else {
-                        if (!((TextNode) node).getText().isEmpty()) {
-                            newContent.add(node);
-                        }
-                    }
-                } else {
-                    newContent.add(node);
-                }
-            }
-            src.setContent(newContent);
-        }
-    }
-
-    private static String normalise(String string) {
-        String result = string;
-        result = result.replace('\n', ' ');
-        result = result.replaceAll("\\s(\\s)+", " ");
-        return result;
     }
 
 }
