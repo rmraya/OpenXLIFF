@@ -390,7 +390,6 @@ public class Json2Xliff {
     }
 
     private static void parseArray(JSONArray array, JsonConfig config) throws JSONException, IOException {
-        // TODO check nested translatable objects
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String string) {
