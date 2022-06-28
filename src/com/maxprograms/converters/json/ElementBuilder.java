@@ -27,6 +27,10 @@ public class ElementBuilder {
     private static Pattern pattern;
     private static Pattern endPattern;
 
+    private ElementBuilder() {
+        // private for security
+    }
+    
     public static ElementHolder buildElement(String name, String string) {
         Element element = new Element(name);
         element.setText(string);

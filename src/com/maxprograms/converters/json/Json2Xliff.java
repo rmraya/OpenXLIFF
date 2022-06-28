@@ -46,6 +46,8 @@ public class Json2Xliff {
 
     private static boolean paragraphSegmentation;
     private static Segmenter segmenter;
+    private static Segmenter targetSegmenter;
+    private static String tgtLang;
     private static int id;
     private static List<Element> segments;
     private static Set<String> ids;
@@ -73,7 +75,7 @@ public class Json2Xliff {
         paragraphSegmentation = "yes".equals(paragraph);
         String initSegmenter = params.get("srxFile");
         String catalog = params.get("catalog");
-        String tgtLang = "";
+        tgtLang = "";
         if (targetLanguage != null) {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
@@ -82,6 +84,9 @@ public class Json2Xliff {
             Object json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
+                if (targetLanguage != null) {
+                    targetSegmenter = new Segmenter(initSegmenter, targetLanguage, catalog);
+                }
             }
             String configFile = params.get("config");
             if (configFile != null) {
@@ -143,8 +148,6 @@ public class Json2Xliff {
 
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-            Logger logger = System.getLogger(Json2Xliff.class.getName());
-            logger.log(Level.ERROR, "Error converting JSON file.", e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }
@@ -210,7 +213,7 @@ public class Json2Xliff {
                 if (configuration == null) {
                     throw new IOException("Wrong configuration for source key " + sourceKey);
                 }
-                ElementHolder sourceHolder = ElementBuilder.buildElement("source", json.getString(sourceKey));
+                String sourceText = json.getString(sourceKey);
                 String targetKey = configuration.has(JsonConfig.TARGETKEY)
                         ? configuration.getString(JsonConfig.TARGETKEY)
                         : "";
@@ -238,7 +241,7 @@ public class Json2Xliff {
                 List<String> notes = json.has(noteKey) ? harvestNotes(json.get(noteKey))
                         : new ArrayList<>();
                 parsedKeys.add(sourceKey);
-                if (!targetKey.isEmpty()) {
+                if (!targetKey.isEmpty() && !tgtLang.isEmpty()) {
                     parsedKeys.add(targetKey);
                 }
                 if (!idKey.isEmpty()) {
@@ -247,42 +250,63 @@ public class Json2Xliff {
                 if (!noteKey.isEmpty()) {
                     parsedKeys.add(noteKey);
                 }
-                Element transUnit = new Element("trans-unit");
                 if (!resnameText.isEmpty()) {
-                    transUnit.setAttribute("resname", resnameText);
+                    parsedKeys.add(resnameKey);
                 }
-                transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString);
-                if (ids.contains(transUnit.getAttributeValue("id"))) {
-                    // TODO throw new IOException("Duplicated \"id\" specified: " +
-                    // transUnit.getAttributeValue("id");
+
+                String[] sourceSegments = new String[] { sourceText };
+                if (segmenter != null) {
+                    sourceSegments = segmenter.segment(sourceText);
                 }
-                ids.add(transUnit.getAttributeValue("id"));
-                transUnit.addContent("\n    ");
-                transUnit.addContent(sourceHolder.getElement());
-                if (transUnit.getChild("source").getChildren().isEmpty()) {
-                    transUnit.setAttribute("xml:space", "preserve");
-                }
-                if (targetText.isEmpty()) {
-                    json.put(sourceKey, sourceHolder.getStart() + "%%%" +
-                            (idString.isEmpty() ? "" + id++ : idString) + "%%%" + sourceHolder.getEnd());
-                } else {
-                    ElementHolder targetHolder = ElementBuilder.buildElement("target", targetText);
-                    transUnit.addContent("\n    ");
-                    transUnit.addContent(targetHolder.getElement());
-                    json.put(targetKey, targetHolder.getStart() + "%%%" +
-                            (idString.isEmpty() ? "" + id++ : idString) + "%%%" + targetHolder.getEnd());
-                }
-                if (!notes.isEmpty()) {
-                    Iterator<String> it = notes.iterator();
-                    while (it.hasNext()) {
-                        Element note = new Element("note");
-                        note.setText(it.next());
-                        transUnit.addContent("\n    ");
-                        transUnit.addContent(note);
+                String[] targetSegments = new String[] {};
+                if (!tgtLang.isEmpty() && !targetText.isEmpty() && targetSegmenter != null) {
+                    targetSegments = targetSegmenter.segment(targetText);
+                    if (targetSegments.length != sourceSegments.length) {
+                        sourceSegments = new String[] { sourceText };
+                        targetSegments = new String[] { targetText };
                     }
                 }
-                transUnit.addContent("\n  ");
-                segments.add(transUnit);
+
+                for (int h = 0; h < sourceSegments.length; h++) {
+                    Element transUnit = new Element("trans-unit");
+                    if (!resnameText.isEmpty()) {
+                        transUnit.setAttribute("resname", resnameText);
+                    }
+                    String suffix = h > 0 ? "-" + h : "";
+                    transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString + suffix);
+                    if (ids.contains(transUnit.getAttributeValue("id"))) {
+                        throw new IOException("Duplicated \"id\" found: \"" + transUnit.getAttributeValue("id") + "\"");
+                    }
+                    ids.add(transUnit.getAttributeValue("id"));
+                    transUnit.addContent("\n    ");
+                    ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h]);
+                    transUnit.addContent(sourceHolder.getElement());
+                    if (transUnit.getChild("source").getChildren().isEmpty()) {
+                        transUnit.setAttribute("xml:space", "preserve");
+                    }
+                    if (tgtLang.isEmpty() || targetText.isEmpty()) {
+                        json.put(sourceKey, sourceHolder.getStart() + "%%%" +
+                                (idString.isEmpty() ? "" + id++ : idString) + "%%%" + sourceHolder.getEnd());
+                    } else {
+                        ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h]);
+                        transUnit.addContent("\n    ");
+                        transUnit.addContent(targetHolder.getElement());
+                        json.put(targetKey, targetHolder.getStart() + "%%%" +
+                                (idString.isEmpty() ? "" + id++ : idString) + "%%%" + targetHolder.getEnd());
+                    }
+                    if (!notes.isEmpty() && h == 0) {
+                        // add notes only to the first segment
+                        Iterator<String> it = notes.iterator();
+                        while (it.hasNext()) {
+                            Element note = new Element("note");
+                            note.setText(it.next());
+                            transUnit.addContent("\n    ");
+                            transUnit.addContent(note);
+                        }
+                    }
+                    transUnit.addContent("\n  ");
+                    segments.add(transUnit);
+                }
             }
         }
         Iterator<String> it = json.keys();
@@ -293,7 +317,7 @@ public class Json2Xliff {
                 if (object instanceof JSONObject jsobj) {
                     parseJson(jsobj, config);
                 } else if (object instanceof String string) {
-                    json.put(key, string);
+                    json.put(key, parseText(string));
                 } else if (object instanceof JSONArray array) {
                     parseArray(array, config);
                 }

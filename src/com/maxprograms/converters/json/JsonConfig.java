@@ -62,8 +62,8 @@ public class JsonConfig {
         JSONArray translatableArray = configObject.getJSONArray("translatable");
         for (int i = 0; i < translatableArray.length(); i++) {
             JSONObject translatable = translatableArray.getJSONObject(i);
-            if (translatable.has("sourceKey")) {
-                String sourceKey = translatable.getString("sourceKey");
+            if (translatable.has(SOURCEKEY)) {
+                String sourceKey = translatable.getString(SOURCEKEY);
                 config.translatableKeys.put(sourceKey, translatable);
                 config.sourceKeys.add(sourceKey);
             } else {
