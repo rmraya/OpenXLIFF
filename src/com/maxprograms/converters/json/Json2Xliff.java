@@ -216,12 +216,27 @@ public class Json2Xliff {
                         : "";
                 String targetText = json.has(targetKey) ? json.getString(targetKey) : "";
                 String idKey = configuration.has(JsonConfig.IDKEY) ? configuration.getString(JsonConfig.IDKEY) : "";
-                String idString = json.has(idKey) ? json.getString(idKey) : "";
-                validateId(idString);
+                String idString = "";
+                if (json.has(idKey)) {
+                    Object obj = json.get(idKey);
+                    if (obj instanceof String string) {
+                        idString = string;
+                    }
+                    if (obj instanceof Integer j) {
+                        idString = "" + j;
+                    }
+                }
+                if (!idString.isEmpty()) {
+                    validateId(idString);
+                }
+                String resnameKey = configuration.has(JsonConfig.RESNAMEKEY)
+                        ? configuration.getString(JsonConfig.RESNAMEKEY)
+                        : "";
+                String resnameText = json.has(resnameKey) ? json.getString(resnameKey) : "";
                 String noteKey = configuration.has(JsonConfig.NOTEKEY) ? configuration.getString(JsonConfig.NOTEKEY)
                         : "";
-                String[] notes = configuration.has(noteKey) ? harvestNotes(configuration.get(noteKey))
-                        : new String[] {};
+                List<String> notes = json.has(noteKey) ? harvestNotes(json.get(noteKey))
+                        : new ArrayList<>();
                 parsedKeys.add(sourceKey);
                 if (!targetKey.isEmpty()) {
                     parsedKeys.add(targetKey);
@@ -233,15 +248,15 @@ public class Json2Xliff {
                     parsedKeys.add(noteKey);
                 }
                 Element transUnit = new Element("trans-unit");
-                if (idString.isEmpty()) {
-                    transUnit.setAttribute("id", "" + id);
-                } else {
-                    if (ids.contains(idString)) {
-                       // TODO throw new IOException("Duplicated \"id\" specified: " + idString);
-                    }
-                    transUnit.setAttribute("id", idString);
-                    ids.add(idString);
+                if (!resnameText.isEmpty()) {
+                    transUnit.setAttribute("resname", resnameText);
                 }
+                transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString);
+                if (ids.contains(transUnit.getAttributeValue("id"))) {
+                    // TODO throw new IOException("Duplicated \"id\" specified: " +
+                    // transUnit.getAttributeValue("id");
+                }
+                ids.add(transUnit.getAttributeValue("id"));
                 transUnit.addContent("\n    ");
                 transUnit.addContent(sourceHolder.getElement());
                 if (targetText.isEmpty()) {
@@ -253,6 +268,15 @@ public class Json2Xliff {
                     transUnit.addContent(targetHolder.getElement());
                     json.put(targetKey, targetHolder.getStart() + "%%%" +
                             (idString.isEmpty() ? "" + id++ : idString) + "%%%" + targetHolder.getEnd());
+                }
+                if (!notes.isEmpty()) {
+                    Iterator<String> it = notes.iterator();
+                    while (it.hasNext()) {
+                        Element note = new Element("note");
+                        note.setText(it.next());
+                        transUnit.addContent("\n    ");
+                        transUnit.addContent(note);
+                    }
                 }
                 transUnit.addContent("\n  ");
                 segments.add(transUnit);
@@ -310,8 +334,23 @@ public class Json2Xliff {
         }
     }
 
-    private static String[] harvestNotes(Object object) {
-        return new String[] {};
+    private static List<String> harvestNotes(Object object) {
+        List<String> result = new ArrayList<>();
+        if (object instanceof JSONObject json) {
+            Iterator<String> keys = json.keys();
+            while (keys.hasNext()) {
+                result.addAll(harvestNotes(json.get(keys.next())));
+            }
+        }
+        if (object instanceof JSONArray array) {
+            for (int i = 0; i < array.length(); i++) {
+                result.addAll(harvestNotes(array.get(i)));
+            }
+        }
+        if (object instanceof String string) {
+            result.add(string);
+        }
+        return result;
     }
 
     private static String parseText(String string) {
