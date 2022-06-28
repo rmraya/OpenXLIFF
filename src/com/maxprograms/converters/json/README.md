@@ -41,4 +41,6 @@ Configuration files for JSON filter are defined in a JSON file with these fields
  1. The JSON filter configuration parser reads the `translatable` array and makes a list of possible `sourceKey` values. A list of keys to ignore is built from the `ignorable` array.
  2. The filter reads the JSON file and iterates over all available objects and their descendants
  3. If an object that has a key in the `sourceKey` list is found, a new segment is created and its value is used as source text. If the object has other keys defined in the configuration, they are used as target, id, resname attribute or note as indicated.
+ 4. If an object contains a key that matches `noteKey`, a list of text strings is created from its content and all descendents. Each found string is added as a `<note>` element in the active segment.
+ 5. All other remaining key/value pairs in the object are checked. If a value contains text, it is extracted as a new segment wihout target or special attributes. To prevent creation of unwanted segments, add the corresponding key to the `ignorable` list.
   

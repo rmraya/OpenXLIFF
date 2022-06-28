@@ -259,6 +259,9 @@ public class Json2Xliff {
                 ids.add(transUnit.getAttributeValue("id"));
                 transUnit.addContent("\n    ");
                 transUnit.addContent(sourceHolder.getElement());
+                if (transUnit.getChild("source").getChildren().isEmpty()) {
+                    transUnit.setAttribute("xml:space", "preserve");
+                }
                 if (targetText.isEmpty()) {
                     json.put(sourceKey, sourceHolder.getStart() + "%%%" +
                             (idString.isEmpty() ? "" + id++ : idString) + "%%%" + sourceHolder.getEnd());
