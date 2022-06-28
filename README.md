@@ -20,6 +20,12 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
 - **[Copy Source to Target](https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**
 - **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
+
+## Filters Configuration 
+
+XML and JSON filters are configurable
+
+- **[XML Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/JSON-Configuration/src/com/maxprograms/converters/xml)**
 - **[JSON Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/JSON-Configuration/src/com/maxprograms/converters/json)**
 
 ## Related Projects
