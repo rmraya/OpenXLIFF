@@ -64,7 +64,7 @@ public class Text2Xliff {
 			tgtLang = "\" target-language=\"" + targetLanguage;
 		}
 
-		segByElement = elementSegmentation == null ? false : elementSegmentation.equals("yes");
+		segByElement = "yes".equals(elementSegmentation);
 
 		source = "";
 		try {

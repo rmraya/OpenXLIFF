@@ -169,15 +169,14 @@ public class EncodingResolver {
 	}
 
 	private static Charset getJSONEncoding(String fileName) throws IOException {
-		// return UTF-8 as default
-		String result = StandardCharsets.UTF_8.name();
 		// check if there is a BOM (byte order mark)
 		// at the start of the document
 		Charset bom = getBOM(fileName);
 		if (bom != null) {
 			return bom;
 		}
-		return Charset.forName(result);
+		// return UTF-8 as default
+		return StandardCharsets.UTF_8;
 	}
 
 	private static Charset getXMLEncoding(String fileName) throws IOException {

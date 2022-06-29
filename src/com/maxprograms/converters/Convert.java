@@ -82,6 +82,7 @@ public class Convert {
 		String xliff = "";
 		String catalog = "";
 		String ditaval = "";
+		String config = "";
 		boolean embed = false;
 		boolean paragraph = false;
 		boolean xliff20 = false;
@@ -130,6 +131,9 @@ public class Convert {
 			}
 			if (arg.equals("-ditaval") && (i + 1) < arguments.length) {
 				ditaval = arguments[i + 1];
+			}
+			if (arg.equals("-config") && (i + 1) < arguments.length) {
+				config = arguments[i + 1];
 			}
 			if (arg.equals("-embed")) {
 				embed = true;
@@ -248,6 +252,9 @@ public class Convert {
 		if (type.equals(FileFormats.getShortName(FileFormats.DITA)) && !ditaval.isEmpty()) {
 			params.put("ditaval", ditaval);
 		}
+		if (type.equals(FileFormats.getShortName(FileFormats.JSON)) && !config.isEmpty()) {
+			params.put("config", config);
+		}
 		List<String> result = run(params);
 		if (embed && Constants.SUCCESS.equals(result.get(0))) {
 			addSkeleton(xliff, catalog);
@@ -259,7 +266,7 @@ public class Convert {
 			}
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
-			logger.log(Level.ERROR, "Conversion error", result.get(1));
+			logger.log(Level.ERROR, "Conversion error: {0}", result.get(1));
 		}
 	}
 
@@ -270,50 +277,51 @@ public class Convert {
 		}
 		String help = "Usage:\n\n" + launcher
 				+ "[-help] [-version] -file sourceFile -srcLang sourceLang [-tgtLang targetLang] "
-				+ "[-skl skeletonFile] [-xliff xliffFile] " 
+				+ "[-skl skeletonFile] [-xliff xliffFile] "
 				+ "[-type fileType] [-enc encoding] [-srx srxFile] "
-				+ "[-catalog catalogFile] [-divatal ditaval] " 
+				+ "[-catalog catalogFile] [-divatal ditaval] [-config configFile] "
 				+ "[-embed] [-paragraph] [-2.0] [-charsets]\n\n"
-				+ "Where:\n\n" 
+				+ "Where:\n\n"
 				+ "   -help:      (optional) Display this help information and exit\n"
 				+ "   -version:   (optional) Display version & build information and exit\n"
-				+ "   -file:      source file to convert\n" 
+				+ "   -file:      source file to convert\n"
 				+ "   -srcLang:   source language code\n"
 				+ "   -tgtLang:   (optional) target language code\n"
 				+ "   -xliff:     (optional) XLIFF file to generate\n"
-				+ "   -skl:       (optional) skeleton file to generate\n" 
+				+ "   -skl:       (optional) skeleton file to generate\n"
 				+ "   -type:      (optional) document type\n"
 				+ "   -enc:       (optional) character set code for the source file\n"
 				+ "   -srx:       (optional) SRX file to use for segmentation\n"
 				+ "   -catalog:   (optional) XML catalog to use for processing\n"
 				+ "   -ditaval:   (optional) conditional processing file to use when converting DITA maps\n"
+				+ "   -config:    (optional) configuration file to use when converting JSON documents\n"
 				+ "   -embed:     (optional) store skeleton inside the XLIFF file\n"
 				+ "   -paragraph: (optional) use paragraph segmentation\n"
 				+ "   -2.0:       (optional) generate XLIFF 2.0\n"
 				+ "   -charsets:  (optional) display a list of available character sets and exit\n\n"
-				+ "Document Types\n\n" 
-				+ "   INX = Adobe InDesign Interchange\n" 
+				+ "Document Types\n\n"
+				+ "   INX = Adobe InDesign Interchange\n"
 				+ "   ICML = Adobe InCopy ICML\n"
 				+ "   IDML = Adobe InDesign IDML\n"
-				+ "   DITA = DITA Map\n" 
-				+ "   HTML = HTML Page\n" 
+				+ "   DITA = DITA Map\n"
+				+ "   HTML = HTML Page\n"
 				+ "   JS = JavaScript\n"
 				+ "   JSON = JSON\n"
-				+ "   JAVA = Java Properties\n" 
+				+ "   JAVA = Java Properties\n"
 				+ "   MIF = MIF (Maker Interchange Format)\n"
-				+ "   OFF = Microsoft Office 2007 Document\n" 
+				+ "   OFF = Microsoft Office 2007 Document\n"
 				+ "   OO = OpenOffice Document\n"
-				+ "   PO = PO (Portable Objects)\n" 
+				+ "   PO = PO (Portable Objects)\n"
 				+ "   RC = RC (Windows C/C++ Resources)\n"
-				+ "   RESX = ResX (Windows .NET Resources)\n" 
+				+ "   RESX = ResX (Windows .NET Resources)\n"
 				+ "   SDLPPX = Trados Studio Package\n"
 				+ "   SDLXLIFF = SDLXLIFF Document\n"
 				+ "   SRT = SRT Substitle"
-				+ "   TEXT = Plain Text\n" 
+				+ "   TEXT = Plain Text\n"
 				+ "   TS = TS (Qt Linguist translation source)\n"
-				+ "   TXML = TXML Document\n" 
-				+ "   WPML = WPML XLIFF\n" 
-				+ "   XLIFF = XLIFF Document\n" 
+				+ "   TXML = TXML Document\n"
+				+ "   WPML = WPML XLIFF\n"
+				+ "   XLIFF = XLIFF Document\n"
 				+ "   XML = XML Document\n"
 				+ "   XMLG = XML (Generic)\n";
 		System.out.println(help);

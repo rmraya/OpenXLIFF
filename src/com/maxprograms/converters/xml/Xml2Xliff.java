@@ -1297,10 +1297,8 @@ public class Xml2Xliff {
 				String value = ((TextNode) n).getText();
 				//
 				// Don't enable replacement of "&". Replacement of "<" and ">" is needed because
-				// otherwise tag
-				// handling will fail (it searches for initial "<" and closing ">"
+				// otherwise tag handling will fail (it searches for initial "<" and closing ">"
 				//
-				// value = value.replaceAll("&","&amp;");
 				value = value.replace("<", "&lt;");
 				value = value.replace(">", "&gt;");
 

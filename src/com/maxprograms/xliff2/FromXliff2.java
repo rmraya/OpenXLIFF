@@ -305,10 +305,8 @@ public class FromXliff2 {
 					if (tgt == null && child.getName().equals("ignorable")) {
 						joinedTarget.addContent(src.getContent());
 					}
-					if (child.getName().equals("segment")) {
-						if ("final".equals(child.getAttributeValue("state"))) {
-							approved = true;
-						}
+					if (child.getName().equals("segment") && "final".equals(child.getAttributeValue("state"))) {
+						approved = true;
 					}
 				}
 			}

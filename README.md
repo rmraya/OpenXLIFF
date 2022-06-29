@@ -21,6 +21,13 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Copy Source to Target](https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**
 - **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
 
+## Filters Configuration 
+
+XML and JSON filters are configurable
+
+- **[XML Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/JSON-Configuration/src/com/maxprograms/converters/xml)**
+- **[JSON Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/JSON-Configuration/src/com/maxprograms/converters/json)**
+
 ## Related Projects
 
 - **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy to use free UI for creating, merging and validating XLIFF files in a graphical environment.

@@ -11,7 +11,12 @@
  *******************************************************************************/
 package com.maxprograms.languages;
 
+import java.io.IOException;
 import java.io.Serializable;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 public class Language implements Comparable<Language>, Serializable {
 
@@ -61,7 +66,7 @@ public class Language implements Comparable<Language>, Serializable {
 		return script;
 	}
 
-	public boolean isBiDi() {
+	public boolean isBiDi() throws SAXException, IOException, ParserConfigurationException {
 		return LanguageUtils.isBiDi(code);
 	}
 

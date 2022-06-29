@@ -213,7 +213,7 @@ public class MSOffice2Xliff {
 		Stack<String> stack = new Stack<>();
 		for (int i = 0; i < parts.length; i++) {
 			if (parts[i].length() > 0) {
-				String[] subparts = parts[i].split("[\\s]|[>]");
+				String[] subparts = parts[i].split("[\\s]|>");
 				if (subparts[0].startsWith("/")) {
 					if (stack.isEmpty()) {
 						return false;

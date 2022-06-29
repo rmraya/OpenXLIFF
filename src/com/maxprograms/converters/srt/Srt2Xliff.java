@@ -95,7 +95,7 @@ public class Srt2Xliff {
                                 sb = new StringBuilder();
                             }
                         } else {
-                            if (line.trim().matches("[0-9]+")) {
+                            if (line.trim().matches("[\\d]+")) {
                                 segId = Integer.valueOf(line.trim());
                                 writeSkeleton(line + '\n');
                             } else if (line.contains(" --> ")) {
