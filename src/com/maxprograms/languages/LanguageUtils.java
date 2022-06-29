@@ -29,10 +29,33 @@ import com.maxprograms.xml.SAXBuilder;
 public class LanguageUtils {
 
 	private static List<Language> languages;
+	private static List<Language> extendedLanguages;
 	private static RegistryParser registry;
 
 	private LanguageUtils() {
 		// do not instantiate
+	}
+
+	public static List<Language> getAllLanguages() throws SAXException, IOException, ParserConfigurationException {
+		if (registry == null) {
+			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
+		}
+		if (extendedLanguages == null) {
+			extendedLanguages = new ArrayList<>();
+			SAXBuilder builder = new SAXBuilder();
+			Element root = builder.build(Language.class.getResource("extendedLanguageList.xml")).getRootElement();
+			List<Element> children = root.getChildren();
+			Iterator<Element> it = children.iterator();
+			while (it.hasNext()) {
+				Element lang = it.next();
+				String code = lang.getAttributeValue("code");
+				String description = registry.getTagDescription(code);
+				extendedLanguages.add(new Language(code, description));
+			}
+
+			Collections.sort(extendedLanguages);
+		}
+		return extendedLanguages;
 	}
 
 	public static List<Language> getCommonLanguages() throws SAXException, IOException, ParserConfigurationException {
@@ -67,8 +90,9 @@ public class LanguageUtils {
 		return null;
 	}
 
-	public static Language languageFromName(String description) throws SAXException, IOException, ParserConfigurationException {
-		List<Language> list = getCommonLanguages();
+	public static Language languageFromName(String description)
+			throws SAXException, IOException, ParserConfigurationException {
+		List<Language> list = getAllLanguages();
 		Iterator<Language> it = list.iterator();
 		while (it.hasNext()) {
 			Language l = it.next();
@@ -86,10 +110,11 @@ public class LanguageUtils {
 		return registry.normalizeCode(code);
 	}
 
-	public static boolean isBiDi(String code)  {
-		return code.startsWith("ar") || code.startsWith("fa") || code.startsWith("az") || code.startsWith("ur")
-				|| code.startsWith("pa-PK") || code.startsWith("ps") || code.startsWith("prs") || code.startsWith("ug")
-				|| code.startsWith("he") || code.startsWith("ji") || code.startsWith("yi");
+	public static boolean isBiDi(String code) {
+		return code.startsWith("ar") || code.startsWith("ckb") || code.startsWith("fa") || code.startsWith("ff")
+				|| code.startsWith("he") || code.startsWith("ks") || code.startsWith("lrc") || code.startsWith("mzn")
+				|| code.startsWith("pa") || code.startsWith("ps") || code.startsWith("sd") || code.startsWith("ug")
+				|| code.startsWith("ur") || code.startsWith("uz") || code.startsWith("yi");
 
 	}
 
@@ -100,7 +125,7 @@ public class LanguageUtils {
 
 	public static String[] getLanguageNames() throws SAXException, IOException, ParserConfigurationException {
 		Set<String> set = new TreeSet<>();
-		List<Language> list = getCommonLanguages();	
+		List<Language> list = getCommonLanguages();
 		Iterator<Language> it = list.iterator();
 		while (it.hasNext()) {
 			set.add(it.next().getDescription());
