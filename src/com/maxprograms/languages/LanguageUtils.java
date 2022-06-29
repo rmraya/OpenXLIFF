@@ -30,6 +30,7 @@ public class LanguageUtils {
 
 	private static List<Language> languages;
 	private static List<Language> extendedLanguages;
+	private static Set<String> bidiCodes;
 	private static RegistryParser registry;
 
 	private LanguageUtils() {
@@ -42,6 +43,7 @@ public class LanguageUtils {
 		}
 		if (extendedLanguages == null) {
 			extendedLanguages = new ArrayList<>();
+			bidiCodes = new TreeSet<>();
 			SAXBuilder builder = new SAXBuilder();
 			Element root = builder.build(Language.class.getResource("extendedLanguageList.xml")).getRootElement();
 			List<Element> children = root.getChildren();
@@ -51,8 +53,10 @@ public class LanguageUtils {
 				String code = lang.getAttributeValue("code");
 				String description = registry.getTagDescription(code);
 				extendedLanguages.add(new Language(code, description));
+				if ("true".equals(lang.getAttributeValue("bidi"))) {
+					bidiCodes.add(code);
+				}
 			}
-
 			Collections.sort(extendedLanguages);
 		}
 		return extendedLanguages;
@@ -110,12 +114,11 @@ public class LanguageUtils {
 		return registry.normalizeCode(code);
 	}
 
-	public static boolean isBiDi(String code) {
-		return code.startsWith("ar") || code.startsWith("ckb") || code.startsWith("fa") || code.startsWith("ff")
-				|| code.startsWith("he") || code.startsWith("ks") || code.startsWith("lrc") || code.startsWith("mzn")
-				|| code.startsWith("pa") || code.startsWith("ps") || code.startsWith("sd") || code.startsWith("ug")
-				|| code.startsWith("ur") || code.startsWith("uz") || code.startsWith("yi");
-
+	public static boolean isBiDi(String code) throws SAXException, IOException, ParserConfigurationException {
+		if (bidiCodes == null) {
+			getAllLanguages();
+		}
+		return bidiCodes.contains(code);
 	}
 
 	public static boolean isCJK(String code) {
