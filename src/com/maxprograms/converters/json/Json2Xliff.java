@@ -17,8 +17,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -399,6 +397,9 @@ public class Json2Xliff {
         ElementHolder holder = ElementBuilder.buildElement("source", string);
         segment.addContent(holder.getElement());
         segment.addContent("\n  ");
+        if (holder.getElement().getChildren().isEmpty()) {
+            segment.setAttribute("xml:space", "preserve");
+        }
         segments.add(segment);
         return holder.getStart() + "%%%" + id++ + "%%%" + holder.getEnd();
     }
