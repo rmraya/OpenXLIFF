@@ -1,10 +1,12 @@
 # JSON Filter Configuration Files
 
-Configuration files for JSON filter are defined in a JSON file with these fields:
+Configuration files for JSON filter are defined in a JSON file that contains two arrays:
 
 - `traslatable`: array of JSON objects that define translatable keys
 - `ignorable`: array of strings listing ignorable keys
-  
+
+Configuration files must be written using UTF-8 character set without a byte order mark (BOM).
+
 ## Translatable Object Fields
 
 - `sourceKey`: key for the value to use as source text
