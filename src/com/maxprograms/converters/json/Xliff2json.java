@@ -125,31 +125,28 @@ public class Xliff2json {
     }
 
     private static String parseText(String line) throws IOException {
-        StringBuilder builder = new StringBuilder();
         int index = line.indexOf("%%%");
         while (index != -1) {
-            line = line.substring(index + 3);
-            String code = line.substring(0, line.indexOf("%%%"));
-            line = line.substring(line.indexOf("%%%") + 3);
+            String code = line.substring(index + 3, line.indexOf("%%%", index + 1));
             Element segment = segments.get(code);
             if (segment != null) {
                 Element target = segment.getChild("target");
                 Element source = segment.getChild("source");
                 if (target != null) {
                     if ("yes".equals(segment.getAttributeValue("approved"))) {
-                        builder.append(extractText(target));
+                        line = line.replace("%%%" + code + "%%%", extractText(target));
                     } else {
-                        builder.append(extractText(source));
+                        line = line.replace("%%%" + code + "%%%", extractText(source));
                     }
                 } else {
-                    builder.append(extractText(source));
+                    line = line.replace("%%%" + code + "%%%", extractText(source));
                 }
             } else {
                 throw new IOException("Segment " + code + " not found");
             }
             index = line.indexOf("%%%");
         }
-        return builder.toString();
+        return line;
     }
 
     private static void parseArray(JSONArray array) throws IOException {

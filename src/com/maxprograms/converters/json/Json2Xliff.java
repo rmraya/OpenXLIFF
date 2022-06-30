@@ -238,6 +238,10 @@ public class Json2Xliff {
                         : "";
                 List<String> notes = json.has(noteKey) ? harvestNotes(json.get(noteKey))
                         : new ArrayList<>();
+                boolean replicate = false;
+                if (configuration.has(JsonConfig.REPLICATE)) {
+                    replicate = configuration.getBoolean(JsonConfig.REPLICATE);
+                }
                 parsedKeys.add(sourceKey);
                 if (!targetKey.isEmpty() && !tgtLang.isEmpty()) {
                     parsedKeys.add(targetKey);
@@ -264,13 +268,13 @@ public class Json2Xliff {
                         targetSegments = new String[] { targetText };
                     }
                 }
-
+                StringBuilder sb = new StringBuilder();
                 for (int h = 0; h < sourceSegments.length; h++) {
                     Element transUnit = new Element("trans-unit");
                     if (!resnameText.isEmpty()) {
                         transUnit.setAttribute("resname", resnameText);
                     }
-                    String suffix = h > 0 ? "-" + h : "";
+                    String suffix = sourceSegments.length > 1 ? "-" + (h + 1) : "";
                     transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString + suffix);
                     if (ids.contains(transUnit.getAttributeValue("id"))) {
                         throw new IOException("Duplicated \"id\" found: \"" + transUnit.getAttributeValue("id") + "\"");
@@ -283,17 +287,26 @@ public class Json2Xliff {
                         transUnit.setAttribute("xml:space", "preserve");
                     }
                     if (tgtLang.isEmpty() || targetText.isEmpty()) {
-                        json.put(sourceKey, sourceHolder.getStart() + "%%%" +
-                                (idString.isEmpty() ? "" + id++ : idString) + "%%%" + sourceHolder.getEnd());
+                        sb.append(sourceHolder.getStart());
+                        sb.append("%%%");
+                        sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
+                        sb.append("%%%");
+                        sb.append(sourceHolder.getEnd());
+                        json.put(sourceKey, sb.toString());
                     } else {
                         ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h]);
                         transUnit.addContent("\n    ");
                         transUnit.addContent(targetHolder.getElement());
-                        json.put(targetKey, targetHolder.getStart() + "%%%" +
-                                (idString.isEmpty() ? "" + id++ : idString) + "%%%" + targetHolder.getEnd());
+                        sb.append(targetHolder.getStart());
+                        sb.append("%%%");
+                        sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
+                        sb.append("%%%");
+                        sb.append(targetHolder.getEnd());
+                        json.put(targetKey, sb.toString());
                     }
-                    if (!notes.isEmpty() && h == 0) {
-                        // add notes only to the first segment
+                    if (!notes.isEmpty() && (replicate || h == 0)) {
+                        // add notes to all segments if "replicate"
+                        // otherwise, only to first segment
                         Iterator<String> it = notes.iterator();
                         while (it.hasNext()) {
                             Element note = new Element("note");

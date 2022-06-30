@@ -14,6 +14,7 @@ Configuration files must be written using UTF-8 character set without a byte ord
 - `idKey`: (optional) key of the value to use as segment ID
 - `resnameKey`: (optional) key of the value to use in the `resname` attribute in the generated `<trans-unit>` element
 - `noteKey`: (optional) key for values to be extracted as segment notes
+- `replicateNotes`: (optional) boolean indicating whether to include notes in all segments when there is more than one
 
 ### Notes
 
@@ -26,22 +27,26 @@ Configuration files must be written using UTF-8 character set without a byte ord
 ### Example
 
  ``` json
- {
-    "translatable": [{
-        "sourceKey": "text",
-        "targetKey": "translation",
-        "idKey": "key",
-        "resnameKey": "label",
-        "noteKey": "comment_text"
-    },{
-        "sourceKey": "original_text",
-        "idKey": "key",
-        "targetKey": "current_translation"
-    },{
-        "sourceKey": "name"
-    }],
-    "ignorable":["not_for_translation"]
- }
+{
+    "translatable": [
+        {
+            "sourceKey": "original_text",
+            "targetKey": "current_translation"
+        },
+        {
+            "sourceKey": "source_text",
+            "idKey": "textblock_id",
+            "targetKey": "target_text",
+            "resnameKey": "item_label",
+            "noteKey": "comments",
+            "replicateNotes": true
+        }
+    ],
+    "ignorable": [
+        "original_id",
+        "key"
+    ]
+}
  ```
 
 ## JSON Processing
