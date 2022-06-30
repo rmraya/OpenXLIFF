@@ -22,12 +22,12 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Approve All Segments](https://github.com/rmraya/OpenXLIFF#approve-all-segments)**
 - **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
 
-## Filters Configuration 
+## Filters Configuration
 
 XML and JSON filters are configurable
 
-- **[XML Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/JSON-Configuration/src/com/maxprograms/converters/xml)**
-- **[JSON Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/JSON-Configuration/src/com/maxprograms/converters/json)**
+- **[XML Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/master/src/com/maxprograms/converters/xml#readme)**
+- **[JSON Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/master/src/com/maxprograms/converters/json#readme)**
 
 ## Related Projects
 
@@ -46,7 +46,7 @@ Version | Comment | Release Date
 2.4.2 | Improved support for Trados Studio Packages | june 18th, 2022
 2.4.1 | Fixed conversion of third party XLIFF files | June 10th, 2022
 2.4.0 | Added remove all targets; Added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
-2.3.0 | Added copy source to target; Fixed DITA conversion and merge | May 25th, 2022 
+2.3.0 | Added copy source to target; Fixed DITA conversion and merge | May 25th, 2022
 2.2.0 | Added pseudo-translation | May 11th, 2022
 2.1.0 | Updated dependencies and improved validation of XLIFF 2.x | April 21st, 2022
 2.0.0 | Moved server code to [XLIFF Manager](https://github.com/rmraya/XLIFFManager) project| March 29th, 2022
@@ -150,6 +150,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   cd OpenXLIFF
   ant
 ```
+
 A binary distribution will be created in `/dist` folder.
 
 ## Convert Document to XLIFF
