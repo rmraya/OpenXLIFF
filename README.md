@@ -19,6 +19,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
 - **[Copy Source to Target](https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**
+- **[Approve All Segments](https://github.com/rmraya/OpenXLIFF#approve-all-segments)**
 - **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
 
 ## Filters Configuration 
@@ -341,6 +342,24 @@ Running `.\copysources.bat` or `./copysources.sh` without parameters displays he
 Usage:
 
    copysources.bat [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -xliff:     XLIFF file to process
+   -catalog:   (optional) XML catalog to use for processing
+```
+
+## Approve All Segments
+
+You can set all `<trans-unit>` or `<segment>` elements as `approved` or `final` if they contain target text using class `com.maxprograms.converters.ApproveAll` from your Java code or using the provided scripts.
+
+Running `.\approveall.bat` or `./approveall.sh` without parameters displays help for approving or confirming all segments in an XLIFF file.
+
+```text
+Usage:
+
+   approveall.bat [-help] -xliff xliffFile [-catalog catalogFile]
 
 Where:
 
