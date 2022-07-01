@@ -37,6 +37,7 @@ import org.xml.sax.SAXException;
 public class CopySources {
 
     private static Logger logger = System.getLogger(CopySources.class.getName());
+    private static String version;
 
     public static void main(String[] args) {
 
@@ -102,6 +103,10 @@ public class CopySources {
         builder.setEntityResolver(new Catalog(catalog));
         Document doc = builder.build(xliff);
         Element root = doc.getRootElement();
+        if (!"xliff".equals(root.getName())) {
+            throw new IOException("Selected file is not an XLIFF document");
+        }
+        version = root.getAttributeValue("version");
         recurse(root);
         Indenter.indent(root, 2);
         XMLOutputter outputter = new XMLOutputter();
@@ -111,7 +116,12 @@ public class CopySources {
         }
     }
 
-    private static void recurse(Element root) {
+    private static void recurse(Element root) throws IOException {
+        if (("xliff".equals(root.getName()) && version.startsWith("2.") && root.getAttributeValue("trgLang").isEmpty())
+                || ("file".equals(root.getName()) && version.startsWith("1.")
+                        && root.getAttributeValue("target-language").isEmpty())) {
+            throw new IOException("Missing target language declaration");
+        }
         if (("file".equals(root.getName()) || "group".equals(root.getName()) || "trans-unit".equals(root.getName())
                 || "unit".equals(root.getName()))
                 && "no".equals(root.getAttributeValue("translate"))) {
