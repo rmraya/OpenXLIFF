@@ -9,6 +9,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 **XLIFFChecker**, an open source XLIFF validation tool, is now part of OpenXLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
 
 - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
+- **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
 - **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
