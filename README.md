@@ -44,7 +44,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 --------|---------|-------------
-2.4.2 | Improved support for Trados Studio Packages | june 18th, 2022
+2.4.2 | Improved support for Trados Studio Packages | June 18th, 2022
 2.4.1 | Fixed conversion of third party XLIFF files | June 10th, 2022
 2.4.0 | Added remove all targets; Added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
 2.3.0 | Added copy source to target; Fixed DITA conversion and merge | May 25th, 2022
@@ -182,6 +182,7 @@ Where:
    -srx:       (optional) SRX file to use for segmentation
    -catalog:   (optional) XML catalog to use for processing
    -ditaval:   (optional) conditional processing file to use when converting DITA maps
+   -config:    (optional) configuration file to use when converting JSON documents
    -embed:     (optional) store skeleton inside the XLIFF file
    -paragraph: (optional) use paragraph segmentation
    -2.0:       (optional) generate XLIFF 2.0
