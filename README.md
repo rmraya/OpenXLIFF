@@ -46,7 +46,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
-2.5.0 | Added configuration options to JSON filter; Added scripts to approve all segments; Updated languages list | July 6th, 2022
+2.5.0 | Added configuration options to JSON filter; Added scripts to approve all segments; Updated language list | July 6th, 2022
 2.4.2 | Improved support for Trados Studio Packages | June 18th, 2022
 2.4.1 | Fixed conversion of third party XLIFF files | June 10th, 2022
 2.4.0 | Added remove all targets; added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
