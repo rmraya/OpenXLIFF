@@ -12,10 +12,12 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
+
+## Features
+
 - **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
 - **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
-- **[XLIFF Validation Service](https://github.com/rmraya/OpenXLIFF#xliff-validation-service)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
@@ -43,10 +45,11 @@ XML and JSON filters are configurable
 ## Releases
 
 Version | Comment | Release Date
---------|---------|-------------
+:------:|---------|:-----------:
+2.5.0 | Added configuration options to JSON filter; Added scripts to approve all segments; Updated languages list | July 6th, 2022
 2.4.2 | Improved support for Trados Studio Packages | June 18th, 2022
 2.4.1 | Fixed conversion of third party XLIFF files | June 10th, 2022
-2.4.0 | Added remove all targets; Added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
+2.4.0 | Added remove all targets; added feedback for [Fluenta](https://www.maxprograms.com/products/fluenta.html) on DITA filter | June 9th, 2022
 2.3.0 | Added copy source to target; Fixed DITA conversion and merge | May 25th, 2022
 2.2.0 | Added pseudo-translation | May 11th, 2022
 2.1.0 | Updated dependencies and improved validation of XLIFF 2.x | April 21st, 2022
@@ -272,7 +275,7 @@ Where:
    -catalog:   (optional) XML catalog to use for processing
 ```
 
-## XLIFF Validation Service
+### XLIFF Validation Service
 
 You can validate your XLIFF files online at [https://dev.maxprograms.com/Validation/](https://dev.maxprograms.com/Validation/)
 
