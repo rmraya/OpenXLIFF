@@ -94,7 +94,7 @@ public class ApproveAll {
         System.out.println(help);
     }
 
-    private static void approveAll(String xliff, String catalog)
+    public static void approveAll(String xliff, String catalog)
             throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(new Catalog(catalog));

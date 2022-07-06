@@ -78,7 +78,7 @@ public class RemoveTargets {
         }
     }
 
-    private static void removeTargets(String xliff, String catalog)
+    public static void removeTargets(String xliff, String catalog)
             throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(new Catalog(catalog));
