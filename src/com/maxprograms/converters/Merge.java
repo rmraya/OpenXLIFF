@@ -125,7 +125,11 @@ public class Merge {
 			return;
 		}
 		if (catalog.isEmpty()) {
-			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
 				logger.log(Level.ERROR, "'catalog' folder not found.");
 				return;
@@ -358,7 +362,11 @@ public class Merge {
 			} else if (dataType.equals(FileFormats.DITA) || dataType.equals("x-ditamap")) {
 				result = Xliff2DitaMap.run(params);
 			} else if (dataType.equals(FileFormats.HTML) || dataType.equals("html")) {
-				File folder = new File(System.getProperty("user.dir"), "xmlfilter");
+				String home = System.getenv("OpenXLIFF_HOME");
+				if (home == null) {
+					home = System.getProperty("user.dir");
+				}	
+				File folder = new File(home, "xmlfilter");
 				params.put("iniFile", new File(folder, "init_html.xml").getAbsolutePath());
 				result = Xliff2Html.run(params);
 			} else if (dataType.equals(FileFormats.JS) || dataType.equals("javascript")) {

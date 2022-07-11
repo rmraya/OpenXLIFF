@@ -45,7 +45,11 @@ public class Catalog implements EntityResolver2 {
             throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
         File file = new File(catalogFile);
         if (!file.isAbsolute()) {
-            String absolute = XMLUtils.getAbsolutePath(System.getProperty("user.dir"), catalogFile);
+            String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+            String absolute = XMLUtils.getAbsolutePath(home, catalogFile);
             file = new File(absolute);
         }
         workDir = file.getParent();

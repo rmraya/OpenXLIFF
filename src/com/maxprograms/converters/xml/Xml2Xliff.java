@@ -236,7 +236,11 @@ public class Xml2Xliff {
 
 	public static String getIniFile(String fileName, String catalogFile)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
-		File folder = new File(System.getProperty("user.dir"), "xmlfilter");
+		String home = System.getenv("OpenXLIFF_HOME");
+		if (home == null) {
+			home = System.getProperty("user.dir");
+		}
+		File folder = new File(home, "xmlfilter");
 		SAXBuilder builder = new SAXBuilder();
 		Catalog cat = new Catalog(catalogFile);
 		builder.setEntityResolver(cat);

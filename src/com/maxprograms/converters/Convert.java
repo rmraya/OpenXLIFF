@@ -204,7 +204,11 @@ public class Convert {
 			return;
 		}
 		if (srx.isEmpty()) {
-			File srxFolder = new File(new File(System.getProperty("user.dir")), "srx");
+			String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+			File srxFolder = new File(new File(home), "srx");
 			srx = new File(srxFolder, "default.srx").getAbsolutePath();
 		}
 		File srxFile = new File(srx);
@@ -213,7 +217,11 @@ public class Convert {
 			return;
 		}
 		if (catalog.isEmpty()) {
-			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
 				logger.log(Level.ERROR, "'catalog' folder not found.");
 				return;

@@ -77,7 +77,11 @@ public class RepetitionAnalysis {
 			return;
 		}
 		if (catalog.isEmpty()) {
-			File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+			String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+			File catalogFolder = new File(new File(home), "catalog");
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);

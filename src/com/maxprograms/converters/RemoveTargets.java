@@ -58,7 +58,11 @@ public class RemoveTargets {
             return;
         }
         if (catalog.isEmpty()) {
-            File catalogFolder = new File(new File(System.getProperty("user.dir")), "catalog");
+            String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+            File catalogFolder = new File(new File(home), "catalog");
             if (!catalogFolder.exists()) {
                 logger.log(Level.ERROR, "'catalog' folder not found.");
                 return;

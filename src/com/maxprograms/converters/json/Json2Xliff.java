@@ -143,7 +143,6 @@ public class Json2Xliff {
                 writeString(out, "</file>\n");
                 writeString(out, "</xliff>");
             }
-
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             result.add(Constants.ERROR);
