@@ -184,7 +184,8 @@ public class Xliff2Office {
 
 	private static void addPreserveSpace(Element e) {
 		// a:t is used in PowerPoint and should not be modified
-		if (e.getName().matches("[w-z]:t") || e.getName().equals("t")) {
+		// <t> is a simple type, does not support  attributes
+		if (e.getName().matches("[w-z]:t")) {
 			e.setAttribute("xml:space", "preserve");
 		}
 		List<Element> children = e.getChildren();
