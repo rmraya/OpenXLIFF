@@ -60,9 +60,9 @@ public class MSOffice2Xliff {
 	private static String srcEncoding;
 
 	private static Pattern pattern;
-    private static Pattern endPattern;
+	private static Pattern endPattern;
 
-    private MSOffice2Xliff() {
+	private MSOffice2Xliff() {
 		// do not instantiate this class
 		// use run method instead
 	}
@@ -678,119 +678,119 @@ public class MSOffice2Xliff {
 	}
 
 	private static String fixHtmlTags(String original) {
-        if (pattern == null) {
-            pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
-        }
-        if (endPattern == null) {
-            endPattern = Pattern.compile("</[A-Za-z0-9]+>");
-        }
+		if (pattern == null) {
+			pattern = Pattern.compile("&lt;[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?&gt;");
+		}
+		if (endPattern == null) {
+			endPattern = Pattern.compile("&lt;/[A-Za-z0-9]+&gt;");
+		}
 		Element src = new Element("src");
-		src.setText(original);
-        String e = normalise(src.getText());
+		src.setText(Utils.cleanString(original));
+		String e = normalise(src.getText());
 
-        Matcher matcher = pattern.matcher(e);
-        if (matcher.find()) {
-            List<XMLNode> newContent = new Vector<>();
-            List<XMLNode> content = src.getContent();
-            Iterator<XMLNode> it = content.iterator();
-            while (it.hasNext()) {
-                XMLNode node = it.next();
-                if (node.getNodeType() == XMLNode.TEXT_NODE) {
-                    TextNode t = (TextNode) node;
-                    String nodeText = normalise(t.getText());
-                    matcher = pattern.matcher(nodeText);
-                    if (matcher.find()) {
-                        matcher.reset();
-                        while (matcher.find()) {
-                            int start = matcher.start();
-                            int end = matcher.end();
+		Matcher matcher = pattern.matcher(e);
+		if (matcher.find()) {
+			List<XMLNode> newContent = new Vector<>();
+			List<XMLNode> content = src.getContent();
+			Iterator<XMLNode> it = content.iterator();
+			while (it.hasNext()) {
+				XMLNode node = it.next();
+				if (node.getNodeType() == XMLNode.TEXT_NODE) {
+					TextNode t = (TextNode) node;
+					String nodeText = normalise(t.getText());
+					matcher = pattern.matcher(nodeText);
+					if (matcher.find()) {
+						matcher.reset();
+						while (matcher.find()) {
+							int start = matcher.start();
+							int end = matcher.end();
 
-                            String s = nodeText.substring(0, start);
-                            if (!s.isEmpty()) {
-                                newContent.add(new TextNode(s));
-                            }
-                            String tag = nodeText.substring(start, end);
-                            Element ph = new Element("ph");
-                            ph.setText(Utils.cleanString(tag));
-                            newContent.add(ph);
+							String s = nodeText.substring(0, start);
+							if (!s.isEmpty()) {
+								newContent.add(new TextNode(s));
+							}
+							String tag = nodeText.substring(start, end);
+							Element ph = new Element("ph");
+							ph.setText(tag);
+							newContent.add(ph);
 
-                            nodeText = nodeText.substring(end);
-                            matcher = pattern.matcher(nodeText);
-                        }
-                        if (!nodeText.isEmpty()) {
-                            newContent.add(new TextNode(nodeText));
-                        }
-                    } else {
-                        if (!((TextNode) node).getText().isEmpty()) {
-                            newContent.add(node);
-                        }
-                    }
-                } else {
-                    newContent.add(node);
-                }
-            }
-            src.setContent(newContent);
-        }
-        matcher = endPattern.matcher(e);
-        if (matcher.find()) {
-            List<XMLNode> newContent = new Vector<>();
-            List<XMLNode> content = src.getContent();
-            Iterator<XMLNode> it = content.iterator();
-            while (it.hasNext()) {
-                XMLNode node = it.next();
-                if (node.getNodeType() == XMLNode.TEXT_NODE) {
-                    TextNode t = (TextNode) node;
-                    String text = normalise(t.getText());
-                    matcher = endPattern.matcher(text);
-                    if (matcher.find()) {
-                        matcher.reset();
-                        while (matcher.find()) {
-                            int start = matcher.start();
-                            int end = matcher.end();
+							nodeText = nodeText.substring(end);
+							matcher = pattern.matcher(nodeText);
+						}
+						if (!nodeText.isEmpty()) {
+							newContent.add(new TextNode(nodeText));
+						}
+					} else {
+						if (!((TextNode) node).getText().isEmpty()) {
+							newContent.add(node);
+						}
+					}
+				} else {
+					newContent.add(node);
+				}
+			}
+			src.setContent(newContent);
+		}
+		matcher = endPattern.matcher(e);
+		if (matcher.find()) {
+			List<XMLNode> newContent = new Vector<>();
+			List<XMLNode> content = src.getContent();
+			Iterator<XMLNode> it = content.iterator();
+			while (it.hasNext()) {
+				XMLNode node = it.next();
+				if (node.getNodeType() == XMLNode.TEXT_NODE) {
+					TextNode t = (TextNode) node;
+					String text = normalise(t.getText());
+					matcher = endPattern.matcher(text);
+					if (matcher.find()) {
+						matcher.reset();
+						while (matcher.find()) {
+							int start = matcher.start();
+							int end = matcher.end();
 
-                            String s = text.substring(0, start);
-                            if (!s.isEmpty()) {
-                                newContent.add(new TextNode(s));
-                            }
+							String s = text.substring(0, start);
+							if (!s.isEmpty()) {
+								newContent.add(new TextNode(s));
+							}
 
-                            String tag = text.substring(start, end);
-                            Element ph = new Element("ph");
-                            ph.setText(Utils.cleanString(tag));
-                            newContent.add(ph);
+							String tag = text.substring(start, end);
+							Element ph = new Element("ph");
+							ph.setText(tag);
+							newContent.add(ph);
 
-                            text = text.substring(end);
-                            matcher = endPattern.matcher(text);
-                        }
-                        if (!text.isEmpty()) {
-                            newContent.add(new TextNode(text));
-                        }
-                    } else {
-                        if (!((TextNode) node).getText().isEmpty()) {
-                            newContent.add(node);
-                        }
-                    }
-                } else {
-                    newContent.add(node);
-                }
-            }
-            src.setContent(newContent);
-        }
+							text = text.substring(end);
+							matcher = endPattern.matcher(text);
+						}
+						if (!text.isEmpty()) {
+							newContent.add(new TextNode(text));
+						}
+					} else {
+						if (!((TextNode) node).getText().isEmpty()) {
+							newContent.add(node);
+						}
+					}
+				} else {
+					newContent.add(node);
+				}
+			}
+			src.setContent(newContent);
+		}
 		if (src.getChildren().isEmpty()) {
-			return original;
+			return Utils.cleanString(original);
 		}
 		StringBuilder sb = new StringBuilder();
 		List<XMLNode> content = src.getContent();
-		Iterator<XMLNode>it = content.iterator();
+		Iterator<XMLNode> it = content.iterator();
 		while (it.hasNext()) {
 			sb.append(it.next().toString());
 		}
 		return sb.toString();
-    }
+	}
 
-    private static String normalise(String string) {
-        String result = string;
-        result = result.replace('\n', ' ');
-        result = result.replaceAll("\\s(\\s)+", " ");
-        return result;
-    }
+	private static String normalise(String string) {
+		String result = string;
+		result = result.replace('\n', ' ');
+		result = result.replaceAll("\\s(\\s)+", " ");
+		return result;
+	}
 }

@@ -9,6 +9,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 **XLIFFChecker**, an open source XLIFF validation tool, is now part of OpenXLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
 
 - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
+- **[Binary Downloads](https://www.maxprograms.com/products/openxliff.html)**
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
@@ -46,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+2.6.0 | Converted HTML fragments in Excel & Word files to tags | July 16th, 2022
 2.5.0 | Added configuration options to JSON filter; Added scripts to approve all segments; Updated language list | July 6th, 2022
 2.4.2 | Improved support for Trados Studio Packages | June 18th, 2022
 2.4.1 | Fixed conversion of third party XLIFF files | June 10th, 2022
