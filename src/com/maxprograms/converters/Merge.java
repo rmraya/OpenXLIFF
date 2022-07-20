@@ -334,7 +334,7 @@ public class Merge {
 		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	public static List<String> run(Map<String, String> params) {
+	private static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
 		File temporary = null;
 		try {
