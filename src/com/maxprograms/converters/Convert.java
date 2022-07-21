@@ -263,16 +263,18 @@ public class Convert {
 		if (type.equals(FileFormats.getShortName(FileFormats.JSON)) && !config.isEmpty()) {
 			params.put("config", config);
 		}
+		if (embed) {
+			params.put("embed", "yes");
+		}
+		if (mustResegment) {
+			params.put("resegment", "yes");
+		}
+		if (xliff20) {
+			params.put("xliff20", "yes");
+		}
+		
 		List<String> result = run(params);
-		if (embed && Constants.SUCCESS.equals(result.get(0))) {
-			addSkeleton(xliff, catalog);
-		}
-		if (xliff20 && Constants.SUCCESS.equals(result.get(0))) {
-			result = ToXliff2.run(new File(xliff), catalog);
-			if (mustResegment && Constants.SUCCESS.equals(result.get(0))) {
-				result = Resegmenter.run(xliff, srx, srcLang, catalog);
-			}
-		}
+
 		if (!Constants.SUCCESS.equals(result.get(0))) {
 			logger.log(Level.ERROR, "Conversion error: {0}", result.get(1));
 		}
@@ -437,6 +439,16 @@ public class Convert {
 		} else {
 			result.add(Constants.ERROR);
 			result.add("Unknown file format.");
+		}
+		if ("yes".equals(params.get("embed")) && Constants.SUCCESS.equals(result.get(0))) {
+			result = addSkeleton(params.get("xliff"), params.get("catalog"));
+		}
+		if ("yes".equals(params.get("xliff20")) && Constants.SUCCESS.equals(result.get(0))) {
+			result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"));
+			if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
+				result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
+						params.get("catalog"));
+			}
 		}
 		return result;
 	}
