@@ -35,6 +35,7 @@ module openxliff {
 	exports com.maxprograms.mt;
 	
 	opens com.maxprograms.xml to mapdb;	
+	opens com.maxprograms.languages to mapdb;
 
 	requires dtd;
 	requires jsoup;
