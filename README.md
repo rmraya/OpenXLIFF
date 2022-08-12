@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+2.7.0 | Fixed resegmenter for XLIFF 2.0 | August 12th, 2022
 2.6.0 | Converted HTML fragments in Excel & Word files to tags | July 16th, 2022
 2.5.0 | Added configuration options to JSON filter; Added scripts to approve all segments; Updated language list | July 6th, 2022
 2.4.2 | Improved support for Trados Studio Packages | June 18th, 2022
