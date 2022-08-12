@@ -105,27 +105,31 @@ public class Resegmenter {
                                 boolean surrounded = surroundedWithTags(e);
                                 if (surrounded || startsWithTag(e)) {
                                     // starts with tag
-                                    Element ignorable = new Element("ignorable");
-                                    ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
-                                    Element ignorableSource = new Element("source");
-                                    ignorableSource.setAttribute("xml:space", "preserve");
-                                    ignorable.addContent(ignorableSource);
                                     Element firstTag = e.getChildren().get(0);
-                                    ignorableSource.addContent(firstTag);
-                                    e.removeChild(firstTag);
-                                    root.addContent(ignorable);
+                                    if (!hasText(firstTag)) {
+                                        Element ignorable = new Element("ignorable");
+                                        ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
+                                        Element ignorableSource = new Element("source");
+                                        ignorableSource.setAttribute("xml:space", "preserve");
+                                        ignorable.addContent(ignorableSource);
+                                        ignorableSource.addContent(firstTag);
+                                        e.removeChild(firstTag);
+                                        root.addContent(ignorable);
+                                    }
                                 }
                                 Element lastIgnorable = null;
                                 if (surrounded || endsWithTag(e)) {
                                     // ends with tag
-                                    lastIgnorable = new Element("ignorable");
-                                    Element ignorableSource = new Element("source");
-                                    ignorableSource.setAttribute("xml:space", "preserve");
-                                    lastIgnorable.addContent(ignorableSource);
                                     List<Element> tags = e.getChildren();
                                     Element lastTag = tags.get(tags.size() - 1);
-                                    ignorableSource.addContent(lastTag);
-                                    e.removeChild(lastTag);
+                                    if (!hasText(lastTag)) {
+                                        lastIgnorable = new Element("ignorable");
+                                        Element ignorableSource = new Element("source");
+                                        ignorableSource.setAttribute("xml:space", "preserve");
+                                        lastIgnorable.addContent(ignorableSource);
+                                        ignorableSource.addContent(lastTag);
+                                        e.removeChild(lastTag);
+                                    }
                                 }
                                 Element newSeg = new Element("segment");
                                 if (!hasText(e)) {
@@ -175,6 +179,12 @@ public class Resegmenter {
             if (node.getNodeType() == XMLNode.TEXT_NODE) {
                 TextNode t = (TextNode) node;
                 if (!t.getText().isBlank()) {
+                    return true;
+                }
+            }
+            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element child = (Element) node;
+                if (hasText(child)) {
                     return true;
                 }
             }

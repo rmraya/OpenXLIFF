@@ -239,7 +239,6 @@ public class Convert {
 		if (xliff.isEmpty()) {
 			xliff = sourceFile.getAbsolutePath() + ".xlf";
 		}
-
 		if (xliff20 && !paragraph) {
 			mustResegment = true;
 			paragraph = true;
