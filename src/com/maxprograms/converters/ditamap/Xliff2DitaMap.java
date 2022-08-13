@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -29,22 +28,19 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.StringConverter;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xliff2Xml;
-import com.maxprograms.xml.CData;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
-import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Xliff2DitaMap {
 
@@ -226,21 +222,7 @@ public class Xliff2DitaMap {
 			// embedded skeleton
 			File tmp = File.createTempFile("internal", ".skl", new File(xliffFile).getParentFile());
 			tmp.deleteOnExit();
-			if (internal.getAttributeValue("form").equals("base64")) {
-				Utils.decodeToFile(internal.getText(), tmp.getAbsolutePath());
-			} else {
-				try (FileOutputStream out = new FileOutputStream(tmp)) {
-					List<XMLNode> content = internal.getContent();
-					for (int h = 0; h < content.size(); h++) {
-						XMLNode n = content.get(h);
-						if (n.getNodeType() == XMLNode.TEXT_NODE) {
-							out.write(StringConverter.toByteArray(((TextNode) n).getText()));
-						} else if (n.getNodeType() == XMLNode.CDATA_SECTION_NODE) {
-							out.write(((CData) n).getData().getBytes(StandardCharsets.UTF_8));
-						}
-					}
-				}
-			}
+			Utils.decodeToFile(internal.getText(), tmp.getAbsolutePath());
 			file.getChild("header").getChild("skl").addContent(new Element("external-file"));
 			file.getChild("header").getChild("skl").getChild("external-file").setAttribute("href",
 					tmp.getAbsolutePath());
