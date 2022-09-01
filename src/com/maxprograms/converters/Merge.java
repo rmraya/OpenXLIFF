@@ -30,6 +30,8 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.ditamap.Xliff2DitaMap;
 import com.maxprograms.converters.html.Xliff2Html;
 import com.maxprograms.converters.idml.Xliff2Idml;
@@ -46,6 +48,7 @@ import com.maxprograms.converters.sdlppx.Xliff2Sdlrpx;
 import com.maxprograms.converters.sdlxliff.Xliff2Sdl;
 import com.maxprograms.converters.srt.Xliff2Srt;
 import com.maxprograms.converters.ts.Xliff2Ts;
+import com.maxprograms.converters.txlf.Xliff2Txlf;
 import com.maxprograms.converters.txml.Xliff2Txml;
 import com.maxprograms.converters.wpml.Xliff2Wpml;
 import com.maxprograms.converters.xliff.FromOpenXliff;
@@ -57,8 +60,6 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
-
-import org.xml.sax.SAXException;
 
 public class Merge {
 
@@ -134,7 +135,7 @@ public class Merge {
 				logger.log(Level.ERROR, "'catalog' folder not found.");
 				return;
 			}
-			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();			
+			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
@@ -157,7 +158,7 @@ public class Merge {
 		}
 	}
 
-	public static List<String>  merge(String xliff, String target, String catalog, boolean acceptUnaproved) {
+	public static List<String> merge(String xliff, String target, String catalog, boolean acceptUnaproved) {
 		List<String> result = new ArrayList<>();
 		try {
 			loadXliff(xliff, catalog);
@@ -327,7 +328,7 @@ public class Merge {
 			}
 			writeStr(out, "</xliff>\n");
 		}
-		return new String[] {encoding, dataType};
+		return new String[] { encoding, dataType };
 	}
 
 	private static void writeStr(FileOutputStream out, String string) throws IOException {
@@ -354,7 +355,7 @@ public class Merge {
 			if (dataType.equals(FileFormats.INX) || dataType.equals("x-inx")) {
 				params.put("InDesign", "yes");
 				result = Xliff2Xml.run(params);
-			} else if(dataType.equals(FileFormats.ICML) || dataType.equals("x-icml")) {
+			} else if (dataType.equals(FileFormats.ICML) || dataType.equals("x-icml")) {
 				params.put("IDML", "true");
 				result = Xliff2Xml.run(params);
 			} else if (dataType.equals(FileFormats.IDML) || dataType.equals("x-idml")) {
@@ -365,7 +366,7 @@ public class Merge {
 				String home = System.getenv("OpenXLIFF_HOME");
 				if (home == null) {
 					home = System.getProperty("user.dir");
-				}	
+				}
 				File folder = new File(home, "xmlfilter");
 				params.put("iniFile", new File(folder, "init_html.xml").getAbsolutePath());
 				result = Xliff2Html.run(params);
@@ -398,6 +399,8 @@ public class Merge {
 				result = Xliff2Ts.run(params);
 			} else if (dataType.equals(FileFormats.TXML) || dataType.equals("x-txml")) {
 				result = Xliff2Txml.run(params);
+			} else if (dataType.equals(FileFormats.TXLF) || dataType.equals("x-txlf")) {
+				result = Xliff2Txlf.run(params);
 			} else if (dataType.equals(FileFormats.WPML) || dataType.equals("x-wpmlxliff")) {
 				result = Xliff2Wpml.run(params);
 			} else if (dataType.equals(FileFormats.XML) || dataType.equals("xml")) {
@@ -537,7 +540,7 @@ public class Merge {
 		SAXBuilder builder = new SAXBuilder();
 		Element r = builder.build(file).getRootElement();
 		if (!r.getName().equals("xliff")) {
-			throw new IOException("Selected file is not an XLIFF document");			
+			throw new IOException("Selected file is not an XLIFF document");
 		}
 		List<Element> files = r.getChildren("file");
 		if (files.isEmpty()) {
@@ -557,30 +560,30 @@ public class Merge {
 		TreeSet<String> originals = new TreeSet<>();
 		Iterator<Element> it = files.iterator();
 		while (it.hasNext()) {
-			originals.add(it.next().getAttributeValue("original",""));
+			originals.add(it.next().getAttributeValue("original"));
 		}
 		if (originals.size() == 1) {
-			if (file.endsWith(".xlf")) { 
-				target = file.substring(0,file.length()-4);
-				if (target.indexOf('.') != -1) { 
-					target = target.substring(0,target.lastIndexOf('.'))  
-							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));  
+			if (file.endsWith(".xlf")) {
+				target = file.substring(0, file.length() - ".xlf".length());
+				if (target.indexOf('.') != -1) {
+					target = target.substring(0, target.lastIndexOf('.'))
+							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));
 				}
 			} else {
-				if (target.indexOf('.') != -1) { 
-					target = target.substring(0,target.lastIndexOf('.'))  
-							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));  
+				if (target.indexOf('.') != -1) {
+					target = target.substring(0, target.lastIndexOf('.'))
+							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));
 				}
 			}
-			if (target.endsWith(".sdlppx")) { 
+			if (target.endsWith(".sdlppx")) {
 				target = target.substring(0, target.length() - ".sdlppx".length()) + ".sdlrpx";
 			}
 		} else {
-			File p = new File(file).getParentFile();
-			if (p == null) {
-				p = new File(System.getProperty("user.dir"));
+			File parent = new File(file).getParentFile();
+			if (parent == null) {
+				parent = new File(System.getProperty("user.dir"));
 			}
-			target = new File(p, tgtLanguage).getAbsolutePath();
+			target = new File(parent, tgtLanguage).getAbsolutePath();
 		}
 		return target;
 	}

@@ -56,10 +56,11 @@ public class EncodingResolver {
 		} else if (fileType.equals(FileFormats.PO)) {
 			return StandardCharsets.UTF_8;
 		} else if (fileType.equals(FileFormats.XML) || fileType.equals(FileFormats.XMLG)
-				|| fileType.equals(FileFormats.TXML) || fileType.equals(FileFormats.RESX)
-				|| fileType.equals(FileFormats.INX) || fileType.equals(FileFormats.TS)
-				|| fileType.equals(FileFormats.DITA) || fileType.equals(FileFormats.SDLXLIFF)
-				|| fileType.equals(FileFormats.WPML) || fileType.equals(FileFormats.XLIFF)) {
+				|| fileType.equals(FileFormats.TXML) || fileType.equals(FileFormats.TXLF)
+				|| fileType.equals(FileFormats.RESX) || fileType.equals(FileFormats.INX)
+				|| fileType.equals(FileFormats.TS) || fileType.equals(FileFormats.DITA)
+				|| fileType.equals(FileFormats.SDLXLIFF) || fileType.equals(FileFormats.WPML)
+				|| fileType.equals(FileFormats.XLIFF)) {
 			try {
 				return getXMLEncoding(fileName);
 			} catch (IOException e) {

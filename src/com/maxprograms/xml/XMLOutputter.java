@@ -54,7 +54,7 @@ public class XMLOutputter {
 		String publicId = sdoc.getPublicId();
 		String systemId = sdoc.getSystemId();
 		String internalSubset = sdoc.getInternalSubset();
-		List<String> customAttributes = sdoc.getAttributes();
+		List<AttributeDecl> customAttributes = sdoc.getAttributes();
 		if (customAttributes != null) {
 			if (internalSubset == null) {
 				internalSubset = "";

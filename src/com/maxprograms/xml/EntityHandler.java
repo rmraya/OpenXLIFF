@@ -22,7 +22,7 @@ import org.xml.sax.ext.DefaultHandler2;
 public class EntityHandler extends DefaultHandler2 {
 
 	private Map<String, String> entities;
-	private List<String> attributes;
+	private List<AttributeDecl> attributeDeclarations;
 
 	public EntityHandler() {
 		super();
@@ -42,28 +42,34 @@ public class EntityHandler extends DefaultHandler2 {
 	}
 
 	@Override
-	public void attributeDecl(String eName, String aName, String type, String mode, String value) throws SAXException {
-		if (aName.indexOf(':') == -1) {
+	public void elementDecl(String name, String model) throws SAXException {
+		// TODO
+	}
+
+	@Override
+	public void notationDecl(String name, String publicId, String systemId) throws SAXException {
+		// TODO
+	}
+
+	@Override
+	public void attributeDecl(String element, String attribute, String type, String mode, String value)
+			throws SAXException {
+		if (attribute.indexOf(':') == -1) {
 			return;
 		}
-		if (aName.startsWith("xml:") || aName.startsWith("xmlns:")) {
+		if (attribute.startsWith("xml:")) {
 			return;
 		}
 		if (mode == null || type == null) {
 			return;
 		}
-		if (attributes == null) {
-			attributes = new Vector<>();
+		if (attributeDeclarations == null) {
+			attributeDeclarations = new Vector<>();
 		}
-		if (value != null) {
-			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + " " + value + ">"); 
-		} else {
-			attributes.add("<!ATTLIST " + eName + " " + aName + " " + type + " " + mode + ">"); 
-		}
-
+		attributeDeclarations.add(new AttributeDecl(element, attribute, type, mode, value));
 	}
 
-	public List<String> getAttributes() {
-		return attributes;
+	public List<AttributeDecl> getAttributes() {
+		return attributeDeclarations;
 	}
 }

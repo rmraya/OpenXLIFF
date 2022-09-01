@@ -181,6 +181,12 @@ public class Segmenter {
 		int k = 0;
 		int start = string.indexOf("<mrk ");
 		int end = string.indexOf("</mrk>");
+		// check nested <mrk>
+		int e = string.indexOf("<mrk ", string.indexOf('>', start));
+		while (e != -1 && e < end) {
+			end = string.indexOf("</mrk>", end + 1);
+			e = string.indexOf("<mrk ", string.indexOf('>', e + 1));
+		}
 
 		while (start != -1 && end != -1) {
 			if (start > end) {

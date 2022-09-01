@@ -151,7 +151,6 @@ public class Xml2Xliff {
 				MessageFormat mf = new MessageFormat(
 						"Configuration file ''{0}'' not found. \n\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
 				throw new IOException(mf.format(new Object[] { f.getName() }));
-
 			}
 
 			if (elementSegmentation == null) {
@@ -316,7 +315,10 @@ public class Xml2Xliff {
 			}
 			String s = getRootElement(location);
 			if (s != null) {
-				return new File(folder, "config_" + s + ".xml").getAbsolutePath();
+				File config = new File(folder, "config_" + s + ".xml");
+				if (config.exists()) {
+					return config.getAbsolutePath();
+				}
 			}
 		}
 
@@ -463,7 +465,6 @@ public class Xml2Xliff {
 	private static void processList() throws IOException, SAXException, ParserConfigurationException {
 		for (int i = 0; i < segments.size(); i++) {
 			String txt = segments.get(i);
-
 			if (txt.startsWith("" + '\u007F' + "" + '\u007F')) {
 				// send directly to skeleton
 				writeSkeleton(txt.substring(2));
@@ -805,7 +806,7 @@ public class Xml2Xliff {
 				String nodeText = ((TextNode) node).getText().strip();
 				for (int i = 0; i < nodeText.length(); i++) {
 					int c = nodeText.charAt(i);
-					if (" \u00A0\r\n\f\t\u2028\u2029,.;\":<>¿?¡!()[]{}=+/*\u00AB\u00BB\u201C\u201D\u201E\uFF00"
+					if (" \u00A0\r\n\f\t\u2028\u2029,.;\":<>()[]{}=/*\u00AB\u00BB\u201C\u201D\u201E\uFF00"
 							.indexOf(c) == -1) {
 						return true;
 					}
@@ -1037,6 +1038,7 @@ public class Xml2Xliff {
 					s = tokenizer.nextToken();
 				}
 				// s contains the first word of the attribute
+				s = s.replace("amp;amp;", "%%AMP%%");
 				if (((s.startsWith("\"") && s.endsWith("\"")) || (s.startsWith("'") && s.endsWith("'")))
 						&& s.length() > 1) {
 					// the value is one word and it is quoted
@@ -1048,11 +1050,11 @@ public class Xml2Xliff {
 						// word
 						String quote = s.substring(0, 1);
 						result = result + s.substring(0, 1) + "</ph>" + s.substring(1);
-						s = tokenizer.nextToken();
+						s = tokenizer.nextToken().replace("amp;amp;", "%%AMP%%");
 						do {
 							result = result + s;
 							if (tokenizer.hasMoreElements()) {
-								s = tokenizer.nextToken();
+								s = tokenizer.nextToken().replace("amp;amp;", "%%AMP%%");
 							}
 						} while (s.indexOf(quote) == -1);
 						String left = s.substring(0, s.indexOf(quote));
@@ -1063,10 +1065,10 @@ public class Xml2Xliff {
 						result = result + "</ph>" + s + "<ph id=\"" + tagId++ + "\">";
 					}
 				}
+				result = result.replace("%%AMP%%", "amp;");
 			}
 		}
-		result = result + "</ph>";
-		return result;
+		return result + "</ph>";
 	}
 
 	private static void buildTables(String iniFile)

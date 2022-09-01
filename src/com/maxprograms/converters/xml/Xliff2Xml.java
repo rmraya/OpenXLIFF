@@ -196,6 +196,7 @@ public class Xliff2Xml {
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
+		builder.preserveCustomAttributes(true);
 		Document doc = builder.build(outputFile);
 		Element root = doc.getRootElement();
 		removeTranslateAtt(root);

@@ -49,6 +49,10 @@ public class Utils {
 		return XMLUtils.validChars(result);
 	}
 
+	public static String getAbsolutePath(File homeFile, String relative) throws IOException {
+		return getAbsolutePath(homeFile.getAbsolutePath(), relative);
+	}
+
 	public static String getAbsolutePath(String homeFile, String relative) throws IOException {
 		try {
 			File result = relative.indexOf('%') != -1 ? new File(URLDecoder.decode(relative, StandardCharsets.UTF_8))
@@ -199,4 +203,5 @@ public class Utils {
 		}
 		return result.toArray(new String[result.size()]);
 	}
+
 }

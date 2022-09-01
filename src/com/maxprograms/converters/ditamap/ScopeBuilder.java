@@ -51,11 +51,12 @@ public class ScopeBuilder {
 	private static Map<String, Set<String>> excludeTable;
 	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
+	private List<String> issues;
 
 	public Scope buildScope(String inputFile, String ditavalFile, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
 		this.catalog = catalog;
-
+		issues = new ArrayList<>();
 		if (ditavalFile != null) {
 			parseDitaVal(ditavalFile, catalog);
 		}
@@ -135,13 +136,17 @@ public class ScopeBuilder {
 				if (!keyref.isEmpty()) {
 					if (!currentScope.addKey(new Key(key, keyref, parentFile))) {
 						MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
-						logger.log(Level.WARNING, mf.format(new Object[] { key, keyref }));
+						String issue = mf.format(new Object[] { key, keyref });
+						logger.log(Level.WARNING, issue);
+						issues.add(issue);
 					}
 				} else {
 					if (href.isEmpty()) {
 						if (!currentScope.addKey(new Key(key, parentFile, topicmeta, parentFile))) {
 							MessageFormat mf = new MessageFormat("Duplicate key definition: {0}");
-							logger.log(Level.WARNING, mf.format(new Object[] { key }));
+							String issue = mf.format(new Object[] { key });
+							logger.log(Level.WARNING, issue);
+							issues.add(issue);
 						}
 					} else {
 						try {
@@ -150,7 +155,9 @@ public class ScopeBuilder {
 							if (f.exists() && f.isFile()
 									&& !currentScope.addKey(new Key(key, path, topicmeta, parentFile))) {
 								MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
-								logger.log(Level.WARNING, mf.format(new Object[] { key, path }));
+								String issue = mf.format(new Object[] { key, path });
+								logger.log(Level.WARNING, issue);
+								issues.add(issue);
 							}
 						} catch (IOException ioe) {
 							// ignore files that can't be parsed
@@ -244,6 +251,10 @@ public class ScopeBuilder {
 			}
 		}
 		return false;
+	}
+
+	public List<String> getIssues() {
+		return issues;
 	}
 
 }

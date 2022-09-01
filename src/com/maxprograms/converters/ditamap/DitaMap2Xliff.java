@@ -67,6 +67,7 @@ public class DitaMap2Xliff {
 	private static boolean elementsExcluded;
 	private static List<String> skipped;
 	private static ILogger dataLogger;
+	private static List<String> issues;
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -75,6 +76,7 @@ public class DitaMap2Xliff {
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
+		issues = new ArrayList<>();
 		try {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
@@ -92,6 +94,7 @@ public class DitaMap2Xliff {
 				DitaParser.setDataLogger(dataLogger);
 			}
 			List<String> filesMap = parser.run(params);
+			issues.addAll(parser.getIssues());
 			rootScope = parser.getScope();
 
 			List<String> xliffs = new ArrayList<>();
@@ -124,10 +127,8 @@ public class DitaMap2Xliff {
 				String source = "";
 				try {
 					source = checkConref(file, catalog);
-				} catch (SkipException skip) {
+				} catch (Exception skip) {
 					// skip untranslatable files
-					continue;
-				} catch (Exception ex) {
 					continue;
 				}
 				if (excludeTable != null) {
@@ -186,7 +187,9 @@ public class DitaMap2Xliff {
 						skipped.add(filesMap.get(i));
 						continue;
 					}
-					logger.log(Level.ERROR, "Error converting \"" + source + "\" to XLIFF");
+					String issue = "Error converting \"" + source + "\" to XLIFF";
+					logger.log(Level.ERROR, issue);
+					issues.add(issue);
 					return res;
 				}
 				xliffs.add(xlf.getAbsolutePath());
@@ -455,7 +458,9 @@ public class DitaMap2Xliff {
 				Key k = rootScope.getKey(key);
 				String file = k.getHref();
 				if (file == null) {
-					logger.log(Level.WARNING, "Key not defined for conkeyref: \"" + conkeyref + "\"");
+					String issue = "Key not defined for conkeyref: \"" + conkeyref + "\"";
+					logger.log(Level.WARNING, issue);
+					issues.add(issue);
 					return;
 				}
 				Element ref = getConKeyReferenced(file, id, catalog);
@@ -476,11 +481,15 @@ public class DitaMap2Xliff {
 						fixConKeyRef(its.next(), file, doc, catalog);
 					}
 				} else {
-					logger.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Element with id=\"" + id
-							+ "\" not found in \"" + file + "\"");
+					String issue = "Invalid conkeyref: \"" + conkeyref + "\" - Element with id=\"" + id
+							+ "\" not found in \"" + file + "\"";
+					logger.log(Level.WARNING, issue);
+					issues.add(issue);
 				}
 			} else {
-				logger.log(Level.WARNING, "Invalid conkeyref: \"" + conkeyref + "\" - Bad format.");
+				String issue = "Invalid conkeyref: \"" + conkeyref + "\" - Bad format.";
+				logger.log(Level.WARNING, issue);
+				issues.add(issue);
 			}
 
 		} else if (!keyref.isEmpty() && e.getContent().isEmpty() && keyref.indexOf('/') == -1) {
@@ -570,7 +579,7 @@ public class DitaMap2Xliff {
 							if (e.getName().equals("abbreviated-form") && referenced != null
 									&& referenced.getName().equals("glossentry")) {
 								List<XMLNode> content = getGlossContent(referenced);
-								if (content != null && !content.isEmpty()) {
+								if (!content.isEmpty()) {
 									if (e.getChildren().isEmpty()) {
 										e.setAttribute("status", "removeContent");
 									}
@@ -615,7 +624,7 @@ public class DitaMap2Xliff {
 		if (e != null) {
 			return e.getContent();
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	private static Element getGlossComponent(String component, Element e) {
@@ -919,5 +928,9 @@ public class DitaMap2Xliff {
 
 	public static void setDataLogger(ILogger dataLogger) {
 		DitaMap2Xliff.dataLogger = dataLogger;
+	}
+
+	public static List<String> getIssues() {
+		return DitaMap2Xliff.issues;
 	}
 }

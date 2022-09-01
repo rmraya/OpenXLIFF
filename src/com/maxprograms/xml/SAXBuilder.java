@@ -18,8 +18,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -123,15 +127,13 @@ public class SAXBuilder {
 	}
 
 	public Document build(URL url) throws SAXException, IOException, ParserConfigurationException {
-		if ("file".equals(url.getProtocol())) {
-			if (resolver instanceof Catalog cat) {
-				File f = new File(url.toString());
-				String parent = f.getParentFile().getAbsolutePath();
-				if (parent.lastIndexOf("file:") != -1) {
-					parent = parent.substring(parent.lastIndexOf("file:") + 5);
-				}
-				cat.currentDocumentBase(parent);
+		if ("file".equals(url.getProtocol()) && resolver instanceof Catalog catalog) {
+			File f = new File(url.toString());
+			String parent = f.getParentFile().getAbsolutePath();
+			if (parent.lastIndexOf("file:") != -1) {
+				parent = parent.substring(parent.lastIndexOf("file:") + 5);
 			}
+			catalog.currentDocumentBase(parent);
 		}
 		XMLReader parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
 		parser.setFeature("http://xml.org/sax/features/namespaces", true);
@@ -172,15 +174,49 @@ public class SAXBuilder {
 			if (entities != null && entities.size() > 0) {
 				doc.setEntities(entities);
 			}
-			List<String> attributes = declhandler.getAttributes();
-			if (attributes != null && preserveAttributes && hasCustomAttributes(url, doc.getEncoding())) {
-				doc.setAttributes(attributes);
+			List<AttributeDecl> attDeclarations = declhandler.getAttributes();
+			if (attDeclarations != null && preserveAttributes && hasCustomAttributes(url, doc.getEncoding())) {
+				Set<String> namespaces = getRootNamespaces(doc.getRootElement());
+				doc.setAttributes(filterAttributeDeclarations(attDeclarations, namespaces));
 			}
 		}
 		if (clearHandler) {
 			contentHandler = null;
 		}
 		return doc;
+	}
+
+	private List<AttributeDecl> filterAttributeDeclarations(List<AttributeDecl> declarations, Set<String> namespaces) {
+		List<AttributeDecl> result = new Vector<>();
+		Iterator<AttributeDecl> it = declarations.iterator();
+		while (it.hasNext()) {
+			AttributeDecl ad = it.next();
+			String aName = ad.getAttributeName();
+			if (aName.indexOf(':') != -1) {
+				String prefix = aName.substring(0, aName.indexOf(':'));
+				String suffix = aName.substring(aName.indexOf(':') + 1);
+				if (namespaces.contains(prefix)) {
+					result.add(ad);
+				}
+				if ("xmlns".equals(prefix) && namespaces.contains(suffix) && !"#FIXED".equals(ad.getMode())) {
+					result.add(ad);
+				}
+			}
+		}
+		return result;
+	}
+
+	private Set<String> getRootNamespaces(Element root) {
+		Set<String> namespaces = new TreeSet<>();
+		List<Attribute> attributes = root.getAttributes();
+		Iterator<Attribute> it = attributes.iterator();
+		while (it.hasNext()) {
+			Attribute a = it.next();
+			if (a.getName().startsWith("xmlns:")) {
+				namespaces.add(a.getName().substring("xmlns:".length()));
+			}
+		}
+		return namespaces;
 	}
 
 	private static boolean hasCustomAttributes(URL url, Charset charset) throws IOException {

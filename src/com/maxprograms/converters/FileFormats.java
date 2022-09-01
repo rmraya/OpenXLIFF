@@ -24,13 +24,13 @@ import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.maxprograms.xml.Document;
-import com.maxprograms.xml.SAXBuilder;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
+
+import com.maxprograms.xml.Document;
+import com.maxprograms.xml.SAXBuilder;
 
 public class FileFormats {
 
@@ -57,6 +57,7 @@ public class FileFormats {
 	public static final String SDLXLIFF = "SDLXLIFF Document";
 	public static final String SRT = "SRT Subtitle";
 	public static final String TS = "TS (Qt Linguist translation source)";
+	public static final String TXLF = "Wordfast/GlobalLink XLIFF";
 	public static final String TXML = "TXML Document";
 	public static final String WPML = "WPML XLIFF";
 	public static final String XLIFF = "XLIFF Document";
@@ -64,10 +65,10 @@ public class FileFormats {
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PO, RC,
-			RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, WPML, XLIFF, XML, XMLG };
+			RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, TXLF, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
-		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, WPML, XLIFF).contains(type);
+		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, TXLF, WPML, XLIFF).contains(type);
 	}
 
 	public static String detectFormat(String fileName) {
@@ -107,6 +108,9 @@ public class FileFormats {
 			if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:sdl") != -1) {
 				return SDLXLIFF;
 			}
+			if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:gs4tr") != -1) {
+				return TXLF;
+			}
 			if (string.indexOf("<xliff ") != -1 && string.indexOf("<![CDATA[") != -1) {
 				return WPML;
 			}
@@ -130,6 +134,10 @@ public class FileFormats {
 					return DITA;
 				}
 				if (string.indexOf("<map") != -1 || string.indexOf("<bookmap") != -1) {
+					return DITA;
+				}
+				if (string.indexOf("<!DOCTYPE bookmap ") != -1 || string.indexOf("<!DOCTYPE concept ") != -1
+						|| string.indexOf("<!DOCTYPE reference ") != -1 || string.indexOf("<!DOCTYPE task ") != -1) {
 					return DITA;
 				}
 				if (string.indexOf("<?aid ") != -1 || string.indexOf("<Document ") != -1) {
@@ -308,6 +316,9 @@ public class FileFormats {
 		if (type.equals(TXML)) {
 			return "TXML";
 		}
+		if (type.equals(TXLF)) {
+			return "TXLF";
+		}
 		if (type.equals(WPML)) {
 			return "WPML";
 		}
@@ -365,6 +376,8 @@ public class FileFormats {
 			return TS;
 		} else if (dataType.equals("TXML") || dataType.equals("x-txml")) {
 			return TXML;
+		} else if (dataType.equals("TXLF") || dataType.equals("x-txlf")) {
+			return TXLF;
 		} else if (dataType.equals("WPML") || dataType.equals("x-wpmlxliff")) {
 			return WPML;
 		} else if (dataType.equals("XLIFF") || dataType.equals("x-xliff")) {
@@ -411,16 +424,16 @@ public class FileFormats {
 			}
 		}
 		for (int i = bomLength; i < sb.length(); i++) {
-            if (sb.charAt(i) == '[') {
-                return new JSONArray(sb.toString().substring(bomLength));
-            }
-            if (sb.charAt(i) == '{') {
-                return new JSONObject(sb.toString().substring(bomLength));
-            }
-            if (!Character.isSpaceChar(sb.charAt(i))) {
-                break;
-            }
-        }
+			if (sb.charAt(i) == '[') {
+				return new JSONArray(sb.toString().substring(bomLength));
+			}
+			if (sb.charAt(i) == '{') {
+				return new JSONObject(sb.toString().substring(bomLength));
+			}
+			if (!Character.isSpaceChar(sb.charAt(i))) {
+				break;
+			}
+		}
 		throw new IOException("Selected file is not JSON");
 	}
 }

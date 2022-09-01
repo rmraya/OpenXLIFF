@@ -77,4 +77,8 @@ public class XMLUtils {
 		result = new File(home, relative);
 		return result.getCanonicalPath();
 	}
+
+	public static boolean isXmlSpace(char c) {
+        return c == ' ' || c == '\t' || c == '\n' || c == '\r';
+    }
 }

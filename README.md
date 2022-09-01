@@ -215,6 +215,7 @@ Document Types
    SRT = SRT Subtitles
    TEXT = Plain Text
    TS = TS (Qt Linguist translation source)
+   TXLF = Wordfast/GlobalLink XLIFF
    TXML = TXML Document
    WPML = WPML XLIFF
    XLIFF = XLIFF Document

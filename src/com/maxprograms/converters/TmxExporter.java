@@ -292,20 +292,26 @@ public class TmxExporter {
 		}
 
 		if (type.equals("g") || type.equals("x")) {
-			String open = "<" + src.getName();
+			StringBuilder open = new StringBuilder();
+			open.append('<');
+			open.append(src.getName());
 			List<Attribute> atts = src.getAttributes();
 			Iterator<Attribute> h = atts.iterator();
 			while (h.hasNext()) {
 				Attribute a = h.next();
-				open = open + " " + a.getName() + "=\"" + a.getValue() + "\"";
+				open.append(' ');
+				open.append(a.getName());
+				open.append("=\"");
+				open.append(a.getValue());
+				open.append('\"');
 			}
 			List<XMLNode> l = src.getContent();
 			if (!l.isEmpty()) {
-				open = open + ">";
+				open.append('>');
 				int i = match;
 				match++;
-				String text = "<bpt type=\"xliff-" + src.getName() + "\" i=\"" + i + "\">" + XMLUtils.cleanText(open)
-						+ "</bpt>";
+				String text = "<bpt type=\"xliff-" + src.getName() + "\" i=\"" + i + "\">"
+						+ XMLUtils.cleanText(open.toString()) + "</bpt>";
 				Iterator<XMLNode> k = l.iterator();
 				while (k.hasNext()) {
 					XMLNode n = k.next();
@@ -427,16 +433,16 @@ public class TmxExporter {
 			if (src.getAttributeValue("mtype").equals("protected")) {
 				String ts = src.getAttributeValue("ts");
 				ts = restoreChars(ts).trim();
-				String name = "";
+				StringBuilder name = new StringBuilder();
 				for (int i = 1; i < ts.length(); i++) {
 					if (Character.isSpaceChar(ts.charAt(i))) {
 						break;
 					}
-					name = name + ts.charAt(i);
+					name.append(ts.charAt(i));
 				}
 				return "<ph type=\"mrk-protected\" x=\"" + XMLUtils.cleanText(src.getAttributeValue("mid", "-"))
 						+ "\">" + XMLUtils.cleanText(ts) + "</ph>" + XMLUtils.cleanText(src.getText())
-						+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name + ">") + "</ph>";
+						+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name.toString() + ">") + "</ph>";
 			}
 			return "<hi type=\"" + src.getAttributeValue("mtype", "xliff-mrk") + "\">"
 					+ XMLUtils.cleanText(src.getText()) + "</hi>";

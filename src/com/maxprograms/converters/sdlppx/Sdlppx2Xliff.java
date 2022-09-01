@@ -275,7 +275,7 @@ public class Sdlppx2Xliff {
 		}
 		if (project == null) {
 			result.put("result", "Failed");
-			result.put("reason", "Project file not found");
+			result.put("reason", "Project file not found in package");
 			return result;
 		}
 		SAXBuilder builder = new SAXBuilder();

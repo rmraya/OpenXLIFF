@@ -259,7 +259,7 @@ public class MSOffice2Xliff {
 	}
 
 	private static boolean isNumeric(String string) {
-		return string.matches("[$\u20AC\u00A3]?[\\s]?[\\-]?([0-9]+[\\.,]?([0-9]+)?)+[\\s]?[%\u20AC]?");
+		return string.matches("[$\u20AC\u00A3]?[\\s]?[\\-]?(\\d+[\\.,]?(\\d+)?)+[\\s]?[%\u20AC]?");
 	}
 
 	private static void writeOut(String string) throws IOException {
@@ -647,7 +647,6 @@ public class MSOffice2Xliff {
 		text = text + "&gt;</ph>";
 
 		if (e.getName().matches("[a-z]:t") || e.getName().equals("t")) {
-			// text = text + Utils.cleanString(e.getText());
 			text = text + fixHtmlTags(e.getText());
 		} else {
 			List<XMLNode> children = e.getContent();

@@ -49,6 +49,7 @@ import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
 import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
 import com.maxprograms.converters.srt.Srt2Xliff;
 import com.maxprograms.converters.ts.Ts2Xliff;
+import com.maxprograms.converters.txlf.Txlf2Xliff;
 import com.maxprograms.converters.txml.Txml2Xliff;
 import com.maxprograms.converters.wpml.Wpml2Xliff;
 import com.maxprograms.converters.xliff.ToOpenXliff;
@@ -271,7 +272,7 @@ public class Convert {
 		if (xliff20) {
 			params.put("xliff20", "yes");
 		}
-		
+
 		List<String> result = run(params);
 
 		if (!Constants.SUCCESS.equals(result.get(0))) {
@@ -328,6 +329,7 @@ public class Convert {
 				+ "   SRT = SRT Substitle"
 				+ "   TEXT = Plain Text\n"
 				+ "   TS = TS (Qt Linguist translation source)\n"
+				+ "   TXLF = Wordfast/GlobalLink XLIFF\n"
 				+ "   TXML = TXML Document\n"
 				+ "   WPML = WPML XLIFF\n"
 				+ "   XLIFF = XLIFF Document\n"
@@ -385,69 +387,76 @@ public class Convert {
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
-		String format = params.get("format");
-		if (format.equals(FileFormats.INX)) {
-			params.put("InDesign", "yes");
-			result = Xml2Xliff.run(params);
-		} else if (format.equals(FileFormats.ICML)) {
-			params.put("from", "x-icml");
-			result = Story2Xliff.run(params);
-		} else if (format.equals(FileFormats.IDML)) {
-			result = Idml2Xliff.run(params);
-		} else if (format.equals(FileFormats.DITA)) {
-			result = DitaMap2Xliff.run(params);
-		} else if (format.equals(FileFormats.HTML)) {
-			result = Html2Xliff.run(params);
-		} else if (format.equals(FileFormats.JS)) {
-			result = Jscript2xliff.run(params);
-		} else if (format.equals(FileFormats.JSON)) {
-			result = Json2Xliff.run(params);
-		} else if (format.equals(FileFormats.JAVA)) {
-			result = Properties2Xliff.run(params);
-		} else if (format.equals(FileFormats.MIF)) {
-			result = Mif2Xliff.run(params);
-		} else if (format.equals(FileFormats.OO) || format.equals(FileFormats.OFF)) {
-			result = Office2Xliff.run(params);
-		} else if (format.equals(FileFormats.PO)) {
-			result = Po2Xliff.run(params);
-		} else if (format.equals(FileFormats.RC)) {
-			result = Rc2Xliff.run(params);
-		} else if (format.equals(FileFormats.RESX)) {
-			result = Resx2Xliff.run(params);
-		} else if (format.equals(FileFormats.SDLPPX)) {
-			result = Sdlppx2Xliff.run(params);
-		} else if (format.equals(FileFormats.SDLXLIFF)) {
-			result = Sdl2Xliff.run(params);
-		} else if (format.equals(FileFormats.SRT)) {
-			result = Srt2Xliff.run(params);
-		} else if (format.equals(FileFormats.TEXT)) {
-			result = Text2Xliff.run(params);
-		} else if (format.equals(FileFormats.TS)) {
-			result = Ts2Xliff.run(params);
-		} else if (format.equals(FileFormats.TXML)) {
-			result = Txml2Xliff.run(params);
-		} else if (format.equals(FileFormats.WPML)) {
-			result = Wpml2Xliff.run(params);
-		} else if (format.equals(FileFormats.XML)) {
-			result = Xml2Xliff.run(params);
-		} else if (format.equals(FileFormats.XMLG)) {
-			params.put("generic", "yes");
-			result = Xml2Xliff.run(params);
-		} else if (format.equals(FileFormats.XLIFF)) {
-			result = ToOpenXliff.run(params);
-		} else {
-			result.add(Constants.ERROR);
-			result.add("Unknown file format.");
-		}
-		if ("yes".equals(params.get("embed")) && Constants.SUCCESS.equals(result.get(0))) {
-			result = addSkeleton(params.get("xliff"), params.get("catalog"));
-		}
-		if ("yes".equals(params.get("xliff20")) && Constants.SUCCESS.equals(result.get(0))) {
-			result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"));
-			if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
-				result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
-						params.get("catalog"));
+		try {
+			String format = params.get("format");
+			if (format.equals(FileFormats.INX)) {
+				params.put("InDesign", "yes");
+				result = Xml2Xliff.run(params);
+			} else if (format.equals(FileFormats.ICML)) {
+				params.put("from", "x-icml");
+				result = Story2Xliff.run(params);
+			} else if (format.equals(FileFormats.IDML)) {
+				result = Idml2Xliff.run(params);
+			} else if (format.equals(FileFormats.DITA)) {
+				result = DitaMap2Xliff.run(params);
+			} else if (format.equals(FileFormats.HTML)) {
+				result = Html2Xliff.run(params);
+			} else if (format.equals(FileFormats.JS)) {
+				result = Jscript2xliff.run(params);
+			} else if (format.equals(FileFormats.JSON)) {
+				result = Json2Xliff.run(params);
+			} else if (format.equals(FileFormats.JAVA)) {
+				result = Properties2Xliff.run(params);
+			} else if (format.equals(FileFormats.MIF)) {
+				result = Mif2Xliff.run(params);
+			} else if (format.equals(FileFormats.OO) || format.equals(FileFormats.OFF)) {
+				result = Office2Xliff.run(params);
+			} else if (format.equals(FileFormats.PO)) {
+				result = Po2Xliff.run(params);
+			} else if (format.equals(FileFormats.RC)) {
+				result = Rc2Xliff.run(params);
+			} else if (format.equals(FileFormats.RESX)) {
+				result = Resx2Xliff.run(params);
+			} else if (format.equals(FileFormats.SDLPPX)) {
+				result = Sdlppx2Xliff.run(params);
+			} else if (format.equals(FileFormats.SDLXLIFF)) {
+				result = Sdl2Xliff.run(params);
+			} else if (format.equals(FileFormats.SRT)) {
+				result = Srt2Xliff.run(params);
+			} else if (format.equals(FileFormats.TEXT)) {
+				result = Text2Xliff.run(params);
+			} else if (format.equals(FileFormats.TS)) {
+				result = Ts2Xliff.run(params);
+			} else if (format.equals(FileFormats.TXML)) {
+				result = Txml2Xliff.run(params);
+			} else if (format.equals(FileFormats.TXLF)) {
+				result = Txlf2Xliff.run(params);
+			} else if (format.equals(FileFormats.WPML)) {
+				result = Wpml2Xliff.run(params);
+			} else if (format.equals(FileFormats.XML)) {
+				result = Xml2Xliff.run(params);
+			} else if (format.equals(FileFormats.XMLG)) {
+				params.put("generic", "yes");
+				result = Xml2Xliff.run(params);
+			} else if (format.equals(FileFormats.XLIFF)) {
+				result = ToOpenXliff.run(params);
+			} else {
+				result.add(Constants.ERROR);
+				result.add("Unknown file format.");
 			}
+			if ("yes".equals(params.get("embed")) && Constants.SUCCESS.equals(result.get(0))) {
+				result = addSkeleton(params.get("xliff"), params.get("catalog"));
+			}
+			if ("yes".equals(params.get("xliff20")) && Constants.SUCCESS.equals(result.get(0))) {
+				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"));
+				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
+					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
+							params.get("catalog"));
+				}
+			}
+		} catch (Exception e) {
+			result.add(0, Constants.ERROR);
+			result.add(1, e.getMessage());
 		}
 		return result;
 	}

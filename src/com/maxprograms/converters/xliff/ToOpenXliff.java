@@ -21,6 +21,8 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
@@ -32,8 +34,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class ToOpenXliff {
 
@@ -150,7 +150,7 @@ public class ToOpenXliff {
                 Element source = new Element("source");
                 tag = 1;
                 source.setContent(getContent2x(src));
-                if (!hasText(source)) {
+                if (!XliffUtils.hasText(source)) {
                     return;
                 }
                 unit.addContent(source);
@@ -217,7 +217,7 @@ public class ToOpenXliff {
                     if ("pc".equals(name)) {
                         Element ph1 = new Element("ph");
                         ph1.setAttribute("id", "" + tag++);
-                        ph1.setText(getHead(e));
+                        ph1.setText(XliffUtils.getHead(e));
                         result.add(ph1);
 
                         List<XMLNode> nested = getContent2x(e);
@@ -315,7 +315,7 @@ public class ToOpenXliff {
                             Element source = new Element("source");
                             tag = 1;
                             source.setContent(getContent1x(e));
-                            if (!hasText(source)) {
+                            if (!XliffUtils.hasText(source)) {
                                 return;
                             }
                             unit.addContent(source);
@@ -346,7 +346,7 @@ public class ToOpenXliff {
                 Element source = new Element("source");
                 tag = 1;
                 source.setContent(getContent1x(root.getChild("source")));
-                if (!hasText(source)) {
+                if (!XliffUtils.hasText(source)) {
                     return;
                 }
                 unit.addContent(source);
@@ -423,7 +423,7 @@ public class ToOpenXliff {
                     if ("g".equals(name)) {
                         Element ph1 = new Element("ph");
                         ph1.setAttribute("id", "" + tag++);
-                        ph1.setText(getHead(e));
+                        ph1.setText(XliffUtils.getHead(e));
                         result.add(ph1);
                         if (e.getChildren().isEmpty()) {
                             result.add(new TextNode(e.getText()));
@@ -450,42 +450,6 @@ public class ToOpenXliff {
             }
         }
         return result;
-    }
-
-    private static String getHead(Element e) {
-        StringBuilder builder = new StringBuilder();
-        builder.append('<');
-        builder.append(e.getName());
-        List<Attribute> atts = e.getAttributes();
-        Iterator<Attribute> it = atts.iterator();
-        while (it.hasNext()) {
-            Attribute a = it.next();
-            builder.append(' ');
-            builder.append(a.toString());
-        }
-        builder.append('>');
-        return builder.toString();
-    }
-
-    private static boolean hasText(Element e) {
-        List<XMLNode> nodes = e.getContent();
-        Iterator<XMLNode> it = nodes.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.TEXT_NODE) {
-                TextNode t = (TextNode) node;
-                String text = t.getText();
-                if (text != null) {
-                    for (int i = 0; i < text.length(); i++) {
-                        char c = text.charAt(i);
-                        if (!(Character.isSpaceChar(c) || c == '\n')) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     private static void renameAttributes(Element e) {

@@ -168,7 +168,7 @@ class CustomContentHandler implements IContentHandler {
 				if (c == '=' || Character.isWhitespace(c)) {
 					inName = false;
 				} else {
-					name.append( c);
+					name.append(c);
 				}
 			}
 			if (inValue) {
@@ -205,6 +205,11 @@ class CustomContentHandler implements IContentHandler {
 	@Override
 	public void skippedEntity(String name) throws SAXException {
 		// do nothing, the entity resolver must support this
+	}
+
+	@Override
+	public void declaration(String version, String encoding, String standalone) throws SAXException {
+		// do nothing
 	}
 
 	@Override
@@ -352,6 +357,9 @@ class CustomContentHandler implements IContentHandler {
 	public void startDTD(String name, String publicId, String systemId1) throws SAXException {
 		if (doc == null) {
 			this.systemId = systemId1;
+			if (catalog != null && publicId != null) {
+				catalog.parseDTD(publicId);				
+			}
 			doc = new Document(null, name, publicId, systemId);
 			if (encoding != null) {
 				doc.setEncoding(encoding);

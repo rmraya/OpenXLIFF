@@ -32,7 +32,7 @@ public class Document implements XMLNode {
 	private String internalSubset;
 	private Charset encoding;
 	private Map<String, String> entities;
-	private List<String> attributes;
+	private List<AttributeDecl> attributeDeclarations;
 
 	private static Logger logger = System.getLogger(Document.class.getName());
 
@@ -80,18 +80,18 @@ public class Document implements XMLNode {
 			while (it.hasNext()) {
 				XMLNode node = it.next();
 				switch (node.getNodeType()) {
-				case XMLNode.PROCESSING_INSTRUCTION_NODE:
-					content.add(new PI(((PI) node).getTarget(), ((PI) node).getData()));
-					break;
-				case XMLNode.COMMENT_NODE:
-					content.add(new Comment(((Comment) node).getText()));
-					break;
-				case XMLNode.TEXT_NODE:
-					content.add(new TextNode(((TextNode) node).getText()));
-					break;
-				default:
-					// should never happen
-					logger.log(Level.WARNING, "Prolog contains wrong content type.");
+					case XMLNode.PROCESSING_INSTRUCTION_NODE:
+						content.add(new PI(((PI) node).getTarget(), ((PI) node).getData()));
+						break;
+					case XMLNode.COMMENT_NODE:
+						content.add(new Comment(((Comment) node).getText()));
+						break;
+					case XMLNode.TEXT_NODE:
+						content.add(new TextNode(((TextNode) node).getText()));
+						break;
+					default:
+						// should never happen
+						logger.log(Level.WARNING, "Prolog contains wrong content type.");
 				}
 			}
 		}
@@ -256,15 +256,15 @@ public class Document implements XMLNode {
 		while (it.hasNext()) {
 			XMLNode node = it.next();
 			switch (node.getNodeType()) {
-			case XMLNode.PROCESSING_INSTRUCTION_NODE:
-				content.add(content.size() - 1, new PI(((PI) node).getTarget(), ((PI) node).getData()));
-				break;
-			case XMLNode.COMMENT_NODE:
-				content.add(content.size() - 1, new Comment(((Comment) node).getText()));
-				break;
-			default:
-				// should never happen
-				logger.log(Level.WARNING, "Prolog contains wrong content type.");
+				case XMLNode.PROCESSING_INSTRUCTION_NODE:
+					content.add(content.size() - 1, new PI(((PI) node).getTarget(), ((PI) node).getData()));
+					break;
+				case XMLNode.COMMENT_NODE:
+					content.add(content.size() - 1, new Comment(((Comment) node).getText()));
+					break;
+				default:
+					// should never happen
+					logger.log(Level.WARNING, "Prolog contains wrong content type.");
 			}
 		}
 	}
@@ -284,12 +284,12 @@ public class Document implements XMLNode {
 		outputter.output(this, output);
 	}
 
-	public void setAttributes(List<String> attributes) {
-		this.attributes = attributes;
+	public void setAttributes(List<AttributeDecl> attributes) {
+		this.attributeDeclarations = attributes;
 	}
 
-	public List<String> getAttributes() {
-		return attributes;
+	public List<AttributeDecl> getAttributes() {
+		return attributeDeclarations;
 	}
 
 	public void setInternalSubset(String value) {

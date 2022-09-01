@@ -31,6 +31,8 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.ILogger;
 import com.maxprograms.converters.Utils;
@@ -44,13 +46,12 @@ import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
-import org.xml.sax.SAXException;
-
 public class DitaParser {
 
 	private static Logger logger = System.getLogger(DitaParser.class.getName());
 
 	private static ILogger dataLogger;
+	private List<String> issues;
 
 	protected class StringArray implements Comparable<StringArray> {
 		private String file;
@@ -115,6 +116,7 @@ public class DitaParser {
 	public List<String> run(Map<String, String> params)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
 		List<String> result = new ArrayList<>();
+		issues = new ArrayList<>();
 		filesMap = new TreeSet<>();
 		searchedConref = new TreeSet<>();
 		usedKeys = new HashMap<>();
@@ -146,6 +148,7 @@ public class DitaParser {
 			dataLogger.log("Building key scopes");
 		}
 		rootScope = sbuilder.buildScope(inputFile, ditaval, catalog);
+		issues.addAll(sbuilder.getIssues());
 
 		if (ditaval != null) {
 			parseDitaVal(ditaval, catalog);
@@ -328,11 +331,15 @@ public class DitaParser {
 						} else {
 							ignored.add(file.getAbsolutePath());
 							MessageFormat mf = new MessageFormat("Ignored Untranslatable File: {0}");
-							logger.log(Level.WARNING, mf.format(new Object[] { href }));
+							String issue = mf.format(new Object[] { href });
+							logger.log(Level.WARNING, issue);
+							issues.add(issue);
 						}
 					} else {
-						MessageFormat mf = new MessageFormat("Referenced file {0} doesn't exist");
-						logger.log(Level.WARNING, mf.format(new Object[] { href }));
+						MessageFormat mf = new MessageFormat("Referenced file {0} doesn''t exist");
+						String issue = mf.format(new Object[] { href });
+						logger.log(Level.WARNING, issue);
+						issues.add(issue);
 					}
 				} catch (SAXException ex) {
 					String lower = href.toLowerCase();
@@ -345,6 +352,7 @@ public class DitaParser {
 						throw new SAXException(ex.getMessage() + "\n File: '" + href + "'");
 					}
 					logger.log(Level.WARNING, "Error recursing", ex);
+					issues.add("Error recursing " + href);
 				}
 			}
 		} else {
@@ -356,7 +364,9 @@ public class DitaParser {
 			}
 			if (!conref.isEmpty()) {
 				if ("#".equals(conref)) {
-					logger.log(Level.WARNING, "Invalid @conref at " + parentFile);
+					String issue = "Invalid @conref at " + parentFile;
+					logger.log(Level.WARNING, issue);
+					issues.add(issue);
 				} else {
 					conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
 					if (conref.indexOf('#') != -1) {
@@ -379,15 +389,21 @@ public class DitaParser {
 								}
 							} else {
 								MessageFormat mf = new MessageFormat("@conref not found:  \"{0}\" in file {1}");
-								logger.log(Level.WARNING, mf.format(new Object[] { conref, parentFile }));
+								String issue = mf.format(new Object[] { conref, parentFile });
+								logger.log(Level.WARNING, issue);
+								issues.add(issue);
 							}
 						} catch (Exception ex) {
 							MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
-							logger.log(Level.WARNING, mf.format(new Object[] { conref, parentFile }));
+							String issue = mf.format(new Object[] { conref, parentFile });
+							logger.log(Level.WARNING, issue);
+							issues.add(issue);
 						}
 						return;
 					}
-					logger.log(Level.WARNING, "@conref without fragment identifier: " + conref);
+					String issue = "@conref without fragment identifier: " + conref;
+					logger.log(Level.WARNING, issue);
+					issues.add(issue);
 				}
 			}
 
@@ -397,7 +413,9 @@ public class DitaParser {
 				Key k = rootScope.getKey(key);
 				if (k == null) {
 					MessageFormat mf = new MessageFormat("Key not defined for @conkeyref: \"{0}\".");
-					logger.log(Level.WARNING, mf.format(new Object[] { conkeyref }));
+					String issue = mf.format(new Object[] { conkeyref });
+					logger.log(Level.WARNING, issue);
+					issues.add(issue);
 					return;
 				}
 				if (!usedKeys.containsKey(k)) {
@@ -407,7 +425,9 @@ public class DitaParser {
 				String file = k.getHref();
 				if (file == null) {
 					MessageFormat mf = new MessageFormat("Key not defined for @conkeyref: \"{0}\".");
-					logger.log(Level.WARNING, mf.format(new Object[] { conkeyref }));
+					String issue = mf.format(new Object[] { conkeyref });
+					logger.log(Level.WARNING, issue);
+					issues.add(issue);
 					return;
 				}
 
@@ -422,7 +442,9 @@ public class DitaParser {
 					return;
 				}
 				MessageFormat mf = new MessageFormat("Broken @conkeyref \"{0}\" in file {1}");
-				logger.log(Level.WARNING, mf.format(new Object[] { conkeyref, parentFile }));
+				String issue = mf.format(new Object[] { conkeyref, parentFile });
+				logger.log(Level.WARNING, issue);
+				issues.add(issue);
 				return;
 			}
 
@@ -498,7 +520,9 @@ public class DitaParser {
 					}
 				}
 				MessageFormat mf = new MessageFormat("Undefined key for @keyref \"{0}\" in file {1}");
-				logger.log(Level.WARNING, mf.format(new Object[] { keyref, parentFile }));
+				String issue = mf.format(new Object[] { keyref, parentFile });
+				logger.log(Level.WARNING, issue);
+				issues.add(issue);
 			}
 
 			String href = e.getAttributeValue("href");
@@ -913,5 +937,9 @@ public class DitaParser {
 
 	public static void setDataLogger(ILogger dataLogger) {
 		DitaParser.dataLogger = dataLogger;
+	}
+
+	public List<String> getIssues() {
+		return issues;
 	}
 }

@@ -27,14 +27,15 @@ module openxliff {
 	exports com.maxprograms.converters.sdlppx;
 	exports com.maxprograms.converters.txml;
 	exports com.maxprograms.converters.plaintext;
+	exports com.maxprograms.converters.xliff;
 	exports com.maxprograms.languages;
 	exports com.maxprograms.segmenter;
 	exports com.maxprograms.stats;
 	exports com.maxprograms.xliff2;
 	exports com.maxprograms.validation;
 	exports com.maxprograms.mt;
-	
-	opens com.maxprograms.xml to mapdb;	
+
+	opens com.maxprograms.xml to mapdb;
 	opens com.maxprograms.languages to mapdb;
 
 	requires dtd;

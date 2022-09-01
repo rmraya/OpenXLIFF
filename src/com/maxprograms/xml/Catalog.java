@@ -14,6 +14,8 @@ package com.maxprograms.xml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,6 +23,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,12 +33,16 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
+import com.maxprograms.converters.Utils;
+
 public class Catalog implements EntityResolver2 {
 
     private Map<String, String> systemCatalog;
     private Map<String, String> publicCatalog;
     private Map<String, String> uriCatalog;
     private Map<String, String> dtdCatalog;
+    private Map<String, String> dtdEntities;
+    private Set<String> parsedDTDs;
     private List<String[]> uriRewrites;
     private List<String[]> systemRewrites;
     private String workDir;
@@ -46,9 +54,9 @@ public class Catalog implements EntityResolver2 {
         File file = new File(catalogFile);
         if (!file.isAbsolute()) {
             String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
+            if (home == null) {
+                home = System.getProperty("user.dir");
+            }
             String absolute = XMLUtils.getAbsolutePath(home, catalogFile);
             file = new File(absolute);
         }
@@ -317,8 +325,11 @@ public class Catalog implements EntityResolver2 {
                 return new InputSource(uri.toURL().openStream());
             }
             return new InputSource(new FileInputStream(uri.toURL().toString()));
-        } catch (IOException | URISyntaxException e) {
+        } catch (IOException | URISyntaxException | IllegalArgumentException | NullPointerException e) {
             // ignore
+        }
+        if (dtdEntities != null && dtdEntities.containsKey(publicId)) {
+            return new InputSource(new FileInputStream(dtdEntities.get(publicId)));
         }
         return null;
     }
@@ -411,5 +422,40 @@ public class Catalog implements EntityResolver2 {
             return dtdCatalog.get(name);
         }
         return null;
+    }
+
+    public void addDtdEntity(String publicId, String path) {
+        if (dtdEntities == null) {
+            dtdEntities = new Hashtable<>();
+        }
+        if (!dtdEntities.containsKey(publicId)) {
+            dtdEntities.put(publicId, path);
+        }
+    }
+
+    public void parseDTD(String publicId) {
+        if (parsedDTDs == null) {
+            parsedDTDs = new TreeSet<>();
+        }
+        String dtd = matchPublic(publicId);
+        if (dtd != null && !parsedDTDs.contains(dtd)) {
+            try {
+                DTDParser parser = new DTDParser();
+                File dtdFile = new File(dtd);
+                Grammar grammar = parser.parse(dtdFile);
+                List<EntityDecl> entities = grammar.getPublicEntities();
+                Iterator<EntityDecl> it = entities.iterator();
+                while (it.hasNext()) {
+                    EntityDecl entity = it.next();
+                    String path = Utils.getAbsolutePath(dtdFile.getParentFile(), entity.getValue());
+                    addDtdEntity(entity.getPublicId(), path);
+                }
+            } catch (IOException | SAXException e) {
+                // do nothing
+                Logger logger = System.getLogger(Catalog.class.getName());
+                logger.log(Level.WARNING, "Error parsing DTD " + publicId);
+            }
+            parsedDTDs.add(dtd);
+        }
     }
 }

@@ -98,7 +98,7 @@ public class Story2Xliff {
 			while (ia.hasNext()) {
 				Attribute a = ia.next();
 				writeSkeleton(
-						" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\"");
+						" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
 			}
 			writeSkeleton(">");
 
@@ -296,37 +296,37 @@ public class Story2Xliff {
 					" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
 		}
 		writeSkeleton(">");
-		String source = "<ph>";
+		StringBuilder source = new StringBuilder("<ph>");
 		List<XMLNode> content = e.getContent();
 		Iterator<XMLNode> it = content.iterator();
 		boolean preamble = true;
 		while (it.hasNext()) {
 			XMLNode n = it.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				source = source + n.toString();
+				source.append(n.toString());
 			}
 			if (n.getNodeType() == XMLNode.CDATA_SECTION_NODE) {
-				source = source + n.toString();
+				source.append(n.toString());
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element el = (Element) n;
 				if (hasText(el)) {
 					preamble = false;
-					source = source + recurseElement(el);
+					source.append(recurseElement(el));
 				} else {
 					if (preamble) {
 						writeSkeleton(el.toString());
 					} else {
-						source = source + el.toString();
+						source.append(el.toString());
 					}
 				}
 			}
 			if (n.getNodeType() == XMLNode.PROCESSING_INSTRUCTION_NODE) {
-				source = source + n.toString();
+				source.append(n.toString());
 			}
 		}
-		source = source + "</ph>";
-		String[] parts = splitCell(source);
+		source.append("</ph>");
+		String[] parts = splitCell(source.toString());
 		for (int i = 0; i < parts.length; i++) {
 			String s = parts[i];
 			String first = s.substring(0, s.indexOf("</ph>") + 5);
@@ -487,23 +487,27 @@ public class Story2Xliff {
 	}
 
 	private static String fixTags(String string) {
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		int id1 = 1;
 		int start = string.indexOf("<ph>");
 		while (start != -1) {
-			result = result + string.substring(0, start);
+			result.append(string.substring(0, start));
 			string = string.substring(start);
 			int end = string.indexOf("</ph>");
 			String clean = Utils.cleanString(string.substring("<ph>".length(), end));
-			result = result + "<ph id=\"" + id1++ + "\">" + clean + "</ph>";
+			result.append("<ph id=\"");
+			result.append(id1++);
+			result.append("\">");
+			result.append(clean);
+			result.append("</ph>");
 			if (clean.indexOf('\u2028') != -1) {
-				result = result + "\n";
+				result.append("\n");
 			}
 			string = string.substring(end + "</ph>".length());
 			start = string.indexOf("<ph>");
 		}
-		result = result + string;
-		return result;
+		result.append(string);
+		return result.toString();
 	}
 
 	private static String recurseElement(Element e) {

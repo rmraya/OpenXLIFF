@@ -165,6 +165,10 @@ public class FromOpenXliff {
                             target = root.getChild("target");
                         }
                         target.clone(segment.getChild("target"));
+                        if (!target.getContent().isEmpty() && ("new".equals(target.getAttributeValue("state"))
+                                || "needs-translation".equals(target.getAttributeValue("state")))) {
+                            target.setAttribute("state", "translated");
+                        }
                         if (!target.getChildren().isEmpty()) {
                             replaceTags(target, 1);
                         }
@@ -348,7 +352,7 @@ public class FromOpenXliff {
         skeleton = builder.build(sklFile);
     }
 
-    private static void restoreAttributes(Element e) {
+    public static void restoreAttributes(Element e) {
         List<Attribute> atts = e.getAttributes();
         Iterator<Attribute> at = atts.iterator();
         Vector<String> change = new Vector<>();

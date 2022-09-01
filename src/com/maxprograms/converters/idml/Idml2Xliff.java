@@ -285,7 +285,7 @@ public class Idml2Xliff {
 				outputter.output(merged, output);
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | NullPointerException e) {
 			logger.log(Level.ERROR, "Error converting IDML file", e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
