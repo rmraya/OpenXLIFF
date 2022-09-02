@@ -144,11 +144,12 @@ public class Xliff2Txlf {
                 Element segment = segments.get(pi);
                 if (segment.getAttributeValue("approved").equals("yes")) {
                     Element target = root.getChild("target");
-                    Element oldTarget = target;
                     if (target == null) {
                         addtarget(root);
-                        target = root.getChild("targe");
+                        target = root.getChild("target");
                     }
+                    Element oldTarget = new Element("target");
+                    oldTarget.setContent(target.getContent());
                     Element translation = segment.getChild("target");
                     target.setContent(translation.getContent());
                     if (!target.getContent().isEmpty() && ("new".equals(target.getAttributeValue("state"))
@@ -158,7 +159,7 @@ public class Xliff2Txlf {
                     if (!target.getChildren().isEmpty()) {
                         replaceTags(target, 1);
                     }
-                    if (oldTarget != null) {
+                    if (!oldTarget.getContent().isEmpty() && !target.getContent().equals(oldTarget.getContent())) {
                         Element altTrans = new Element("alt-trans");
                         altTrans.setAttribute("alttranstype", "previous-version");
                         String editStatus = root.getAttributeValue("gs4tr__editStatus");
