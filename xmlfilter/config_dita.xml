@@ -561,7 +561,7 @@
 <tag hard-break="segment">thead</tag>
 <tag hard-break="segment">thoroughfare</tag>
 <tag hard-break="segment">title</tag>
-<tag hard-break="segment">titlealt</tag>
+<tag hard-break="segment">titlealts</tag>
 <tag hard-break="inline" ctype="x-other">tm</tag>
 <tag hard-break="segment" attributes="navtitle">toc</tag>
 <tag hard-break="segment">topic</tag>

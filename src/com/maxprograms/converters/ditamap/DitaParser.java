@@ -303,7 +303,7 @@ public class DitaParser {
 				return;
 			}
 			String format = e.getAttributeValue("format", "dita");
-			if (!href.isEmpty() && !format.startsWith("dita")) {
+			if (!href.isEmpty() && (!format.startsWith("dita") || ditaClass(e, "ditavalref-d/ditavalref"))) {
 				return;
 			}
 			if (!href.isEmpty() && !href.equals(parentFile)) {
