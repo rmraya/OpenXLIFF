@@ -42,10 +42,10 @@ public class AutoConfiguration {
 		// use run method instead
 	}
 
-	public static void run(String input, String out, String catalog)
+	public static void run(String input, String out, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(catalog);
 		Document d = builder.build(input);
 		Element r = d.getRootElement();
 		segment = new HashMap<>();

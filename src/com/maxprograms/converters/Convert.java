@@ -451,7 +451,7 @@ public class Convert {
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"));
 				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
 					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
-							params.get("catalog"));
+							new Catalog(params.get("catalog")));
 				}
 			}
 		} catch (Exception e) {

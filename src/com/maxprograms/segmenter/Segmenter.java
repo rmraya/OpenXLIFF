@@ -44,10 +44,10 @@ public class Segmenter {
 	private Map<String, String> tags;
 	private int tagId;
 
-	public Segmenter(String srxFile, String srcLanguage, String catalog)
+	public Segmenter(String srxFile, String srcLanguage, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(catalog);
 		Document doc = builder.build(srxFile);
 		root = doc.getRootElement();
 		if (!root.getName().equals("srx")) {

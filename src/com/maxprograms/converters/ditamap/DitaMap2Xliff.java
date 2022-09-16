@@ -32,6 +32,9 @@ import java.util.StringTokenizer;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.FileFormats;
@@ -48,9 +51,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
 
 public class DitaMap2Xliff {
 
@@ -93,7 +93,7 @@ public class DitaMap2Xliff {
 				dataLogger.setStage("Harvesting Keys");
 				DitaParser.setDataLogger(dataLogger);
 			}
-			List<String> filesMap = parser.run(params);
+			List<String> filesMap = parser.run(params, catalog);
 			issues.addAll(parser.getIssues());
 			rootScope = parser.getScope();
 

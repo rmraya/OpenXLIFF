@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -44,7 +45,7 @@ public class Resegmenter {
         // use run method instead
     }
 
-    public static List<String> run(String xliff, String srx, String srcLang, String catalog) {
+    public static List<String> run(String xliff, String srx, String srcLang, Catalog catalog) {
         List<String> result = new ArrayList<>();
         try {
             segmenter = new Segmenter(srx, srcLang, catalog);

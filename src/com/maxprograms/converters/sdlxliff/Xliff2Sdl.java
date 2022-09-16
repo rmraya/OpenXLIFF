@@ -44,7 +44,7 @@ public class Xliff2Sdl {
 	private static Map<String, Element> segments;
 	private static Document doc;
 	private static Element root;
-	private static String catalog;
+	private static Catalog catalog;
 
 	private Xliff2Sdl() {
 		// do not instantiate this class
@@ -56,7 +56,6 @@ public class Xliff2Sdl {
 
 		sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
-		catalog = params.get("catalog");
 
 		String outputFile = params.get("backfile");
 		String type = params.get("type");
@@ -65,6 +64,7 @@ public class Xliff2Sdl {
 		}
 
 		try {
+			catalog = new Catalog(params.get("catalog"));
 
 			loadSegments();
 			loadSkeleton();
@@ -229,7 +229,7 @@ public class Xliff2Sdl {
 	private static void loadSkeleton()
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(catalog);
 		doc = builder.build(sklFile);
 		root = doc.getRootElement();
 	}
@@ -237,7 +237,7 @@ public class Xliff2Sdl {
 	private static void loadSegments()
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(catalog);
 
 		Document xdoc = builder.build(xliffFile);
 		Element xroot = xdoc.getRootElement();

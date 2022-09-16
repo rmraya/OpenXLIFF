@@ -62,7 +62,7 @@ public class Wpml2Xliff {
         sourceLanguage = params.get("srcLang");
         targetLanguage = params.get("tgtLang");
         String srxRules = params.get("srxFile");
-        String catalog = params.get("catalog");
+        String catalogFile = params.get("catalog");
         String elementSegmentation = params.get("paragraph");
         if (elementSegmentation == null) {
             paragraphSegmentation = false;
@@ -77,11 +77,12 @@ public class Wpml2Xliff {
         endPattern = Pattern.compile("</[A-Za-z0-9]+>");
 
         try {
+            Catalog catalog = new Catalog(catalogFile);
             if (!paragraphSegmentation) {
                 segmenter = new Segmenter(srxRules, sourceLanguage, catalog);
             }
             SAXBuilder builder = new SAXBuilder();
-            builder.setEntityResolver(new Catalog(catalog));
+            builder.setEntityResolver(catalog);
             Document doc = builder.build(inputFile);
             Element root = doc.getRootElement();
 

@@ -56,12 +56,13 @@ public class Sdl2Xliff {
 			String sourceLanguage = params.get("srcLang");
 			String targetLanguage = params.get("tgtLang");
 			String srxRules = params.get("srxFile");
-			String catalog = params.get("catalog");
+			String catalogFile = params.get("catalog");
 			String tgtLang = "";
 			if (targetLanguage != null) {
 				tgtLang = "\" target-language=\"" + targetLanguage;
 			}
 
+			Catalog catalog = new Catalog(catalogFile);
 			XliffModel model = new XliffModel(original, srxRules, catalog);
 			if (model.wasModified()) {
 				File f = File.createTempFile("temp", ".sdlxliff");
@@ -72,7 +73,7 @@ public class Sdl2Xliff {
 			model = null;
 
 			SAXBuilder builder = new SAXBuilder();
-			builder.setEntityResolver(new Catalog(catalog));
+			builder.setEntityResolver(catalog);
 			Document doc = builder.build(original);
 
 			out = new FileOutputStream(output);

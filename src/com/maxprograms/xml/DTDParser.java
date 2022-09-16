@@ -253,13 +253,4 @@ public class DTDParser {
         }
         return builder.toString();
     }
-
-    public static void main(String[] args) {
-        try {
-            DTDParser parser = new DTDParser();
-            parser.parse(new File("/Users/rmraya/Documents/GitHub/OpenXLIFF/catalog/docbook4.3/docbook.dtd"));
-        } catch (SAXException | IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

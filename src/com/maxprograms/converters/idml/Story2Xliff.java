@@ -24,18 +24,19 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
+import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
-
-import org.xml.sax.SAXException;
 
 public class Story2Xliff {
 	private static String inputFile;
@@ -75,7 +76,7 @@ public class Story2Xliff {
 
 		try {
 			if (!paragraphSegmentation) {
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
+				segmenter = new Segmenter(initSegmenter, sourceLanguage, new Catalog(catalog));
 			}
 			skeleton = new FileOutputStream(skeletonFile);
 			output = new FileOutputStream(xliffFile);

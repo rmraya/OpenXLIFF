@@ -62,12 +62,12 @@ public class XliffModel {
 	private ArrayList<Element> mrks;
 	private Set<String> namespaces;
 
-	public XliffModel(String url, String srx, String catalog)
+	public XliffModel(String url, String srx, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		namespaces = new TreeSet<>();
 		original = url;
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(catalog);
 		doc = builder.build(url);
 		root = doc.getRootElement();
 		encoding = doc.getEncoding();

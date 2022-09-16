@@ -38,6 +38,7 @@ import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Element;
 
 public class Json2Xliff {
@@ -72,7 +73,7 @@ public class Json2Xliff {
         String paragraph = params.get("paragraph");
         paragraphSegmentation = "yes".equals(paragraph);
         String initSegmenter = params.get("srxFile");
-        String catalog = params.get("catalog");
+        String catalogFile = params.get("catalog");
         tgtLang = "";
         if (targetLanguage != null) {
             tgtLang = "\" target-language=\"" + targetLanguage;
@@ -81,6 +82,7 @@ public class Json2Xliff {
             bomLength = EncodingResolver.getBOM(inputFile) == null ? 0 : 1;
             Object json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {
+                Catalog catalog = new Catalog(catalogFile);
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
                 if (targetLanguage != null) {
                     targetSegmenter = new Segmenter(initSegmenter, targetLanguage, catalog);

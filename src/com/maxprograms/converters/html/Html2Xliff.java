@@ -99,7 +99,7 @@ public class Html2Xliff {
 		try {
 			if (!segByElement) {
 				String initSegmenter = params.get("srxFile");
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
+				segmenter = new Segmenter(initSegmenter, sourceLanguage, new Catalog(catalog));
 			}
 			try (FileInputStream input = new FileInputStream(inputFile)) {
 				skeleton = new FileOutputStream(skeletonFile);
