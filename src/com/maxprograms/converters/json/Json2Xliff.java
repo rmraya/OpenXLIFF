@@ -159,16 +159,14 @@ public class Json2Xliff {
 
     protected static Object loadFile(String file, String charset) throws IOException {
         StringBuilder builder = new StringBuilder();
-        boolean first = true;
         try (FileReader stream = new FileReader(new File(file), Charset.forName(charset))) {
             try (BufferedReader reader = new BufferedReader(stream)) {
                 String line = "";
                 while ((line = reader.readLine()) != null) {
-                    if (!first) {
+                    if (!builder.isEmpty()) {
                         builder.append('\n');
                     }
                     builder.append(line);
-                    first = false;
                 }
             }
         }
