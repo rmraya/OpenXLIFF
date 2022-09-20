@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -119,7 +121,6 @@ public class Json2Xliff {
             }
 
             try (FileOutputStream out = new FileOutputStream(xliffFile)) {
-
                 writeString(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                 writeString(out, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
                         + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
@@ -147,6 +148,8 @@ public class Json2Xliff {
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            Logger logger = System.getLogger(Json2Xliff.class.getName());
+            logger.log(Level.ERROR, e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

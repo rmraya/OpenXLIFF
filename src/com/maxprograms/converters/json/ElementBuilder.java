@@ -30,7 +30,7 @@ public class ElementBuilder {
     private ElementBuilder() {
         // private for security
     }
-    
+
     public static ElementHolder buildElement(String name, String string) {
         Element element = new Element(name);
         element.setText(string);
@@ -47,7 +47,7 @@ public class ElementBuilder {
                     content.remove(startTag);
                     element.setContent(content);
                 }
-                if (content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
+                if (content.size() > 0 && content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
                     Element endTag = (Element) content.get(content.size() - 1);
                     end = endTag.getText();
                     content.remove(endTag);
@@ -170,6 +170,32 @@ public class ElementBuilder {
             }
             src.setContent(newContent);
         }
+        if (src.getChildren().size() > 1) {
+            mergeTags(src);
+        }
+    }
+
+    private static void mergeTags(Element src) {
+        int previous = -1;
+        List<XMLNode> newContent = new Vector<>();
+        List<XMLNode> content = src.getContent();
+        for (int i = 0; i < content.size(); i++) {
+            XMLNode node = content.get(i);
+            int type = node.getNodeType();
+            if (type == XMLNode.ELEMENT_NODE && type == previous) {
+                Element previousTag = (Element) newContent.get(newContent.size() - 1);
+                Element currentTag = (Element) node;
+                List<XMLNode> tagContent = currentTag.getContent();
+                Iterator<XMLNode> it = tagContent.iterator();
+                while (it.hasNext()) {
+                    previousTag.addContent(it.next());
+                }
+            } else {
+                newContent.add(node);
+                previous = node.getNodeType();
+            }
+        }
+        src.setContent(newContent);
     }
 
     private static String normalise(String string) {
