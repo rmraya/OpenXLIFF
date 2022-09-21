@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE ini-file PUBLIC "-//Maxprograms//Converters 2.0.0//EN" "configuration.dtd">
 <ini-file>
-<tag hard-break="inline" ctype="x-other">abbreviatedform</tag>
+<tag hard-break="inline" ctype="x-other">abbreviated-form</tag>
 <tag hard-break="segment" attributes="navtitle">abbrevlist</tag>
 <tag hard-break="segment">abstract</tag>
 <tag hard-break="segment">addressdetails</tag>
@@ -156,7 +156,7 @@
 <tag hard-break="segment">glossSymbol</tag>
 <tag hard-break="segment">glossSynonym</tag>
 <tag hard-break="segment">glossUsage</tag>
-<tag hard-break="segment">glossabbreviation</tag>
+<tag hard-break="segment">glossAbbreviation</tag>
 <tag hard-break="segment" attributes="navtitle">glossarylist</tag>
 <tag hard-break="segment">glossbody</tag>
 <tag hard-break="segment">glossdef</tag>
@@ -536,7 +536,7 @@
 <tag hard-break="inline" ctype="x-other">sup</tag>
 <tag hard-break="segment">supequip</tag>
 <tag hard-break="segment" attributes="spectitle">superqli</tag>
-<tag hard-break="segment">superqui</tag>
+<tag hard-break="segment">supequi</tag>
 <tag hard-break="segment">supplies</tag>
 <tag hard-break="segment">supply</tag>
 <tag hard-break="segment">supplyli</tag>
