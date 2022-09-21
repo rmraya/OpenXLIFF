@@ -330,7 +330,7 @@
 <tag hard-break="segment" attributes="spectitle">lcW3C</tag>
 <tag hard-break="segment">lcWorkDescription</tag>
 <tag hard-break="segment">lcWorkEnv</tag>
-<tag hard-break="segment">learninOverview</tag>
+<tag hard-break="segment">learningOverview</tag>
 <tag hard-break="segment">learningAssesment</tag>
 <tag hard-break="segment">learningAssesmentbody</tag>
 <tag hard-break="segment">learningBase</tag>
@@ -349,7 +349,7 @@
 <tag hard-break="segment">learningPlan</tag>
 <tag hard-break="segment" attributes="navtitle">learningPlanRef</tag>
 <tag hard-break="segment">learningPlanbody</tag>
-<tag hard-break="segment" attributes="navtitle">learningPostAssesmentRef</tag>
+<tag hard-break="segment" attributes="navtitle">learningPostAssessmentRef</tag>
 <tag hard-break="segment">learningPreAssesmentRef</tag>
 <tag hard-break="segment">learningSummary</tag>
 <tag hard-break="segment">learningSummaryRef</tag>
