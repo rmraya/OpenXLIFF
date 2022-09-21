@@ -33,29 +33,29 @@ public class JsonConfig {
     public static final String NOTEKEY = "noteKey";
     public static final String REPLICATE = "replicateNotes";
 
-    Map<String, JSONObject> translatableKeys;
-    List<String> ignorableKeys;
-    List<String> sourceKeys;
+    private Map<String, JSONObject> translatableKeys;
+    private List<String> ignorableKeys;
+    private List<String> sourceKeys;
+    private boolean parseEntities;
 
     private JsonConfig() {
         translatableKeys = new HashMap<>();
         ignorableKeys = new Vector<>();
         sourceKeys = new Vector<>();
+        parseEntities = false;
     }
 
     public static JsonConfig parseFile(String configFile) throws IOException, JSONException {
         JsonConfig config = new JsonConfig();
         StringBuilder sb = new StringBuilder();
         String line = "";
-        boolean first = true;
         try (FileReader reader = new FileReader(configFile)) {
             try (BufferedReader buffer = new BufferedReader(reader)) {
                 while ((line = buffer.readLine()) != null) {
-                    if (!first) {
+                    if (!sb.isEmpty()) {
                         sb.append('\n');
                     }
                     sb.append(line);
-                    first = false;
                 }
             }
         }
@@ -75,6 +75,9 @@ public class JsonConfig {
         for (int i = 0; i < ignorableArray.length(); i++) {
             config.ignorableKeys.add(ignorableArray.getString(i));
         }
+        if (configObject.has("parseEntities")) {
+            config.parseEntities = configObject.getBoolean("parseEntities");
+        }
         return config;
     }
 
@@ -88,5 +91,9 @@ public class JsonConfig {
 
     public JSONObject getConfiguration(String sourceKey) {
         return translatableKeys.get(sourceKey);
+    }
+
+    public boolean getParseEntities() {
+        return parseEntities;
     }
 }

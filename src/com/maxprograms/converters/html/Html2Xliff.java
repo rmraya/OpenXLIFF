@@ -839,6 +839,8 @@ public class Html2Xliff {
 			}
 		}
 
+		doc = builder.build(Html2Xliff.class.getResource("entities.xml"));
+		root = doc.getRootElement();
 		List<Element> ents = root.getChildren("entity");
 		Iterator<Element> it = ents.iterator();
 		while (it.hasNext()) {

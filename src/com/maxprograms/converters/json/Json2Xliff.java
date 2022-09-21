@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -39,9 +40,12 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
+import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.SAXBuilder;
 
 public class Json2Xliff {
 
@@ -53,6 +57,7 @@ public class Json2Xliff {
     private static List<Element> segments;
     private static Set<String> ids;
     private static int bomLength = 0;
+    private static List<String[]> entities;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -93,6 +98,9 @@ public class Json2Xliff {
             String configFile = params.get("config");
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
+                if (config.getParseEntities()) {
+                    loadEntities();
+                }
                 if (json instanceof JSONObject obj) {
                     parseJson(obj, config);
                 } else {
@@ -156,6 +164,24 @@ public class Json2Xliff {
         return result;
     }
 
+    private static void loadEntities() throws SAXException, IOException, ParserConfigurationException {
+        entities = new Vector<>();
+        SAXBuilder builder = new SAXBuilder();
+        Document doc = builder.build(Html2Xliff.class.getResource("entities.xml"));
+        Element root = doc.getRootElement();
+        List<Element> ents = root.getChildren("entity");
+        Iterator<Element> it = ents.iterator();
+        while (it.hasNext()) {
+            Element e = it.next();
+            entities.add(new String[] { "&" + e.getAttributeValue("name") + ";", e.getText() });
+        }
+        entities.add(new String[]{"&apos;", "'"});
+        entities.add(new String[]{"&quot;", "\""});
+        entities.add(new String[]{"&gt;", ">"});
+        entities.add(new String[]{"&amp;", "&"});
+        entities.add(new String[]{"&lt;", "<"});
+    }
+
     private static void writeString(FileOutputStream out, String string) throws IOException {
         out.write(string.getBytes(StandardCharsets.UTF_8));
     }
@@ -214,10 +240,16 @@ public class Json2Xliff {
                     throw new IOException("Wrong configuration for source key " + sourceKey);
                 }
                 String sourceText = json.getString(sourceKey);
+                if (entities != null) {
+                    sourceText = replaceEntities(sourceText);
+                }
                 String targetKey = configuration.has(JsonConfig.TARGETKEY)
                         ? configuration.getString(JsonConfig.TARGETKEY)
                         : "";
                 String targetText = json.has(targetKey) ? json.getString(targetKey) : "";
+                if (entities != null) {
+                    targetText = replaceEntities(targetText);
+                }
                 String idKey = configuration.has(JsonConfig.IDKEY) ? configuration.getString(JsonConfig.IDKEY) : "";
                 String idString = "";
                 if (json.has(idKey)) {
@@ -336,6 +368,26 @@ public class Json2Xliff {
                 }
             }
         }
+    }
+
+    private static String replaceEntities(String string) {
+        if (string.isEmpty()) {
+            return string;
+        }
+        String result = string;
+        for (int i = 0; i < entities.size(); i++) {
+            String[] entry = entities.get(i);
+            String key = entry[0];
+            String value = entry[1];
+            int index = result.indexOf(key);
+            while (index != -1) {
+                String start = result.substring(0, index);
+                String end = result.substring(index + key.length());
+                result = start + value + end;
+                index = result.indexOf(key);
+            }
+        }
+        return result;
     }
 
     private static void validateId(String id) throws IOException {

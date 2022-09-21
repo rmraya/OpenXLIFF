@@ -1,9 +1,10 @@
 # JSON Filter Configuration Files
 
-Configuration files for JSON filter are defined in a JSON file that contains two arrays:
+Configuration files for JSON filter are defined in a JSON file that contains two arrays and one optional key:
 
 - `traslatable`: array of JSON objects that define translatable keys
 - `ignorable`: array of strings listing ignorable keys
+- `parseEntities`: boolean value indicating whether HTML entitites should be converted to Unicode characters.
 
 Configuration files must be written using UTF-8 character set without a byte order mark (BOM).
 
@@ -45,7 +46,8 @@ Configuration files must be written using UTF-8 character set without a byte ord
     "ignorable": [
         "original_id",
         "key"
-    ]
+    ],
+    "parseEntities": true
 }
  ```
 
@@ -56,4 +58,5 @@ Configuration files must be written using UTF-8 character set without a byte ord
  3. If an object that has a key in the `sourceKey` list is found, a new segment is created and its value is used as source text. If the object has other keys defined in the configuration, they are used as target, id, resname attribute or note as indicated.
  4. If an object contains a key that matches `noteKey`, a list of text strings is created from its content and all descendents. Each found string is added as a `<note>` element in the active segment.
  5. All other remaining key/value pairs in the object are checked. If a value contains text, it is extracted as a new segment wihout target or special attributes. To prevent creation of unwanted segments, add the corresponding keys to the `ignorable` list.
+ 6. If `parseEntities` is not spefified, a default value of `false` is assumed.
   
