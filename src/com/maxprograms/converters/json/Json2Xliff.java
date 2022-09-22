@@ -40,12 +40,12 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
-import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Catalog;
-import com.maxprograms.xml.Document;
+import com.maxprograms.xml.DTDParser;
 import com.maxprograms.xml.Element;
-import com.maxprograms.xml.SAXBuilder;
+import com.maxprograms.xml.EntityDecl;
+import com.maxprograms.xml.Grammar;
 
 public class Json2Xliff {
 
@@ -58,6 +58,7 @@ public class Json2Xliff {
     private static Set<String> ids;
     private static int bomLength = 0;
     private static List<String[]> entities;
+    private static Catalog catalog;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -86,10 +87,11 @@ public class Json2Xliff {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
         try {
+            catalog = new Catalog(catalogFile);
             bomLength = EncodingResolver.getBOM(inputFile) == null ? 0 : 1;
             Object json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {
-                Catalog catalog = new Catalog(catalogFile);
+
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
                 if (targetLanguage != null) {
                     targetSegmenter = new Segmenter(initSegmenter, targetLanguage, catalog);
@@ -166,20 +168,33 @@ public class Json2Xliff {
 
     private static void loadEntities() throws SAXException, IOException, ParserConfigurationException {
         entities = new Vector<>();
-        SAXBuilder builder = new SAXBuilder();
-        Document doc = builder.build(Html2Xliff.class.getResource("entities.xml"));
-        Element root = doc.getRootElement();
-        List<Element> ents = root.getChildren("entity");
-        Iterator<Element> it = ents.iterator();
+        DTDParser parser = new DTDParser();
+        String latin = catalog.matchPublic("-//W3C//ENTITIES Latin 1 for XHTML//EN");
+        Grammar grammar = parser.parse(new File(latin));
+        List<EntityDecl> declarations = grammar.getEntities();
+        Iterator<EntityDecl> it = declarations.iterator();
         while (it.hasNext()) {
-            Element e = it.next();
-            entities.add(new String[] { "&" + e.getAttributeValue("name") + ";", e.getText() });
+            EntityDecl e = it.next();
+            entities.add(new String[] { "&" + e.getName() + ";", e.getValue() });
         }
-        entities.add(new String[]{"&apos;", "'"});
-        entities.add(new String[]{"&quot;", "\""});
-        entities.add(new String[]{"&gt;", ">"});
-        entities.add(new String[]{"&amp;", "&"});
-        entities.add(new String[]{"&lt;", "<"});
+
+        String special = catalog.matchPublic("-//W3C//ENTITIES Special for XHTML//EN");
+        grammar = parser.parse(new File(special));
+        declarations = grammar.getEntities();
+        it = declarations.iterator();
+        while (it.hasNext()) {
+            EntityDecl e = it.next();
+            entities.add(new String[] { "&" + e.getName() + ";", e.getValue() });
+        }
+
+        String symbols = catalog.matchPublic("-//W3C//ENTITIES Symbols for XHTML//EN");
+        grammar = parser.parse(new File(symbols));
+        declarations = grammar.getEntities();
+        it = declarations.iterator();
+        while (it.hasNext()) {
+            EntityDecl e = it.next();
+            entities.add(new String[] { "&" + e.getName() + ";", e.getValue() });
+        }
     }
 
     private static void writeString(FileOutputStream out, String string) throws IOException {

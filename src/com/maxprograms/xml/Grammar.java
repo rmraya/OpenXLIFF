@@ -32,7 +32,7 @@ public class Grammar {
         this.notationsMap = notationsMap;
     }
 
-    List<EntityDecl> getSytemEntities() {
+    public List<EntityDecl> getSytemEntities() {
         List<EntityDecl> result = new Vector<>();
         Set<String> keys = entitiesMap.keySet();
         Iterator<String> it = keys.iterator();
@@ -45,7 +45,7 @@ public class Grammar {
         return result;
     }
 
-    List<EntityDecl> getPublicEntities() {
+    public List<EntityDecl> getPublicEntities() {
         List<EntityDecl> result = new Vector<>();
         Set<String> keys = entitiesMap.keySet();
         Iterator<String> it = keys.iterator();
@@ -58,7 +58,13 @@ public class Grammar {
         return result;
     }
 
-    List<ElementDecl> getElements() {
+    public List<EntityDecl> getEntities() {
+        List<EntityDecl> result = new Vector<>();
+        result.addAll(entitiesMap.values());
+        return result;
+    }    
+
+    public List<ElementDecl> getElements() {
         List<ElementDecl> result = new Vector<>();
         Set<String> keys = elementDeclMap.keySet();
         Iterator<String> it = keys.iterator();
