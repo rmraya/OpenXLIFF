@@ -26,6 +26,10 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -35,14 +39,12 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
-
 public class Xliff2json {
 
     private static Map<String, Element> segments;
     private static String encoding;
+    private static boolean escaped;
+    private static List<String[]> entities;
 
     private Xliff2json() {
         // do not instantiate this class
@@ -53,10 +55,11 @@ public class Xliff2json {
         List<String> result = new ArrayList<>();
         String sklFile = params.get("skeleton");
         String xliffFile = params.get("xliff");
-        String catalog = params.get("catalog");
+        String catalogFile = params.get("catalog");
         String outputFile = params.get("backfile");
 
         try {
+            Catalog catalog = new Catalog(catalogFile);
             loadSegments(xliffFile, catalog);
             Object json = Json2Xliff.loadFile(sklFile, encoding);
             if (json instanceof JSONObject obj) {
@@ -83,21 +86,27 @@ public class Xliff2json {
         return result;
     }
 
-    private static void loadSegments(String xliffFile, String catalog)
+    private static void loadSegments(String xliffFile, Catalog catalog)
             throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
         SAXBuilder builder = new SAXBuilder();
-        if (catalog != null) {
-            builder.setEntityResolver(new Catalog(catalog));
-        }
+        builder.setEntityResolver(catalog);
 
         Document doc = builder.build(xliffFile);
         Element root = doc.getRootElement();
-        List<PI> encodings = root.getChild("file").getPI("encoding");
+        Element file = root.getChild("file");
+
+        escaped = !file.getPI("escaped").isEmpty();
+        if (escaped) {
+            entities = Json2Xliff.loadEntities(catalog);
+            entities.add(0, new String[] { "&amp;", "&" });
+            entities.add(new String[] { "&lt;", "<" });
+        }
+        List<PI> encodings = file.getPI("encoding");
         if (encodings.isEmpty()) {
             throw new IOException("Missing encoding");
         }
         encoding = encodings.get(0).getData();
-        Element body = root.getChild("file").getChild("body");
+        Element body = file.getChild("body");
         List<Element> units = body.getChildren("trans-unit");
         Iterator<Element> i = units.iterator();
 
@@ -162,9 +171,9 @@ public class Xliff2json {
         }
     }
 
-    private static String extractText(Element target) {
+    private static String extractText(Element element) {
         StringBuilder result = new StringBuilder();
-        List<XMLNode> content = target.getContent();
+        List<XMLNode> content = element.getContent();
         Iterator<XMLNode> i = content.iterator();
         while (i.hasNext()) {
             XMLNode n = i.next();
@@ -173,9 +182,37 @@ public class Xliff2json {
                 result.append(extractText(e));
             }
             if (n.getNodeType() == XMLNode.TEXT_NODE) {
-                result.append(((TextNode) n).getText());
+                if ("ph".equals(element.getName())) {
+                    result.append(((TextNode) n).getText());
+                } else {
+                    if (escaped) {
+                        result.append(replaceEntities(((TextNode) n).getText()));
+                    } else {
+                        result.append(((TextNode) n).getText());
+                    }
+                }
             }
         }
         return result.toString();
+    }
+
+    private static String replaceEntities(String string) {
+        if (string.isEmpty()) {
+            return string;
+        }
+        String result = string;
+        for (int i = 0; i < entities.size(); i++) {
+            String[] entry = entities.get(i);
+            String entity = entry[0];
+            String character = entry[1];
+            int index = result.indexOf(character);
+            while (index != -1) {
+                String start = result.substring(0, index);
+                String end = result.substring(index + character.length());
+                result = start + entity + end;
+                index = result.indexOf(character);
+            }
+        }
+        return result;
     }
 }

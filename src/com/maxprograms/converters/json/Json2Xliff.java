@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -58,7 +60,6 @@ public class Json2Xliff {
     private static Set<String> ids;
     private static int bomLength = 0;
     private static List<String[]> entities;
-    private static Catalog catalog;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -87,11 +88,10 @@ public class Json2Xliff {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
         try {
-            catalog = new Catalog(catalogFile);
+            Catalog catalog = new Catalog(catalogFile);
             bomLength = EncodingResolver.getBOM(inputFile) == null ? 0 : 1;
             Object json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {
-
                 segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
                 if (targetLanguage != null) {
                     targetSegmenter = new Segmenter(initSegmenter, targetLanguage, catalog);
@@ -101,7 +101,9 @@ public class Json2Xliff {
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
                 if (config.getParseEntities()) {
-                    loadEntities();
+                    entities = loadEntities(catalog);
+                    entities.add(new String[] { "&lt;", "<" });
+                    entities.add(new String[] { "&amp;", "&" });                  
                 }
                 if (json instanceof JSONObject obj) {
                     parseJson(obj, config);
@@ -135,7 +137,6 @@ public class Json2Xliff {
                 writeString(out, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
                         + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
                         + "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-
                 writeString(out, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
                         + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"x-json\">\n");
                 writeString(out, "<header>\n");
@@ -145,6 +146,9 @@ public class Json2Xliff {
                 writeString(out, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD
                         + "\" tool-id=\"" + Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
                 writeString(out, "</header>\n");
+                if (entities != null) {
+                    writeString(out, "<?escaped yes?>\n");    
+                }
                 writeString(out, "<?encoding " + encoding + "?>\n");
                 writeString(out, "<body>\n");
 
@@ -166,8 +170,12 @@ public class Json2Xliff {
         return result;
     }
 
-    private static void loadEntities() throws SAXException, IOException, ParserConfigurationException {
-        entities = new Vector<>();
+    protected static List<String[]> loadEntities(Catalog catalog)
+            throws SAXException, IOException, ParserConfigurationException, NumberFormatException {
+        List<String[]> result = new Vector<>();
+
+        Pattern pattern = Pattern.compile("&#[\\d]+\\;");
+
         DTDParser parser = new DTDParser();
         String latin = catalog.matchPublic("-//W3C//ENTITIES Latin 1 for XHTML//EN");
         Grammar grammar = parser.parse(new File(latin));
@@ -175,7 +183,12 @@ public class Json2Xliff {
         Iterator<EntityDecl> it = declarations.iterator();
         while (it.hasNext()) {
             EntityDecl e = it.next();
-            entities.add(new String[] { "&" + e.getName() + ";", e.getValue() });
+            String value = e.getValue();
+            Matcher matcher = pattern.matcher(value);
+            if (matcher.matches()) {
+                value = toUnicode(value);
+                result.add(new String[] { "&" + e.getName() + ";", value });
+            }
         }
 
         String special = catalog.matchPublic("-//W3C//ENTITIES Special for XHTML//EN");
@@ -184,7 +197,12 @@ public class Json2Xliff {
         it = declarations.iterator();
         while (it.hasNext()) {
             EntityDecl e = it.next();
-            entities.add(new String[] { "&" + e.getName() + ";", e.getValue() });
+            String value = e.getValue();
+            Matcher matcher = pattern.matcher(value);
+            if (matcher.matches()) {
+                value = toUnicode(value);
+                result.add(new String[] { "&" + e.getName() + ";", value });
+            }
         }
 
         String symbols = catalog.matchPublic("-//W3C//ENTITIES Symbols for XHTML//EN");
@@ -193,8 +211,19 @@ public class Json2Xliff {
         it = declarations.iterator();
         while (it.hasNext()) {
             EntityDecl e = it.next();
-            entities.add(new String[] { "&" + e.getName() + ";", e.getValue() });
+            String value = e.getValue();
+            Matcher matcher = pattern.matcher(value);
+            if (matcher.matches()) {
+                value = toUnicode(value);
+                result.add(new String[] { "&" + e.getName() + ";", value });
+            }
         }
+        return result;
+    }
+
+    private static String toUnicode(String value) throws NumberFormatException {
+        String code = value.substring(2, value.length() - 1);
+        return "" + (char) Integer.parseUnsignedInt(code);
     }
 
     private static void writeString(FileOutputStream out, String string) throws IOException {
@@ -455,7 +484,7 @@ public class Json2Xliff {
             }
         }
         if (object instanceof String string) {
-            result.add(string);
+            result.add(replaceEntities(string));
         }
         return result;
     }
