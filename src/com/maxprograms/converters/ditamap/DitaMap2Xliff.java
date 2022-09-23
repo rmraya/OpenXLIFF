@@ -114,6 +114,7 @@ public class DitaMap2Xliff {
 				dataLogger.setStage("Processing Files");
 			}
 			skipped = new ArrayList<>();
+			skipped.addAll(parser.getSkipped());
 			for (int i = 0; i < filesMap.size(); i++) {
 				String file = filesMap.get(i);
 				if (dataLogger != null) {

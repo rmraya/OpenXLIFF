@@ -112,6 +112,7 @@ public class DitaParser {
 	private Map<StringArray, Element> referenceChache;
 	private boolean containsText;
 	private Catalog catalog;
+	private static List<String> skipped;
 
 	public List<String> run(Map<String, String> params, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
@@ -124,6 +125,7 @@ public class DitaParser {
 		pendingRecurse = new TreeSet<>();
 		ignored = new ArrayList<>();
 		referenceChache = new HashMap<>();
+		skipped = new ArrayList<>();
 
 		String inputFile = params.get("source");
 		this.catalog = catalog;
@@ -303,7 +305,11 @@ public class DitaParser {
 				return;
 			}
 			String format = e.getAttributeValue("format", "dita");
-			if (!href.isEmpty() && (!format.startsWith("dita") || ditaClass(e, "ditavalref-d/ditavalref"))) {
+			if (!href.isEmpty() && ditaClass(e, "ditavalref-d/ditavalref")) {
+				skipped.add(href);
+				return;
+			}
+			if (!href.isEmpty() && !format.startsWith("dita")) {
 				return;
 			}
 			if (!href.isEmpty() && !href.equals(parentFile)) {
@@ -948,4 +954,8 @@ public class DitaParser {
 	public List<String> getIssues() {
 		return issues;
 	}
+
+    public List<String> getSkipped() {
+        return skipped;
+    }
 }

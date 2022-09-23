@@ -242,7 +242,7 @@
 <tag hard-break="segment">lcHotspotMap</tag>
 <tag hard-break="segment" attributes="spectitle">lcHotspotMap2</tag>
 <tag hard-break="segment" attributes="spectitle">lcInstruction</tag>
-<tag hard-break="segment" attributes="spectitle">lcInstructorenote2</tag>
+<tag hard-break="segment" attributes="spectitle">lcInstructornote2</tag>
 <tag hard-break="segment" attributes="spectitle">lcInstructornote</tag>
 <tag hard-break="segment" attributes="spectitle">lcInteraction</tag>
 <tag hard-break="segment">lcInteractionBase</tag>
@@ -278,6 +278,7 @@
 <tag hard-break="segment" attributes="spectitle">lcNextSteps</tag>
 <tag hard-break="segment" attributes="spectitle">lcNoLMS</tag>
 <tag hard-break="segment" attributes="spectitle">lcOJT</tag>
+<tag hard-break="segment">lcObjective</tag>
 <tag hard-break="segment">lcObjectiveGroup</tag>
 <tag hard-break="segment" attributes="spectitle">lcObjectives</tag>
 <tag hard-break="inline" ctype="x-other">lcObjectivesStem</tag>
