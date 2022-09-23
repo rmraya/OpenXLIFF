@@ -574,7 +574,7 @@ public class Xml2Xliff {
 					if (inCData) {
 						result.append(((TextNode) n).getText());
 					} else {
-						result.append(addEntities(((TextNode) n).getText()));
+						result.append(XMLUtils.cleanText(((TextNode) n).getText()));
 					}
 					break;
 				default:
@@ -625,14 +625,6 @@ public class Xml2Xliff {
 		result = result.replace(Xml2Xliff.MATHGT, ">");
 		result = result.replace(Xml2Xliff.DOUBLEPRIME, "\"");
 		result = result.replace(Xml2Xliff.GAMP, "&");
-		return result;
-	}
-
-	private static String addEntities(String string) {
-		String result = string.replace("&lt;", "<");
-		result = result.replace("&gt;", ">");
-		result = result.replace("&quot;", "\"");
-		result = result.replace("&amp;", "&");
 		return result;
 	}
 
