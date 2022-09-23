@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
@@ -113,6 +114,7 @@ public class DitaParser {
 	private boolean containsText;
 	private Catalog catalog;
 	private static List<String> skipped;
+	private static Map<String, List<String>> images;
 
 	public List<String> run(Map<String, String> params, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
@@ -126,6 +128,7 @@ public class DitaParser {
 		ignored = new ArrayList<>();
 		referenceChache = new HashMap<>();
 		skipped = new ArrayList<>();
+		images = new HashMap<>();
 
 		String inputFile = params.get("source");
 		this.catalog = catalog;
@@ -536,25 +539,41 @@ public class DitaParser {
 			if (!href.isEmpty() && (ditaClass(e, "topic/image") || isImage(e.getName()))
 					&& !"external".equals(e.getAttributeValue("scope"))) {
 				// check for SVG
+				String imagePath = "";
 				try {
 					href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 					String path = Utils.getAbsolutePath(parentFile, href);
 					File f = new File(path);
-					if (dataLogger != null) {
-						if (dataLogger.isCancelled()) {
-							throw new IOException(Constants.CANCELLED);
+					if (f.exists()) {
+						if (dataLogger != null) {
+							if (dataLogger.isCancelled()) {
+								throw new IOException(Constants.CANCELLED);
+							}
+							dataLogger.log(f.getName());
 						}
-						dataLogger.log(f.getName());
-					}
-					SAXBuilder builder = new SAXBuilder();
-					builder.setEntityResolver(catalog);
-					builder.setErrorHandler(new SilentErrorHandler());
-					Element svg = builder.build(f).getRootElement();
-					if ("svg".equals(svg.getName()) && hasText(svg)) {
-						filesMap.add(path);
+						imagePath = path;
+						SAXBuilder builder = new SAXBuilder();
+						builder.setEntityResolver(catalog);
+						builder.setErrorHandler(new SilentErrorHandler());
+						Element svg = builder.build(f).getRootElement();
+						if ("svg".equals(svg.getName()) && hasText(svg)) {
+							filesMap.add(path);
+						}
 					}
 				} catch (Exception ex) {
-					// ignore
+					if (!imagePath.isEmpty()) {
+						JSONObject json = new JSONObject();
+						json.put("imagePath", imagePath);
+						json.put("href", href);
+						if (!images.containsKey(parentFile)) {
+							images.put(parentFile, new ArrayList<>());
+						}
+						List<String> list = images.get(parentFile);
+						String string = json.toString();
+						if (!list.contains(string)) {
+							list.add(string);
+						}
+					}
 				}
 			}
 		}
@@ -955,7 +974,11 @@ public class DitaParser {
 		return issues;
 	}
 
-    public List<String> getSkipped() {
-        return skipped;
-    }
+	public List<String> getSkipped() {
+		return skipped;
+	}
+
+	public Map<String, List<String>> getImages() {
+		return images;
+	}
 }

@@ -25,12 +25,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Base64.Decoder;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -63,6 +65,7 @@ public class Xliff2Xml {
 	private static boolean ditaBased = false;
 	private static boolean isIdml;
 	private static List<PI> skipped;
+	private static List<PI> images;
 
 	private Xliff2Xml() {
 		// do not instantiate this class
@@ -71,7 +74,6 @@ public class Xliff2Xml {
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
-
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
 		encoding = params.get("encoding");
@@ -173,6 +175,30 @@ public class Xliff2Xml {
 								Files.createDirectories(destination.getParentFile().toPath());
 							}
 							Utils.decodeToFile(json.getString("base64"), destination.getCanonicalPath());
+						}
+					}
+					if (images != null) {
+						Decoder decoder = Base64.getMimeDecoder();
+						for (int i = 0; i < images.size(); i++) {
+							PI pi = images.get(i);
+							byte[] bytes = decoder.decode(pi.getData().getBytes(StandardCharsets.UTF_8));
+							String data = new String(bytes, StandardCharsets.UTF_8);
+							JSONObject json = new JSONObject(data);
+							File originalImage = new File(json.getString("imagePath"));
+							if (originalImage.exists()) {
+								String href = json.getString("href");
+								File folder = new File(outputFile).getParentFile();
+								if (!folder.exists()) {
+									Files.createDirectories(folder.toPath());
+								}
+								File destination = new File(Utils.getAbsolutePath(folder, href));
+								if (!destination.exists()) {
+									if (!destination.getParentFile().exists()) {
+										Files.createDirectories(destination.getParentFile().toPath());
+									}
+									Files.copy(originalImage.toPath(), destination.toPath());
+								}
+							}
 						}
 					}
 				} catch (SAXException sax) {
@@ -500,7 +526,8 @@ public class Xliff2Xml {
 
 		Document doc = builder.build(xliffFile);
 		Element root = doc.getRootElement();
-		Element body = root.getChild("file").getChild("body");
+		Element file = root.getChild("file");
+		Element body = file.getChild("body");
 		List<Element> units = body.getChildren("trans-unit");
 		Iterator<Element> i = units.iterator();
 
@@ -516,7 +543,7 @@ public class Xliff2Xml {
 
 		entities = new HashMap<>();
 
-		Element header = root.getChild("file").getChild("header");
+		Element header = file.getChild("header");
 		List<Element> groups = header.getChildren("prop-group");
 		if (groups != null) {
 			Iterator<Element> g = groups.iterator();
@@ -538,7 +565,8 @@ public class Xliff2Xml {
 				}
 			}
 		}
-		skipped = root.getChild("file").getPI("skipped");
+		skipped = file.getPI("skipped");
+		images = file.getPI("images");
 	}
 
 	private static void checkUntranslatable(Element unit) {

@@ -22,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Base64.Encoder;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -68,6 +70,7 @@ public class DitaMap2Xliff {
 	private static List<String> skipped;
 	private static ILogger dataLogger;
 	private static List<String> issues;
+	private static Map<String, List<String>> images;
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -96,6 +99,7 @@ public class DitaMap2Xliff {
 			List<String> filesMap = parser.run(params, catalog);
 			issues.addAll(parser.getIssues());
 			rootScope = parser.getScope();
+			images = parser.getImages();
 
 			List<String> xliffs = new ArrayList<>();
 			List<String> skels = new ArrayList<>();
@@ -804,6 +808,14 @@ public class DitaMap2Xliff {
 		newFile.clone(file);
 		newFile.setAttribute("datatype", "x-ditamap");
 		String old = file.getAttributeValue("original");
+		if (images.containsKey(old)) {
+			List<String> list = images.get(old);
+			Encoder encoder = Base64.getMimeEncoder();
+			for (int i = 0; i < list.size(); i++) {
+				String data = encoder.encodeToString(list.get(i).getBytes(StandardCharsets.UTF_8));
+				newFile.addContent(new PI("images", data));
+			}
+		}
 		String relative = Utils.makeRelativePath(mapFile, old);
 		if (old.equals(mapFile)) {
 			// preserve DITA files without text
