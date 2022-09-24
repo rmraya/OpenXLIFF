@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +59,7 @@ public class Resegmenter {
                 outputter.output(doc, out);
             }
             result.add(Constants.SUCCESS);
-        } catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {
+        } catch (SAXException | IOException | ParserConfigurationException e) {
             Logger logger = System.getLogger(Resegmenter.class.getName());
             logger.log(Level.ERROR, "Error re-segmenting XLIFF 2.0", e);
             result.add(Constants.ERROR);

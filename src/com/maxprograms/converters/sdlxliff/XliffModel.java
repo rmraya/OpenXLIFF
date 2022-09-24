@@ -13,7 +13,6 @@ package com.maxprograms.converters.sdlxliff;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ import java.util.TreeSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
@@ -37,8 +38,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class XliffModel {
 
@@ -63,7 +62,7 @@ public class XliffModel {
 	private Set<String> namespaces;
 
 	public XliffModel(String url, String srx, Catalog catalog)
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+			throws SAXException, IOException, ParserConfigurationException {
 		namespaces = new TreeSet<>();
 		original = url;
 		SAXBuilder builder = new SAXBuilder();

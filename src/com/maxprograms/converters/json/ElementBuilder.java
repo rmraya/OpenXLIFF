@@ -47,7 +47,7 @@ public class ElementBuilder {
                     content.remove(startTag);
                     element.setContent(content);
                 }
-                if (content.size() > 0 && content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
+                if (content.size() > 1 && content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
                     Element endTag = (Element) content.get(content.size() - 1);
                     end = endTag.getText();
                     content.remove(endTag);

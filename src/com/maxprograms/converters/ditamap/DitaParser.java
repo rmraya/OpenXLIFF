@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
@@ -113,11 +112,11 @@ public class DitaParser {
 	private Map<StringArray, Element> referenceChache;
 	private boolean containsText;
 	private Catalog catalog;
-	private static List<String> skipped;
-	private static Map<String, List<String>> images;
+	private List<String> skipped;
+	private Map<String, List<String>> images;
 
 	public List<String> run(Map<String, String> params, Catalog catalog)
-			throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
+			throws IOException, SAXException, ParserConfigurationException {
 		List<String> result = new ArrayList<>();
 		issues = new ArrayList<>();
 		filesMap = new TreeSet<>();

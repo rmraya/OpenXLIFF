@@ -87,7 +87,7 @@ public class Xliff2json {
     }
 
     private static void loadSegments(String xliffFile, Catalog catalog)
-            throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+            throws SAXException, IOException, ParserConfigurationException {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
 

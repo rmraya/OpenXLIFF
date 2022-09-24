@@ -103,7 +103,7 @@ public class Json2Xliff {
                 if (config.getParseEntities()) {
                     entities = loadEntities(catalog);
                     entities.add(new String[] { "&lt;", "<" });
-                    entities.add(new String[] { "&amp;", "&" });                  
+                    entities.add(new String[] { "&amp;", "&" });
                 }
                 if (json instanceof JSONObject obj) {
                     parseJson(obj, config);
@@ -147,7 +147,7 @@ public class Json2Xliff {
                         + "\" tool-id=\"" + Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
                 writeString(out, "</header>\n");
                 if (entities != null) {
-                    writeString(out, "<?escaped yes?>\n");    
+                    writeString(out, "<?escaped yes?>\n");
                 }
                 writeString(out, "<?encoding " + encoding + "?>\n");
                 writeString(out, "<body>\n");
@@ -171,7 +171,7 @@ public class Json2Xliff {
     }
 
     protected static List<String[]> loadEntities(Catalog catalog)
-            throws SAXException, IOException, ParserConfigurationException, NumberFormatException {
+            throws SAXException, IOException, NumberFormatException {
         List<String[]> result = new Vector<>();
 
         Pattern pattern = Pattern.compile("&#[\\d]+\\;");

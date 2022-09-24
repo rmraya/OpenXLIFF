@@ -178,33 +178,8 @@ public class Xliff2Xml {
 							Utils.decodeToFile(json.getString("base64"), destination.getCanonicalPath());
 						}
 					}
-					if (images != null) {
-						try {
-							Decoder decoder = Base64.getMimeDecoder();
-							for (int i = 0; i < images.size(); i++) {
-								PI pi = images.get(i);
-								byte[] bytes = decoder.decode(pi.getData().getBytes(StandardCharsets.UTF_8));
-								String data = new String(bytes, StandardCharsets.UTF_8);
-								JSONObject json = new JSONObject(data);
-								File originalImage = new File(json.getString("imagePath"));
-								if (originalImage.exists()) {
-									String href = json.getString("href");
-									File folder = new File(outputFile).getParentFile();
-									if (!folder.exists()) {
-										Files.createDirectories(folder.toPath());
-									}
-									File destination = new File(Utils.getAbsolutePath(folder, href));
-									if (!destination.exists()) {
-										if (!destination.getParentFile().exists()) {
-											Files.createDirectories(destination.getParentFile().toPath());
-										}
-										Files.copy(originalImage.toPath(), destination.toPath());
-									}
-								}
-							}
-						} catch (IOException | SecurityException | JSONException e) {
-							logger.log(Level.WARNING, "Error updating images for " + outputFile);
-						}
+					if (!images.isEmpty()) {
+						recoverImages(outputFile);
 					}
 				} catch (SAXException sax) {
 					logger.log(Level.ERROR, "removeTranslate error: " + outputFile);
@@ -221,6 +196,35 @@ public class Xliff2Xml {
 			result.add(e.getMessage());
 		}
 		return result;
+	}
+
+	private static void recoverImages(String outputFile) {
+		try {
+			Decoder decoder = Base64.getMimeDecoder();
+			for (int i = 0; i < images.size(); i++) {
+				PI pi = images.get(i);
+				byte[] bytes = decoder.decode(pi.getData().getBytes(StandardCharsets.UTF_8));
+				String data = new String(bytes, StandardCharsets.UTF_8);
+				JSONObject json = new JSONObject(data);
+				File originalImage = new File(json.getString("imagePath"));
+				if (originalImage.exists()) {
+					String href = json.getString("href");
+					File folder = new File(outputFile).getParentFile();
+					if (!folder.exists()) {
+						Files.createDirectories(folder.toPath());
+					}
+					File destination = new File(Utils.getAbsolutePath(folder, href));
+					if (!destination.exists()) {
+						if (!destination.getParentFile().exists()) {
+							Files.createDirectories(destination.getParentFile().toPath());
+						}
+						Files.copy(originalImage.toPath(), destination.toPath());
+					}
+				}
+			}
+		} catch (IOException | SecurityException | JSONException e) {
+			logger.log(Level.WARNING, "Error updating images for " + outputFile);
+		}
 	}
 
 	private static void removeTranslate(String outputFile)

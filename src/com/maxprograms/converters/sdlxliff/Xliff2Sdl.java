@@ -226,16 +226,14 @@ public class Xliff2Sdl {
 		return null;
 	}
 
-	private static void loadSkeleton()
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void loadSkeleton() throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		doc = builder.build(sklFile);
 		root = doc.getRootElement();
 	}
 
-	private static void loadSegments()
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 

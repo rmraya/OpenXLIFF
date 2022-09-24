@@ -310,20 +310,26 @@ public class TmxExporter {
 				open.append('>');
 				int i = match;
 				match++;
-				String text = "<bpt type=\"xliff-" + src.getName() + "\" i=\"" + i + "\">"
-						+ XMLUtils.cleanText(open.toString()) + "</bpt>";
+				StringBuilder text = new StringBuilder();
+				text.append("<bpt type=\"xliff-");
+				text.append(src.getName());
+				text.append("\" i=\"");
+				text.append(i);
+				text.append("\">");
+				text.append(XMLUtils.cleanText(open.toString()));
+				text.append("</bpt>");
 				Iterator<XMLNode> k = l.iterator();
 				while (k.hasNext()) {
 					XMLNode n = k.next();
 					if (n.getNodeType() == XMLNode.TEXT_NODE) {
-						text = text + n.toString();
+						text.append(n.toString());
 					}
 					if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-						text = text + extractText((Element) n);
+						text.append(extractText((Element) n));
 					}
 				}
 				String close = "</" + src.getName() + ">";
-				return text + "<ept i=\"" + i + "\">" + XMLUtils.cleanText(close) + "</ept>";
+				return text.toString() + "<ept i=\"" + i + "\">" + XMLUtils.cleanText(close) + "</ept>";
 			}
 			return "<ph type=\"xliff-" + src.getName() + "\">" + XMLUtils.cleanText(open + "/>") + "</ph>";
 		}

@@ -240,8 +240,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String getIniFile(String fileName)
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static String getIniFile(String fileName) throws SAXException, IOException, ParserConfigurationException {
 		String home = System.getenv("OpenXLIFF_HOME");
 		if (home == null) {
 			home = System.getProperty("user.dir");
@@ -1077,8 +1076,7 @@ public class Xml2Xliff {
 		return result + "</ph>";
 	}
 
-	private static void buildTables(String iniFile)
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		Document doc = builder.build(iniFile);

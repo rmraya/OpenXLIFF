@@ -13,7 +13,6 @@ package com.maxprograms.converters.xml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +20,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -30,8 +31,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class AutoConfiguration {
 
@@ -43,7 +42,7 @@ public class AutoConfiguration {
 	}
 
 	public static void run(String input, String out, Catalog catalog)
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		Document d = builder.build(input);
