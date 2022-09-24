@@ -47,6 +47,7 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -178,27 +179,31 @@ public class Xliff2Xml {
 						}
 					}
 					if (images != null) {
-						Decoder decoder = Base64.getMimeDecoder();
-						for (int i = 0; i < images.size(); i++) {
-							PI pi = images.get(i);
-							byte[] bytes = decoder.decode(pi.getData().getBytes(StandardCharsets.UTF_8));
-							String data = new String(bytes, StandardCharsets.UTF_8);
-							JSONObject json = new JSONObject(data);
-							File originalImage = new File(json.getString("imagePath"));
-							if (originalImage.exists()) {
-								String href = json.getString("href");
-								File folder = new File(outputFile).getParentFile();
-								if (!folder.exists()) {
-									Files.createDirectories(folder.toPath());
-								}
-								File destination = new File(Utils.getAbsolutePath(folder, href));
-								if (!destination.exists()) {
-									if (!destination.getParentFile().exists()) {
-										Files.createDirectories(destination.getParentFile().toPath());
+						try {
+							Decoder decoder = Base64.getMimeDecoder();
+							for (int i = 0; i < images.size(); i++) {
+								PI pi = images.get(i);
+								byte[] bytes = decoder.decode(pi.getData().getBytes(StandardCharsets.UTF_8));
+								String data = new String(bytes, StandardCharsets.UTF_8);
+								JSONObject json = new JSONObject(data);
+								File originalImage = new File(json.getString("imagePath"));
+								if (originalImage.exists()) {
+									String href = json.getString("href");
+									File folder = new File(outputFile).getParentFile();
+									if (!folder.exists()) {
+										Files.createDirectories(folder.toPath());
 									}
-									Files.copy(originalImage.toPath(), destination.toPath());
+									File destination = new File(Utils.getAbsolutePath(folder, href));
+									if (!destination.exists()) {
+										if (!destination.getParentFile().exists()) {
+											Files.createDirectories(destination.getParentFile().toPath());
+										}
+										Files.copy(originalImage.toPath(), destination.toPath());
+									}
 								}
 							}
+						} catch (IOException | SecurityException | JSONException e) {
+							logger.log(Level.WARNING, "Error updating images for " + outputFile);
 						}
 					}
 				} catch (SAXException sax) {
