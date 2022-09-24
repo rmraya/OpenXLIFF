@@ -332,7 +332,8 @@ public class Element implements XMLNode {
 		Iterator<String> it = keys.iterator();
 		while (it.hasNext()) {
 			Attribute a = attsTable.get(it.next());
-			result.append(" " + a.toString());
+			result.append(' ');
+			result.append(a.toString());
 		}
 		if (content.isEmpty()) {
 			result.append("/>");
@@ -342,7 +343,9 @@ public class Element implements XMLNode {
 		for (int i = 0; i < content.size(); i++) {
 			result.append(content.get(i).toString());
 		}
-		result.append("</" + name + ">");
+		result.append("</");
+		result.append(name);
+		result.append(">");
 		return result.toString();
 	}
 

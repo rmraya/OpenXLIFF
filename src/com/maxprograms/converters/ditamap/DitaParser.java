@@ -77,7 +77,7 @@ public class DitaParser {
 			if (o.getFile().equals(file) && o.getId().equals(id)) {
 				return 0;
 			}
-			return 1;
+			return -1;
 		}
 
 		public String getFile() {

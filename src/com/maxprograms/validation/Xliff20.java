@@ -153,10 +153,6 @@ public class Xliff20 {
 					metaId = new HashSet<>();
 					String id = e.getAttributeValue("id");
 					if (!id.isEmpty()) {
-						if (metaId.contains(id)) {
-							reason = "Duplicated \"id\" in <mda:metadata>";
-							return false;
-						}
 						metaId.add(id);
 					}
 				}

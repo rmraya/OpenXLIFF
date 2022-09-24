@@ -591,14 +591,14 @@ public class Xml2Xliff {
 			throw new SAXException("Broken <mrk> element.");
 		}
 		ts = restoreChars(ts).trim();
-		String name = "";
+		StringBuilder name = new StringBuilder();
 		for (int i = 1; i < ts.length(); i++) {
 			if (Character.isSpaceChar(ts.charAt(i))) {
 				break;
 			}
-			name = name + ts.charAt(i);
+			name.append(ts.charAt(i));
 		}
-		String content = "";
+		StringBuilder content = new StringBuilder();
 		List<XMLNode> nodes = element.getContent();
 		Iterator<XMLNode> it = nodes.iterator();
 		while (it.hasNext()) {
@@ -607,17 +607,23 @@ public class Xml2Xliff {
 				case XMLNode.ELEMENT_NODE:
 					Element e = (Element) n;
 					String ph = extractText(e);
-					content = content + ph;
+					content.append(ph);
 					break;
 				case XMLNode.TEXT_NODE:
-					content = content + XMLUtils.cleanText(((TextNode) n).getText());
+					content.append(XMLUtils.cleanText(((TextNode) n).getText()));
 					break;
 				default:
 					// ignore
 					break;
 			}
 		}
-		return ts + content + "</" + name + ">";
+		StringBuilder result = new StringBuilder();
+		result.append(ts);
+		result.append(content.toString());
+		result.append("</");
+		result.append(name.toString());
+		result.append('>');
+		return result.toString();
 	}
 
 	private static String restoreChars(String string) {

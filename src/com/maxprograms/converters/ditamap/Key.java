@@ -68,7 +68,7 @@ public class Key implements Comparable<Key> {
 		if (name.equals(o.getName())) {
 			return 0;
 		}
-		return 1;
+		return -1;
 	}
 
 	@Override

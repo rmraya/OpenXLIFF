@@ -3,3 +3,4 @@
 /dist/
 /.scannerwork/
 .vscode/launch.json
+.dccache
