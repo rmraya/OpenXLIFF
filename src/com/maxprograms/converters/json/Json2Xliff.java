@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +61,8 @@ public class Json2Xliff {
     private static Set<String> ids;
     private static int bomLength = 0;
     private static List<String[]> entities;
+    private static boolean trimTags;
+    private static boolean exportHTML;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -72,6 +75,9 @@ public class Json2Xliff {
         id = 0;
         segments = new ArrayList<>();
         ids = new HashSet<>();
+        trimTags = true;
+        exportHTML = true;
+        entities = new ArrayList<>();
 
         String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
@@ -100,6 +106,8 @@ public class Json2Xliff {
             String configFile = params.get("config");
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
+                trimTags = config.getTrimTags();
+                exportHTML = config.getExportHTML();
                 if (config.getParseEntities()) {
                     entities = loadEntities(catalog);
                     entities.add(new String[] { "&lt;", "<" });
@@ -146,8 +154,11 @@ public class Json2Xliff {
                 writeString(out, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD
                         + "\" tool-id=\"" + Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
                 writeString(out, "</header>\n");
-                if (entities != null) {
+                if (!entities.isEmpty() && !exportHTML) {
                     writeString(out, "<?escaped yes?>\n");
+                }
+                if (exportHTML) {
+                    writeString(out, "<?exportHTML yes?>\n");
                 }
                 writeString(out, "<?encoding " + encoding + "?>\n");
                 writeString(out, "<body>\n");
@@ -284,14 +295,14 @@ public class Json2Xliff {
                     throw new IOException("Wrong configuration for source key " + sourceKey);
                 }
                 String sourceText = json.getString(sourceKey);
-                if (entities != null) {
+                if (!entities.isEmpty()) {
                     sourceText = replaceEntities(sourceText);
                 }
                 String targetKey = configuration.has(JsonConfig.TARGETKEY)
                         ? configuration.getString(JsonConfig.TARGETKEY)
                         : "";
                 String targetText = json.has(targetKey) ? json.getString(targetKey) : "";
-                if (entities != null) {
+                if (!entities.isEmpty()) {
                     targetText = replaceEntities(targetText);
                 }
                 String idKey = configuration.has(JsonConfig.IDKEY) ? configuration.getString(JsonConfig.IDKEY) : "";
@@ -359,8 +370,9 @@ public class Json2Xliff {
                     }
                     ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
-                    ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h]);
-                    transUnit.addContent(sourceHolder.getElement());
+                    ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h], trimTags);
+                    Element source = sortTags(sourceHolder.getElement());
+                    transUnit.addContent(source);
                     if (transUnit.getChild("source").getChildren().isEmpty()) {
                         transUnit.setAttribute("xml:space", "preserve");
                     }
@@ -372,9 +384,10 @@ public class Json2Xliff {
                         sb.append(sourceHolder.getEnd());
                         json.put(sourceKey, sb.toString());
                     } else {
-                        ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h]);
+                        ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h], trimTags);
+                        Element target = matchTags(source, targetHolder.getElement());
                         transUnit.addContent("\n    ");
-                        transUnit.addContent(targetHolder.getElement());
+                        transUnit.addContent(target);
                         sb.append(targetHolder.getStart());
                         sb.append("%%%");
                         sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
@@ -414,8 +427,45 @@ public class Json2Xliff {
         }
     }
 
+    private static Element sortTags(Element source) {
+        List<Element> sourceTags = source.getChildren();
+        Iterator<Element> it = sourceTags.iterator();
+        int count = 0;
+        while (it.hasNext()) {
+            it.next().setAttribute("id", "" + count++);
+        }
+        return source;
+    }
+
+    private static Element matchTags(Element source, Element target) {
+        List<Element> sourceTags = source.getChildren();
+        int extra = sourceTags.size();
+        Set<String> usedIds = new TreeSet<>();
+        List<Element> targetTags = target.getChildren();
+        Iterator<Element> it = targetTags.iterator();
+        while (it.hasNext()) {
+            Element tag = it.next();
+            String text = tag.getText();
+            boolean found = false;
+            for (int i = 0; i < sourceTags.size(); i++) {
+                Element sourceTag = sourceTags.get(i);
+                String id = sourceTag.getAttributeValue("id");
+                if (text.equals(sourceTag.getText()) && !usedIds.contains(id)) {
+                    tag.setAttribute("id", id);
+                    usedIds.add(id);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                tag.setAttribute("id", "" + extra++);
+            }
+        }
+        return target;
+    }
+
     private static String replaceEntities(String string) {
-        if (string.isEmpty()) {
+        if (string.isEmpty() || entities.isEmpty()) {
             return string;
         }
         String result = string;
@@ -505,7 +555,7 @@ public class Json2Xliff {
         Element segment = new Element("trans-unit");
         segment.setAttribute("id", "" + id);
         segment.addContent("\n    ");
-        ElementHolder holder = ElementBuilder.buildElement("source", string);
+        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags);
         segment.addContent(holder.getElement());
         segment.addContent("\n  ");
         if (holder.getElement().getChildren().isEmpty()) {

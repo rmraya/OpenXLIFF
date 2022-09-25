@@ -31,7 +31,7 @@ public class ElementBuilder {
         // private for security
     }
 
-    public static ElementHolder buildElement(String name, String string) {
+    public static ElementHolder buildElement(String name, String string, boolean trimTags) {
         Element element = new Element(name);
         element.setText(string);
         fixHtmlTags(element);
@@ -40,7 +40,7 @@ public class ElementBuilder {
         if (!element.getChildren().isEmpty()) {
             int tagCount = element.getChildren().size();
             List<XMLNode> content = element.getContent();
-            if (tagCount == 1) {
+            if (trimTags && tagCount == 1) {
                 if (content.get(0).getNodeType() == XMLNode.ELEMENT_NODE) {
                     Element startTag = (Element) content.get(0);
                     start = startTag.getText();
@@ -54,7 +54,7 @@ public class ElementBuilder {
                     element.setContent(content);
                 }
             }
-            if (tagCount == 2 && content.get(0).getNodeType() == XMLNode.ELEMENT_NODE
+            if (trimTags && tagCount == 2 && content.get(0).getNodeType() == XMLNode.ELEMENT_NODE
                     && content.get(content.size() - 1).getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element startTag = (Element) content.get(0);
                 start = startTag.getText();

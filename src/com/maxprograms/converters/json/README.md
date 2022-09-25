@@ -1,10 +1,12 @@
 # JSON Filter Configuration Files
 
-Configuration files for JSON filter are defined in a JSON file that contains two arrays and one optional key:
+Configuration files for JSON filter are defined in a JSON file that contains two arrays and two optional key:
 
 - `traslatable`: array of JSON objects that define translatable keys
 - `ignorable`: array of strings listing ignorable keys
-- `parseEntities`: boolean value indicating whether HTML entitites should be converted to Unicode characters.
+- `parseEntities`: boolean value indicating whether HTML entitites should be converted to Unicode characters. Default: `false`
+- `trimTags`: send initial/trailing tags to skeleton when possible. Default: `true`
+- `exportHTML`: treat target as containg HTML on merge. Default: `true`
 
 Configuration files must be written using UTF-8 character set without a byte order mark (BOM).
 
@@ -24,7 +26,10 @@ Configuration files must be written using UTF-8 character set without a byte ord
 - If multiple segments are generated from a single `sourceKey`, notes harvested from `noteKey` are only added to the first segment.
 - if the number of segments generated from `sourceKey` is different from the number of segments generated from `targetKey`, only one `<trans-unit>` element is generated with source and target unsegmented.
 - When `idKey` is present and multiple segments are generated, a suffix based on the segment count is added to the `id` attribute.
-- If `parseEntities` is not spefified, a default value of `false` is assumed.
+- Tags from `<source>` or `<target>` are sent to skeleton when `trimTags` is `true` and:
+  - There is just one tag and it is at the beginning
+  - There is just one tag and it is at the end
+  - There are only two tags, one at the beginning and one at the end
 
 ### Example
 
@@ -48,7 +53,9 @@ Configuration files must be written using UTF-8 character set without a byte ord
         "original_id",
         "key"
     ],
-    "parseEntities": true
+    "parseEntities": true,
+    "trimTags": false,    
+    "exportHTML" : true
 }
  ```
 

@@ -37,12 +37,16 @@ public class JsonConfig {
     private List<String> ignorableKeys;
     private List<String> sourceKeys;
     private boolean parseEntities;
+    private boolean trimTags;
+    private boolean exportHTML;
 
     private JsonConfig() {
         translatableKeys = new HashMap<>();
         ignorableKeys = new Vector<>();
         sourceKeys = new Vector<>();
         parseEntities = false;
+        trimTags = true;
+        exportHTML = true;
     }
 
     public static JsonConfig parseFile(String configFile) throws IOException, JSONException {
@@ -78,6 +82,12 @@ public class JsonConfig {
         if (configObject.has("parseEntities")) {
             config.parseEntities = configObject.getBoolean("parseEntities");
         }
+        if (configObject.has("trimTags")) {
+            config.trimTags = configObject.getBoolean("trimTags");
+        }
+        if (configObject.has("exportUnicode")) {
+            config.exportHTML = configObject.getBoolean("exportUnicode");
+        }
         return config;
     }
 
@@ -95,5 +105,13 @@ public class JsonConfig {
 
     public boolean getParseEntities() {
         return parseEntities;
+    }
+
+    public boolean getTrimTags() {
+        return trimTags;
+    }
+
+    public boolean getExportHTML() {
+        return exportHTML;
     }
 }

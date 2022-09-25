@@ -38,12 +38,14 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 
 public class Xliff2json {
 
     private static Map<String, Element> segments;
     private static String encoding;
     private static boolean escaped;
+    private static boolean exportHTML;
     private static List<String[]> entities;
 
     private Xliff2json() {
@@ -96,11 +98,11 @@ public class Xliff2json {
         Element file = root.getChild("file");
 
         escaped = !file.getPI("escaped").isEmpty();
-        if (escaped) {
-            entities = Json2Xliff.loadEntities(catalog);
-            entities.add(0, new String[] { "&amp;", "&" });
-            entities.add(new String[] { "&lt;", "<" });
-        }
+        exportHTML = !file.getPI("exportHTML").isEmpty();
+        entities = escaped ? Json2Xliff.loadEntities(catalog) : new ArrayList<>();
+        entities.add(0, new String[] { "&amp;", "&" });
+        entities.add(new String[] { "&lt;", "<" });
+
         List<PI> encodings = file.getPI("encoding");
         if (encodings.isEmpty()) {
             throw new IOException("Missing encoding");
@@ -185,10 +187,13 @@ public class Xliff2json {
                 if ("ph".equals(element.getName())) {
                     result.append(((TextNode) n).getText());
                 } else {
+                    String text = ((TextNode) n).getText();
                     if (escaped) {
-                        result.append(replaceEntities(((TextNode) n).getText()));
+                        result.append(replaceEntities(text));
+                    } else if (exportHTML) {
+                        result.append(XMLUtils.cleanText(text));
                     } else {
-                        result.append(((TextNode) n).getText());
+                        result.append(text);
                     }
                 }
             }
