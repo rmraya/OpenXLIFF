@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 public class ElementDecl implements XMLNode {
 
     private String name;
-    private String model;
+    private ContentModel model;
 
     public ElementDecl(String declaration) {
         int i = "<!ELEMENT".length();
@@ -34,7 +34,7 @@ public class ElementDecl implements XMLNode {
             c = declaration.charAt(i);
         }
         name = sb.toString();
-        model = declaration.substring(i, declaration.lastIndexOf('>')).trim();
+        model = ContentModel.parse(declaration.substring(i, declaration.lastIndexOf('>')).trim());
     }
 
     public String getName() {
@@ -48,7 +48,7 @@ public class ElementDecl implements XMLNode {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("<!ELEMENT ");        
+        StringBuilder sb = new StringBuilder("<!ELEMENT ");
         sb.append(name);
         sb.append(' ');
         sb.append(model);
