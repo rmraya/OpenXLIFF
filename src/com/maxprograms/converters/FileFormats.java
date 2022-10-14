@@ -297,6 +297,9 @@ public class FileFormats {
 		if (type.equals(TEXT)) {
 			return "TEXT";
 		}
+		if (type.equals(PHPA)) {
+			return "PHPA";
+		}
 		if (type.equals(PO)) {
 			return "PO";
 		}
@@ -365,6 +368,8 @@ public class FileFormats {
 			return OO;
 		} else if (dataType.equals("TEXT") || dataType.equals("plaintext")) {
 			return TEXT;
+		} else if (dataType.equals("PHPA") || dataType.equals("x-phparray")) {
+			return PHPA;
 		} else if (dataType.equals("PO") || dataType.equals("po")) {
 			return PO;
 		} else if (dataType.equals("RC") || dataType.equals("winres")) {

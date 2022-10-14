@@ -90,6 +90,16 @@ public class EncodingResolver {
 			} catch (IOException e) {
 				logger.log(Level.ERROR, "Error detecting SRT encoding", e);
 			}
+		} else if (fileType.equals(FileFormats.PHPA)) {
+			try {
+				Charset bom = getBOM(fileName);
+				if (bom != null) {
+					return bom;
+				}
+				return StandardCharsets.UTF_8;
+			} catch (IOException e) {
+				logger.log(Level.ERROR, "Error detecting PHPA encoding", e);
+			}
 		} else if (fileType.equals(FileFormats.JSON)) {
 			try {
 				return getJSONEncoding(fileName);
