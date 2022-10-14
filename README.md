@@ -1,6 +1,6 @@
 # OpenXLIFF Filters
 
-<img src="https://maxprograms.com/images/openxliff_trim.png" style="float:left; padding: 0 10px 0 10px ">  
+<img src="https://maxprograms.com/images/openxliff_trim.png" style="float:left; padding: 0 10px 0 10px " />  
 
 An open source set of Java filters for creating, merging and validating XLIFF 1.2 and 2.0 files.
 
@@ -117,6 +117,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - Microsoft Visio XML Drawings (2007 and newer)
   - MIF (Maker Interchange Format)
   - OpenOffice / LibreOffice / StarOffice
+  - PHP Arrays
   - Plain Text
   - SDLXLIFF (Trados Studio)
   - SRT Subtitles

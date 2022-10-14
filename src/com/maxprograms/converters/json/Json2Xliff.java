@@ -62,7 +62,6 @@ public class Json2Xliff {
     private static int bomLength = 0;
     private static List<String[]> entities;
     private static boolean trimTags;
-    private static boolean exportHTML;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -76,7 +75,7 @@ public class Json2Xliff {
         segments = new ArrayList<>();
         ids = new HashSet<>();
         trimTags = true;
-        exportHTML = true;
+        boolean exportHTML = true;
         entities = new ArrayList<>();
 
         String inputFile = params.get("source");

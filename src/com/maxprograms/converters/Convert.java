@@ -41,6 +41,7 @@ import com.maxprograms.converters.javascript.Jscript2xliff;
 import com.maxprograms.converters.json.Json2Xliff;
 import com.maxprograms.converters.mif.Mif2Xliff;
 import com.maxprograms.converters.office.Office2Xliff;
+import com.maxprograms.converters.php.Php2Xliff;
 import com.maxprograms.converters.plaintext.Text2Xliff;
 import com.maxprograms.converters.po.Po2Xliff;
 import com.maxprograms.converters.rc.Rc2Xliff;
@@ -321,6 +322,7 @@ public class Convert {
 				+ "   MIF = MIF (Maker Interchange Format)\n"
 				+ "   OFF = Microsoft Office 2007 Document\n"
 				+ "   OO = OpenOffice Document\n"
+				+ "   PHPA = PHP Array\n"
 				+ "   PO = PO (Portable Objects)\n"
 				+ "   RC = RC (Windows C/C++ Resources)\n"
 				+ "   RESX = ResX (Windows .NET Resources)\n"
@@ -411,6 +413,8 @@ public class Convert {
 				result = Mif2Xliff.run(params);
 			} else if (format.equals(FileFormats.OO) || format.equals(FileFormats.OFF)) {
 				result = Office2Xliff.run(params);
+			} else if (format.equals(FileFormats.PHPA)) {
+				result = Php2Xliff.run(params);
 			} else if (format.equals(FileFormats.PO)) {
 				result = Po2Xliff.run(params);
 			} else if (format.equals(FileFormats.RC)) {

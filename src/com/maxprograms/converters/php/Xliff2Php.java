@@ -9,7 +9,7 @@
  * Contributors:
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
-package com.maxprograms.converters.plaintext;
+package com.maxprograms.converters.php;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,15 +18,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,20 +39,20 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 
-public class Xliff2Text {
+public class Xliff2Php {
 
 	private static String xliffFile;
 	private static String encoding;
 	private static Map<String, Element> segments;
 	private static Catalog catalog;
 
-	private Xliff2Text() {
+	private Xliff2Php() {
 		// do not instantiate this class
 		// use run method instead
 	}
 
 	public static List<String> run(Map<String, String> params) {
-		List<String> result = new ArrayList<>();
+		List<String> result = new Vector<>();
 
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -73,8 +72,8 @@ public class Xliff2Text {
 			if (!f.exists()) {
 				Files.createFile(Paths.get(f.toURI()));
 			}
+			loadSegments();
 			try (FileOutputStream output = new FileOutputStream(f)) {
-				loadSegments();
 				try (FileReader input = new FileReader(sklFile, StandardCharsets.UTF_8)) {
 					try (BufferedReader buffer = new BufferedReader(input)) {
 						String line = "";
@@ -95,7 +94,9 @@ public class Xliff2Text {
 									Element source = segment.getChild("source");
 									Element target = segment.getChild("target");
 									if (target != null) {
-										if (segment.getAttributeValue("approved", "no").equals("yes")) {
+										if (segment
+												.getAttributeValue("approved", "no")
+												.equals("yes")) {
 											writeString(output, extractText(target));
 										} else {
 											writeString(output, extractText(source));
@@ -116,9 +117,9 @@ public class Xliff2Text {
 				}
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			Logger logger = System.getLogger(Xliff2Text.class.getName());
-			logger.log(Level.ERROR, "Error merging TEXT file", e);
+		} catch (Exception e) {
+			Logger logger = System.getLogger(Xliff2Php.class.getName());
+			logger.log(Level.ERROR, e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -126,28 +127,27 @@ public class Xliff2Text {
 	}
 
 	private static String extractText(Element target) {
-		StringBuilder result = new StringBuilder();
+		String result = "";
 		List<XMLNode> content = target.getContent();
 		Iterator<XMLNode> i = content.iterator();
 		while (i.hasNext()) {
 			XMLNode n = i.next();
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-				result.append(extractText((Element) n));
+				result = result + extractText((Element) n);
 			}
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				result.append(((TextNode) n).getText());
+				result = result + ((TextNode) n).getText();
 			}
 		}
-		return result.toString();
+		result = result.replace("\\\\", "\\\\\\\\");
+		result = result.replace("\\\'", "\\\\\'");
+		return result;
 	}
 
 	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
-		segments = new HashMap<>();
+		segments = new Hashtable<>();
 		SAXBuilder builder = new SAXBuilder();
-		if (catalog != null) {
-			builder.setEntityResolver(catalog);
-		}
-
+		builder.setEntityResolver(catalog);
 		Document doc = builder.build(xliffFile);
 		Element root = doc.getRootElement();
 		Element body = root.getChild("file").getChild("body");

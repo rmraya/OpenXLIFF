@@ -40,6 +40,7 @@ import com.maxprograms.converters.javascript.Xliff2jscript;
 import com.maxprograms.converters.json.Xliff2json;
 import com.maxprograms.converters.mif.Xliff2Mif;
 import com.maxprograms.converters.office.Xliff2Office;
+import com.maxprograms.converters.php.Xliff2Php;
 import com.maxprograms.converters.plaintext.Xliff2Text;
 import com.maxprograms.converters.po.Xliff2Po;
 import com.maxprograms.converters.rc.Xliff2Rc;
@@ -383,6 +384,8 @@ public class Merge {
 				result = Xliff2Office.run(params);
 			} else if (dataType.equals(FileFormats.PO) || dataType.equals("po")) {
 				result = Xliff2Po.run(params);
+			} else if (dataType.equals(FileFormats.PHPA) || dataType.equals("x-phparray")) {
+				result = Xliff2Php.run(params);
 			} else if (dataType.equals(FileFormats.RC) || dataType.equals("winres")) {
 				result = Xliff2Rc.run(params);
 			} else if (dataType.equals(FileFormats.RESX) || dataType.equals("resx")) {
