@@ -328,7 +328,7 @@ public class Catalog implements EntityResolver2 {
         } catch (IOException | URISyntaxException | IllegalArgumentException | NullPointerException e) {
             // ignore
         }
-        if (dtdEntities != null && dtdEntities.containsKey(publicId)) {
+        if (dtdEntities != null && publicId != null && dtdEntities.containsKey(publicId)) {
             return new InputSource(new FileInputStream(dtdEntities.get(publicId)));
         }
         return null;
