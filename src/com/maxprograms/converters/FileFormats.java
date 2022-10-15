@@ -50,7 +50,7 @@ public class FileFormats {
 	public static final String OFF = "Microsoft Office 2007 Document";
 	public static final String OO = "OpenOffice Document";
 	public static final String TEXT = "Plain Text";
-	public static final String PHPA  = "PHP Array"; 
+	public static final String PHPA = "PHP Array";
 	public static final String PO = "PO (Portable Objects)";
 	public static final String RC = "RC (Windows C/C++ Resources)";
 	public static final String RESX = "ResX (Windows .NET Resources)";
@@ -65,8 +65,8 @@ public class FileFormats {
 	public static final String XML = "XML Document";
 	public static final String XMLG = "XML (Generic)";
 
-	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PHPA, PO, RC,
-			RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, TXLF, WPML, XLIFF, XML, XMLG };
+	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PHPA,
+			PO, RC, RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, TXLF, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
 		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, TXLF, WPML, XLIFF).contains(type);
@@ -118,9 +118,9 @@ public class FileFormats {
 			if (string.indexOf("<xliff ") != -1 && parseXliff(fileName)) {
 				return XLIFF;
 			}
-			if (string.startsWith("<?php")  ) {
-            	return PHPA;
-            }
+			if (string.startsWith("<?php")) {
+				return PHPA;
+			}
 			if (string.startsWith("<?xml")) {
 				if (string.indexOf("<txml ") != -1) {
 					return TXML;

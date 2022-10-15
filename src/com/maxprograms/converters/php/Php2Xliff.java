@@ -76,7 +76,6 @@ public class Php2Xliff {
 			}
 
 			try (FileOutputStream output = new FileOutputStream(xliffFile)) {
-
 				writeString(output, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 				writeString(output, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" " +
 						"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -102,9 +101,7 @@ public class Php2Xliff {
 				writeString(output, "<body>\n");
 
 				try (FileOutputStream skeleton = new FileOutputStream(skeletonFile)) {
-
 					StringBuilder sb = new StringBuilder();
-
 					try (FileReader reader = new FileReader(inputFile, Charset.forName(srcEncoding))) {
 						try (BufferedReader buffer = new BufferedReader(reader)) {
 							String line = "";
@@ -116,14 +113,15 @@ public class Php2Xliff {
 							}
 						}
 					}
-
 					String text = sb.toString();
+
 					int index = text.indexOf("array(");
-					if (index != -1) {
-						String start = text.substring(0, index + "array(".length());
-						writeSkeleton(skeleton, start);
-						text = text.substring(index + "array(".length());
+					if (index == -1) {
+						throw new IOException("Selected file lacks \"array(\" declaration");
 					}
+					String start = text.substring(0, index + "array(".length());
+					writeSkeleton(skeleton, start);
+					text = text.substring(index + "array(".length());
 
 					boolean finished = false;
 					do {
