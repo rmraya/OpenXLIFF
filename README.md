@@ -124,6 +124,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - Trados Studio Packages (*.sdlppx)
   - TXML (GlobalLink/Wordfast PRO)
   - WPML XLIFF (WordPress Multilingual Plugin)
+  - Wordfast/GlobalLink XLIFF (*.txlf)
   - XLIFF from Other Tools (.mqxliff, .txlf, .xliff, etc.)
 - **XML Formats**
   - XML (Generic)
@@ -136,6 +137,7 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - JavaScript
   - JSON
   - Java Properties
+  - PHP Arrays
   - PO (Portable Objects)
   - RC (Windows C/C++ Resources)
   - ResX (Windows .NET Resources)
