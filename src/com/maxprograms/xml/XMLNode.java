@@ -30,6 +30,8 @@ public interface XMLNode extends Serializable {
 	public final short ELEMENT_DECL_NODE = 9;
 	public final short ENTITY_DECL_NODE = 10;
 	public final short NOTATION_DECL_NODE = 11;
+	public final short XML_DECL_NODE = 12;
+	public final short DOCUMENT_TYPE_NODE = 13;
 
 	public short getNodeType();
 
