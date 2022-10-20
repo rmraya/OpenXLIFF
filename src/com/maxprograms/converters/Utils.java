@@ -204,4 +204,15 @@ public class Utils {
 		return result.toArray(new String[result.size()]);
 	}
 
+	public static boolean lookingAt(String target, String text, int start) {
+		if (target.length() > text.length() + start) {
+			return false;
+		}
+		for (int i = 0; i < target.length(); i++) {
+			if (target.charAt(i) != text.charAt(i + start)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

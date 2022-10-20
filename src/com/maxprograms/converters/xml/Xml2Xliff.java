@@ -192,13 +192,21 @@ public class Xml2Xliff {
 					return result;
 				}
 				String file = new String(array, srcEncoding);
+
 				// remove xml declaration and doctype
-				int begin = file.indexOf("<" + rootElement);
-				if (begin != -1) {
-					if (file.charAt(0) == '<') {
-						writeSkeleton(file.substring(0, begin));
-					} else {
-						writeSkeleton(file.substring(1, begin));
+				String target = '<' + rootElement;
+				int balance = 0;
+				for (int i = 0; i < file.length(); i++) {
+					if (Utils.lookingAt(target, file, i) && balance == 0) {
+						writeSkeleton(file.substring(0, i));
+						break;
+					}
+					char c = file.charAt(i);
+					if (c == '<') {
+						balance++;
+					}
+					if (c == '>') {
+						balance--;
 					}
 				}
 
