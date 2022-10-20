@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Vector;
 
 public class DocumentType implements XMLNode {
 
@@ -46,14 +45,16 @@ public class DocumentType implements XMLNode {
             sb.append(systemId);
             sb.append('\"');
         } else if (systemId != null) {
+            sb.append(" SYSTEM \"");
+            sb.append(systemId);
+            sb.append('\"');
+        }
+        if (internalSubset != null) {
             sb.append('[');
             for (int i=0 ; i<internalSubset.size() ; i++) {
                 sb.append(internalSubset.get(i).toString());
             }
             sb.append(']');
-        }
-        if (internalSubset != null) {
-
         }
         sb.append('>');
         return sb.toString();
@@ -61,8 +62,7 @@ public class DocumentType implements XMLNode {
 
     @Override
     public void writeBytes(OutputStream output, Charset charset) throws IOException {
-        // TODO Auto-generated method stub
-
+        output.write(toString().getBytes(charset));
     }
 
     public String getSystemId() {
@@ -83,14 +83,5 @@ public class DocumentType implements XMLNode {
 
     public void setInternalSubset(List<XMLNode> internalSubset) {
         this.internalSubset = internalSubset;
-    }
-
-    public void setInternalSubset(String subset) {
-        this.internalSubset = new Vector<>();
-        parseInternalSubset(subset);
-    }
-
-    private void parseInternalSubset(String subset) {
-        // TODO
     }
 }
