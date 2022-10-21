@@ -57,6 +57,9 @@ public class Xliff2Php {
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
 		encoding = params.get("encoding");
+		if (encoding == null || encoding.isEmpty()) {
+			encoding= StandardCharsets.UTF_8.name();
+		}
 
 		try {
 			catalog = new Catalog(params.get("catalog"));

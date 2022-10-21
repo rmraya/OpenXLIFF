@@ -240,7 +240,7 @@ public class Merge {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException ex) {
-			logger.log(Level.ERROR, ex.getMessage(), ex);
+			logger.log(Level.ERROR, ex);
 			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
 		}
