@@ -168,6 +168,7 @@ public class Join {
 			writeString(output, ">\n");
 
 			Iterator<String> it = xliffs.iterator();
+			int count = 0;
 			while (it.hasNext()) {
 				String xliff = it.next();
 				Document doc = builder.build(xliff);
@@ -178,6 +179,9 @@ public class Join {
 					Element file = files1.get(i);
 					String original = file.getAttributeValue("original");
 					file.setAttribute("original", Utils.makeRelativePath(treeRoot, original));
+					if (version.startsWith("2")) {
+						file.setAttribute("id", "" + count++);
+					}
 					Indenter.indent(file, 2, 2);
 					writeString(output, "  ");
 					file.writeBytes(output, StandardCharsets.UTF_8);
