@@ -114,12 +114,21 @@ public class Php2Xliff {
 						}
 					}
 					String text = sb.toString();
-
+					char finishMark = ')';
+					String start = "";
 					int index = text.indexOf("array(");
-					if (index == -1) {
-						throw new IOException("Selected file lacks \"array(\" declaration");
+					if (index != -1) {
+						start = text.substring(0, index + "array(".length());
+					} else if ((index = text.indexOf("return")) != -1) {
+						index = text.indexOf("[", index + "return".length());
+						if (index != -1) {
+							start = text.substring(0, index + "[".length());
+							finishMark = ']';
+						}
 					}
-					String start = text.substring(0, index + "array(".length());
+					if (start.isEmpty()) {
+						throw new IOException("Initial array delimiter not found");
+					}
 					writeSkeleton(skeleton, start);
 					text = text.substring(index + "array(".length());
 
@@ -129,7 +138,7 @@ public class Php2Xliff {
 						char delimiter = '\'';
 						for (int i = 0; i < text.length(); i++) {
 							char c = text.charAt(i);
-							if (c == ')') {
+							if (c == finishMark) {
 								finished = true;
 								break;
 							}
@@ -205,18 +214,9 @@ public class Php2Xliff {
 
 	private static void writeSegment(FileOutputStream output, FileOutputStream skeleton, String source)
 			throws IOException {
-		if (source.startsWith("'")) {
-			source = source.replaceAll("\\\\'", "'");
-			source = source.replaceAll("\\\\\\\\", "\\\\");
-		}
-		if (source.startsWith("\"")) {
-			source = source.replace("\\\\'", "'");
-			source = source.replace("\\\"", "\"");
-			source = source.replace("\\\\\\\\", "\\\\");
-			source = source.replace("\\\\n", "\n");
-			source = source.replace("\\\\r", "\r");
-			source = source.replace("\\\\$", "$");
-		}
+		source = source.replace("\\'", "'");
+		source = source.replace("\\\"", "\"");
+		source = source.replace("\\\\", "\\");
 		String delimiter = source.substring(0, 1);
 		source = source.substring(1);
 		source = source.substring(0, source.length() - 1);

@@ -142,8 +142,8 @@ public class Xliff2Php {
 				result = result + ((TextNode) n).getText();
 			}
 		}
-		result = result.replace("\\\\", "\\\\\\\\");
-		result = result.replace("\\\'", "\\\\\'");
+		result = result.replace("'", "\\'");
+		result = result.replace("\"", "\\\"");
 		return result;
 	}
 
