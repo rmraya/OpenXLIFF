@@ -12,12 +12,12 @@
 package com.maxprograms.languages;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -42,7 +42,7 @@ public class LanguageUtils {
 			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
 		}
 		if (extendedLanguages == null) {
-			extendedLanguages = new ArrayList<>();
+			extendedLanguages = new Vector<>();
 			bidiCodes = new TreeSet<>();
 			SAXBuilder builder = new SAXBuilder();
 			Element root = builder.build(Language.class.getResource("extendedLanguageList.xml")).getRootElement();
@@ -67,7 +67,7 @@ public class LanguageUtils {
 			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
 		}
 		if (languages == null) {
-			languages = new ArrayList<>();
+			languages = new Vector<>();
 			SAXBuilder builder = new SAXBuilder();
 			Element root = builder.build(Language.class.getResource("languageList.xml")).getRootElement();
 			List<Element> children = root.getChildren();
