@@ -19,8 +19,8 @@ public class Constants {
 
 	public static final String TOOLID = "OpenXLIFF";
 	public static final String TOOLNAME = "OpenXLIFF Filters";
-	public static final String VERSION = "2.9.1";
-	public static final String BUILD = "20221027_1455";
+	public static final String VERSION = "2.10.0";
+	public static final String BUILD = "20221122_1135";
 
 	public static final String SUCCESS = "0";
 	public static final String ERROR = "1";

@@ -37,6 +37,9 @@ import com.maxprograms.xml.XMLUtils;
 
 public class Segmenter {
 
+	public static final String STARTIGNORE = "@#$%~";
+	public static final String ENDIGNORE = "~%$#@";
+
 	private Element root;
 	private boolean cascade;
 	private List<Element> rules;
@@ -178,8 +181,24 @@ public class Segmenter {
 		String string = raw;
 		tags = new HashMap<>();
 		int k = 0;
-		int start = string.indexOf("<mrk ");
-		int end = string.indexOf("</mrk>");
+
+		int start = string.indexOf(STARTIGNORE);
+		int end = string.indexOf(ENDIGNORE);
+
+		while (start != -1 && end != -1) {
+			if (start > end) {
+				break;
+			}
+			String tag = string.substring(start + STARTIGNORE.length(), end );
+			string = string.substring(0, start) + (char) ('\uE000' + k) + string.substring(end + ENDIGNORE.length());
+			tags.put("" + (char) ('\uE000' + k), tag);
+			k++;
+			start = string.indexOf(STARTIGNORE);
+			end = string.indexOf(ENDIGNORE);
+		}
+
+		start = string.indexOf("<mrk ");
+		end = string.indexOf("</mrk>");
 		// check nested <mrk>
 		int e = string.indexOf("<mrk ", string.indexOf('>', start));
 		while (e != -1 && e < end) {

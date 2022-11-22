@@ -504,6 +504,8 @@ public class Xml2Xliff {
 			tagId = 0;
 			txt = addTags(txt);
 			if (segByElement) {
+				txt = txt.replace(Segmenter.STARTIGNORE, "");
+				txt = txt.replace(Segmenter.ENDIGNORE, "");
 				writeSegment(txt);
 			} else {
 				String[] segs = segmenter.segment(txt);
@@ -808,7 +810,10 @@ public class Xml2Xliff {
 				|| "it".equals(e.getName())) {
 			return false;
 		}
-		if ("no".equals(e.getAttributeValue("translate", "yes"))) {
+		if ("mrk".equals(e.getName()) && "protected".equals(e.getAttributeValue("mtype"))) {
+			return false;
+		}
+		if ("no".equals(e.getAttributeValue("translate"))) {
 			return false;
 		}
 		List<XMLNode> content = e.getContent();
@@ -1173,7 +1178,7 @@ public class Xml2Xliff {
 				if (ditaBased && !isKnownElement(e.getName())) {
 					configureElement(e);
 				}
-				if (ditaBased && e.getAttributeValue("translate", "yes").equals("no")) {
+				if (ditaBased && "no".equals(e.getAttributeValue("translate"))) {
 
 					if (startsSegment.containsKey(e.getName())) {
 						// treat as element to ignore, send to skeleton
@@ -1191,7 +1196,7 @@ public class Xml2Xliff {
 
 					removeComments(e);
 
-					text = text + parseElement(e);
+					text = text + Segmenter.STARTIGNORE + parseElement(e) + Segmenter.ENDIGNORE;
 					return;
 				}
 				if (ditaBased && e.getAttributeValue("fluentaIgnore", "no").equals("yes")) {
@@ -1356,7 +1361,7 @@ public class Xml2Xliff {
 		Element mrk = new Element("mrk");
 		mrk.setAttribute("ts", clean(sb.toString()));
 		String type = "protected";
-		if (!e.getAttributeValue("translate", "yes").equals("no")) {
+		if (ditaBased && !"no".equals(e.getAttributeValue("translate"))) {
 			type = "x-" + e.getName();
 		}
 		mrk.setAttribute("mtype", type);
