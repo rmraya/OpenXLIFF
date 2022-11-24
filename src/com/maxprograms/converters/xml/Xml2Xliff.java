@@ -127,7 +127,7 @@ public class Xml2Xliff {
 		resx = isResx != null;
 		String dita = params.get("dita_based");
 		if (dita != null) {
-			ditaBased = dita.equalsIgnoreCase("yes");
+			ditaBased = dita.equals("yes");
 		}
 		boolean generic = false;
 		String isGeneric = params.get("generic");
@@ -556,10 +556,10 @@ public class Xml2Xliff {
 	}
 
 	private static String extractText(Element element) throws SAXException {
-		if (element.getName().equals("ph")) {
+		if ("ph".equals(element.getName())) {
 			return Xliff2Xml.fixEntities(element);
 		}
-		if (ditaBased && element.getName().equals("g")) {
+		if (ditaBased && "mrk".equals(element.getName())) {
 			return cleanMrk(element);
 		}
 
@@ -571,9 +571,9 @@ public class Xml2Xliff {
 			switch (n.getNodeType()) {
 				case XMLNode.ELEMENT_NODE:
 					Element e = (Element) n;
-					if (e.getName().equals("ph")) {
+					if ("ph".equals(e.getName())) {
 						result.append(extractText(e));
-					} else if (e.getName().equals("mrk")) {
+					} else if ("mrk".equals(e.getName())) {
 						result.append(cleanMrk(e));
 					} else {
 						throw new SAXException("broken tagged text");
