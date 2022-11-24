@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+2.10.0 | Fixed DITA segmentation | November 22nd, 2022
 2.9.1 | Fixed joining of XLIFF 2.0 files and improved PHP Array support | October 22nd, 2022
 2.9.0 | Added support for PHP Arrays | October 21st, 2022
 2.8.0 | Updated TXLF, JSON and DITA filters | October 8th, 2022
