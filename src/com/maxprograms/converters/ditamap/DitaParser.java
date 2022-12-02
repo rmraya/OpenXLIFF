@@ -318,6 +318,11 @@ public class DitaParser {
 				href = URLDecoder.decode(href, StandardCharsets.UTF_8);
 				try {
 					File file = new File(href);
+					if (file.getName().indexOf('#') != -1) {
+						// remove fragment identifier
+						file = new File(file.getParentFile(), file.getName().substring(0, file.getName().indexOf('#')));
+						href = file.getAbsolutePath();
+					}
 					if (file.exists()) {
 						if (dataLogger != null) {
 							if (dataLogger.isCancelled()) {
