@@ -85,6 +85,7 @@ public class Convert {
 		String catalog = "";
 		String ditaval = "";
 		String config = "";
+		String xmlfilter = "";
 		boolean embed = false;
 		boolean paragraph = false;
 		boolean xliff20 = false;
@@ -142,6 +143,9 @@ public class Convert {
 			}
 			if (arg.equals("-paragraph")) {
 				paragraph = true;
+			}
+			if (arg.equals("-xmlfilter") && (i + 1) < arguments.length) {
+				xmlfilter = arguments[i + 1];
 			}
 			if (arg.equals("-2.0")) {
 				xliff20 = true;
@@ -218,6 +222,14 @@ public class Convert {
 			logger.log(Level.ERROR, "SRX file does not exist.");
 			return;
 		}
+		if (xmlfilter.isEmpty()) {
+			String home = System.getenv("OpenXLIFF_HOME");
+			if (home == null) {
+				home = System.getProperty("user.dir");
+			}
+			File filtersFolder = new File(new File(home), "xmlfilter");
+			xmlfilter = filtersFolder.getAbsolutePath();
+		}
 		if (catalog.isEmpty()) {
 			String home = System.getenv("OpenXLIFF_HOME");
 			if (home == null) {
@@ -255,6 +267,7 @@ public class Convert {
 		params.put("paragraph", paragraph ? "yes" : "no");
 		params.put("srxFile", srx);
 		params.put("srcLang", srcLang);
+		params.put("xmlfilter", xmlfilter);
 		if (!tgtLang.isEmpty()) {
 			params.put("tgtLang", tgtLang);
 		}
@@ -291,7 +304,7 @@ public class Convert {
 				+ "[-skl skeletonFile] [-xliff xliffFile] "
 				+ "[-type fileType] [-enc encoding] [-srx srxFile] "
 				+ "[-catalog catalogFile] [-divatal ditaval] [-config configFile] "
-				+ "[-embed] [-paragraph] [-2.0] [-charsets]\n\n"
+				+ "[-embed] [-paragraph] [-xmlfilter folder][-2.0] [-charsets]\n\n"
 				+ "Where:\n\n"
 				+ "   -help:      (optional) Display this help information and exit\n"
 				+ "   -version:   (optional) Display version & build information and exit\n"
@@ -308,6 +321,7 @@ public class Convert {
 				+ "   -config:    (optional) configuration file to use when converting JSON documents\n"
 				+ "   -embed:     (optional) store skeleton inside the XLIFF file\n"
 				+ "   -paragraph: (optional) use paragraph segmentation\n"
+				+ "   -xmlfilter: (optional) folder containing configuration files for the XML filter\n"
 				+ "   -2.0:       (optional) generate XLIFF 2.0\n"
 				+ "   -charsets:  (optional) display a list of available character sets and exit\n\n"
 				+ "Document Types\n\n"

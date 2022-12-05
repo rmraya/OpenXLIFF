@@ -119,6 +119,7 @@ public class Xml2Xliff {
 		targetLanguage = params.get("tgtLang");
 		srcEncoding = params.get("srcEncoding");
 		String catalogFile = params.get("catalog");
+		String xmlfilter = params.get("xmlfilter");
 		String elementSegmentation = params.get("paragraph");
 		String initSegmenter = params.get("srxFile");
 		String isInDesign = params.get("InDesign");
@@ -146,7 +147,7 @@ public class Xml2Xliff {
 				currentCatalog = catalogFile;
 			}
 			boolean autoConfiguration = false;
-			String iniFile = getIniFile(inputFile);
+			String iniFile = getIniFile(xmlfilter, inputFile);
 			if (generic) {
 				File temp = File.createTempFile("config_", ".xml");
 				iniFile = temp.getAbsolutePath();
@@ -248,12 +249,8 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String getIniFile(String fileName) throws SAXException, IOException, ParserConfigurationException {
-		String home = System.getenv("OpenXLIFF_HOME");
-		if (home == null) {
-			home = System.getProperty("user.dir");
-		}
-		File folder = new File(home, "xmlfilter");
+	private static String getIniFile(String filtersFolder, String fileName) throws SAXException, IOException, ParserConfigurationException {
+		File folder = new File(filtersFolder);
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		builder.setValidating(false);

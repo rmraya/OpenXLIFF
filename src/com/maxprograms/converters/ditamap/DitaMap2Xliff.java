@@ -181,6 +181,7 @@ public class DitaMap2Xliff {
 				params2.put("srxFile", params.get("srxFile"));
 				params2.put("paragraph", params.get("paragraph"));
 				params2.put("dita_based", "yes");
+				params2.put("xmlfilter", params.get("xmlfilter"));
 				String tComments = params.get("translateComments");
 				if (tComments != null) {
 					params2.put("translateComments", tComments);

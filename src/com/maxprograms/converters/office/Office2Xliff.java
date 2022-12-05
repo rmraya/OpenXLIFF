@@ -103,28 +103,29 @@ public class Office2Xliff {
 									cleanTags(tmp.getAbsolutePath(), catalog);
 								}
 								try {
-									Map<String, String> table = new HashMap<>();
-									table.put("source", tmp.getAbsolutePath());
-									table.put("xliff", tmp.getAbsolutePath() + ".xlf");
-									table.put("skeleton", tmp.getAbsolutePath() + ".skl");
-									table.put("catalog", params.get("catalog"));
-									table.put("srcLang", params.get("srcLang"));
+									Map<String, String> params2 = new HashMap<>();
+									params2.put("source", tmp.getAbsolutePath());
+									params2.put("xliff", tmp.getAbsolutePath() + ".xlf");
+									params2.put("skeleton", tmp.getAbsolutePath() + ".skl");
+									params2.put("catalog", params.get("catalog"));
+									params2.put("srcLang", params.get("srcLang"));
 									String tgtLang = params.get("tgtLang");
 									if (tgtLang != null) {
-										table.put("tgtLang", tgtLang);
+										params2.put("tgtLang", tgtLang);
 									}
-									table.put("srcEncoding", params.get("srcEncoding"));
-									table.put("paragraph", params.get("paragraph"));
-									table.put("srxFile", params.get("srxFile"));
-									table.put("format", params.get("format"));
+									params2.put("srcEncoding", params.get("srcEncoding"));
+									params2.put("paragraph", params.get("paragraph"));
+									params2.put("srxFile", params.get("srxFile"));
+									params2.put("format", params.get("format"));
+									params2.put("xmlfilter", params.get("xmlfilter"));
 									List<String> res = null;
 									if (params.get("format").equals(FileFormats.OFF)) {
-										res = MSOffice2Xliff.run(table);
+										res = MSOffice2Xliff.run(params2);
 										if (tmp.getName().indexOf("slide") != -1) {
 											isPPTX = true;
 										}
 									} else {
-										res = Xml2Xliff.run(table);
+										res = Xml2Xliff.run(params2);
 									}
 									if (Constants.SUCCESS.equals(res.get(0))) {
 										if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {

@@ -199,6 +199,7 @@ Where:
    -config:    (optional) configuration file to use when converting JSON documents
    -embed:     (optional) store skeleton inside the XLIFF file
    -paragraph: (optional) use paragraph segmentation
+   -xmlfilter: (optional) folder containing configuration files for the XML filter
    -2.0:       (optional) generate XLIFF 2.0
    -charsets:  (optional) display a list of available character sets and exit
 
