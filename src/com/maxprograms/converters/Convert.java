@@ -88,6 +88,7 @@ public class Convert {
 		String xmlfilter = "";
 		boolean embed = false;
 		boolean paragraph = false;
+		boolean ignoretc = false;
 		boolean xliff20 = false;
 		boolean mustResegment = false;
 
@@ -143,6 +144,9 @@ public class Convert {
 			}
 			if (arg.equals("-paragraph")) {
 				paragraph = true;
+			}
+			if (arg.equals("-ignoretc")) {
+				ignoretc = true;
 			}
 			if (arg.equals("-xmlfilter") && (i + 1) < arguments.length) {
 				xmlfilter = arguments[i + 1];
@@ -265,6 +269,7 @@ public class Convert {
 		params.put("catalog", catalog);
 		params.put("srcEncoding", enc);
 		params.put("paragraph", paragraph ? "yes" : "no");
+		params.put("ignoretc", ignoretc ? "yes" :"no");
 		params.put("srxFile", srx);
 		params.put("srcLang", srcLang);
 		params.put("xmlfilter", xmlfilter);
@@ -297,60 +302,67 @@ public class Convert {
 	private static void help() {
 		String launcher = "   convert.sh ";
 		if (System.getProperty("file.separator").equals("\\")) {
-			launcher = "   convert.bat ";
+			launcher = "\n   convert.bat ";
 		}
 		String help = "Usage:\n\n" + launcher
-				+ "[-help] [-version] -file sourceFile -srcLang sourceLang [-tgtLang targetLang] "
-				+ "[-skl skeletonFile] [-xliff xliffFile] "
-				+ "[-type fileType] [-enc encoding] [-srx srxFile] "
-				+ "[-catalog catalogFile] [-divatal ditaval] [-config configFile] "
-				+ "[-embed] [-paragraph] [-xmlfilter folder][-2.0] [-charsets]\n\n"
-				+ "Where:\n\n"
-				+ "   -help:      (optional) Display this help information and exit\n"
-				+ "   -version:   (optional) Display version & build information and exit\n"
-				+ "   -file:      source file to convert\n"
-				+ "   -srcLang:   source language code\n"
-				+ "   -tgtLang:   (optional) target language code\n"
-				+ "   -xliff:     (optional) XLIFF file to generate\n"
-				+ "   -skl:       (optional) skeleton file to generate\n"
-				+ "   -type:      (optional) document type\n"
-				+ "   -enc:       (optional) character set code for the source file\n"
-				+ "   -srx:       (optional) SRX file to use for segmentation\n"
-				+ "   -catalog:   (optional) XML catalog to use for processing\n"
-				+ "   -ditaval:   (optional) conditional processing file to use when converting DITA maps\n"
-				+ "   -config:    (optional) configuration file to use when converting JSON documents\n"
-				+ "   -embed:     (optional) store skeleton inside the XLIFF file\n"
-				+ "   -paragraph: (optional) use paragraph segmentation\n"
-				+ "   -xmlfilter: (optional) folder containing configuration files for the XML filter\n"
-				+ "   -2.0:       (optional) generate XLIFF 2.0\n"
-				+ "   -charsets:  (optional) display a list of available character sets and exit\n\n"
-				+ "Document Types\n\n"
-				+ "   INX = Adobe InDesign Interchange\n"
-				+ "   ICML = Adobe InCopy ICML\n"
-				+ "   IDML = Adobe InDesign IDML\n"
-				+ "   DITA = DITA Map\n"
-				+ "   HTML = HTML Page\n"
-				+ "   JS = JavaScript\n"
-				+ "   JSON = JSON\n"
-				+ "   JAVA = Java Properties\n"
-				+ "   MIF = MIF (Maker Interchange Format)\n"
-				+ "   OFF = Microsoft Office 2007 Document\n"
-				+ "   OO = OpenOffice Document\n"
-				+ "   PHPA = PHP Array\n"
-				+ "   PO = PO (Portable Objects)\n"
-				+ "   RC = RC (Windows C/C++ Resources)\n"
-				+ "   RESX = ResX (Windows .NET Resources)\n"
-				+ "   SDLPPX = Trados Studio Package\n"
-				+ "   SDLXLIFF = SDLXLIFF Document\n"
-				+ "   SRT = SRT Substitle"
-				+ "   TEXT = Plain Text\n"
-				+ "   TS = TS (Qt Linguist translation source)\n"
-				+ "   TXLF = Wordfast/GlobalLink XLIFF\n"
-				+ "   TXML = TXML Document\n"
-				+ "   WPML = WPML XLIFF\n"
-				+ "   XLIFF = XLIFF Document\n"
-				+ "   XML = XML Document\n"
-				+ "   XMLG = XML (Generic)\n";
+				+ """
+[-help] [-version] -file sourceFile -srcLang sourceLang 
+        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
+        [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
+        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
+        [-xmlfilter folder][-2.0] [-ignoretc][-charsets]
+
+Where:
+
+   -help:      (optional) Display this help information and exit
+   -version:   (optional) Display version & build information and exit
+   -file:      source file to convert
+   -srcLang:   source language code
+   -tgtLang:   (optional) target language code
+   -xliff:     (optional) XLIFF file to generate
+   -skl:       (optional) skeleton file to generate
+   -type:      (optional) document type
+   -enc:       (optional) character set code for the source file
+   -srx:       (optional) SRX file to use for segmentation
+   -catalog:   (optional) XML catalog to use for processing
+   -ditaval:   (optional) conditional processing file to use when converting DITA maps
+   -config:    (optional) configuration file to use when converting JSON documents
+   -embed:     (optional) store skeleton inside the XLIFF file
+   -paragraph: (optional) use paragraph segmentation
+   -xmlfilter: (optional) folder containing configuration files for the XML filter
+   -ignoretc:  (optional) ignore tracked changes from Oxygen XML Editor in XML files
+   -2.0:       (optional) generate XLIFF 2.0
+   -charsets:  (optional) display a list of available character sets and exit
+
+Document Types
+
+   INX = Adobe InDesign Interchange
+   ICML = Adobe InCopy ICML
+   IDML = Adobe InDesign IDML
+   DITA = DITA Map
+   HTML = HTML Page
+   JS = JavaScript
+   JSON = JSON
+   JAVA = Java Properties
+   MIF = MIF (Maker Interchange Format)
+   OFF = Microsoft Office 2007 Document
+   OO = OpenOffice Document
+   PHPA = PHP Array
+   PO = PO (Portable Objects)
+   RC = RC (Windows C/C++ Resources)
+   RESX = ResX (Windows .NET Resources)
+   SDLPPX = Trados Studio Package
+   SDLXLIFF = SDLXLIFF Document
+   SRT = SRT Substitle
+   TEXT = Plain Text
+   TS = TS (Qt Linguist translation source)
+   TXLF = Wordfast/GlobalLink XLIFF
+   TXML = TXML Document
+   WPML = WPML XLIFF
+   XLIFF = XLIFF Document
+   XML = XML Document
+   XMLG = XML (Generic)
+""";
 		System.out.println(help);
 	}
 

@@ -178,17 +178,18 @@ If you use binaries from the command line, running `.\convert.bat` or `./convert
 ```text
 Usage:
 
-   convert.bat [-help] [-version] -file sourceFile -srcLang sourceLang [-tgtLang targetLang]
-               [-skl skeletonFile] [-xliff xliffFile] [-type fileType] [-enc encoding]
-               [-srx srxFile] [-catalog catalogFile] [-divatal ditaval] [-embed] [-paragraph]
-               [-2.0] [-charsets]
+   convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang
+        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] [-type fileType]
+        [-enc encoding] [-srx srxFile] [-catalog catalogFile] [-divatal ditaval]
+        [-config configFile] [-embed] [-paragraph] [-xmlfilter folder][-2.0]
+        [-ignoretc][-charsets]
 
 Where:
 
    -help:      (optional) Display this help information and exit
    -version:   (optional) Display version & build information and exit
    -file:      source file to convert
-   -srgLang:   source language code
+   -srcLang:   source language code
    -tgtLang:   (optional) target language code
    -xliff:     (optional) XLIFF file to generate
    -skl:       (optional) skeleton file to generate
@@ -201,6 +202,7 @@ Where:
    -embed:     (optional) store skeleton inside the XLIFF file
    -paragraph: (optional) use paragraph segmentation
    -xmlfilter: (optional) folder containing configuration files for the XML filter
+   -ignoretc:  (optional) ignore tracked changes from Oxygen XML Editor in XML files
    -2.0:       (optional) generate XLIFF 2.0
    -charsets:  (optional) display a list of available character sets and exit
 
@@ -212,17 +214,18 @@ Document Types
    DITA = DITA Map
    HTML = HTML Page
    JS = JavaScript
-   JAVA = Java Properties
    JSON = JSON
+   JAVA = Java Properties
    MIF = MIF (Maker Interchange Format)
    OFF = Microsoft Office 2007 Document
    OO = OpenOffice Document
+   PHPA = PHP Array
    PO = PO (Portable Objects)
    RC = RC (Windows C/C++ Resources)
    RESX = ResX (Windows .NET Resources)
    SDLPPX = Trados Studio Package
    SDLXLIFF = SDLXLIFF Document
-   SRT = SRT Subtitles
+   SRT = SRT Substitle
    TEXT = Plain Text
    TS = TS (Qt Linguist translation source)
    TXLF = Wordfast/GlobalLink XLIFF

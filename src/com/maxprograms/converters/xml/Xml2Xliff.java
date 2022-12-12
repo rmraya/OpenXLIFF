@@ -46,6 +46,7 @@ import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Comment;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.TextNode;
@@ -101,6 +102,8 @@ public class Xml2Xliff {
 	private static String currentCatalog;
 	private static Document ditaCache;
 
+	private static boolean ignoreTC = false;
+
 	private Xml2Xliff() {
 		// do not instantiate this class
 		// use run method instead
@@ -129,6 +132,10 @@ public class Xml2Xliff {
 		String dita = params.get("dita_based");
 		if (dita != null) {
 			ditaBased = dita.equals("yes");
+		}
+		String ignoreTrackedChanges = params.get("ignoreTC");
+		if (ignoreTrackedChanges != null) {
+			ignoreTC = ignoreTrackedChanges.equals("yes");
 		}
 		boolean generic = false;
 		String isGeneric = params.get("generic");
@@ -249,7 +256,8 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String getIniFile(String filtersFolder, String fileName) throws SAXException, IOException, ParserConfigurationException {
+	private static String getIniFile(String filtersFolder, String fileName)
+			throws SAXException, IOException, ParserConfigurationException {
 		File folder = new File(filtersFolder);
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -1301,9 +1309,12 @@ public class Xml2Xliff {
 				if (!stack.isEmpty()) {
 					stack.pop();
 				}
-
 				break;
 			case XMLNode.PROCESSING_INSTRUCTION_NODE:
+				PI pi = (PI) n;
+				if (ignoreTC && pi.getTarget().startsWith("oxy_")) {
+					break;
+				}
 				if (inDesign && !translatable.trim().isEmpty()) {
 					text = text + n.toString();
 				} else {
