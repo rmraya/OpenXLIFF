@@ -252,15 +252,20 @@ public class Merge {
 		if (System.getProperty("file.separator").equals("\\")) {
 			launcher = "   merge.bat ";
 		}
-		String help = "Usage:\n\n" + launcher + "[-help] [-version] -xliff xliffFile -target targetFile "
-				+ "[-catalog catalogFile] [-unapproved] [-export]\n\n" + "Where:\n\n"
-				+ "   -help:       (optional) Display this help information and exit\n"
-				+ "   -version:    (optional) Display version & build information and exit\n"
-				+ "   -xliff:      XLIFF file to merge\n"
-				+ "   -target:     (optional) translated file or folder where to store translated files\n"
-				+ "   -catalog:    (optional) XML catalog to use for processing\n"
-				+ "   -unapproved: (optional) accept translations from unapproved segments\n"
-				+ "   -export:     (optional) generate TMX file from approved segments";
+		String help = "Usage:\n\n" + launcher + """
+[-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
+
+Where:
+
+    -help:       (optional) display this help information and exit
+    -version:    (optional) display version & build information and exit
+    -xliff:      XLIFF file to merge
+    -target:     (optional) translated file or folder where to store translated files
+    -catalog:    (optional) XML catalog to use for processing
+    -unapproved: (optional) accept translations from unapproved segments
+    -export:     (optional) generate TMX file from approved segments				
+
+""";
 		System.out.println(help);
 	}
 

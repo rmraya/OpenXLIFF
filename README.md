@@ -225,7 +225,7 @@ Document Types
    RESX = ResX (Windows .NET Resources)
    SDLPPX = Trados Studio Package
    SDLXLIFF = SDLXLIFF Document
-   SRT = SRT Subtitles
+   SRT = SRT Subtitle
    TEXT = Plain Text
    TS = TS (Qt Linguist translation source)
    TXLF = Wordfast/GlobalLink XLIFF

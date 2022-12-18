@@ -89,12 +89,16 @@ public class ApproveAll {
         if (System.getProperty("file.separator").equals("\\")) {
             launcher = "   approveall.bat ";
         }
-        String help = "Usage:\n\n" + launcher
-                + "[-help] -xliff xliffFile [-catalog catalogFile]\n\n"
-                + "Where:\n\n"
-                + "   -help:      (optional) Display this help information and exit\n"
-                + "   -xliff:     XLIFF file to process\n"
-                + "   -catalog:   (optional) XML catalog to use for processing\n";
+        String help = "Usage:\n\n" + launcher + """
+[-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+""";
         System.out.println(help);
     }
 

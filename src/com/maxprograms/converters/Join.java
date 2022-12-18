@@ -90,10 +90,16 @@ public class Join {
 		if (System.getProperty("file.separator").equals("\\")) {
 			launcher = "   join.bat ";
 		}
-		String help = "Usage:\n\n" + launcher + "[-help] -target targetFile -files file1,file2,file3... \n\n Where:\n\n"
-				+ "   -help:     (optional) Display this help information and exit\n"
-				+ "   -target:   combined output XLIFF file\n"
-				+ "   -files:    list of XLIFF files to join, separated by ','";
+		String help = "Usage:\n\n" + launcher + """
+[-help] -target targetFile -files file1,file2,file3... 
+
+Where:
+
+   -help:     (optional) Display this help information and exit\
+   -target:   combined output XLIFF file
+   -files:    list of XLIFF files to join, separated by ','
+
+""";
 		System.out.println(help);
 	}
 

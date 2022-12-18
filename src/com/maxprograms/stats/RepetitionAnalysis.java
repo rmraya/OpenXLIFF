@@ -102,10 +102,16 @@ public class RepetitionAnalysis {
 		if (System.getProperty("file.separator").equals("\\")) {
 			launcher = "   analysis.bat ";
 		}
-		String help = "Usage:\n\n" + launcher + "[-help] -file xliffFile [-catalog catalogFile] \n\n" + "Where:\n\n"
-				+ "   -help:      (optional) Display this help information and exit\n"
-				+ "   -file:      XLIFF file to analyze\n"
-				+ "   -catalog:   (optional) XML catalog to use for processing\n";
+		String help = "Usage:\n\n" + launcher + """
+[-help] -file xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -file:      XLIFF file to analyze
+    -catalog:   (optional) XML catalog to use for processing
+
+"""; 
 		System.out.println(help);
 	}
 

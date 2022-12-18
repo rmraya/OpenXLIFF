@@ -314,8 +314,8 @@ public class Convert {
 
 Where:
 
-   -help:      (optional) Display this help information and exit
-   -version:   (optional) Display version & build information and exit
+   -help:      (optional) display this help information and exit
+   -version:   (optional) display version & build information and exit
    -file:      source file to convert
    -srcLang:   source language code
    -tgtLang:   (optional) target language code
@@ -353,7 +353,7 @@ Document Types
    RESX = ResX (Windows .NET Resources)
    SDLPPX = Trados Studio Package
    SDLXLIFF = SDLXLIFF Document
-   SRT = SRT Substitle
+   SRT = SRT Subtitle
    TEXT = Plain Text
    TS = TS (Qt Linguist translation source)
    TXLF = Wordfast/GlobalLink XLIFF
