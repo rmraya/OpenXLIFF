@@ -133,7 +133,7 @@ public class Xml2Xliff {
 		if (dita != null) {
 			ditaBased = dita.equals("yes");
 		}
-		String ignoreTrackedChanges = params.get("ignoreTC");
+		String ignoreTrackedChanges = params.get("ignoretc");
 		if (ignoreTrackedChanges != null) {
 			ignoreTC = ignoreTrackedChanges.equals("yes");
 		}
