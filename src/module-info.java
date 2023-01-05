@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Maxprograms.
+ * Copyright (c) 2023 Maxprograms.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 1.0 which accompanies this distribution,
@@ -8,7 +8,6 @@
  * Contributors: Maxprograms - initial API and implementation
  *******************************************************************************/
 module openxliff {
-	exports com.maxprograms.xml;
 	exports com.maxprograms.converters;
 	exports com.maxprograms.converters.html;
 	exports com.maxprograms.converters.po;
@@ -40,15 +39,14 @@ module openxliff {
 	exports com.maxprograms.validation;
 	exports com.maxprograms.mt;
 
-	opens com.maxprograms.xml to mapdb;
 	opens com.maxprograms.languages to mapdb;
 
 	requires dtd;
 	requires jsoup;
 	requires mapdb;
 	requires java.base;
-	requires java.logging;
 	requires java.net.http;
 	requires transitive json;
 	requires transitive java.xml;
+	requires transitive xmljava;
 }

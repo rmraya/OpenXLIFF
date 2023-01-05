@@ -8,6 +8,7 @@
         <pathelement location="lib/json.jar" />
         <pathelement location="lib/jsoup.jar" />
         <pathelement location="lib/mapdb.jar" />
+    	<pathelement location="lib/xmljava.jar" />
     </path>
     <condition property="isWindows">
         <os family="windows" />
