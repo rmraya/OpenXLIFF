@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.0.0 | Moved XML code to project [XMLJava](https://github.com/rmraya/XMLJava) | January 9th, 2023
 2.13.0 | Ignored tracked changes from Oxygen XML Editor | December 22nd, 2022
 2.12.0 | Added "xmlfilter" parameter to conversion options | December 5th, 2022
 2.11.0 | Improved support for DITA from Astoria CMS | December 2nd, 2022
