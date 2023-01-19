@@ -67,7 +67,7 @@ public class Xliff2Text {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (!p.exists()) {
+			if (Files.notExists(p.toPath()))  {
 				Files.createDirectory(p.toPath());
 			}
 			if (!f.exists()) {

@@ -195,7 +195,7 @@ public class Merge {
 						return result;
 					}
 				} else {
-					f.mkdirs();
+					Files.createDirectories(f.toPath());
 				}
 			}
 			Iterator<String> ft = fileSet.iterator();

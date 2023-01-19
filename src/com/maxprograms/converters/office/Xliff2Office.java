@@ -78,8 +78,8 @@ public class Xliff2Office {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (!p.exists()) {
-				p.mkdirs();
+			if (Files.notExists(p.toPath()))  {
+				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
 				Files.createFile(Paths.get(f.toURI()));

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -104,8 +105,8 @@ public class Xliff2Sdl {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (!p.exists()) {
-				p.mkdirs();
+			if (Files.notExists(p.toPath()))  {
+				Files.createDirectories(p.toPath());
 			}
 			try (FileOutputStream out = new FileOutputStream(f)) {
 				outputter.output(doc, out);

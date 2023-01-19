@@ -22,19 +22,22 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Decoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Base64.Decoder;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
@@ -46,10 +49,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
 
 public class Xliff2Xml {
 
@@ -98,11 +97,8 @@ public class Xliff2Xml {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (!p.exists()) {
-				p.mkdirs();
-			}
-			if (!f.exists()) {
-				Files.createFile(Paths.get(f.toURI()));
+			if (Files.notExists(p.toPath())) {
+				Files.createDirectories(p.toPath());
 			}
 			try (FileOutputStream output = new FileOutputStream(f)) {
 				loadSegments();

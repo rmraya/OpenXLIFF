@@ -158,8 +158,8 @@ public class DitaMap2Xliff {
 				}
 
 				File sklParent = new File(skeleton).getParentFile();
-				if (!sklParent.exists()) {
-					sklParent.mkdirs();
+				if (Files.notExists(sklParent.toPath())) {
+					Files.createDirectories(sklParent.toPath());
 				}
 				File skl = File.createTempFile("dita", ".skl", sklParent);
 				skels.add(skl.getAbsolutePath());
