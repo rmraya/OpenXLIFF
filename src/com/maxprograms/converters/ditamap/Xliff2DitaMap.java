@@ -18,7 +18,6 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,6 +30,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.ILogger;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xml.Catalog;
@@ -45,6 +45,7 @@ import com.maxprograms.xml.XMLOutputter;
 public class Xliff2DitaMap {
 
 	private static Map<String, String[]> filesTable;
+	private static ILogger dataLogger;;
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
@@ -53,6 +54,14 @@ public class Xliff2DitaMap {
 		try {
 			xliffFile = params.get("xliff");
 			String outputFile = params.get("backfile");
+			File folder = new File(outputFile);
+			File p = folder.getParentFile();
+			if (p == null) {
+				p = new File(System.getProperty("user.dir"));
+			}
+			if (Files.notExists(p.toPath())) {
+				Files.createDirectories(p.toPath());
+			}
 			filesTable = new HashMap<>();
 			String catalog = params.get("catalog");
 			SAXBuilder builder = new SAXBuilder();
@@ -73,19 +82,18 @@ public class Xliff2DitaMap {
 			outputter.preserveSpace(true);
 			while (kt.hasNext()) {
 				String topicFile = kt.next();
+				if (dataLogger != null) {
+					if (dataLogger.isCancelled()) {
+						throw new IOException(Constants.CANCELLED);
+					}
+					dataLogger.log(topicFile);
+				}
 				String[] values = filesTable.get(topicFile);
 				Map<String, String> params2 = new HashMap<>();
 				params2.put("xliff", values[0]);
 				params2.put("skeleton", values[1]);
-				File folder = new File(outputFile);
-				File p = folder.getParentFile();
-				if (p == null) {
-					p = new File(System.getProperty("user.dir"));
-				}
-				if (!p.exists()) {
-					p.mkdirs();
-				}
-				params2.put("backfile", outputFile);
+				File topic = new File(folder, topicFile);
+				params2.put("backfile", topic.getAbsolutePath());
 				params2.put("encoding", params.get("encoding"));
 				params2.put("catalog", params.get("catalog"));
 				params2.put("dita_based", "yes");
@@ -94,7 +102,7 @@ public class Xliff2DitaMap {
 					return res;
 				}
 
-				doc = builder.build(outputFile);
+				doc = builder.build(topic);
 				Element r = doc.getRootElement();
 
 				List<PI> ish = doc.getPI("ish");
@@ -107,13 +115,12 @@ public class Xliff2DitaMap {
 				r.setAttribute("xml:lang", tgtlang);
 				Indenter.indent(r, 2);
 				instance.cleanConref(r);
-				try (FileOutputStream out = new FileOutputStream(outputFile)) {
+				try (FileOutputStream out = new FileOutputStream(topic)) {
 					outputter.output(doc, out);
 				}
 				File f = new File(values[0]);
-				Files.delete(Paths.get(f.toURI()));
+				Files.delete(f.toPath());
 			}
-
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2DitaMap.class.getName());
@@ -235,6 +242,10 @@ public class Xliff2DitaMap {
 		}
 		filesTable.put(element.getAttributeValue("original"), new String[] { xliff.getAbsolutePath(),
 				file.getChild("header").getChild("skl").getChild("external-file").getAttributeValue("href") });
+	}
+
+	public static void setDataLogger(ILogger dataLogger) {
+		Xliff2DitaMap.dataLogger = dataLogger;
 	}
 
 }
