@@ -53,14 +53,10 @@ public class Xliff2DitaMap {
 		Xliff2DitaMap instance = new Xliff2DitaMap();
 		try {
 			xliffFile = params.get("xliff");
-			String outputFile = params.get("backfile");
-			File folder = new File(outputFile);
-			File p = folder.getParentFile();
-			if (p == null) {
-				p = new File(System.getProperty("user.dir"));
-			}
-			if (Files.notExists(p.toPath())) {
-				Files.createDirectories(p.toPath());
+			File outputFile = new File(params.get("backfile"));
+			File parent = outputFile.getParentFile();
+			if (Files.notExists(parent.toPath())) {
+				Files.createDirectories(parent.toPath());
 			}
 			filesTable = new HashMap<>();
 			String catalog = params.get("catalog");
@@ -92,7 +88,7 @@ public class Xliff2DitaMap {
 				Map<String, String> params2 = new HashMap<>();
 				params2.put("xliff", values[0]);
 				params2.put("skeleton", values[1]);
-				File topic = new File(folder, topicFile);
+				File topic = files.size() > 1 ? new File(outputFile, topicFile) : outputFile;
 				params2.put("backfile", topic.getAbsolutePath());
 				params2.put("encoding", params.get("encoding"));
 				params2.put("catalog", params.get("catalog"));
