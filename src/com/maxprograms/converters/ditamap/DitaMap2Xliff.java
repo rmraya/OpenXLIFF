@@ -246,7 +246,7 @@ public class DitaMap2Xliff {
 						}
 						dataLogger.log(new File(f).getName());
 					}
-					json.put("file", Utils.makeRelativePath(original, f));
+					json.put("file", Utils.getRelativePath(original, f));
 					json.put("base64", Utils.encodeFromFile(f));
 					PI pi = new PI("skipped", json.toString());
 					file.addContent(pi);
@@ -262,7 +262,7 @@ public class DitaMap2Xliff {
 						}
 						dataLogger.log(new File(f).getName());
 					}
-					json.put("file", Utils.makeRelativePath(original, f));
+					json.put("file", Utils.getRelativePath(original, f));
 					json.put("base64", Utils.encodeFromFile(f));
 					PI pi = new PI("skipped", json.toString());
 					file.addContent(pi);
@@ -818,7 +818,7 @@ public class DitaMap2Xliff {
 				newFile.addContent(new PI("images", data));
 			}
 		}
-		String relative = Utils.makeRelativePath(mapFile, old);
+		String relative = Utils.getRelativePath(mapFile, old);
 		if (old.equals(mapFile)) {
 			// preserve DITA files without text
 			// put them in the map file
@@ -837,7 +837,7 @@ public class DitaMap2Xliff {
 					dataLogger.log(new File(f).getName());
 				}
 				JSONObject json = new JSONObject();
-				json.put("file", Utils.makeRelativePath(mapFile, f));
+				json.put("file", Utils.getRelativePath(mapFile, f));
 				json.put("base64", Utils.encodeFromFile(f));
 				PI pi = new PI("skipped", json.toString());
 				newFile.addContent(pi);
@@ -852,7 +852,7 @@ public class DitaMap2Xliff {
 					dataLogger.log(new File(f).getName());
 				}
 				JSONObject json = new JSONObject();
-				json.put("file", Utils.makeRelativePath(mapFile, f));
+				json.put("file", Utils.getRelativePath(mapFile, f));
 				json.put("base64", Utils.encodeFromFile(f));
 				PI pi = new PI("skipped", json.toString());
 				newFile.addContent(pi);

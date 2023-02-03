@@ -45,7 +45,7 @@ import com.maxprograms.xml.XMLOutputter;
 public class Xliff2DitaMap {
 
 	private static Map<String, String[]> filesTable;
-	private static ILogger dataLogger;;
+	private static ILogger dataLogger;
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();

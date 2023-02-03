@@ -20,6 +20,8 @@ import java.lang.System.Logger.Level;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -72,71 +74,22 @@ public class Utils {
 		}
 	}
 
-	public static String makeRelativePath(String homeFile, String filename) throws IOException {
-		File home = new File(homeFile);
-		// If home is a file, get the parent
-		if (!home.isDirectory()) {
-			if (home.getParent() != null) {
-				home = new File(home.getParent());
-			} else {
-				home = new File(System.getProperty("user.dir"));
-			}
-
+	public static String getRelativePath(String home, String file) throws IOException {
+		File homeFile = new File(home);
+		if (!homeFile.isAbsolute()) {
+			MessageFormat mf = new MessageFormat("Path is not absolute for {0}");
+			throw new IOException(mf.format(new String[] { home }));
 		}
-		File file = new File(filename);
-		if (!file.isAbsolute()) {
-			return filename;
+		if (homeFile.isFile()) {
+			homeFile = homeFile.getParentFile();
 		}
-		// Check for relative path
-		if (!home.isAbsolute()) {
-			throw new IOException("Path must be absolute.");
+		Path homePath = homeFile.toPath();
+		Path filePath = new File(file).toPath();
+		if (homePath.getRoot().equals(filePath.getRoot())) {
+			Path relative = homePath.relativize(filePath);
+			return relative.toString();
 		}
-
-		List<String> homelist = getPathList(home);
-		List<String> filelist = getPathList(file);
-		return matchPathLists(homelist, filelist);
-	}
-
-	private static List<String> getPathList(File file) throws IOException {
-		List<String> result = new ArrayList<>();
-		File r = file.getCanonicalFile();
-		while (r != null) {
-			result.add(r.getName());
-			r = r.getParentFile();
-		}
-		return result;
-	}
-
-	private static String matchPathLists(List<String> home, List<String> file) {
-		StringBuilder s = new StringBuilder();
-		// start at the beginning of the lists
-		// iterate while both lists are equal
-		int i = home.size() - 1;
-		int j = file.size() - 1;
-
-		// first eliminate common root
-		while (i >= 0 && j >= 0 && home.get(i).equals(file.get(j))) {
-			i--;
-			j--;
-		}
-
-		// for each remaining level in the home path, add a ..
-		for (; i >= 0; i--) {
-			s.append("..");
-			s.append(File.separator);
-		}
-
-		// for each level in the file path, add the path
-		for (; j >= 1; j--) {
-			s.append(file.get(j));
-			s.append(File.separator);
-		}
-
-		// file name
-		if (j >= 0 && j < file.size()) {
-			s.append(file.get(j));
-		}
-		return s.toString();
+		return filePath.toString();
 	}
 
 	public static String[] getPageCodes() {

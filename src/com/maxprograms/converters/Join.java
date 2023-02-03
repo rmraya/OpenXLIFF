@@ -184,7 +184,7 @@ Where:
 				for (int i = 0; i < files1.size(); i++) {
 					Element file = files1.get(i);
 					String original = file.getAttributeValue("original");
-					file.setAttribute("original", Utils.makeRelativePath(treeRoot, original));
+					file.setAttribute("original", Utils.getRelativePath(treeRoot, original));
 					if (version.startsWith("2")) {
 						file.setAttribute("id", "" + count++);
 					}

@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +29,8 @@ import java.util.StringTokenizer;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Catalog;
@@ -37,8 +38,6 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
-
-import org.xml.sax.SAXException;
 
 public class RepetitionAnalysis {
 
@@ -192,13 +191,7 @@ Where:
 
 		createList(root);
 
-		Collections.sort(files, new Comparator<String>() {
-
-			@Override
-			public int compare(String o1, String o2) {
-				return o1.compareToIgnoreCase(o2);
-			}
-		});
+		Collections.sort(files, (o1, o2) -> o1.compareToIgnoreCase(o2));
 
 		String title = "Translation Status Analysis: {0}";
 
