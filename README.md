@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.3.0 | Detected loops while processing @keyref in DITA | February 20th, 2023
 3.2.0 | Improved file management | February 4th, 2023
 3.1.0 | Improved DITA merge | January 24th, 2023
 3.0.0 | Moved XML code to project [XMLJava](https://github.com/rmraya/XMLJava) | January 9th, 2023

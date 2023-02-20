@@ -100,6 +100,7 @@ public class DitaParser {
 	private Scope rootScope;
 
 	private Set<StringArray> searchedConref;
+	private Set<String> visiting;
 	private Map<Key, Set<String>> usedKeys;
 	private Set<String> recursed;
 	private Set<String> pendingRecurse;
@@ -110,7 +111,6 @@ public class DitaParser {
 	private static TreeSet<String> imageSet;
 	private List<String> ignored;
 	private Map<StringArray, Element> referenceChache;
-	private boolean containsText;
 	private Catalog catalog;
 	private List<String> skipped;
 	private Map<String, List<String>> images;
@@ -128,6 +128,7 @@ public class DitaParser {
 		referenceChache = new HashMap<>();
 		skipped = new ArrayList<>();
 		images = new HashMap<>();
+		visiting = new TreeSet<>();
 
 		String inputFile = params.get("source");
 		this.catalog = catalog;
@@ -203,9 +204,8 @@ public class DitaParser {
 						}
 						Element e = builder.build(file).getRootElement();
 						if ("svg".equals(e.getName())) {
-							containsText = false;
-							recurseSVG(e);
-							if (!containsText) {
+							if (!containsText(e)) {
+								recursed.add(file);
 								continue;
 							}
 						}
@@ -223,24 +223,24 @@ public class DitaParser {
 		return result;
 	}
 
-	private void recurseSVG(Element e) {
+	private boolean containsText(Element e) {
 		if ("text".equals(e.getName()) && !svgText(e).isEmpty()) {
-			containsText = true;
-			return;
+			return true;
 		}
 		if ("title".equals(e.getName()) && !svgText(e).isEmpty()) {
-			containsText = true;
-			return;
+			return true;
 		}
 		if ("desc".equals(e.getName()) && !svgText(e).isEmpty()) {
-			containsText = true;
-			return;
+			return true;
 		}
 		List<Element> children = e.getChildren();
 		Iterator<Element> it = children.iterator();
 		while (it.hasNext()) {
-			recurseSVG(it.next());
+			if (containsText(it.next())) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	private String svgText(Element e) {
@@ -520,16 +520,26 @@ public class DitaParser {
 							usedKeys.put(k, new TreeSet<>());
 						}
 						usedKeys.get(k).add(parentFile);
-						filesMap.add(k.getHref());
-						Element ref = getConKeyReferenced(k.getHref(), id);
-						if (ref != null) {
-							e.setContent(ref.getContent());
-							List<Element> children = e.getChildren();
-							Iterator<Element> ie = children.iterator();
-							while (ie.hasNext()) {
-								recurse(ie.next(), k.getHref());
+						String kref = k.getHref();
+						filesMap.add(kref);
+						if (!visiting.contains(id + "|" + kref)) {
+							visiting.add(id + "|" + kref);
+							Element ref = getConKeyReferenced(k.getHref(), id);
+							if (ref != null) {
+								e.setContent(ref.getContent());
+								List<Element> children = e.getChildren();
+								Iterator<Element> ie = children.iterator();
+								while (ie.hasNext()) {
+									recurse(ie.next(), kref);
+								}
+								return;
 							}
-							return;
+							visiting.remove(id + "|" + kref);
+						} else {
+							MessageFormat mf = new MessageFormat("Loop detected processing @keyref \"{0}\" in file {1}");
+							String issue = mf.format(new Object[] { keyref, parentFile });
+							logger.log(Level.WARNING, issue);
+							issues.add(issue);
 						}
 					}
 				}
