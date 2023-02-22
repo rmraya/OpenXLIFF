@@ -62,7 +62,6 @@ public class XliffChecker {
 	private Map<String, String> exTable;
 	private Map<String, String> bptTable;
 	private Map<String, String> eptTable;
-	private Map<String, String> inlineIds;
 	private String sourceLanguage;
 	private String targetLanguage;
 	private boolean inSegSource;
@@ -205,8 +204,9 @@ Where:
 					return false;
 				}
 				return true;
-			} else if ("2.1".equals(version)) {
-				reason = "XLIFF 2.1 not supported yet";
+			} else if ("2.1".equals(version) || "2.2".equals(version)) {
+				MessageFormat mf = new MessageFormat("XLIFF {0} not supported yet");
+				reason = mf.format(new String[]{version});
 				return false;
 			} else {
 				reason = "Invalid XLIFF version";
@@ -821,20 +821,6 @@ Where:
 			exTable = new ConcurrentHashMap<>();
 			bptTable = new ConcurrentHashMap<>();
 			eptTable = new ConcurrentHashMap<>();
-			inlineIds = new ConcurrentHashMap<>();
-		}
-
-		// check for unique id at <source>, <seg-source> and <target> level
-		if (e.getLocalName().equals("bx") || e.getLocalName().equals("ex") || e.getLocalName().equals("bpt")
-				|| e.getLocalName().equals("ept") || e.getLocalName().equals("ph")) {
-			String id = e.getAttributeValue("id");
-			if (!inlineIds.containsKey(e.getLocalName() + id)) {
-				inlineIds.put(e.getLocalName() + id, "");
-			} else {
-				MessageFormat mf = new MessageFormat("Found <{0}> with duplicated \"id\".");
-				reason = mf.format(new Object[] { e.getLocalName() });
-				return false;
-			}
 		}
 
 		// check for paired <it> tags in <file>
