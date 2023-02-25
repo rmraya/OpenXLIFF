@@ -53,10 +53,10 @@ public class Segmenter {
 		Document doc = builder.build(srxFile);
 		root = doc.getRootElement();
 		if (!root.getName().equals("srx")) {
-			throw new IOException("Selected file is not an SRX document.");
+			throw new IOException(Messages.getString("Segmenter.1"));
 		}
 		if (!root.getAttributeValue("version").equals("2.0")) {
-			throw new IOException("Incorrect SRX version.");
+			throw new IOException(Messages.getString("Segmenter.2"));
 		}
 		cascade = isCascading();
 		buildRulesList(srcLanguage);
@@ -65,7 +65,7 @@ public class Segmenter {
 	public Segmenter(Document doc, String srcLanguage) throws IOException {
 		root = doc.getRootElement();
 		if (!root.getName().equals("srx")) {
-			throw new IOException("Selected file is not an SRX document.");
+			throw new IOException(Messages.getString("Segmenter.1"));
 		}
 		cascade = isCascading();
 		buildRulesList(srcLanguage);
@@ -189,7 +189,7 @@ public class Segmenter {
 			if (start > end) {
 				break;
 			}
-			String tag = string.substring(start + STARTIGNORE.length(), end );
+			String tag = string.substring(start + STARTIGNORE.length(), end);
 			string = string.substring(0, start) + (char) ('\uE000' + k) + string.substring(end + ENDIGNORE.length());
 			tags.put("" + (char) ('\uE000' + k), tag);
 			k++;
