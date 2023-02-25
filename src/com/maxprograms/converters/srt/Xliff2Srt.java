@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,7 +67,7 @@ public class Xliff2Srt {
             if (p == null) {
                 p = new File(System.getProperty("user.dir"));
             }
-            if (Files.notExists(p.toPath()))  {
+            if (Files.notExists(p.toPath())) {
                 Files.createDirectories(p.toPath());
             }
             if (!f.exists()) {
@@ -102,7 +103,8 @@ public class Xliff2Srt {
                                     }
                                 } else {
                                     result.add(Constants.ERROR);
-                                    result.add("segment " + code + " not found");
+                                    MessageFormat mf = new MessageFormat("Segment {0} not found");
+                                    result.add(mf.format(new String[] { code }));
                                     return result;
                                 }
 

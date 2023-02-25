@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -88,12 +89,14 @@ public class PseudoTranslation {
     }
 
     private static void help() {
-        String launcher = "   pseudotranslate.sh ";
-        if (System.getProperty("file.separator").equals("\\")) {
-            launcher = "   pseudotranslate.bat ";
+        String launcher = "pseudotranslate.sh";
+        if ("\\".equals(File. pathSeparator)) {
+            launcher = "pseudotranslate.bat";
         }
-        String help = "Usage:\n\n" + launcher + """
-[-help] -xliff xliffFile [-catalog catalogFile]
+        String help = """
+
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
 
 Where:
 
@@ -102,7 +105,8 @@ Where:
     -catalog:   (optional) XML catalog to use for processing
 
 """;
-        System.out.println(help);
+        MessageFormat mf = new MessageFormat(help);
+        logger.log(Level.INFO, mf.format(new String[] { launcher }));
     }
 
     public static void pseudoTranslate(String xliff, String catalog)

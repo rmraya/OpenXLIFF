@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,7 +69,8 @@ public class Join {
 					String file = array[h];
 					File f = new File(file);
 					if (!f.exists()) {
-						logger.log(Level.ERROR, "File '" + file + "' does not exist.'");
+						MessageFormat mf = new MessageFormat("File '{0}' does not exist.'");
+						logger.log(Level.ERROR, mf.format(new String[] { file }));
 						System.exit(1);
 					}
 					list.add(array[h]);
@@ -86,21 +88,24 @@ public class Join {
 	}
 
 	private static void help() {
-		String launcher = "   join.sh ";
-		if (System.getProperty("file.separator").equals("\\")) {
-			launcher = "   join.bat ";
+		String launcher = "join.sh";
+		if ("\\".equals(File. pathSeparator)) {
+			launcher = "join.bat";
 		}
-		String help = "Usage:\n\n" + launcher + """
-[-help] -target targetFile -files file1,file2,file3... 
+		String help = """
+
+
+{0} [-help] -target targetFile -files file1,file2,file3...
 
 Where:
 
-   -help:     (optional) Display this help information and exit\
-   -target:   combined output XLIFF file
-   -files:    list of XLIFF files to join, separated by ','
-
+        -help:     (optional) Display this help information and exit
+        -target:   combined output XLIFF file
+        -files:    list of XLIFF files to join, separated by ','
+	   
 """;
-		System.out.println(help);
+		MessageFormat mf = new MessageFormat(help);
+		logger.log(Level.INFO, mf.format(new String[] { launcher }));
 	}
 
 	public static void join(List<String> xliffs, String out)

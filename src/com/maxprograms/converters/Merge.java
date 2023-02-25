@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -83,7 +84,8 @@ public class Merge {
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
 			if (arg.equals("-version")) {
-				logger.log(Level.INFO, () -> "Version: " + Constants.VERSION + " Build: " + Constants.BUILD);
+				MessageFormat mf = new MessageFormat("Version: {0} Build: {1}");
+				logger.log(Level.INFO, mf.format(new String[] { Constants.VERSION, Constants.BUILD }));
 				return;
 			}
 			if (arg.equals("-help")) {
@@ -155,7 +157,8 @@ public class Merge {
 			result = TmxExporter.export(xliff, tmx, catalog);
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
-			logger.log(Level.ERROR, "Merge error: " + result.get(1));
+			MessageFormat mf = new MessageFormat("Merge error: {0}");
+			logger.log(Level.ERROR, mf.format(new String[]{result.get(1)}));
 		}
 	}
 
@@ -189,9 +192,11 @@ public class Merge {
 				File f = new File(target);
 				if (f.exists()) {
 					if (!f.isDirectory()) {
-						logger.log(Level.ERROR, () -> "'" + f.getAbsolutePath() + "' is not a directory");
+						MessageFormat mf = new MessageFormat("'{0}' is not a directory");
+						String error = mf.format(new String[] { f.getAbsolutePath() });
+						logger.log(Level.ERROR, error);
 						result.add(Constants.ERROR);
-						result.add("'" + f.getAbsolutePath() + "' is not a directory");
+						result.add(error);
 						return result;
 					}
 				} else {
@@ -248,25 +253,28 @@ public class Merge {
 	}
 
 	private static void help() {
-		String launcher = "   merge.sh ";
-		if (System.getProperty("file.separator").equals("\\")) {
-			launcher = "   merge.bat ";
+		String launcher = "merge.sh";
+		if ("\\".equals(File. pathSeparator)) {
+			launcher = "merge.bat";
 		}
-		String help = "Usage:\n\n" + launcher + """
-[-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
+		String help = """
+
+
+{0} [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
 
 Where:
 
-    -help:       (optional) display this help information and exit
-    -version:    (optional) display version & build information and exit
-    -xliff:      XLIFF file to merge
-    -target:     (optional) translated file or folder where to store translated files
-    -catalog:    (optional) XML catalog to use for processing
-    -unapproved: (optional) accept translations from unapproved segments
-    -export:     (optional) generate TMX file from approved segments				
+        -help:       (optional) display this help information and exit
+        -version:    (optional) display version & build information and exit
+        -xliff:      XLIFF file to merge
+        -target:     (optional) translated file or folder where to store translated files
+        -catalog:    (optional) XML catalog to use for processing
+        -unapproved: (optional) accept translations from unapproved segments
+        -export:     (optional) generate TMX file from approved segments
 
 """;
-		System.out.println(help);
+		MessageFormat mf = new MessageFormat(help);
+		logger.log(Level.INFO, mf.format(new String[] { launcher }));
 	}
 
 	private static void approveAll(Element e) {

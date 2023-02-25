@@ -203,11 +203,9 @@ public class DitaParser {
 							dataLogger.log(new File(file).getName());
 						}
 						Element e = builder.build(file).getRootElement();
-						if ("svg".equals(e.getName())) {
-							if (!containsText(e)) {
-								recursed.add(file);
-								continue;
-							}
+						if ("svg".equals(e.getName()) && !containsText(e)) {
+							recursed.add(file);
+							continue;
 						}
 						recurse(e, file);
 						recursed.add(file);
@@ -368,9 +366,9 @@ public class DitaParser {
 							|| lower.endsWith(".wmv") || lower.endsWith(".asf"))) {
 						throw new SAXException(ex.getMessage() + "\n File: '" + href + "'");
 					}
-					logger.log(Level.WARNING, "Error recursing", ex);
 					MessageFormat mf = new MessageFormat("Error recursing {0}");
-					String issue = mf.format(new String[]{href});
+					String issue = mf.format(new String[] { href });
+					logger.log(Level.WARNING, issue);
 					if (!issues.contains(issue)) {
 						issues.add(issue);
 					}

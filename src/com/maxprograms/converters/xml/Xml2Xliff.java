@@ -553,7 +553,8 @@ public class Xml2Xliff {
 		try {
 			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
 		} catch (SAXException sax) {
-			logger.log(Level.ERROR, "Broken segment: " + source);
+			MessageFormat mf = new MessageFormat("Broken segment: {0}");
+			logger.log(Level.ERROR, mf.format(new String[] { source }));
 			throw sax;
 		}
 		Element r = d.getRootElement();
@@ -804,7 +805,8 @@ public class Xml2Xliff {
 		try {
 			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
 		} catch (SAXException sax) {
-			logger.log(Level.ERROR, "Broken segment: " + string);
+			MessageFormat mf = new MessageFormat("Broken segment: {0}");
+			logger.log(Level.ERROR, mf.format(new String[] { string }));
 			throw sax;
 		}
 		return containsText(d.getRootElement());

@@ -21,6 +21,7 @@ import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -58,7 +59,7 @@ public class Xliff2Php {
 		xliffFile = params.get("xliff");
 		encoding = params.get("encoding");
 		if (encoding == null || encoding.isEmpty()) {
-			encoding= StandardCharsets.UTF_8.name();
+			encoding = StandardCharsets.UTF_8.name();
 		}
 
 		try {
@@ -69,7 +70,7 @@ public class Xliff2Php {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectory(p.toPath());
 			}
 			if (!f.exists()) {
@@ -92,7 +93,8 @@ public class Xliff2Php {
 									line = line.substring(line.indexOf("%%%") + 3);
 									Element segment = segments.get(code);
 									if (segment == null) {
-										throw new IOException("Segment " + code + " not found");
+										MessageFormat mf = new MessageFormat("Segment {0} not found");
+										throw new IOException(mf.format(new String[] { code }));
 									}
 									Element source = segment.getChild("source");
 									Element target = segment.getChild("target");

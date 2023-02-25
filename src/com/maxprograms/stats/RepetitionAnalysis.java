@@ -97,12 +97,14 @@ public class RepetitionAnalysis {
 	}
 
 	private static void help() {
-		String launcher = "   analysis.sh ";
-		if (System.getProperty("file.separator").equals("\\")) {
-			launcher = "   analysis.bat ";
+		String launcher = "analysis.sh";
+		if ("\\".equals(File. pathSeparator)) {
+			launcher = "analysis.bat";
 		}
-		String help = "Usage:\n\n" + launcher + """
-[-help] -file xliffFile [-catalog catalogFile]
+		String help = """
+
+
+{0} [-help] -file xliffFile [-catalog catalogFile]
 
 Where:
 
@@ -111,7 +113,8 @@ Where:
     -catalog:   (optional) XML catalog to use for processing
 
 """; 
-		System.out.println(help);
+		MessageFormat mf = new MessageFormat(help);
+		logger.log(Level.INFO, mf.format(new String[] { launcher }));
 	}
 
 	private void createList(Element root) {

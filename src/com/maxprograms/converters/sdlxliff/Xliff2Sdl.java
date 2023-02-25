@@ -18,6 +18,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -105,7 +106,7 @@ public class Xliff2Sdl {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			try (FileOutputStream out = new FileOutputStream(f)) {
@@ -129,7 +130,8 @@ public class Xliff2Sdl {
 		}
 		Element unit = locateUnit(root, id);
 		if (unit == null) {
-			throw new UnexistentSegmentException("Missing segment " + id);
+			MessageFormat mf = new MessageFormat("Segment {0} not found");
+			throw new UnexistentSegmentException(mf.format(new String[] { id }));
 		}
 		Element target = unit.getChild("target");
 		if (target == null) {

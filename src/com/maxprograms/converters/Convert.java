@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -95,7 +96,8 @@ public class Convert {
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
 			if (arg.equals("-version")) {
-				logger.log(Level.INFO, () -> "Version: " + Constants.VERSION + " Build: " + Constants.BUILD);
+				MessageFormat mf = new MessageFormat("Version: {0} Build: {1}");
+				logger.log(Level.INFO, mf.format(new String[] { Constants.VERSION, Constants.BUILD }));
 				return;
 			}
 			if (arg.equals("-help")) {
@@ -172,7 +174,8 @@ public class Convert {
 			String detected = FileFormats.detectFormat(source);
 			if (detected != null) {
 				type = FileFormats.getShortName(detected);
-				logger.log(Level.INFO, "Auto-detected type: " + type);
+				MessageFormat mf = new MessageFormat("Auto-detected type: {0}");
+				logger.log(Level.INFO, mf.format(new String[] { type }));
 			} else {
 				logger.log(Level.ERROR, "Unable to auto-detect file format. Use '-type' parameter.");
 				return;
@@ -187,7 +190,8 @@ public class Convert {
 			Charset charset = EncodingResolver.getEncoding(source, type);
 			if (charset != null) {
 				enc = charset.name();
-				logger.log(Level.INFO, "Auto-detected encoding: " + enc);
+				MessageFormat mf = new MessageFormat("Auto-detected encoding: {0}");
+				logger.log(Level.INFO, mf.format(new String[] { enc }));
 			} else {
 				logger.log(Level.ERROR, "Unable to auto-detect character set. Use '-enc' parameter.");
 				return;
@@ -204,10 +208,12 @@ public class Convert {
 		}
 		try {
 			if (!Utils.isValidLanguage(srcLang)) {
-				logger.log(Level.WARNING, "'" + srcLang + "' is not a valid language code.");
+				MessageFormat mf = new MessageFormat("'{0}' is not a valid language code.");
+				logger.log(Level.WARNING, mf.format(new String[] { srcLang }));
 			}
 			if (!tgtLang.isEmpty() && !Utils.isValidLanguage(tgtLang)) {
-				logger.log(Level.WARNING, "'" + tgtLang + "' is not a valid language code.");
+				MessageFormat mf = new MessageFormat("'{0}' is not a valid language code.");
+				logger.log(Level.WARNING, mf.format(new String[] { tgtLang }));
 			}
 		} catch (IOException e) {
 			logger.log(Level.ERROR, "Error validating languages.", e);
@@ -269,7 +275,7 @@ public class Convert {
 		params.put("catalog", catalog);
 		params.put("srcEncoding", enc);
 		params.put("paragraph", paragraph ? "yes" : "no");
-		params.put("ignoretc", ignoretc ? "yes" :"no");
+		params.put("ignoretc", ignoretc ? "yes" : "no");
 		params.put("srxFile", srx);
 		params.put("srcLang", srcLang);
 		params.put("xmlfilter", xmlfilter);
@@ -300,13 +306,14 @@ public class Convert {
 	}
 
 	private static void help() {
-		String launcher = "   convert.sh ";
-		if (System.getProperty("file.separator").equals("\\")) {
-			launcher = "\n   convert.bat ";
+		String launcher = "convert.sh";
+		if ("\\".equals(File. pathSeparator)) {
+			launcher = "convert.bat";
 		}
-		String help = "Usage:\n\n" + launcher
-				+ """
-[-help] [-version] -file sourceFile -srcLang sourceLang 
+		String help = """
+
+
+{0} [-help] [-version] -file sourceFile -srcLang sourceLang 
         [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
         [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
         [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
@@ -362,8 +369,10 @@ Document Types
    XLIFF = XLIFF Document
    XML = XML Document
    XMLG = XML (Generic)
+
 """;
-		System.out.println(help);
+		MessageFormat mf = new MessageFormat(help);
+		logger.log(Level.INFO, mf.format(new String[] { launcher }));
 	}
 
 	public static List<String> addSkeleton(String fileName, String catalog) {

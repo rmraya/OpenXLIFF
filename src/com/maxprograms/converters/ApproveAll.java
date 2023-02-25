@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
 
@@ -85,12 +86,14 @@ public class ApproveAll {
     }
 
     private static void help() {
-        String launcher = "   approveall.sh ";
-        if (System.getProperty("file.separator").equals("\\")) {
-            launcher = "   approveall.bat ";
+        String launcher = "approveall.sh";
+        if ("\\".equals(File. pathSeparator)) {
+            launcher = "approveall.bat";
         }
-        String help = "Usage:\n\n" + launcher + """
-[-help] -xliff xliffFile [-catalog catalogFile]
+        String help = """
+
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
 
 Where:
 
@@ -99,7 +102,8 @@ Where:
     -catalog:   (optional) XML catalog to use for processing
 
 """;
-        System.out.println(help);
+        MessageFormat mf = new MessageFormat(help);
+		logger.log(Level.INFO, mf.format(new String[] { launcher }));
     }
 
     public static void approveAll(String xliff, String catalog)

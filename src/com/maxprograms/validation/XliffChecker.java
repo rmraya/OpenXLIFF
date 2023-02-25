@@ -126,11 +126,13 @@ public class XliffChecker {
 
 	private static void help() {
 		String launcher = "   xliffchecker.sh ";
-		if (System.getProperty("file.separator").equals("\\")) {
+		if ("\\".equals(File. pathSeparator)) {
 			launcher = "   xliffchecker.bat ";
 		}
-		String help = "Usage:\n\n" + launcher + """
-[-help] -file xliffFile [-catalog catalogFile]
+		String help = """
+
+
+{0} [-help] -file xliffFile [-catalog catalogFile]
 
 Where:
 
@@ -139,7 +141,8 @@ Where:
     -catalog:   (optional) XML catalog to use for processing
 
 """;
-		System.out.println(help);
+		MessageFormat mf = new MessageFormat(help);
+		logger.log(Level.INFO, mf.format(new String[] { launcher }));
 	}
 
 	public String getVersion() {

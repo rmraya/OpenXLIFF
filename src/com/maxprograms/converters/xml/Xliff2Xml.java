@@ -219,7 +219,8 @@ public class Xliff2Xml {
 				}
 			}
 		} catch (IOException | SecurityException | JSONException e) {
-			logger.log(Level.WARNING, "Error updating images for " + outputFile);
+			MessageFormat mf = new MessageFormat("Error updating images for {0}");
+			logger.log(Level.WARNING, mf.format(new String[] { outputFile }));
 		}
 	}
 
