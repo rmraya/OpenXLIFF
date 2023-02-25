@@ -9,13 +9,13 @@
  * Contributors:
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
-package com.maxprograms.segmenter;
+package com.maxprograms.xliff2;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class Messages {
-    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".segmenter";
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".xliff2";
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

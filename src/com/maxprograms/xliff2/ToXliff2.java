@@ -18,6 +18,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -68,7 +69,7 @@ public class ToXliff2 {
 			Element root = doc.getRootElement();
 			if (!root.getAttributeValue("version", "1.2").equals("1.2")) {
 				result.add(Constants.ERROR);
-				result.add("Wrong XLIFF version.");
+				result.add(Messages.getString("ToXliff2.1"));
 				return result;
 			}
 			Document xliff2 = new Document(null, "xliff", null, null);
@@ -84,7 +85,7 @@ public class ToXliff2 {
 			result.add(Constants.SUCCESS);
 		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException ex) {
 			Logger logger = System.getLogger(ToXliff2.class.getName());
-			logger.log(Level.ERROR, "Error generating XLIFF 2.0");
+			logger.log(Level.ERROR, Messages.getString("ToXliff2.2"));
 			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
 		}
@@ -547,7 +548,7 @@ public class ToXliff2 {
 
 	private static List<XMLNode> harvestContent(Element e, Element tagAttributes) throws SAXException, IOException {
 		if ("sub".equals(e.getName())) {
-			throw new SAXException("<sub> elements are not supported");
+			throw new SAXException(Messages.getString("ToXliff2.3"));
 		}
 		List<XMLNode> result = new ArrayList<>();
 		if ("ph".equals(e.getName())) {
@@ -600,7 +601,8 @@ public class ToXliff2 {
 			mrk.setAttribute("id", id);
 			String mtype = e.getAttributeValue("mtype");
 			if (mtype.isEmpty()) {
-				throw new IOException("Invalid <mrk> element: " + e.toString());
+				MessageFormat mf = new MessageFormat(Messages.getString("ToXliff2.4"));
+				throw new IOException(mf.format(new String[] { e.toString() }));
 			}
 			if (mtype.equals("protected")) {
 				mrk.setAttribute("translate", "no");

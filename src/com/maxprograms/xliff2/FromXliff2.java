@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2023 Maxprograms.
  *
@@ -65,7 +64,7 @@ public class FromXliff2 {
 			Element root = doc.getRootElement();
 			if (!root.getAttributeValue("version").startsWith("2.")) {
 				result.add(Constants.ERROR);
-				result.add("Wrong XLIFF version.");
+				result.add(Messages.getString("FromXliff2.1"));
 				return result;
 			}
 			Document xliff12 = new Document(null, "xliff", null, null);
@@ -81,7 +80,7 @@ public class FromXliff2 {
 			result.add(Constants.SUCCESS);
 		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException ex) {
 			Logger logger = System.getLogger(FromXliff2.class.getName());
-			logger.log(Level.ERROR, "Error processing XLIFF 2.0", ex);
+			logger.log(Level.ERROR, Messages.getString("FromXliff2.2"), ex);
 			result.add(Constants.ERROR);
 			result.add(ex.getMessage());
 		}
