@@ -346,13 +346,17 @@ public class DitaParser {
 							MessageFormat mf = new MessageFormat("Ignored Untranslatable File: {0}");
 							String issue = mf.format(new Object[] { href });
 							logger.log(Level.WARNING, issue);
-							issues.add(issue);
+							if (!issues.contains(issue)) {
+								issues.add(issue);
+							}
 						}
 					} else {
 						MessageFormat mf = new MessageFormat("Referenced file {0} doesn''t exist");
 						String issue = mf.format(new Object[] { href });
 						logger.log(Level.WARNING, issue);
-						issues.add(issue);
+						if (!issues.contains(issue)) {
+							issues.add(issue);
+						}
 					}
 				} catch (IOException | SAXException ex) {
 					String lower = href.toLowerCase();
@@ -365,7 +369,11 @@ public class DitaParser {
 						throw new SAXException(ex.getMessage() + "\n File: '" + href + "'");
 					}
 					logger.log(Level.WARNING, "Error recursing", ex);
-					issues.add("Error recursing " + href);
+					MessageFormat mf = new MessageFormat("Error recursing {0}");
+					String issue = mf.format(new String[]{href});
+					if (!issues.contains(issue)) {
+						issues.add(issue);
+					}
 				}
 			}
 		} else {
@@ -377,11 +385,26 @@ public class DitaParser {
 			}
 			if (!conref.isEmpty()) {
 				if ("#".equals(conref)) {
-					String issue = "Invalid @conref at " + parentFile;
+					MessageFormat mf = new MessageFormat("Invalid @conref at {0}");
+					String issue = mf.format(new String[] { parentFile });
 					logger.log(Level.WARNING, issue);
-					issues.add(issue);
+					if (!issues.contains(issue)) {
+						issues.add(issue);
+					}
 				} else {
 					conref = URLDecoder.decode(conref, StandardCharsets.UTF_8);
+					if (!visiting.contains(conref)) {
+						visiting.add(conref);
+					} else {
+						MessageFormat mf = new MessageFormat(
+								"Loop detected processing @conref \"{0}\" in file {1}");
+						String issue = mf.format(new Object[] { e.getAttributeValue("conref"), parentFile });
+						logger.log(Level.WARNING, issue);
+						if (!issues.contains(issue)) {
+							issues.add(issue);
+						}
+						return;
+					}
 					if (conref.indexOf('#') != -1) {
 						String file = conref.substring(0, conref.indexOf('#'));
 						if (file.isEmpty()) {
@@ -404,19 +427,41 @@ public class DitaParser {
 								MessageFormat mf = new MessageFormat("@conref not found:  \"{0}\" in file {1}");
 								String issue = mf.format(new Object[] { conref, parentFile });
 								logger.log(Level.WARNING, issue);
-								issues.add(issue);
+								if (!issues.contains(issue)) {
+									issues.add(issue);
+								}
 							}
 						} catch (Exception ex) {
 							MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
 							String issue = mf.format(new Object[] { conref, parentFile });
 							logger.log(Level.WARNING, issue);
-							issues.add(issue);
+							if (!issues.contains(issue)) {
+								issues.add(issue);
+							}
 						}
 						return;
+					} else {
+						// points to the root element
+						try {
+							String file = Utils.getAbsolutePath(parentFile, conref);
+							Element ref = getRoot(file);
+							e.setContent(ref.getContent());
+							List<Element> children = e.getChildren();
+							Iterator<Element> ie = children.iterator();
+							while (ie.hasNext()) {
+								Element child = ie.next();
+								recurse(child, file);
+							}
+						} catch (Exception ex) {
+							MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
+							String issue = mf.format(new Object[] { e.getAttributeValue("conref"), parentFile });
+							logger.log(Level.WARNING, issue);
+							if (!issues.contains(issue)) {
+								issues.add(issue);
+							}
+						}
 					}
-					String issue = "@conref without fragment identifier: " + conref;
-					logger.log(Level.WARNING, issue);
-					issues.add(issue);
+					visiting.remove(conref);
 				}
 			}
 
@@ -429,7 +474,9 @@ public class DitaParser {
 					MessageFormat mf = new MessageFormat("Key not defined for @conkeyref: \"{0}\".");
 					String issue = mf.format(new Object[] { conkeyref });
 					logger.log(Level.WARNING, issue);
-					issues.add(issue);
+					if (!issues.contains(issue)) {
+						issues.add(issue);
+					}
 					return;
 				}
 				if (!usedKeys.containsKey(k)) {
@@ -441,7 +488,9 @@ public class DitaParser {
 					MessageFormat mf = new MessageFormat("Key not defined for @conkeyref: \"{0}\".");
 					String issue = mf.format(new Object[] { conkeyref });
 					logger.log(Level.WARNING, issue);
-					issues.add(issue);
+					if (!issues.contains(issue)) {
+						issues.add(issue);
+					}
 					return;
 				}
 
@@ -458,7 +507,9 @@ public class DitaParser {
 				MessageFormat mf = new MessageFormat("Broken @conkeyref \"{0}\" in file {1}");
 				String issue = mf.format(new Object[] { conkeyref, parentFile });
 				logger.log(Level.WARNING, issue);
-				issues.add(issue);
+				if (!issues.contains(issue)) {
+					issues.add(issue);
+				}
 				return;
 			}
 
@@ -536,17 +587,22 @@ public class DitaParser {
 							}
 							visiting.remove(id + "|" + kref);
 						} else {
-							MessageFormat mf = new MessageFormat("Loop detected processing @keyref \"{0}\" in file {1}");
+							MessageFormat mf = new MessageFormat(
+									"Loop detected processing @keyref \"{0}\" in file {1}");
 							String issue = mf.format(new Object[] { keyref, parentFile });
 							logger.log(Level.WARNING, issue);
-							issues.add(issue);
+							if (!issues.contains(issue)) {
+								issues.add(issue);
+							}
 						}
 					}
 				}
 				MessageFormat mf = new MessageFormat("Undefined key for @keyref \"{0}\" in file {1}");
 				String issue = mf.format(new Object[] { keyref, parentFile });
 				logger.log(Level.WARNING, issue);
-				issues.add(issue);
+				if (!issues.contains(issue)) {
+					issues.add(issue);
+				}
 			}
 
 			String href = e.getAttributeValue("href");
@@ -597,6 +653,14 @@ public class DitaParser {
 			Element child = it.next();
 			recurse(child, parentFile);
 		}
+	}
+
+	private Element getRoot(String file) throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		builder.setErrorHandler(new SilentErrorHandler());
+		Document doc = builder.build(file);
+		return doc.getRootElement();
 	}
 
 	private static boolean hasText(Element svg) {
