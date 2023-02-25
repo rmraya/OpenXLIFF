@@ -42,7 +42,7 @@ public class AzureTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return "Azure Translator Text";
+        return Messages.getString("AzureTranslator.1");
     }
 
     @Override
@@ -142,8 +142,7 @@ public class AzureTranslator implements MTEngine {
     public int hashCode() {
         return AzureTranslator.class.getName().hashCode();
     }
-    
-    
+
     @Override
     public String getSourceLanguage() {
         return srcLang;

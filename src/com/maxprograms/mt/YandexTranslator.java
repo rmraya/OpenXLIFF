@@ -20,6 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class YandexTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return "Yandex Translate API";
+        return Messages.getString("YandexTranslator.1");
     }
 
     @Override
@@ -130,24 +131,26 @@ public class YandexTranslator implements MTEngine {
                     return array.getString(0);
                 }
                 if (code == 413) {
-                    throw new IOException("Text size exceeds the maximum");
+                    throw new IOException(Messages.getString("YandexTranslator.2"));
                 }
                 if (code == 422) {
-                    throw new IOException("The text could not be translated");
+                    throw new IOException(Messages.getString("YandexTranslator.3"));
                 }
                 if (code == 501) {
                     if (directions == null) {
                         getLanguages();
                     }
                     if (!directions.contains(srcLang + "-" + tgtLang)) {
-                        throw new IOException("The specified translation direction is not supported");
+                        throw new IOException(Messages.getString("YandexTranslator.4"));
                     }
                 }
-                throw new IOException("Status code: " + code);
+                MessageFormat mf = new MessageFormat(Messages.getString("YandexTranslator.5"));
+                throw new IOException(mf.format(new String[] { "" + code }));
             }
-            throw new IOException("Null response received");
+            throw new IOException(Messages.getString("YandexTranslator.6"));
         }
-        throw new IOException("Server status code: " + response.statusCode());
+        MessageFormat mf = new MessageFormat(Messages.getString("YandexTranslator.7"));
+        throw new IOException(mf.format(new String[] { "" + response.statusCode() }));
     }
 
     @Override
@@ -162,7 +165,7 @@ public class YandexTranslator implements MTEngine {
     public int hashCode() {
         return YandexTranslator.class.getName().hashCode();
     }
-    
+
     @Override
     public String getSourceLanguage() {
         return srcLang;

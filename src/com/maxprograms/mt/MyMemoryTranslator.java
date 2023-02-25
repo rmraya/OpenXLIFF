@@ -20,6 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,7 +43,7 @@ public class MyMemoryTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return "MyMemory";
+        return Messages.getString("MyMemoryTranslator.1");
     }
 
     @Override
@@ -99,16 +100,17 @@ public class MyMemoryTranslator implements MTEngine {
                 JSONObject responseData = json.getJSONObject("responseData");
                 return responseData.getString("translatedText");
             }
-            throw new IOException("Null response received");
+            throw new IOException(Messages.getString("MyMemoryTranslator.2"));
         }
-        throw new IOException("Server status code: " + response.statusCode());
+        MessageFormat mf = new MessageFormat(Messages.getString("MyMemoryTranslator.3"));
+        throw new IOException(mf.format(new String[] { "" + response.statusCode() }));
     }
 
     @Override
     public int hashCode() {
         return MyMemoryTranslator.class.getName().hashCode();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MyMemoryTranslator mm) {

@@ -20,6 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -46,7 +47,7 @@ public class GoogleTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return "Google Cloud Translation";
+        return Messages.getString("GoogleTranslator.1");
     }
 
     @Override
@@ -121,9 +122,10 @@ public class GoogleTranslator implements MTEngine {
                 JSONArray array = data.getJSONArray("translations");
                 return removeEntities(array.getJSONObject(0).getString("translatedText"));
             }
-            throw new IOException("Null response received");
+            throw new IOException(Messages.getString("GoogleTranslator.2"));
         }
-        throw new IOException("Server status code: " + response.statusCode());
+        MessageFormat mf = new MessageFormat(Messages.getString("GoogleTranslator.3"));
+        throw new IOException(mf.format(new String[] { "" + response.statusCode() }));
     }
 
     private static String removeEntities(String string) {
@@ -154,7 +156,7 @@ public class GoogleTranslator implements MTEngine {
     public int hashCode() {
         return GoogleTranslator.class.getName().hashCode();
     }
-    
+
     @Override
     public String getSourceLanguage() {
         return srcLang;

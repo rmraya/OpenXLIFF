@@ -20,6 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class DeepLTranslator implements MTEngine {
 
 	@Override
 	public String getName() {
-		return "DeepL API";
+		return Messages.getString("DeepLTranslator.1");
 	}
 
 	@Override
@@ -105,25 +106,26 @@ public class DeepLTranslator implements MTEngine {
 				JSONArray array = json.getJSONArray("translations");
 				return array.getJSONObject(0).getString("text");
 			}
-			throw new IOException("Null response received");
+			throw new IOException(Messages.getString("DeepLTranslator.2"));
 		}
 		switch (response.statusCode()) {
-		case 400:
-			throw new IOException("Bad request. Please check error message and your parameters.");
-		case 403:
-			throw new IOException("Authorization failed. Please supply a valid auth_key parameter.");
-		case 404:
-			throw new IOException("The requested resource could not be found.");
-		case 413:
-			throw new IOException("The request size exceeds the limit.");
-		case 429:
-			throw new IOException("Too many requests. Please wait and resend your request.");
-		case 456:
-			throw new IOException("Quota exceeded. The character limit has been reached.");
-		case 503:
-			throw new IOException("Resource currently unavailable. Try again later.");
-		default:
-			throw new IOException("Server status code: " + response.statusCode());
+			case 400:
+				throw new IOException(Messages.getString("DeepLTranslator.3"));
+			case 403:
+				throw new IOException(Messages.getString("DeepLTranslator.4"));
+			case 404:
+				throw new IOException(Messages.getString("DeepLTranslator.5"));
+			case 413:
+				throw new IOException(Messages.getString("DeepLTranslator.6"));
+			case 429:
+				throw new IOException(Messages.getString("DeepLTranslator.7"));
+			case 456:
+				throw new IOException(Messages.getString("DeepLTranslator.8"));
+			case 503:
+				throw new IOException(Messages.getString("DeepLTranslator.9"));
+			default:
+				MessageFormat mf = new MessageFormat(Messages.getString("DeepLTranslator.10"));
+				throw new IOException(mf.format(new String[] { "" + response.statusCode() }));
 		}
 	}
 

@@ -13,6 +13,7 @@
 package com.maxprograms.mt;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -73,7 +74,8 @@ public class MTranslator {
                 json.put("tgtLang", engine.getTargetLanguage());
                 result.add(json);
             } else {
-                throw new IOException("Empty or null translation received from " + engine.getName());
+                MessageFormat mf = new MessageFormat(Messages.getString("MTranslator.1"));
+                throw new IOException(mf.format(new String[] { engine.getName() }));
             }
         }
         return result;
@@ -96,7 +98,8 @@ public class MTranslator {
                 addTranslation(segment, source, target, engine.getSourceLanguage(), engine.getTargetLanguage(),
                         engine.getName());
             } else {
-                throw new IOException("Empty or null translation received from " + engine.getName());
+                MessageFormat mf = new MessageFormat(Messages.getString("MTranslator.1"));
+                throw new IOException(mf.format(new String[] { engine.getName() }));
             }
         }
     }
@@ -105,7 +108,8 @@ public class MTranslator {
         if ("trans-unit".equals(segment.getName())) {
             return unclean(pureText(segment.getChild("source")));
         }
-        throw new IOException("Unsupported element");
+        MessageFormat mf = new MessageFormat(Messages.getString("MTranslator.2"));
+        throw new IOException(mf.format(segment.getName()));
     }
 
     private void addTranslation(Element segment, String source, String target, String srcLang, String tgtLang,
