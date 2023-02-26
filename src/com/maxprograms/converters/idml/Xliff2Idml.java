@@ -75,7 +75,7 @@ public class Xliff2Idml {
 				if (p == null) {
 					p = new File(System.getProperty("user.dir"));
 				}
-				if (Files.notExists(p.toPath()))  {
+				if (Files.notExists(p.toPath())) {
 					Files.createDirectories(p.toPath());
 				}
 				if (!f.exists()) {
@@ -154,7 +154,7 @@ public class Xliff2Idml {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Idml.class.getName());
-			logger.log(Level.ERROR, "Error merging IDML file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Idml.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -183,7 +183,7 @@ public class Xliff2Idml {
 			isEmbedded = true;
 		}
 		file.getChild("header").getChild("skl").getChild("external-file").setAttribute("href",
-				xliff.getAbsolutePath() + ".skl"); 
+				xliff.getAbsolutePath() + ".skl");
 		XMLOutputter outputter = new XMLOutputter();
 		try (FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath())) {
 			outputter.output(doc, output);

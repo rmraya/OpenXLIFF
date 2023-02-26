@@ -286,7 +286,7 @@ public class Idml2Xliff {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | NullPointerException e) {
-			logger.log(Level.ERROR, "Error converting IDML file", e);
+			logger.log(Level.ERROR, Messages.getString("Idml2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
