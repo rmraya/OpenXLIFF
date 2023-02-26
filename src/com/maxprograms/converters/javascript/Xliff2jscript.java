@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -86,7 +87,8 @@ public class Xliff2jscript {
 									if (target != null) {
 										writeString(target.getText());
 									} else {
-										throw new UnexistentSegmentException("Missing target for segment " + code);
+										MessageFormat mf = new MessageFormat(Messages.getString("Xliff2jscript.1"));
+										throw new UnexistentSegmentException(mf.format(new String[] { code }));
 									}
 								} else {
 									// process source
@@ -94,7 +96,8 @@ public class Xliff2jscript {
 									writeString(source.getText());
 								}
 							} else {
-								throw new UnexistentSegmentException("Missing segment " + code);
+								MessageFormat mf = new MessageFormat(Messages.getString("Xliff2jscript.2"));
+								throw new UnexistentSegmentException(mf.format(new String[] { code }));
 							}
 
 							index = line.indexOf("%%%");
@@ -112,7 +115,8 @@ public class Xliff2jscript {
 			}
 			output.close();
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException | URISyntaxException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException
+				| URISyntaxException e) {
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -120,7 +124,8 @@ public class Xliff2jscript {
 		return result;
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void loadSegments()
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));

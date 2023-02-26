@@ -102,7 +102,7 @@ public class Jscript2xliff {
 									String nextLine = buffer.readLine();
 									if (nextLine == null) {
 										result.add(Constants.ERROR);
-										result.add("Unexpected end of file.");
+										result.add(Messages.getString("Jscript2xliff.1"));
 										return result;
 									}
 									comment = findComment(nextLine);
@@ -113,7 +113,7 @@ public class Jscript2xliff {
 									continue;
 								}
 								result.add(Constants.ERROR);
-								result.add("Found a string that is not properly closed.");
+								result.add(Messages.getString("Jscript2xliff.2"));
 								return result;
 							}
 						}
@@ -130,7 +130,7 @@ public class Jscript2xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Jscript2xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting JavaScript file.", e);
+			logger.log(Level.ERROR, Messages.getString("Jscript2xliff.3"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
