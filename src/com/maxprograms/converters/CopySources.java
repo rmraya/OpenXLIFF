@@ -90,7 +90,7 @@ public class CopySources {
 
     private static void help() {
         String launcher = "copysources.sh";
-        if ("\\".equals(File. pathSeparator)) {
+        if ("\\".equals(File.pathSeparator)) {
             launcher = "copysources.bat";
         }
         String help = """

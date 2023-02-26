@@ -89,7 +89,7 @@ public class Join {
 
 	private static void help() {
 		String launcher = "join.sh";
-		if ("\\".equals(File. pathSeparator)) {
+		if ("\\".equals(File.pathSeparator)) {
 			launcher = "join.bat";
 		}
 		String help = """

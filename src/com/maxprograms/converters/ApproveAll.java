@@ -87,7 +87,7 @@ public class ApproveAll {
 
     private static void help() {
         String launcher = "approveall.sh";
-        if ("\\".equals(File. pathSeparator)) {
+        if ("\\".equals(File.pathSeparator)) {
             launcher = "approveall.bat";
         }
         String help = """

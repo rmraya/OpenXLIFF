@@ -254,7 +254,7 @@ public class Merge {
 
 	private static void help() {
 		String launcher = "merge.sh";
-		if ("\\".equals(File. pathSeparator)) {
+		if ("\\".equals(File.pathSeparator)) {
 			launcher = "merge.bat";
 		}
 		String help = """

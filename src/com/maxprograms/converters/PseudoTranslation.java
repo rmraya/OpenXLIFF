@@ -90,7 +90,7 @@ public class PseudoTranslation {
 
     private static void help() {
         String launcher = "pseudotranslate.sh";
-        if ("\\".equals(File. pathSeparator)) {
+        if ("\\".equals(File.pathSeparator)) {
             launcher = "pseudotranslate.bat";
         }
         String help = """

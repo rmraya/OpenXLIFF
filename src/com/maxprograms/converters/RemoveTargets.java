@@ -125,7 +125,7 @@ public class RemoveTargets {
 
     private static void help() {
         String launcher = "removetargets.sh";
-        if ("\\".equals(File. pathSeparator)) {
+        if ("\\".equals(File.pathSeparator)) {
             launcher = "removetargets.bat";
         }
         String help = """
