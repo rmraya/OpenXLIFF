@@ -47,7 +47,7 @@ public class Xliff10 {
 				}
 			} catch (IOException e) {
 				logger.log(Level.ERROR, e);
-				reason = "Error adding DTD declaration";
+				reason = Messages.getString("Xliff10.1");
 				return false;
 			}
 			try {

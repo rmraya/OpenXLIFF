@@ -136,7 +136,7 @@ public class Xliff20 {
 					String id = e.getAttributeValue("id");
 					if (!id.isEmpty()) {
 						if (matchId.contains(id)) {
-							reason = "Duplicated 'id' in <mtc:match>";
+							reason = Messages.getString("Xliff20.01");
 							return false;
 						}
 						matchId.add(id);
@@ -161,7 +161,7 @@ public class Xliff20 {
 					String id = e.getAttributeValue("id");
 					if (!id.isEmpty()) {
 						if (metaId.contains(id)) {
-							reason = "Duplicated 'id' in <mda:metaGroup>";
+							reason = Messages.getString("Xliff20.02");
 							return false;
 						}
 						metaId.add(id);
@@ -179,7 +179,7 @@ public class Xliff20 {
 					String id = e.getAttributeValue("id");
 					if (!id.isEmpty()) {
 						if (glossId.contains(id)) {
-							reason = "Duplicated 'id' in <gls:glossEntry>";
+							reason = Messages.getString("Xliff20.03");
 							return false;
 						}
 						glossId.add(id);
@@ -189,7 +189,7 @@ public class Xliff20 {
 					String id = e.getAttributeValue("id");
 					if (!id.isEmpty()) {
 						if (glossId.contains(id)) {
-							reason = "Duplicated 'id' in <gls:translation>";
+							reason = Messages.getString("Xliff20.04");
 							return false;
 						}
 						glossId.add(id);
@@ -203,13 +203,13 @@ public class Xliff20 {
 		if ("xliff".equals(e.getLocalName())) {
 			srcLang = e.getAttributeValue("srcLang");
 			if (!checkLanguage(srcLang)) {
-				MessageFormat mf = new MessageFormat("Invalid source language '{0}'");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.05"));
 				reason = mf.format(new String[] { srcLang });
 				return false;
 			}
 			trgLang = e.getAttributeValue("trgLang");
 			if (!trgLang.isEmpty() && !checkLanguage(trgLang)) {
-				MessageFormat mf = new MessageFormat("Invalid target language '{0}'");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.06"));
 				reason = mf.format(new String[] { trgLang });
 				return false;
 			}
@@ -230,7 +230,7 @@ public class Xliff20 {
 				}
 			}
 			if (fsPrefix.equals(prefix) && !("fs".equals(a.getLocalName()) || "subFs".equals(a.getLocalName()))) {
-				MessageFormat mf = new MessageFormat("Invalid Format Style attribute: '{0}'");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.07"));
 				reason = mf.format(new String[] { a.toString() });
 				return false;
 			}
@@ -239,7 +239,7 @@ public class Xliff20 {
 		if ("file".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (fileId.contains(id)) {
-				reason = "Duplicated 'id' in <file>";
+				reason = Messages.getString("Xliff20.08");
 				return false;
 			}
 			fileId.add(id);
@@ -255,12 +255,12 @@ public class Xliff20 {
 			if (content.isEmpty()) {
 				String href = e.getAttributeValue("href");
 				if (href.isEmpty()) {
-					reason = "Missing 'href' in skeleton";
+					reason = Messages.getString("Xliff20.09");
 					return false;
 				}
 			} else {
 				if (!e.getAttributeValue("href").isEmpty()) {
-					reason = "Non-empty skeleton with 'href' found";
+					reason = Messages.getString("Xliff20.10");
 					return false;
 				}
 			}
@@ -273,7 +273,7 @@ public class Xliff20 {
 		if ("note".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (noteId.contains(id)) {
-				reason = "Duplicated 'id' in <note>";
+				reason = Messages.getString("Xliff20.11");
 				return false;
 			}
 			noteId.add(id);
@@ -282,7 +282,7 @@ public class Xliff20 {
 		if ("group".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (groupId.contains(id)) {
-				reason = "Duplicated 'id' in <group>";
+				reason = Messages.getString("Xliff20.12");
 				return false;
 			}
 			groupId.add(id);
@@ -291,13 +291,13 @@ public class Xliff20 {
 		if ("unit".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (unitId.contains(id)) {
-				reason = "Duplicated 'id' in <unit>";
+				reason = Messages.getString("Xliff20.13");
 				return false;
 			}
 			unitId.add(id);
 			List<Element> segments = e.getChildren("segment");
 			if (segments.isEmpty()) {
-				reason = "<unit> without <segment> child";
+				reason = Messages.getString("Xliff20.14");
 				return false;
 			}
 			segCount = 0;
@@ -315,7 +315,7 @@ public class Xliff20 {
 			String id = e.getAttributeValue("id");
 			if (!id.isEmpty()) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <ignorable>";
+					reason = Messages.getString("Xliff20.15");
 					return false;
 				}
 				sourceId.add(id);
@@ -327,7 +327,7 @@ public class Xliff20 {
 			String id = e.getAttributeValue("id");
 			if (!id.isEmpty()) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <segment>";
+					reason = Messages.getString("Xliff20.16");
 					return false;
 				}
 				sourceId.add(id);
@@ -335,7 +335,7 @@ public class Xliff20 {
 			String currentState = e.getAttributeValue("state", "initial");
 			Element target = e.getChild("target");
 			if (target == null && !"initial".equals(currentState)) {
-				MessageFormat mf = new MessageFormat("<segment> element without <target> has state set to '{0}'");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.17"));
 				reason = mf.format(new String[] { currentState });
 				return false;
 			}
@@ -346,12 +346,12 @@ public class Xliff20 {
 			if (!subState.isEmpty()) {
 				String state = e.getAttributeValue("state");
 				if (state.isEmpty()) {
-					reason = "<segment> has 'subState' attribute without corresponding 'state'";
+					reason = Messages.getString("Xliff20.18");
 					return false;
 				}
 				int index = subState.indexOf(':');
 				if (index == -1) {
-					MessageFormat mf = new MessageFormat("Invalid 'subState' attribute value: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.19"));
 					reason = mf.format(new String[] { subState });
 					return false;
 				}
@@ -362,7 +362,7 @@ public class Xliff20 {
 		if ("source".equals(e.getLocalName())) {
 			String lang = e.getAttributeValue("xml:lang");
 			if (!lang.isEmpty() && !srcLang.equals(lang)) {
-				reason = "Different 'xml:lang' in <source>";
+				reason = Messages.getString("Xliff20.20");
 				return false;
 			}
 			inSource = true;
@@ -373,16 +373,16 @@ public class Xliff20 {
 		if ("target".equals(e.getLocalName())) {
 			String lang = e.getAttributeValue("xml:lang");
 			if (trgLang.isEmpty()) {
-				reason = "Missing 'trgLang' in <xliff>";
+				reason = Messages.getString("Xliff20.21");
 				return false;
 			}
 			unitSc = new Hashtable<>();
 			if (!inMatch && !lang.isEmpty() && !trgLang.equals(lang)) {
-				reason = "Different 'xml:lang' in <target>";
+				reason = Messages.getString("Xliff20.22");
 				return false;
 			}
 			if (inMatch && !isReference && !lang.isEmpty() && !trgLang.equals(lang)) {
-				reason = "Different 'xml:lang' in <target> from <mtc:match>";
+				reason = Messages.getString("Xliff20.23");
 				return false;
 			}
 			if (!inMatch) {
@@ -390,12 +390,12 @@ public class Xliff20 {
 				int value = Integer.parseInt(order);
 				if (value > maxSegment) {
 					MessageFormat mf = new MessageFormat(
-							"order='{0}' in <target> is greater than the number of <segment> elements ({1})");
+							Messages.getString("Xliff20.24"));
 					reason = mf.format(new String[] { order, "" + maxSegment });
 					return false;
 				}
 				if (orderSet.contains(order)) {
-					MessageFormat mf = new MessageFormat("Duplicated order='{0}' in <target>");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.25"));
 					reason = mf.format(new String[] { order });
 					return false;
 				}
@@ -407,18 +407,18 @@ public class Xliff20 {
 		if ("data".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (e.hasAttribute("xml:space") && !"preserve".equals(e.getAttributeValue("xml:space"))) {
-				reason = "<data> with wrong value in @xml:space";
+				reason = Messages.getString("Xliff20.26");
 				return false;
 			}
 			if (inMatch) {
 				if (matchDataId.contains(id)) {
-					reason = "Duplicated 'id' for <data> in <mtc:match>";
+					reason = Messages.getString("Xliff20.27");
 					return false;
 				}
 				matchDataId.add(id);
 			} else {
 				if (dataId.contains(id)) {
-					reason = "Duplicated 'id' in <data>";
+					reason = Messages.getString("Xliff20.28");
 					return false;
 				}
 				dataId.add(id);
@@ -433,7 +433,7 @@ public class Xliff20 {
 			int value = Integer.valueOf(hex, 16);
 			if (value == 0x9 || value == 0xA || value == 0xD || (value >= 0x20 && value <= 0xD7FF)
 					|| (value >= 0xE000 && value <= 0xFFFD) || (value >= 0x10000 && value <= 0x10FFFF)) {
-				MessageFormat mf = new MessageFormat("Valid XML character represented as <cp> hex: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.29"));
 				reason = mf.format(new String[] { hex });
 				return false;
 			}
@@ -443,7 +443,7 @@ public class Xliff20 {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <ph/>";
+					reason = Messages.getString("Xliff20.30");
 					return false;
 				}
 				sourceId.add(id);
@@ -457,52 +457,52 @@ public class Xliff20 {
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
 			if (isCopy && !dataRef.isEmpty()) {
-				reason = "<ph> element with both 'copyOf' and 'dataRef'";
+				reason = Messages.getString("Xliff20.31");
 				return false;
 			}
 			if (!dataRef.isEmpty()) {
 				if (inMatch) {
 					if (!matchDataId.contains(dataRef)) {
-						reason = "Missing <data> element referenced by <ph> in <mtc:match>";
+						reason = Messages.getString("Xliff20.32");
 						return false;
 					}
 				} else {
 					if (!dataId.contains(dataRef)) {
-						reason = "Missing <data> element referenced by <ph>";
+						reason = Messages.getString("Xliff20.33");
 						return false;
 					}
 				}
 			}
 			String type = e.getAttributeValue("type");
 			if (!type.isEmpty() && !knownTypes.contains(type)) {
-				reason = "Invalid 'type' attribute in <ph>";
+				reason = Messages.getString("Xliff20.34");
 				return false;
 			}
 			String subType = e.getAttributeValue("subType");
 			if (!subType.isEmpty()) {
 				if (type.isEmpty()) {
-					reason = "Missing 'type' attribute in <ph> that has 'subType'";
+					reason = Messages.getString("Xliff20.35");
 					return false;
 				}
 				int index = subType.indexOf(':');
 				if (index == -1) {
-					MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.36"));
 					reason = mf.format(new String[] { subType });
 					return false;
 				}
 				String prefix = subType.substring(0, index);
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
-						MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: '{0}' in <ph>");
+						MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.37"));
 						reason = mf.format(new String[] { subType });
 						return false;
 					}
 					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
-						reason = "Invalid 'subType' attribute value for type='ui' in <ph>";
+						reason = Messages.getString("Xliff20.38");
 						return false;
 					}
 					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
-						reason = "Invalid 'subType' attribute value for type='fmt' in <ph>";
+						reason = Messages.getString("Xliff20.39");
 						return false;
 					}
 				}
@@ -513,7 +513,7 @@ public class Xliff20 {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <pc/>";
+					reason = Messages.getString("Xliff20.40");
 					return false;
 				}
 				sourceId.add(id);
@@ -521,76 +521,76 @@ public class Xliff20 {
 					cantDelete.add(id);
 				}
 			}
-			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
+			if (inTarget && e.getAttributeValue(Messages.getString("Xliff20.41"), "yes").equals("no")) {
 				cantDelete.remove(id);
 			}
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRefStart = e.getAttributeValue("dataRefStart");
 			if (isCopy && !dataRefStart.isEmpty()) {
-				reason = "<pc> element with both 'copyOf' and 'dataRefStart'";
+				reason = Messages.getString("Xliff20.42");
 				return false;
 			}
 			if (!dataRefStart.isEmpty()) {
 				if (inMatch) {
 					if (!matchDataId.contains(dataRefStart)) {
-						reason = "Missing <data> element referenced by 'dataRefStart' <pc> in <mtc:match>";
+						reason = Messages.getString("Xliff20.43");
 						return false;
 					}
 				} else {
 					if (!dataId.contains(dataRefStart)) {
-						reason = "Missing <data> element referenced by 'dataRefStart' <pc>";
+						reason = Messages.getString("Xliff20.44");
 						return false;
 					}
 				}
 			}
 			String dataRefEnd = e.getAttributeValue("dataRefEnd");
 			if (isCopy && !dataRefEnd.isEmpty()) {
-				reason = "<pc> element with both 'copyOf' and 'dataRefEnd'";
+				reason = Messages.getString("Xliff20.45");
 				return false;
 			}
 			if (!dataRefEnd.isEmpty()) {
 				if (inMatch) {
 					if (!matchDataId.contains(dataRefEnd)) {
-						reason = "Missing <data> element referenced by 'dataRefEnd' in <pc> in <mtc:match>";
+						reason = Messages.getString("Xliff20.46");
 						return false;
 					}
 				} else {
 					if (!dataId.contains(dataRefEnd)) {
-						reason = "Missing <data> element referenced by 'dataRefEnd' in <pc>";
+						reason = Messages.getString("Xliff20.47");
 						return false;
 					}
 				}
 			}
 			String type = e.getAttributeValue("type");
 			if (!type.isEmpty() && !knownTypes.contains(type)) {
-				reason = "Invalid 'type' attribute in <pc>";
+				reason = Messages.getString("Xliff20.48");
 				return false;
 			}
 			String subType = e.getAttributeValue("subType");
 			if (!subType.isEmpty()) {
 				if (type.isEmpty()) {
-					reason = "Missing 'type' attribute in <pc> that has 'subType'";
+					reason = Messages.getString("Xliff20.49");
 					return false;
 				}
 				int index = subType.indexOf(':');
 				if (index == -1) {
-					MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.50"));
 					reason = mf.format(new String[] { subType });
 					return false;
 				}
 				String prefix = subType.substring(0, index);
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
-						MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: '{0}' in <pc>");
+						MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.51"));
 						reason = mf.format(new String[] { subType });
 						return false;
 					}
 					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
-						reason = "Invalid 'subType' attribute value for type='ui' in <pc>";
+						reason = Messages.getString("Xliff20.52");
 						return false;
 					}
 					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
-						reason = "Invalid 'subType' attribute value for type='fmt' in <pc>";
+						reason = Messages.getString("Xliff20.53");
 						return false;
 					}
 				}
@@ -604,7 +604,7 @@ public class Xliff20 {
 			}
 			if (inSource) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <sc/>";
+					reason = Messages.getString("Xliff20.54");
 					return false;
 				}
 				sourceId.add(id);
@@ -618,52 +618,52 @@ public class Xliff20 {
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
 			if (isCopy && !dataRef.isEmpty()) {
-				reason = "<sc> element with both 'copyOf' and 'dataRef'";
+				reason = Messages.getString("Xliff20.55");
 				return false;
 			}
 			if (!dataRef.isEmpty()) {
 				if (inMatch) {
 					if (!matchDataId.contains(dataRef)) {
-						reason = "Missing <data> element referenced by <sc>";
+						reason = Messages.getString("Xliff20.56");
 						return false;
 					}
 				} else {
 					if (!dataId.contains(dataRef)) {
-						reason = "Missing <data> element referenced by <sc>";
+						reason = Messages.getString("Xliff20.57");
 						return false;
 					}
 				}
 			}
 			String type = e.getAttributeValue("type");
 			if (!type.isEmpty() && !knownTypes.contains(type)) {
-				reason = "Invalid 'type' attribute in <sc>";
+				reason = Messages.getString("Xliff20.58");
 				return false;
 			}
 			String subType = e.getAttributeValue("subType");
 			if (!subType.isEmpty()) {
 				if (type.isEmpty()) {
-					reason = "Missing 'type' attribute in <sc> that has 'subType'";
+					reason = Messages.getString("Xliff20.59");
 					return false;
 				}
 				int index = subType.indexOf(':');
 				if (index == -1) {
-					MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.60"));
 					reason = mf.format(new String[] { subType });
 					return false;
 				}
 				String prefix = subType.substring(0, index);
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
-						MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: '{0}' in <sc>");
+						MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.61"));
 						reason = mf.format(new String[] { subType });
 						return false;
 					}
 					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
-						reason = "Invalid 'subType' attribute value for type='ui' in <sc>";
+						reason = Messages.getString("Xliff20.62");
 						return false;
 					}
 					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
-						reason = "Invalid 'subType' attribute value for type='fmt' in <sc>";
+						reason = Messages.getString("Xliff20.63");
 						return false;
 					}
 				}
@@ -675,12 +675,12 @@ public class Xliff20 {
 			if (isolated) {
 				String id = e.getAttributeValue("id");
 				if (id.isEmpty()) {
-					reason = "Missing 'id' attribute in <ec/>";
+					reason = Messages.getString("Xliff20.64");
 					return false;
 				}
 				if (inSource) {
 					if (sourceId.contains(id)) {
-						reason = "Duplicated 'id' in <ec/>";
+						reason = Messages.getString("Xliff20.65");
 						return false;
 					}
 					sourceId.add(id);
@@ -693,41 +693,41 @@ public class Xliff20 {
 				}
 			} else {
 				if (e.hasAttribute("dir")) {
-					reason = "Non isolated <ec/> has 'dir' attribute";
+					reason = Messages.getString("Xliff20.66");
 					return false;
 				}
 				String startRef = e.getAttributeValue("startRef");
 				if (startRef.isEmpty()) {
-					reason = "Missing 'startRef' attribute in <ec/>";
+					reason = Messages.getString("Xliff20.67");
 					return false;
 				}
 				if (!unitSc.containsKey(startRef)) {
-					MessageFormat mf = new MessageFormat("Missing <sc/> element with id='{0}' referenced by <ec/>");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.68"));
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
 				Element sc = unitSc.get(startRef);
 				if (!sc.getAttributeValue("canCopy", "yes").equals(e.getAttributeValue("canCopy", "yes"))) {
 					MessageFormat mf = new MessageFormat(
-							"Different 'canCopy' attribute in <sc/> with id='{0}' and matching <ec/>");
+							Messages.getString("Xliff20.69"));
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
 				if (!sc.getAttributeValue("canDelete", "yes").equals(e.getAttributeValue("canDelete", "yes"))) {
 					MessageFormat mf = new MessageFormat(
-							"Different 'canDelete' attribute in <sc/> with id='{0}' and matching <ec/>");
+							Messages.getString("Xliff20.70"));
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
 				if (!sc.getAttributeValue("canOverlap", "yes").equals(e.getAttributeValue("canOverlap", "yes"))) {
 					MessageFormat mf = new MessageFormat(
-							"Different 'canOverlap' attribute in <sc/> with id='{0}' and matching <ec/>");
+							Messages.getString("Xliff20.71"));
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
 				if (!sc.getAttributeValue("canReorder", "yes").equals(e.getAttributeValue("canReorder", "yes"))) {
 					MessageFormat mf = new MessageFormat(
-							"Different 'canReorder' attribute in <sc/> with id='{0}' and matching <ec/>");
+							Messages.getString("Xliff20.72"));
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
@@ -736,52 +736,52 @@ public class Xliff20 {
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
 			if (isCopy && !dataRef.isEmpty()) {
-				reason = "<ec> element with both 'copyOf' and 'dataRef'";
+				reason = Messages.getString("Xliff20.73");
 				return false;
 			}
 			if (!dataRef.isEmpty()) {
 				if (inMatch) {
 					if (!matchDataId.contains(dataRef)) {
-						reason = "Missing <data> element referenced by <ec> in <mtc:match>";
+						reason = Messages.getString("Xliff20.74");
 						return false;
 					}
 				} else {
 					if (!dataId.contains(dataRef)) {
-						reason = "Missing <data> element referenced by <ec>";
+						reason = Messages.getString("Xliff20.75");
 						return false;
 					}
 				}
 			}
 			String type = e.getAttributeValue("type");
 			if (!type.isEmpty() && !knownTypes.contains(type)) {
-				reason = "Invalid 'type' attribute in <ec>";
+				reason = Messages.getString("Xliff20.76");
 				return false;
 			}
 			String subType = e.getAttributeValue("subType");
 			if (!subType.isEmpty()) {
 				if (type.isEmpty()) {
-					reason = "Missing 'type' attribute in <ec> that has 'subType'";
+					reason = Messages.getString("Xliff20.77");
 					return false;
 				}
 				int index = subType.indexOf(':');
 				if (index == -1) {
-					MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.78"));
 					reason = mf.format(new String[] { subType });
 					return false;
 				}
 				String prefix = subType.substring(0, index);
 				if ("xlf".equals(prefix)) {
 					if (!xlfSubTypes.contains(subType)) {
-						MessageFormat mf = new MessageFormat("Invalid 'subType' attribute value: '{0}' in <ec>");
+						MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.79"));
 						reason = mf.format(new String[] { subType });
 						return false;
 					}
 					if ("ui".equals(type) && !"xlf:var".equals(subType)) {
-						reason = "Invalid 'subType' attribute value for type='ui' in <ec>";
+						reason = Messages.getString("Xliff20.80");
 						return false;
 					}
 					if ("fmt".equals(type) && !fmtSubTypes.contains(subType)) {
-						reason = "Invalid 'subType' attribute value for type='fmt' in <ec>";
+						reason = Messages.getString("Xliff20.81");
 						return false;
 					}
 				}
@@ -792,7 +792,7 @@ public class Xliff20 {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <mrk/>";
+					reason = Messages.getString("Xliff20.82");
 					return false;
 				}
 				sourceId.add(id);
@@ -802,22 +802,22 @@ public class Xliff20 {
 				if (e.getAttributeValue("value").isEmpty()) {
 					String ref = e.getAttributeValue("ref");
 					if (ref.isEmpty()) {
-						reason = "Missing 'ref' in comment annotation";
+						reason = Messages.getString("Xliff20.83");
 						return false;
 					}
 					if (!ref.startsWith("#n") || ref.indexOf('=') == -1) {
-						MessageFormat mf = new MessageFormat("Invalid fragment identifier '{0}' in comment annotation");
+						MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.84"));
 						reason = mf.format(new String[] { ref });
 						return false;
 					}
 					String refId = ref.substring(ref.indexOf('=') + 1);
 					if (noteId == null || !noteId.contains(refId)) {
-						reason = "Missing <note> referenced in comment annotation";
+						reason = Messages.getString("Xliff20.85");
 						return false;
 					}
 				} else {
 					if (!e.getAttributeValue("ref").isEmpty()) {
-						reason = "Comment annotation contains both 'value' and 'ref'";
+						reason = Messages.getString("Xliff20.86");
 						return false;
 					}
 				}
@@ -828,7 +828,7 @@ public class Xliff20 {
 			String id = e.getAttributeValue("id");
 			if (inSource) {
 				if (sourceId.contains(id)) {
-					reason = "Duplicated 'id' in <sm/>";
+					reason = Messages.getString("Xliff20.87");
 					return false;
 				}
 				sourceId.add(id);
@@ -839,7 +839,7 @@ public class Xliff20 {
 		if ("em".equals(e.getLocalName())) {
 			String startRef = e.getAttributeValue("startRef");
 			if (!smId.contains(startRef)) {
-				MessageFormat mf = new MessageFormat("Missing <sm> with id='{0}' referenced by <em>");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.88"));
 				reason = mf.format(new String[] { startRef });
 				return false;
 			}
@@ -851,7 +851,7 @@ public class Xliff20 {
 			String fs = e.getAttributeValue(fsPrefix + ":fs");
 			String subFs = e.getAttributeValue(fsPrefix + ":subFs");
 			if (!subFs.isEmpty() && fs.isEmpty()) {
-				MessageFormat mf = new MessageFormat("Attribute '{0}:subFs' without corresponding '{1}:fs'");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.89"));
 				reason = mf.format(new String[] { fsPrefix, fsPrefix });
 				return false;
 			}
@@ -868,11 +868,11 @@ public class Xliff20 {
 				inSource = false;
 			}
 			if (result && "source".equals(child.getName()) && !unitSc.isEmpty()) {
-				reason = "<sc> element without matching <ec> in <source>";
+				reason = Messages.getString("Xliff20.90");
 				return false;
 			}
 			if (result && "target".equals(child.getName()) && !unitSc.isEmpty()) {
-				reason = "<sc> element without matching <ec> in <target>";
+				reason = Messages.getString("Xliff20.91");
 				return false;
 			}
 		}
@@ -893,7 +893,7 @@ public class Xliff20 {
 		}
 		if ("target".equals(e.getLocalName())) {
 			if (!cantDelete.isEmpty()) {
-				reason = "Inline element with 'canDelete' set to 'no' is missing in <target>";
+				reason = Messages.getString("Xliff20.92");
 				return false;
 			}
 			inTarget = false;
@@ -922,31 +922,31 @@ public class Xliff20 {
 					Element ph = phList.get(i);
 					if (tag.getAttributeValue("id").equals(ph.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(ph.getAttributeValue("canCopy"))) {
-							reason = "<ph> element with different value of 'canCopy' in <source> and <target>";
+							reason = Messages.getString("Xliff20.93");
 							return false;
 						}
 						if (!tag.getAttributeValue("canDelete").equals(ph.getAttributeValue("canDelete"))) {
-							reason = "<ph> element with different value of 'canDelete' in <source> and <target>";
+							reason = Messages.getString("Xliff20.94");
 							return false;
 						}
 						if (!tag.getAttributeValue("canReorder").equals(ph.getAttributeValue("canReorder"))) {
-							reason = "<ph> element with different value of 'canReorder' in <source> and <target>";
+							reason = Messages.getString("Xliff20.95");
 							return false;
 						}
 						if (!tag.getAttributeValue("copyOf").equals(ph.getAttributeValue("copyOf"))) {
-							reason = "<ph> element with different value of 'copyOf' in <source> and <target>";
+							reason = Messages.getString("Xliff20.96");
 							return false;
 						}
 						if (!tag.getAttributeValue("dataRef").equals(ph.getAttributeValue("dataRef"))) {
-							reason = "<ph> element with different value of 'dataRef' in <source> and <target>";
+							reason = Messages.getString("Xliff20.97");
 							return false;
 						}
 						if (!tag.getAttributeValue("subFlows").equals(ph.getAttributeValue("subFlows"))) {
-							reason = "<ph> element with different value of 'subFlows' in <source> and <target>";
+							reason = Messages.getString("Xliff20.98");
 							return false;
 						}
 						if (!tag.getAttributeValue("type").equals(ph.getAttributeValue("type"))) {
-							reason = "<ph> element with different value of 'type' in <source> and <target>";
+							reason = Messages.getString("Xliff20.99");
 							return false;
 						}
 					}
@@ -958,43 +958,43 @@ public class Xliff20 {
 					Element pc = pcList.get(i);
 					if (tag.getAttributeValue("id").equals(pc.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(pc.getAttributeValue("canCopy"))) {
-							reason = "<pc> element with different value of 'canCopy' in <source> and <target>";
+							reason = Messages.getString("Xliff20.100");
 							return false;
 						}
 						if (!tag.getAttributeValue("canDelete").equals(pc.getAttributeValue("canDelete"))) {
-							reason = "<pc> element with different value of 'canDelete' in <source> and <target>";
+							reason = Messages.getString("Xliff20.101");
 							return false;
 						}
 						if (!tag.getAttributeValue("canOverlap").equals(pc.getAttributeValue("canOverlap"))) {
-							reason = "<pc> element with different value of 'canOverlap' in <source> and <target>";
+							reason = Messages.getString("Xliff20.102");
 							return false;
 						}
 						if (!tag.getAttributeValue("canReorder").equals(pc.getAttributeValue("canReorder"))) {
-							reason = "<pc> element with different value of 'canReorder' in <source> and <target>";
+							reason = Messages.getString("Xliff20.103");
 							return false;
 						}
 						if (!tag.getAttributeValue("copyOf").equals(pc.getAttributeValue("copyOf"))) {
-							reason = "<pc> element with different value of 'copyOf' in <source> and <target>";
+							reason = Messages.getString("Xliff20.104");
 							return false;
 						}
 						if (!tag.getAttributeValue("dataRefStart").equals(pc.getAttributeValue("dataRefStart"))) {
-							reason = "<pc> element with different value of 'dataRefStart' in <source> and <target>";
+							reason = Messages.getString("Xliff20.105");
 							return false;
 						}
 						if (!tag.getAttributeValue("dataRefEnd").equals(pc.getAttributeValue("dataRefEnd"))) {
-							reason = "<pc> element with different value of 'dataRefEnd' in <source> and <target>";
+							reason = Messages.getString("Xliff20.106");
 							return false;
 						}
 						if (!tag.getAttributeValue("subFlowsStart").equals(pc.getAttributeValue("subFlowsStart"))) {
-							reason = "<pc> element with different value of 'subFlowsStart' in <source> and <target>";
+							reason = Messages.getString("Xliff20.108");
 							return false;
 						}
 						if (!tag.getAttributeValue("subFlowsEnd").equals(pc.getAttributeValue("subFlowsEnd"))) {
-							reason = "<pc> element with different value of 'subFlowsEnd' in <source> and <target>";
+							reason = Messages.getString("Xliff20.109");
 							return false;
 						}
 						if (!tag.getAttributeValue("type").equals(pc.getAttributeValue("type"))) {
-							reason = "<pc> element with different value of 'type' in <source> and <target>";
+							reason = Messages.getString("Xliff20.110");
 							return false;
 						}
 					}
@@ -1006,39 +1006,39 @@ public class Xliff20 {
 					Element sc = scList.get(i);
 					if (tag.getAttributeValue("id").equals(sc.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(sc.getAttributeValue("canCopy"))) {
-							reason = "<sc> element with different value of 'canCopy' in <source> and <target>";
+							reason = Messages.getString("Xliff20.111");
 							return false;
 						}
 						if (!tag.getAttributeValue("canDelete").equals(sc.getAttributeValue("canDelete"))) {
-							reason = "<sc> element with different value of 'canDelete' in <source> and <target>";
+							reason = Messages.getString("Xliff20.112");
 							return false;
 						}
 						if (!tag.getAttributeValue("canOverlap").equals(sc.getAttributeValue("canOverlap"))) {
-							reason = "<sc> element with different value of 'canOverlap' in <source> and <target>";
+							reason = Messages.getString("Xliff20.113");
 							return false;
 						}
 						if (!tag.getAttributeValue("canReorder").equals(sc.getAttributeValue("canReorder"))) {
-							reason = "<sc> element with different value of 'canReorder' in <source> and <target>";
+							reason = Messages.getString("Xliff20.114");
 							return false;
 						}
 						if (!tag.getAttributeValue("copyOf").equals(sc.getAttributeValue("copyOf"))) {
-							reason = "<sc> element with different value of 'copyOf' in <source> and <target>";
+							reason = Messages.getString("Xliff20.115");
 							return false;
 						}
 						if (!tag.getAttributeValue("dataRef").equals(sc.getAttributeValue("dataRef"))) {
-							reason = "<sc> element with different value of 'dataRef' in <source> and <target>";
+							reason = Messages.getString("Xliff20.116");
 							return false;
 						}
 						if (!tag.getAttributeValue("subFlows").equals(sc.getAttributeValue("subFlows"))) {
-							reason = "<sc> element with different value of 'subFlows' in <source> and <target>";
+							reason = Messages.getString("Xliff20.117");
 							return false;
 						}
 						if (!tag.getAttributeValue("type").equals(sc.getAttributeValue("type"))) {
-							reason = "<sc> element with different value of 'type' in <source> and <target>";
+							reason = Messages.getString("Xliff20.118");
 							return false;
 						}
 						if (!tag.getAttributeValue("isolated", "no").equals(sc.getAttributeValue("isolated", "no"))) {
-							reason = "<sc> element with different value of 'isolated' in <source> and <target>";
+							reason = Messages.getString("Xliff20.119");
 							return false;
 						}
 					}
@@ -1050,40 +1050,40 @@ public class Xliff20 {
 						Element ec = ecList.get(i);
 						if (tag.getAttributeValue("id").equals(ec.getAttributeValue("startRef"))) {
 							if (!tag.getAttributeValue("canCopy").equals(ec.getAttributeValue("canCopy"))) {
-								reason = "<sc> element with different value of 'canCopy' in <source> and <target>";
+								reason = Messages.getString("Xliff20.120");
 								return false;
 							}
 							if (!tag.getAttributeValue("canDelete").equals(ec.getAttributeValue("canDelete"))) {
-								reason = "<sc> element with different value of 'canDelete' in <source> and <target>";
+								reason = Messages.getString("Xliff20.121");
 								return false;
 							}
 							if (!tag.getAttributeValue("canOverlap").equals(ec.getAttributeValue("canOverlap"))) {
-								reason = "<sc> element with different value of 'canOverlap' in <source> and <target>";
+								reason = Messages.getString("Xliff20.122");
 								return false;
 							}
 							if (!tag.getAttributeValue("canReorder").equals(ec.getAttributeValue("canReorder"))) {
-								reason = "<sc> element with different value of 'canReorder' in <source> and <target>";
+								reason = Messages.getString("Xliff20.123");
 								return false;
 							}
 							if (!tag.getAttributeValue("copyOf").equals(ec.getAttributeValue("copyOf"))) {
-								reason = "<sc> element with different value of 'copyOf' in <source> and <target>";
+								reason = Messages.getString("Xliff20.124");
 								return false;
 							}
 							if (!tag.getAttributeValue("dataRef").equals(ec.getAttributeValue("dataRef"))) {
-								reason = "<sc> element with different value of 'dataRef' in <source> and <target>";
+								reason = Messages.getString("Xliff20.125");
 								return false;
 							}
 							if (!tag.getAttributeValue("subFlows").equals(ec.getAttributeValue("subFlows"))) {
-								reason = "<sc> element with different value of 'subFlows' in <source> and <target>";
+								reason = Messages.getString("Xliff20.126");
 								return false;
 							}
 							if (!tag.getAttributeValue("type").equals(ec.getAttributeValue("type"))) {
-								reason = "<sc> element with different value of 'type' in <source> and <target>";
+								reason = Messages.getString("Xliff20.127");
 								return false;
 							}
 							if (!tag.getAttributeValue("isolated", "no")
 									.equals(ec.getAttributeValue("isolated", "no"))) {
-								reason = "<sc> element with different value of 'isolated' in <source> and <target>";
+								reason = Messages.getString("Xliff20.128");
 								return false;
 							}
 						}
@@ -1096,39 +1096,39 @@ public class Xliff20 {
 					Element ec = ecList.get(i);
 					if (tag.getAttributeValue("id").equals(ec.getAttributeValue("id"))) {
 						if (!tag.getAttributeValue("canCopy").equals(ec.getAttributeValue("canCopy"))) {
-							reason = "<sc> element with different value of 'canCopy' in <source> and <target>";
+							reason = Messages.getString("Xliff20.129");
 							return false;
 						}
 						if (!tag.getAttributeValue("canDelete").equals(ec.getAttributeValue("canDelete"))) {
-							reason = "<ec> element with different value of 'canDelete' in <source> and <target>";
+							reason = Messages.getString("Xliff20.130");
 							return false;
 						}
 						if (!tag.getAttributeValue("canOverlap").equals(ec.getAttributeValue("canOverlap"))) {
-							reason = "<ec> element with different value of 'canOverlap' in <source> and <target>";
+							reason = Messages.getString("Xliff20.131");
 							return false;
 						}
 						if (!tag.getAttributeValue("canReorder").equals(ec.getAttributeValue("canReorder"))) {
-							reason = "<ec> element with different value of 'canReorder' in <source> and <target>";
+							reason = Messages.getString("Xliff20.132");
 							return false;
 						}
 						if (!tag.getAttributeValue("copyOf").equals(ec.getAttributeValue("copyOf"))) {
-							reason = "<ec> element with different value of 'copyOf' in <source> and <target>";
+							reason = Messages.getString("Xliff20.133");
 							return false;
 						}
 						if (!tag.getAttributeValue("startRef").equals(ec.getAttributeValue("startRef"))) {
-							reason = "<ec> element with different value of 'startRef' in <source> and <target>";
+							reason = Messages.getString("Xliff20.134");
 							return false;
 						}
 						if (!tag.getAttributeValue("subFlows").equals(ec.getAttributeValue("subFlows"))) {
-							reason = "<ec> element with different value of 'subFlows' in <source> and <target>";
+							reason = Messages.getString("Xliff20.135");
 							return false;
 						}
 						if (!tag.getAttributeValue("type").equals(ec.getAttributeValue("type"))) {
-							reason = "<ec> element with different value of 'type' in <source> and <target>";
+							reason = Messages.getString("Xliff20.136");
 							return false;
 						}
 						if (!tag.getAttributeValue("isolated", "no").equals(ec.getAttributeValue("isolated", "no"))) {
-							reason = "<ec> element with different value of 'isolated' in <source> and <target>";
+							reason = Messages.getString("Xliff20.137");
 							return false;
 						}
 					}

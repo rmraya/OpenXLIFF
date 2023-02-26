@@ -50,7 +50,7 @@ public class Xliff11 {
 				}
 			} catch (IOException e) {
 				logger.log(Level.ERROR, e);
-				reason = "Error adding namespace declaration";
+				reason = Messages.getString("Xliff11.1");
 				return false;
 			}
 			try {

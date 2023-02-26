@@ -92,7 +92,7 @@ public class XliffChecker {
 			return;
 		}
 		if (file.isEmpty()) {
-			logger.log(Level.ERROR, "Missing '-file' parameter.");
+			logger.log(Level.ERROR, Messages.getString("XliffChecker.1"));
 			return;
 		}
 		if (catalog.isEmpty()) {
@@ -102,34 +102,34 @@ public class XliffChecker {
 			}
 			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
-				logger.log(Level.ERROR, "'catalog' folder not found.");
+				logger.log(Level.ERROR, Messages.getString("XliffChecker.2"));
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			logger.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, Messages.getString("XliffChecker.3"));
 			return;
 		}
 		try {
 			XliffChecker instance = new XliffChecker();
 			if (!instance.validate(file, catalog)) {
-				MessageFormat mf = new MessageFormat("Invalid XLIFF. Reason: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.4"));
 				logger.log(Level.ERROR, mf.format(new String[] { instance.getReason() }));
 				return;
 			}
-			MessageFormat mf = new MessageFormat("File is valid XLIFF {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.5"));
 			logger.log(Level.INFO, mf.format(new String[] { instance.getVersion() }));
 		} catch (IOException e) {
-			logger.log(Level.ERROR, "Error creating validator", e);
+			logger.log(Level.ERROR, Messages.getString("XliffChecker.6"), e);
 		}
 	}
 
 	private static void help() {
-		String launcher = "   xliffchecker.sh ";
+		String launcher = "xliffchecker.sh";
 		if ("\\".equals(File.pathSeparator)) {
-			launcher = "   xliffchecker.bat ";
+			launcher = "xliffchecker.bat";
 		}
 		String help = """
 
@@ -168,11 +168,11 @@ Where:
 			Document document = builder.build(file);
 			Element root = document.getRootElement();
 			if (!"xliff".equals(root.getLocalName())) {
-				reason = "Selected file is not an XLIFF document";
+				reason = Messages.getString("XliffChecker.7");
 				return false;
 			}
 			if (!root.hasAttribute("version")) {
-				reason = "Missing version attribute";
+				reason = Messages.getString("XliffChecker.8");
 				return false;
 			}
 			version = root.getAttributeValue("version");
@@ -210,11 +210,11 @@ Where:
 				}
 				return true;
 			} else if ("2.1".equals(version) || "2.2".equals(version)) {
-				MessageFormat mf = new MessageFormat("XLIFF {0} not supported yet");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.9"));
 				reason = mf.format(new String[] { version });
 				return false;
 			} else {
-				reason = "Invalid XLIFF version";
+				reason = Messages.getString("XliffChecker.10");
 				return false;
 			}
 
@@ -611,7 +611,7 @@ Where:
 				}
 				Set<String> set = attributesTable.get(e.getLocalName());
 				if (set != null && !set.contains(att.getLocalName())) {
-					MessageFormat mf = new MessageFormat("Invalid attribute in <{0}>: {1}.");
+					MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.11"));
 					reason = mf.format(new Object[] { e.getName(), att.getName() });
 					return false;
 				}
@@ -621,7 +621,7 @@ Where:
 		if (e.getLocalName().equals("file") || e.getLocalName().equals("phase")) {
 			String date = e.getAttributeValue("date");
 			if (!date.isEmpty() && !checkDate(date)) {
-				MessageFormat mf = new MessageFormat("Invalid date: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.12"));
 				reason = mf.format(new Object[] { date });
 				return false;
 			}
@@ -629,14 +629,14 @@ Where:
 
 		// external files should be resolvable resources
 		if (e.getLocalName().equals("external-file") && !checkURL(e.getAttributeValue("href"))) {
-			MessageFormat mf = new MessageFormat("Invalid URI: {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.13"));
 			reason = mf.format(new Object[] { e.getAttribute("href") });
 			return false;
 		}
 
 		// source file should be resolvable resources
 		if (e.getLocalName().equals("file") && !checkURL(e.getAttributeValue("original"))) {
-			MessageFormat mf = new MessageFormat("Invalid URI: {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.14"));
 			reason = mf.format(new Object[] { e.getAttribute("original") });
 			return false;
 		}
@@ -647,7 +647,7 @@ Where:
 				|| e.getLocalName().equals("alt-trans") || e.getLocalName().equals("seg-source")) {
 			String lang = e.getAttributeValue("xml:lang");
 			if (!lang.isEmpty() && !checkLanguage(lang)) {
-				MessageFormat mf = new MessageFormat("Invalid language: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.15"));
 				reason = mf.format(new Object[] { lang });
 				return false;
 			}
@@ -672,13 +672,13 @@ Where:
 			// check language codes used
 			sourceLanguage = e.getAttributeValue("source-language");
 			if (!checkLanguage(sourceLanguage)) {
-				MessageFormat mf = new MessageFormat("Invalid source language: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.16"));
 				reason = mf.format(new Object[] { sourceLanguage });
 				return false;
 			}
 			targetLanguage = e.getAttributeValue("target-language");
 			if (!targetLanguage.isEmpty() && !checkLanguage(targetLanguage)) {
-				MessageFormat mf = new MessageFormat("Invalid target language: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.17"));
 				reason = mf.format(new Object[] { targetLanguage });
 				return false;
 			}
@@ -690,7 +690,7 @@ Where:
 			if (!phasesTable.containsKey(name)) {
 				phasesTable.put(name, "");
 			} else {
-				MessageFormat mf = new MessageFormat("Duplicated \"name\" in <phase>: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.18"));
 				reason = mf.format(new Object[] { name });
 				return false;
 			}
@@ -702,7 +702,7 @@ Where:
 			if (!toolsTable.containsKey(id)) {
 				toolsTable.put(id, "");
 			} else {
-				MessageFormat mf = new MessageFormat("Duplicated \"tool-id\" in <tool>: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.19"));
 				reason = mf.format(new Object[] { id });
 				return false;
 			}
@@ -715,14 +715,14 @@ Where:
 			// check for valid segment reference
 			String mid = e.getAttributeValue("mid");
 			if (!mid.isEmpty() && !midTable.containsKey(mid)) {
-				reason = "Incorrect segment referenced in <alt-trans> element.";
+				reason = Messages.getString("XliffChecker.20");
 				return false;
 			}
 
 			// check for declared <tool>
 			String tool = e.getAttributeValue("tool-id");
 			if (!tool.isEmpty() && !toolsTable.containsKey(tool)) {
-				reason = "Undeclared <tool> referenced in <alt-trans> element.";
+				reason = Messages.getString("XliffChecker.21");
 				return false;
 			}
 			// create tables to check if <it> tags are duplicated
@@ -736,7 +736,7 @@ Where:
 				|| e.getLocalName().equals("bin-target") || e.getLocalName().equals("alt-trans")) {
 			String phase = e.getAttributeValue("phase-name");
 			if (!phase.isEmpty() && !phasesTable.containsKey(phase)) {
-				reason = "Undeclared <phase> referenced in <alt-trans> element.";
+				reason = Messages.getString("XliffChecker.22");
 				return false;
 			}
 		}
@@ -745,7 +745,7 @@ Where:
 		if (e.getLocalName().equals("source") && !inAltTrans) {
 			String lang = e.getAttributeValue("xml:lang");
 			if (!lang.isEmpty() && !lang.equalsIgnoreCase(sourceLanguage)) {
-				MessageFormat mf = new MessageFormat("Found <source> with wrong language code: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.23"));
 				reason = mf.format(new Object[] { lang });
 				return false;
 			}
@@ -757,7 +757,7 @@ Where:
 				// bad practice, but legal
 			}
 			if (!targetLanguage.isEmpty() && !lang.isEmpty() && !lang.equalsIgnoreCase(targetLanguage)) {
-				MessageFormat mf = new MessageFormat("Found <target> with wrong language code: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.24"));
 				reason = mf.format(new Object[] { lang });
 				return false;
 			}
@@ -769,7 +769,7 @@ Where:
 			if (!ids.containsKey(id)) {
 				ids.put(id, "");
 			} else {
-				MessageFormat mf = new MessageFormat("Duplicated \"id\" in <trans-unit>: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.25"));
 				reason = mf.format(new Object[] { id });
 				return false;
 			}
@@ -792,14 +792,14 @@ Where:
 				if (!midTable.containsKey(mid)) {
 					midTable.put(mid, "");
 				} else {
-					MessageFormat mf = new MessageFormat("Duplicated \"mid\" in <mrk>: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.26"));
 					reason = mf.format(new Object[] { mid });
 					return false;
 				}
 			} else {
 				// in <target>
 				if (!midTable.containsKey(mid)) {
-					reason = "Incorrect segment referenced in <target> element.";
+					reason = Messages.getString("XliffChecker.27");
 					return false;
 				}
 			}
@@ -812,7 +812,7 @@ Where:
 				if (!groupIds.containsKey(id)) {
 					groupIds.put(id, "");
 				} else {
-					MessageFormat mf = new MessageFormat("Duplicated \"id\" in <group>: {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.28"));
 					reason = mf.format(new Object[] { id });
 					return false;
 				}
@@ -841,7 +841,7 @@ Where:
 						srcItTable.remove(id);
 					} else {
 						// duplicated
-						reason = "Found duplicated <it> element.";
+						reason = Messages.getString("XliffChecker.29");
 						return false;
 					}
 				}
@@ -854,7 +854,7 @@ Where:
 						tgtItTable.remove(id);
 					} else {
 						// duplicated
-						reason = "Found duplicated <it> element.";
+						reason = Messages.getString("XliffChecker.30");
 						return false;
 					}
 				}
@@ -870,7 +870,7 @@ Where:
 				} else {
 					if (altSrcItTable.get(id).equals(pos)) {
 						// duplicated
-						reason = "Found duplicated <it> element.";
+						reason = Messages.getString("XliffChecker.31");
 						return false;
 					}
 				}
@@ -880,7 +880,7 @@ Where:
 				} else {
 					if (altTgtItTable.get(id).equals(pos)) {
 						// duplicated
-						reason = "Found duplicated <it> element.";
+						reason = Messages.getString("XliffChecker.32");
 						return false;
 					}
 				}
@@ -902,7 +902,7 @@ Where:
 				id = e.getAttributeValue("id");
 			}
 			if (id.isEmpty()) {
-				reason = "Found <bx> without \"rid\" or \"id\" attributes.";
+				reason = Messages.getString("XliffChecker.33");
 				return false;
 			}
 			bxTable.put(id, "");
@@ -913,7 +913,7 @@ Where:
 				id = e.getAttributeValue("id");
 			}
 			if (id.isEmpty()) {
-				reason = "Found <ex> without \"rid\" or \"id\" attributes.";
+				reason = Messages.getString("XliffChecker.34");
 				return false;
 			}
 			exTable.put(id, "");
@@ -924,7 +924,7 @@ Where:
 				id = e.getAttributeValue("id");
 			}
 			if (id.isEmpty()) {
-				reason = "Found <bpt> without \"rid\" or \"id\" attributes.";
+				reason = Messages.getString("XliffChecker.35");
 				return false;
 			}
 			bptTable.put(id, "");
@@ -935,7 +935,7 @@ Where:
 				id = e.getAttributeValue("id");
 			}
 			if (id.isEmpty()) {
-				reason = "Found <ept> without \"rid\" or \"id\" attributes.";
+				reason = Messages.getString("XliffChecker.36");
 				return false;
 			}
 			eptTable.put(id, "");
@@ -964,7 +964,7 @@ Where:
 			}
 
 			if (exTable.size() > 0 || bxTable.size() > 0) {
-				MessageFormat mf = new MessageFormat("Unmatched <ex>/<bx> in <{0}>.");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.37"));
 				reason = mf.format(new Object[] { e.getLocalName() });
 				return false;
 			}
@@ -978,7 +978,7 @@ Where:
 				}
 			}
 			if (eptTable.size() > 0 || bptTable.size() > 0) {
-				MessageFormat mf = new MessageFormat("Unmatched <bpt>/<ept> in <{0}>.");
+				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.38"));
 				reason = mf.format(new Object[] { e.getLocalName() });
 				return false;
 			}
@@ -987,7 +987,7 @@ Where:
 
 		// check for not paired <it> tags in <file>
 		if (e.getLocalName().equals("file") && srcItTable.size() + tgtItTable.size() > 0) {
-			reason = "Unmatched <it> in <file>.";
+			reason = Messages.getString("XliffChecker.39");
 			return false;
 		}
 
@@ -997,7 +997,7 @@ Where:
 			Iterator<String> it = keys.iterator();
 			while (it.hasNext()) {
 				if (!ids.containsKey(it.next())) {
-					reason = "Incorrect segment referenced in \"xid\" attribute.";
+					reason = Messages.getString("XliffChecker.40");
 					return false;
 				}
 			}

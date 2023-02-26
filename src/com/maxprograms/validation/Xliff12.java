@@ -52,7 +52,7 @@ public class Xliff12 {
 				}
 			} catch (IOException e) {
 				logger.log(Level.ERROR, e);
-				reason = "Error adding transitional namespace declaration";
+				reason = Messages.getString("Xliff12.1");
 				return false;
 			}
 			try {
