@@ -135,7 +135,7 @@ public class ScopeBuilder {
 				String key = keys[i];
 				if (!keyref.isEmpty()) {
 					if (!currentScope.addKey(new Key(key, keyref, parentFile))) {
-						MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
+						MessageFormat mf = new MessageFormat(Messages.getString("ScopeBuilder.1"));
 						String issue = mf.format(new Object[] { key, keyref });
 						logger.log(Level.WARNING, issue);
 						issues.add(issue);
@@ -143,7 +143,7 @@ public class ScopeBuilder {
 				} else {
 					if (href.isEmpty()) {
 						if (!currentScope.addKey(new Key(key, parentFile, topicmeta, parentFile))) {
-							MessageFormat mf = new MessageFormat("Duplicate key definition: {0}");
+							MessageFormat mf = new MessageFormat(Messages.getString("ScopeBuilder.2"));
 							String issue = mf.format(new Object[] { key });
 							logger.log(Level.WARNING, issue);
 							issues.add(issue);
@@ -154,7 +154,7 @@ public class ScopeBuilder {
 							File f = new File(path);
 							if (f.exists() && f.isFile()
 									&& !currentScope.addKey(new Key(key, path, topicmeta, parentFile))) {
-								MessageFormat mf = new MessageFormat("Duplicate key definition: {0} -> {1}");
+								MessageFormat mf = new MessageFormat(Messages.getString("ScopeBuilder.1"));
 								String issue = mf.format(new Object[] { key, path });
 								logger.log(Level.WARNING, issue);
 								issues.add(issue);

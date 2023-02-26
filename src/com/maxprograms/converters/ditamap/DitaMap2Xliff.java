@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -93,7 +94,7 @@ public class DitaMap2Xliff {
 					result.add(Constants.CANCELLED);
 					return result;
 				}
-				dataLogger.setStage("Harvesting Keys");
+				dataLogger.setStage(Messages.getString("DitaMap2Xliff.01"));
 				DitaParser.setDataLogger(dataLogger);
 			}
 			List<String> filesMap = parser.run(params, catalog);
@@ -115,7 +116,7 @@ public class DitaMap2Xliff {
 					result.add(Constants.CANCELLED);
 					return result;
 				}
-				dataLogger.setStage("Processing Files");
+				dataLogger.setStage(Messages.getString("DitaMap2Xliff.02"));
 			}
 			skipped = new ArrayList<>();
 			skipped.addAll(parser.getSkipped());
@@ -194,7 +195,8 @@ public class DitaMap2Xliff {
 						skipped.add(filesMap.get(i));
 						continue;
 					}
-					String issue = "Error converting \"" + source + "\" to XLIFF";
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.03"));
+					String issue = mf.format(new String[] { source });
 					logger.log(Level.ERROR, issue);
 					issues.add(issue);
 					return res;
@@ -226,7 +228,7 @@ public class DitaMap2Xliff {
 						result.add(Constants.CANCELLED);
 						return result;
 					}
-					dataLogger.setStage("Adding skipped files");
+					dataLogger.setStage(Messages.getString("DitaMap2Xliff.04"));
 				}
 				SAXBuilder builder = new SAXBuilder();
 				builder.setEntityResolver(catalog);
@@ -290,7 +292,7 @@ public class DitaMap2Xliff {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (Exception e) {
-			logger.log(Level.ERROR, "Error converting DITA Map", e);
+			logger.log(Level.ERROR, Messages.getString("DitaMap2Xliff.05"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -465,7 +467,8 @@ public class DitaMap2Xliff {
 				Key k = rootScope.getKey(key);
 				String file = k.getHref();
 				if (file == null) {
-					String issue = "Key not defined for conkeyref: \"" + conkeyref + "\"";
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.06"));
+					String issue = mf.format(new String[] { conkeyref });
 					logger.log(Level.WARNING, issue);
 					issues.add(issue);
 					return;
@@ -488,13 +491,14 @@ public class DitaMap2Xliff {
 						fixConKeyRef(its.next(), file, doc, catalog);
 					}
 				} else {
-					String issue = "Invalid conkeyref: \"" + conkeyref + "\" - Element with id=\"" + id
-							+ "\" not found in \"" + file + "\"";
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.07"));
+					String issue = mf.format(new String[]{conkeyref, id, file});
 					logger.log(Level.WARNING, issue);
 					issues.add(issue);
 				}
 			} else {
-				String issue = "Invalid conkeyref: \"" + conkeyref + "\" - Bad format.";
+				MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.08"));
+				String issue = mf.format(new String[]{conkeyref});
 				logger.log(Level.WARNING, issue);
 				issues.add(issue);
 			}
@@ -826,7 +830,7 @@ public class DitaMap2Xliff {
 				if (dataLogger.isCancelled()) {
 					throw new IOException(Constants.CANCELLED);
 				}
-				dataLogger.setStage("Adding Skipped Files");
+				dataLogger.setStage(Messages.getString("DitaMap2Xliff.04"));
 			}
 			for (int i = 0; i < skipped.size(); i++) {
 				String f = skipped.get(i);

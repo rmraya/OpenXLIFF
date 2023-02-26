@@ -150,7 +150,7 @@ public class DitaParser {
 			if (dataLogger.isCancelled()) {
 				throw new IOException(Constants.CANCELLED);
 			}
-			dataLogger.log("Building key scopes");
+			dataLogger.log(Messages.getString("DitaParser.01"));
 		}
 		rootScope = sbuilder.buildScope(inputFile, ditaval, catalog);
 		issues.addAll(sbuilder.getIssues());
@@ -341,7 +341,7 @@ public class DitaParser {
 							}
 						} else {
 							ignored.add(file.getAbsolutePath());
-							MessageFormat mf = new MessageFormat("Ignored Untranslatable File: {0}");
+							MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.02"));
 							String issue = mf.format(new Object[] { href });
 							logger.log(Level.WARNING, issue);
 							if (!issues.contains(issue)) {
@@ -349,7 +349,7 @@ public class DitaParser {
 							}
 						}
 					} else {
-						MessageFormat mf = new MessageFormat("Referenced file {0} doesn''t exist");
+						MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.03"));
 						String issue = mf.format(new Object[] { href });
 						logger.log(Level.WARNING, issue);
 						if (!issues.contains(issue)) {
@@ -364,9 +364,10 @@ public class DitaParser {
 							|| lower.endsWith(".m4v") || lower.endsWith(".flv") || lower.endsWith(".fl4v")
 							|| lower.endsWith(".avi") || lower.endsWith(".mpg") || lower.endsWith(".mpeg")
 							|| lower.endsWith(".wmv") || lower.endsWith(".asf"))) {
-						throw new SAXException(ex.getMessage() + "\n File: '" + href + "'");
+						MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.04"));
+						throw new SAXException(mf.format(new String[] { ex.getMessage(), href }));
 					}
-					MessageFormat mf = new MessageFormat("Error recursing {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.05"));
 					String issue = mf.format(new String[] { href });
 					logger.log(Level.WARNING, issue);
 					if (!issues.contains(issue)) {
@@ -383,7 +384,7 @@ public class DitaParser {
 			}
 			if (!conref.isEmpty()) {
 				if ("#".equals(conref)) {
-					MessageFormat mf = new MessageFormat("Invalid @conref at {0}");
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.06"));
 					String issue = mf.format(new String[] { parentFile });
 					logger.log(Level.WARNING, issue);
 					if (!issues.contains(issue)) {
@@ -394,8 +395,7 @@ public class DitaParser {
 					if (!visiting.contains(conref)) {
 						visiting.add(conref);
 					} else {
-						MessageFormat mf = new MessageFormat(
-								"Loop detected processing @conref \"{0}\" in file {1}");
+						MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.07"));
 						String issue = mf.format(new Object[] { e.getAttributeValue("conref"), parentFile });
 						logger.log(Level.WARNING, issue);
 						if (!issues.contains(issue)) {
@@ -422,7 +422,7 @@ public class DitaParser {
 									recurse(child, file);
 								}
 							} else {
-								MessageFormat mf = new MessageFormat("@conref not found:  \"{0}\" in file {1}");
+								MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.08"));
 								String issue = mf.format(new Object[] { conref, parentFile });
 								logger.log(Level.WARNING, issue);
 								if (!issues.contains(issue)) {
@@ -430,7 +430,7 @@ public class DitaParser {
 								}
 							}
 						} catch (Exception ex) {
-							MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
+							MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.09"));
 							String issue = mf.format(new Object[] { conref, parentFile });
 							logger.log(Level.WARNING, issue);
 							if (!issues.contains(issue)) {
@@ -451,7 +451,7 @@ public class DitaParser {
 								recurse(child, file);
 							}
 						} catch (Exception ex) {
-							MessageFormat mf = new MessageFormat("Broken @conref \"{0}\" in file {1}");
+							MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.10"));
 							String issue = mf.format(new Object[] { e.getAttributeValue("conref"), parentFile });
 							logger.log(Level.WARNING, issue);
 							if (!issues.contains(issue)) {
@@ -469,7 +469,7 @@ public class DitaParser {
 				String id = end != -1 ? conkeyref.substring(end + 1) : "";
 				Key k = rootScope.getKey(key);
 				if (k == null) {
-					MessageFormat mf = new MessageFormat("Key not defined for @conkeyref: \"{0}\".");
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.11"));
 					String issue = mf.format(new Object[] { conkeyref });
 					logger.log(Level.WARNING, issue);
 					if (!issues.contains(issue)) {
@@ -483,7 +483,7 @@ public class DitaParser {
 				usedKeys.get(k).add(parentFile);
 				String file = k.getHref();
 				if (file == null) {
-					MessageFormat mf = new MessageFormat("Key not defined for @conkeyref: \"{0}\".");
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.12"));
 					String issue = mf.format(new Object[] { conkeyref });
 					logger.log(Level.WARNING, issue);
 					if (!issues.contains(issue)) {
@@ -502,7 +502,7 @@ public class DitaParser {
 					}
 					return;
 				}
-				MessageFormat mf = new MessageFormat("Broken @conkeyref \"{0}\" in file {1}");
+				MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.13"));
 				String issue = mf.format(new Object[] { conkeyref, parentFile });
 				logger.log(Level.WARNING, issue);
 				if (!issues.contains(issue)) {
@@ -585,8 +585,7 @@ public class DitaParser {
 							}
 							visiting.remove(id + "|" + kref);
 						} else {
-							MessageFormat mf = new MessageFormat(
-									"Loop detected processing @keyref \"{0}\" in file {1}");
+							MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.14"));
 							String issue = mf.format(new Object[] { keyref, parentFile });
 							logger.log(Level.WARNING, issue);
 							if (!issues.contains(issue)) {
@@ -595,7 +594,7 @@ public class DitaParser {
 						}
 					}
 				}
-				MessageFormat mf = new MessageFormat("Undefined key for @keyref \"{0}\" in file {1}");
+				MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.15"));
 				String issue = mf.format(new Object[] { keyref, parentFile });
 				logger.log(Level.WARNING, issue);
 				if (!issues.contains(issue)) {

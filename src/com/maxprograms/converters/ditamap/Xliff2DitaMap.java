@@ -120,7 +120,7 @@ public class Xliff2DitaMap {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2DitaMap.class.getName());
-			logger.log(Level.ERROR, "Error merging DITA Map", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2DitaMap.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
