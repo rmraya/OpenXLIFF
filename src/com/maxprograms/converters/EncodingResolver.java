@@ -64,7 +64,7 @@ public class EncodingResolver {
 			try {
 				return getXMLEncoding(fileName);
 			} catch (IOException e) {
-				logger.log(Level.ERROR, "Error detecting XML encoding", e);
+				logger.log(Level.ERROR, Messages.getString("EncodingResolver.1"), e);
 			}
 		} else if (fileType.equals(FileFormats.SDLPPX)) {
 			return StandardCharsets.UTF_8;
@@ -72,13 +72,13 @@ public class EncodingResolver {
 			try {
 				return getRCEncoding(fileName);
 			} catch (IOException e) {
-				logger.log(Level.ERROR, "Error detecting XML encoding", e);
+				logger.log(Level.ERROR, Messages.getString("EncodingResolver.2"), e);
 			}
 		} else if (fileType.equals(FileFormats.HTML)) {
 			try {
 				return getHTMLEncoding(fileName);
 			} catch (IOException e) {
-				logger.log(Level.ERROR, "Error detecting HTML encoding", e);
+				logger.log(Level.ERROR, Messages.getString("EncodingResolver.3"), e);
 			}
 		} else if (fileType.equals(FileFormats.SRT)) {
 			try {
@@ -88,7 +88,7 @@ public class EncodingResolver {
 				}
 				return StandardCharsets.UTF_8;
 			} catch (IOException e) {
-				logger.log(Level.ERROR, "Error detecting SRT encoding", e);
+				logger.log(Level.ERROR, Messages.getString("EncodingResolver.4"), e);
 			}
 		} else if (fileType.equals(FileFormats.PHPA)) {
 			try {
@@ -98,13 +98,13 @@ public class EncodingResolver {
 				}
 				return StandardCharsets.UTF_8;
 			} catch (IOException e) {
-				logger.log(Level.ERROR, "Error detecting PHPA encoding", e);
+				logger.log(Level.ERROR, Messages.getString("EncodingResolver.5"), e);
 			}
 		} else if (fileType.equals(FileFormats.JSON)) {
 			try {
 				return getJSONEncoding(fileName);
 			} catch (IOException e) {
-				logger.log(Level.ERROR, "Error detecting JSON encoding", e);
+				logger.log(Level.ERROR, Messages.getString("EncodingResolver.6"), e);
 			}
 		}
 		return null;
@@ -165,7 +165,7 @@ public class EncodingResolver {
 			}
 			byte[] bytes = new byte[read];
 			if (input.read(bytes) == -1) {
-				throw new IOException("Premature end of file");
+				throw new IOException(Messages.getString("EncodingResolver.7"));
 			}
 
 			String content = new String(bytes);
@@ -229,7 +229,7 @@ public class EncodingResolver {
 		byte[] array = new byte[3];
 		try (FileInputStream inputStream = new FileInputStream(fileName)) {
 			if (inputStream.read(array) == -1) {
-				throw new IOException("Premature end of file");
+				throw new IOException(Messages.getString("EncodingResolver.7"));
 			}
 		}
 		byte[] lt = "<".getBytes();

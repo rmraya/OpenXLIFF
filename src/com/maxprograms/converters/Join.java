@@ -69,7 +69,7 @@ public class Join {
 					String file = array[h];
 					File f = new File(file);
 					if (!f.exists()) {
-						MessageFormat mf = new MessageFormat("File '{0}' does not exist.'");
+						MessageFormat mf = new MessageFormat(Messages.getString("Join.1"));
 						logger.log(Level.ERROR, mf.format(new String[] { file }));
 						System.exit(1);
 					}
@@ -125,7 +125,7 @@ Where:
 					version = v;
 				} else {
 					if (!version.equals(v)) {
-						throw new IOException("XLIFF files from different versions");
+						throw new IOException(Messages.getString("Join.2"));
 					}
 				}
 				if (version.startsWith("2.")) {
@@ -134,7 +134,7 @@ Where:
 						srcLang = src;
 					} else {
 						if (!srcLang.equals(src)) {
-							throw new IOException("XLIFF files with different source language");
+							throw new IOException(Messages.getString("Join.3"));
 						}
 					}
 					String trg = root.getAttributeValue("trgLang");
@@ -142,7 +142,7 @@ Where:
 						trgLang = trg;
 					}
 					if (!trgLang.equals(trg)) {
-						throw new IOException("XLIFF files with different target language");
+						throw new IOException(Messages.getString("Join.4"));
 					}
 				}
 				List<Attribute> atts = root.getAttributes();

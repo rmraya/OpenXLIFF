@@ -65,14 +65,14 @@ public class RemoveTargets {
 			}
             File catalogFolder = new File(new File(home), "catalog");
             if (!catalogFolder.exists()) {
-                logger.log(Level.ERROR, "'catalog' folder not found.");
+                logger.log(Level.ERROR, Messages.getString("RemoveTargets.1"));
                 return;
             }
             catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
         }
         File catalogFile = new File(catalog);
         if (!catalogFile.exists()) {
-            logger.log(Level.ERROR, "Catalog file does not exist.");
+            logger.log(Level.ERROR, Messages.getString("RemoveTargets.2"));
             return;
         }
 

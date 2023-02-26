@@ -70,14 +70,14 @@ public class CopySources {
             }
             File catalogFolder = new File(new File(home), "catalog");
             if (!catalogFolder.exists()) {
-                logger.log(Level.ERROR, "'catalog' folder not found.");
+                logger.log(Level.ERROR, Messages.getString("CopySources.1"));
                 return;
             }
             catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
         }
         File catalogFile = new File(catalog);
         if (!catalogFile.exists()) {
-            logger.log(Level.ERROR, "Catalog file does not exist.");
+            logger.log(Level.ERROR, Messages.getString("CopySources.2"));
             return;
         }
 
@@ -116,7 +116,7 @@ Where:
         Document doc = builder.build(xliff);
         Element root = doc.getRootElement();
         if (!"xliff".equals(root.getName())) {
-            throw new IOException("Selected file is not an XLIFF document");
+            throw new IOException(Messages.getString("CopySources.3"));
         }
         version = root.getAttributeValue("version");
         recurse(root);
@@ -132,7 +132,7 @@ Where:
         if (("xliff".equals(root.getName()) && version.startsWith("2.") && root.getAttributeValue("trgLang").isEmpty())
                 || ("file".equals(root.getName()) && version.startsWith("1.")
                         && root.getAttributeValue("target-language").isEmpty())) {
-            throw new IOException("Missing target language declaration");
+            throw new IOException(Messages.getString("CopySources.4"));
         }
         if (("file".equals(root.getName()) || "group".equals(root.getName()) || "trans-unit".equals(root.getName())
                 || "unit".equals(root.getName()))

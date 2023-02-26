@@ -75,7 +75,7 @@ public class Convert {
 
 		String[] arguments = Utils.fixPath(args);
 
-		String source = "";
+		String source = Messages.getString("Convert.01");
 		String type = "";
 		String enc = "";
 		String srcLang = "";
@@ -96,7 +96,7 @@ public class Convert {
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
 			if (arg.equals("-version")) {
-				MessageFormat mf = new MessageFormat("Version: {0} Build: {1}");
+				MessageFormat mf = new MessageFormat(Messages.getString("Convert.02"));
 				logger.log(Level.INFO, mf.format(new String[] { Constants.VERSION, Constants.BUILD }));
 				return;
 			}
@@ -162,61 +162,61 @@ public class Convert {
 			return;
 		}
 		if (source.isEmpty()) {
-			logger.log(Level.ERROR, "Missing '-file' parameter.");
+			logger.log(Level.ERROR, Messages.getString("Convert.03"));
 			return;
 		}
 		File sourceFile = new File(source);
 		if (!sourceFile.exists()) {
-			logger.log(Level.ERROR, "Source file does not exist.");
+			logger.log(Level.ERROR, Messages.getString("Convert.04"));
 			return;
 		}
 		if (type.isEmpty()) {
 			String detected = FileFormats.detectFormat(source);
 			if (detected != null) {
 				type = FileFormats.getShortName(detected);
-				MessageFormat mf = new MessageFormat("Auto-detected type: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("Convert.05"));
 				logger.log(Level.INFO, mf.format(new String[] { type }));
 			} else {
-				logger.log(Level.ERROR, "Unable to auto-detect file format. Use '-type' parameter.");
+				logger.log(Level.ERROR, Messages.getString("Convert.06"));
 				return;
 			}
 		}
 		type = FileFormats.getFullName(type);
 		if (type == null) {
-			logger.log(Level.ERROR, "Unknown file format.");
+			logger.log(Level.ERROR, Messages.getString("Convert.07"));
 			return;
 		}
 		if (enc.isEmpty()) {
 			Charset charset = EncodingResolver.getEncoding(source, type);
 			if (charset != null) {
 				enc = charset.name();
-				MessageFormat mf = new MessageFormat("Auto-detected encoding: {0}");
+				MessageFormat mf = new MessageFormat(Messages.getString("Convert.08"));
 				logger.log(Level.INFO, mf.format(new String[] { enc }));
 			} else {
-				logger.log(Level.ERROR, "Unable to auto-detect character set. Use '-enc' parameter.");
+				logger.log(Level.ERROR, Messages.getString("Convert.09"));
 				return;
 			}
 		}
 		String[] encodings = EncodingResolver.getPageCodes();
 		if (!Arrays.asList(encodings).contains(enc)) {
-			logger.log(Level.ERROR, "Unsupported encoding.");
+			logger.log(Level.ERROR, Messages.getString("Convert.10"));
 			return;
 		}
 		if (srcLang.isEmpty()) {
-			logger.log(Level.ERROR, "Missing '-srcLang' parameter.");
+			logger.log(Level.ERROR, Messages.getString("Convert.11"));
 			return;
 		}
 		try {
 			if (!Utils.isValidLanguage(srcLang)) {
-				MessageFormat mf = new MessageFormat("'{0}' is not a valid language code.");
+				MessageFormat mf = new MessageFormat(Messages.getString("Convert.12"));
 				logger.log(Level.WARNING, mf.format(new String[] { srcLang }));
 			}
 			if (!tgtLang.isEmpty() && !Utils.isValidLanguage(tgtLang)) {
-				MessageFormat mf = new MessageFormat("'{0}' is not a valid language code.");
+				MessageFormat mf = new MessageFormat(Messages.getString("Convert.13"));
 				logger.log(Level.WARNING, mf.format(new String[] { tgtLang }));
 			}
 		} catch (IOException e) {
-			logger.log(Level.ERROR, "Error validating languages.", e);
+			logger.log(Level.ERROR, Messages.getString("Convert.14"), e);
 			return;
 		}
 		if (srx.isEmpty()) {
@@ -229,7 +229,7 @@ public class Convert {
 		}
 		File srxFile = new File(srx);
 		if (!srxFile.exists()) {
-			logger.log(Level.ERROR, "SRX file does not exist.");
+			logger.log(Level.ERROR, Messages.getString("Convert.15"));
 			return;
 		}
 		if (xmlfilter.isEmpty()) {
@@ -247,14 +247,14 @@ public class Convert {
 			}
 			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
-				logger.log(Level.ERROR, "'catalog' folder not found.");
+				logger.log(Level.ERROR, Messages.getString("Convert.16"));
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			logger.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, Messages.getString("Convert.17"));
 			return;
 		}
 		if (skl.isEmpty()) {
@@ -301,7 +301,7 @@ public class Convert {
 		List<String> result = run(params);
 
 		if (!Constants.SUCCESS.equals(result.get(0))) {
-			logger.log(Level.ERROR, "Conversion error: {0}", result.get(1));
+			logger.log(Level.ERROR, Messages.getString("Convert.18"), result.get(1));
 		}
 	}
 
@@ -415,7 +415,7 @@ Document Types
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			logger.log(Level.ERROR, "Error adding skeleton", e);
+			logger.log(Level.ERROR, Messages.getString("Convert.19"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -481,7 +481,7 @@ Document Types
 				result = ToOpenXliff.run(params);
 			} else {
 				result.add(Constants.ERROR);
-				result.add("Unknown file format.");
+				result.add(Messages.getString("Convert.20"));
 			}
 			if ("yes".equals(params.get("embed")) && Constants.SUCCESS.equals(result.get(0))) {
 				result = addSkeleton(params.get("xliff"), params.get("catalog"));

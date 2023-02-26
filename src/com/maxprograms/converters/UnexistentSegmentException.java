@@ -21,12 +21,12 @@ public class UnexistentSegmentException extends Exception {
 
 	@Override
 	public String getLocalizedMessage() {
-		return "Requested segment does not exist in skeleton file.";
+		return Messages.getString("UnexistentSegmentException.1");
 	}
 
 	@Override
 	public String getMessage() {
-		return "Requested segment does not exist in skeleton file.";
+		return Messages.getString("UnexistentSegmentException.1");
 	}
 
 	public UnexistentSegmentException(String message) {

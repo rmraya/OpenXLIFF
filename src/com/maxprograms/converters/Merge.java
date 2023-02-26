@@ -84,7 +84,7 @@ public class Merge {
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
 			if (arg.equals("-version")) {
-				MessageFormat mf = new MessageFormat("Version: {0} Build: {1}");
+				MessageFormat mf = new MessageFormat(Messages.getString("Merge.01"));
 				logger.log(Level.INFO, mf.format(new String[] { Constants.VERSION, Constants.BUILD }));
 				return;
 			}
@@ -113,19 +113,19 @@ public class Merge {
 			return;
 		}
 		if (xliff.isEmpty()) {
-			logger.log(Level.ERROR, "Missing '-xliff' parameter.");
+			logger.log(Level.ERROR, Messages.getString("Merge.02"));
 			return;
 		}
 		if (target.isEmpty()) {
 			try {
 				target = getTargetFile(xliff);
 			} catch (IOException | SAXException | ParserConfigurationException e) {
-				logger.log(Level.ERROR, "Error getting target file", e);
+				logger.log(Level.ERROR, Messages.getString("Merge.03"), e);
 				return;
 			}
 		}
 		if (target.isEmpty()) {
-			logger.log(Level.ERROR, "Missing '-target' parameter.");
+			logger.log(Level.ERROR, Messages.getString("Merge.04"));
 			return;
 		}
 		if (catalog.isEmpty()) {
@@ -135,14 +135,14 @@ public class Merge {
 			}
 			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
-				logger.log(Level.ERROR, "'catalog' folder not found.");
+				logger.log(Level.ERROR, Messages.getString("Merge.05"));
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			logger.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, Messages.getString("Merge.06"));
 			return;
 		}
 
@@ -157,7 +157,7 @@ public class Merge {
 			result = TmxExporter.export(xliff, tmx, catalog);
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
-			MessageFormat mf = new MessageFormat("Merge error: {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("Merge.07"));
 			logger.log(Level.ERROR, mf.format(new String[]{result.get(1)}));
 		}
 	}
@@ -192,7 +192,7 @@ public class Merge {
 				File f = new File(target);
 				if (f.exists()) {
 					if (!f.isDirectory()) {
-						MessageFormat mf = new MessageFormat("'{0}' is not a directory");
+						MessageFormat mf = new MessageFormat(Messages.getString("Merge.08"));
 						String error = mf.format(new String[] { f.getAbsolutePath() });
 						logger.log(Level.ERROR, error);
 						result.add(Constants.ERROR);
@@ -298,7 +298,7 @@ Where:
 		doc = builder.build(fileName);
 		root = doc.getRootElement();
 		if (!root.getName().equals("xliff")) {
-			throw new IOException("Selected file is not an XLIFF document.");
+			throw new IOException(Messages.getString("Merge.09"));
 		}
 	}
 
@@ -425,13 +425,13 @@ Where:
 				result = FromOpenXliff.run(params);
 			} else {
 				result.add(Constants.ERROR);
-				result.add("Unsupported XLIFF file.");
+				result.add(Messages.getString("Merge.10"));
 			}
 			if (temporary != null) {
 				Files.delete(Paths.get(temporary.toURI()));
 			}
 		} catch (Exception e) {
-			logger.log(Level.ERROR, "Error merging XLIFF", e);
+			logger.log(Level.ERROR, Messages.getString("Merge.11"), e);
 			result = new ArrayList<>();
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
@@ -556,11 +556,11 @@ Where:
 		SAXBuilder builder = new SAXBuilder();
 		Element r = builder.build(file).getRootElement();
 		if (!r.getName().equals("xliff")) {
-			throw new IOException("Selected file is not an XLIFF document");
+			throw new IOException(Messages.getString("Merge.12"));
 		}
 		List<Element> files = r.getChildren("file");
 		if (files.isEmpty()) {
-			throw new IOException("Selected file is not a valid XLIFF document");
+			throw new IOException(Messages.getString("Merge.13"));
 		}
 		String version = r.getAttributeValue("version");
 		String tgtLanguage = "";
@@ -570,7 +570,7 @@ Where:
 			tgtLanguage = r.getAttributeValue("trgLang");
 		}
 		if (tgtLanguage.isEmpty()) {
-			throw new IOException("Missing target language");
+			throw new IOException(Messages.getString("Merge.14"));
 		}
 		String target = "";
 		TreeSet<String> originals = new TreeSet<>();

@@ -69,7 +69,7 @@ public class Utils {
 			}
 			return result.getCanonicalPath();
 		} catch (IOException e) {
-			logger.log(Level.ERROR, "Invalid path", e);
+			logger.log(Level.ERROR, Messages.getString("Utils.1"), e);
 			throw e;
 		}
 	}
@@ -77,7 +77,7 @@ public class Utils {
 	public static String getRelativePath(String home, String file) throws IOException {
 		File homeFile = new File(home);
 		if (!homeFile.isAbsolute()) {
-			MessageFormat mf = new MessageFormat("Path is not absolute for {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("Utils.2"));
 			throw new IOException(mf.format(new String[] { home }));
 		}
 		if (homeFile.isFile()) {

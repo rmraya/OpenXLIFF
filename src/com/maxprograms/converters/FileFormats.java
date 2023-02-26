@@ -81,7 +81,7 @@ public class FileFormats {
 			byte[] array = new byte[40960];
 			try (FileInputStream input = new FileInputStream(file)) {
 				if (input.read(array) == -1) {
-					throw new IOException("Premature end of file");
+					throw new IOException(Messages.getString("FileFormats.1"));
 				}
 			}
 			String string = "";
@@ -444,6 +444,6 @@ public class FileFormats {
 				break;
 			}
 		}
-		throw new IOException("Selected file is not JSON");
+		throw new IOException(Messages.getString("FileFormats.2"));
 	}
 }
