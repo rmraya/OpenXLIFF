@@ -70,7 +70,7 @@ public class Xliff2Properties {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
@@ -112,7 +112,7 @@ public class Xliff2Properties {
 								}
 							} else {
 								result.add(Constants.ERROR);
-								MessageFormat mf = new MessageFormat("Segment {0} not found.");
+								MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Properties.1"));
 								result.add(mf.format(new Object[] { code }));
 								return result;
 							}
@@ -134,7 +134,7 @@ public class Xliff2Properties {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Properties.class.getName());
-			logger.log(Level.ERROR, "Error merging .properties file.", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Properties.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

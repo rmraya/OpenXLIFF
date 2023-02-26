@@ -149,7 +149,7 @@ public class Properties2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Properties2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting .properties file", e);
+			logger.log(Level.ERROR, Messages.getString("Properties2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
