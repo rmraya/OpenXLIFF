@@ -115,10 +115,12 @@ public class XliffChecker {
 		try {
 			XliffChecker instance = new XliffChecker();
 			if (!instance.validate(file, catalog)) {
-				logger.log(Level.ERROR, "Invalid XLIFF. Reason: " + instance.getReason());
+				MessageFormat mf = new MessageFormat("Invalid XLIFF. Reason: {0}");
+				logger.log(Level.ERROR, mf.format(new String[] { instance.getReason() }));
 				return;
 			}
-			logger.log(Level.INFO, "File is valid XLIFF " + instance.getVersion());
+			MessageFormat mf = new MessageFormat("File is valid XLIFF {0}");
+			logger.log(Level.INFO, mf.format(new String[] { instance.getVersion() }));
 		} catch (IOException e) {
 			logger.log(Level.ERROR, "Error creating validator", e);
 		}
@@ -126,7 +128,7 @@ public class XliffChecker {
 
 	private static void help() {
 		String launcher = "   xliffchecker.sh ";
-		if ("\\".equals(File. pathSeparator)) {
+		if ("\\".equals(File.pathSeparator)) {
 			launcher = "   xliffchecker.bat ";
 		}
 		String help = """
@@ -209,7 +211,7 @@ Where:
 				return true;
 			} else if ("2.1".equals(version) || "2.2".equals(version)) {
 				MessageFormat mf = new MessageFormat("XLIFF {0} not supported yet");
-				reason = mf.format(new String[]{version});
+				reason = mf.format(new String[] { version });
 				return false;
 			} else {
 				reason = "Invalid XLIFF version";
