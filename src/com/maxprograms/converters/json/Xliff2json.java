@@ -18,6 +18,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,7 +82,7 @@ public class Xliff2json {
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2json.class.getName());
-            logger.log(Level.ERROR, "Error merging file.", e);
+            logger.log(Level.ERROR, Messages.getString("Xliff2json.1"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }
@@ -105,7 +106,7 @@ public class Xliff2json {
 
         List<PI> encodings = file.getPI("encoding");
         if (encodings.isEmpty()) {
-            throw new IOException("Missing encoding");
+            throw new IOException(Messages.getString("Xliff2json.2"));
         }
         encoding = encodings.get(0).getData();
         Element body = file.getChild("body");
@@ -153,7 +154,8 @@ public class Xliff2json {
                     line = line.replace("%%%" + code + "%%%", extractText(source));
                 }
             } else {
-                throw new IOException("Segment " + code + " not found");
+                MessageFormat mf = new MessageFormat(Messages.getString("Xliff2json.3"));
+                throw new IOException(mf.format(new String[] { code }));
             }
             index = line.indexOf("%%%");
         }

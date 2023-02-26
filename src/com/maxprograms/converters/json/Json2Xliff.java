@@ -22,6 +22,7 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -127,7 +128,7 @@ public class Json2Xliff {
 
             if (segments.isEmpty()) {
                 result.add(Constants.ERROR);
-                result.add("Nothing to translate.");
+                result.add(Messages.getString("Json2Xliff.1"));
                 return result;
             }
 
@@ -264,7 +265,7 @@ public class Json2Xliff {
                 break;
             }
         }
-        throw new IOException("Selected file is not supported");
+        throw new IOException(Messages.getString("Json2Xliff.2"));
     }
 
     private static void parseJson(JSONObject json) {
@@ -291,7 +292,8 @@ public class Json2Xliff {
             if (json.has(sourceKey)) {
                 JSONObject configuration = config.getConfiguration(sourceKey);
                 if (configuration == null) {
-                    throw new IOException("Wrong configuration for source key " + sourceKey);
+                    MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.3"));
+                    throw new IOException(mf.format(new String[] { sourceKey }));
                 }
                 String sourceText = json.getString(sourceKey);
                 if (!entities.isEmpty()) {
@@ -365,7 +367,8 @@ public class Json2Xliff {
                     String suffix = sourceSegments.length > 1 ? "-" + (h + 1) : "";
                     transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString + suffix);
                     if (ids.contains(transUnit.getAttributeValue("id"))) {
-                        throw new IOException("Duplicated \"id\" found: \"" + transUnit.getAttributeValue("id") + "\"");
+                        MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.4"));
+                        throw new IOException(mf.format(new String[] { transUnit.getAttributeValue("id") }));
                     }
                     ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
@@ -501,7 +504,8 @@ public class Json2Xliff {
             }
         }
         if (!first) {
-            throw new IOException("Invalid initial character for \"id\": " + id.charAt(0));
+            MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.5"));
+            throw new IOException(mf.format(new String[] { "" + id.charAt(0) }));
         }
         for (int i = 1; i < id.length(); i++) {
             boolean rest = false;
@@ -514,7 +518,8 @@ public class Json2Xliff {
                 }
             }
             if (!rest) {
-                throw new IOException("Invalid character for \"id\": " + id.charAt(i));
+                MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.6"));
+                throw new IOException(mf.format(new String[] { "" + id.charAt(i) }));
             }
         }
     }

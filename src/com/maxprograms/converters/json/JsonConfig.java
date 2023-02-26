@@ -9,7 +9,6 @@
  * Contributors:
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
-
 package com.maxprograms.converters.json;
 
 import java.io.BufferedReader;
@@ -72,7 +71,7 @@ public class JsonConfig {
                 config.translatableKeys.put(sourceKey, translatable);
                 config.sourceKeys.add(sourceKey);
             } else {
-                throw new IOException("Missing \"sourceKey\" in configuration object");
+                throw new IOException(Messages.getString("JsonConfig.1"));
             }
         }
         JSONArray ignorableArray = configObject.getJSONArray("ignorable");
