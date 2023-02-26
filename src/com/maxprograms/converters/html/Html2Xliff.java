@@ -110,7 +110,7 @@ public class Html2Xliff {
 				byte[] array = new byte[size];
 				if (size != input.read(array)) {
 					result.add(Constants.ERROR);
-					result.add("Error reading from input file.");
+					result.add(Messages.getString("Html2Xliff.1"));
 					return result;
 				}
 				String file = new String(array, srcEncoding);
@@ -127,7 +127,7 @@ public class Html2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Html2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting HTML file", e);
+			logger.log(Level.ERROR, Messages.getString("Html2Xliff.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -867,7 +867,7 @@ public class Html2Xliff {
 				end = file.indexOf("]]>") + 2;
 			}
 			if (end < start || end < 0 || start < 0) {
-				throw new IOException("Invalid HTML markup found.");
+				throw new IOException(Messages.getString("Html2Xliff.3"));
 			}
 			String element = file.substring(start, end + 1);
 
