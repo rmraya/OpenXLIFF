@@ -72,7 +72,7 @@ public class RepetitionAnalysis {
 			return;
 		}
 		if (file.isEmpty()) {
-			logger.log(Level.ERROR, "Missing '-file' parameter.");
+			logger.log(Level.ERROR, Messages.getString("RepetitionAnalysis.1"));
 			return;
 		}
 		if (catalog.isEmpty()) {
@@ -85,34 +85,34 @@ public class RepetitionAnalysis {
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
-			logger.log(Level.ERROR, "Catalog file does not exist.");
+			logger.log(Level.ERROR, Messages.getString("RepetitionAnalysis.2"));
 			return;
 		}
 		try {
 			RepetitionAnalysis instance = new RepetitionAnalysis();
 			instance.analyse(file, catalog);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			logger.log(Level.ERROR, "Error analyzing file", e);
+			logger.log(Level.ERROR, Messages.getString("RepetitionAnalysis.3"), e);
 		}
 	}
 
 	private static void help() {
 		String launcher = "analysis.sh";
-		if ("\\".equals(File. pathSeparator)) {
+		if ("\\".equals(File.pathSeparator)) {
 			launcher = "analysis.bat";
 		}
 		String help = """
 
 
-{0} [-help] -file xliffFile [-catalog catalogFile]
+				{0} [-help] -file xliffFile [-catalog catalogFile]
 
-Where:
+				Where:
 
-    -help:      (optional) Display this help information and exit
-    -file:      XLIFF file to analyze
-    -catalog:   (optional) XML catalog to use for processing
+				    -help:      (optional) Display this help information and exit
+				    -file:      XLIFF file to analyze
+				    -catalog:   (optional) XML catalog to use for processing
 
-"""; 
+				""";
 		MessageFormat mf = new MessageFormat(help);
 		logger.log(Level.INFO, mf.format(new String[] { launcher }));
 	}
@@ -196,10 +196,10 @@ Where:
 
 		Collections.sort(files, (o1, o2) -> o1.compareToIgnoreCase(o2));
 
-		String title = "Translation Status Analysis: {0}";
+		String title = Messages.getString("RepetitionAnalysis.4");
 
 		// List of files ready, process individually
-		MessageFormat mf = new MessageFormat("File: {0}");
+		MessageFormat mf = new MessageFormat(Messages.getString("RepetitionAnalysis.5"));
 
 		//
 		// all segments are in, now check repeated
@@ -254,7 +254,7 @@ Where:
 			writeString(out, "<html>\n");
 			writeString(out, "<head>\n");
 			writeString(out, "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n");
-			writeString(out, "  <title>" + "Repetition Analysis" + "</title>\n");
+			writeString(out, "  <title>" + Messages.getString("RepetitionAnalysis.6") + "</title>\n");
 			writeString(out, "  <style type=\"text/css\">\n");
 			writeString(out, "   table.wordCount {\n");
 			writeString(out, "       border-left:1px solid grey;\n");
@@ -298,12 +298,17 @@ Where:
 			mf = new MessageFormat(title);
 			Object[] args = { shortName };
 			writeString(out, "<h2>" + mf.format(args) + "</h2>\n");
-			writeString(out, "<h2>" + "Segments Based Analysis" + "</h2>\n");
+			writeString(out, "<h2>" + Messages.getString("RepetitionAnalysis.7") + "</h2>\n");
 			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
 
 			writeString(out,
-					"<tr><th>#</th><th>" + "Document" + "</th><th>" + "New" + "</th><th>" + "ICE" + "</th><th>"
-							+ "Matches" + "</th><th>" + "Int.Rep." + "</th><th>" + "Ext.Rep." + "</th><th>" + "SUM"
+					"<tr><th>#</th><th>" + Messages.getString("RepetitionAnalysis.8") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.9") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.10") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.11") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.12") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.13") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.14")
 							+ "</th></tr>\n");
 			for (int i = 0; i < files.size(); i++) {
 				List<Element> content = segments.get(files.get(i));
@@ -351,7 +356,8 @@ Where:
 			writeString(out, "<tr>");
 			writeString(out,
 					"<td bgcolor=\"#ededed\" style=\"border-right:1px #adbfbe solid;border-bottom:1px #adbfbe solid;\">&nbsp;</td><td align=\"center\" bgcolor=\"#ededed\"><b>"
-							+ "SUM" + "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + newSegsTotal
+							+ Messages.getString("RepetitionAnalysis.14")
+							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + newSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + iceSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + matchesTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + repIntTotal
@@ -368,13 +374,20 @@ Where:
 			matchesTotal = 0;
 			repeatedTotal = 0;
 			newSegsTotal = 0;
-			writeString(out, "<h2>" + "Words Based Analysis" + "</h2>\n");
+			writeString(out, "<h2>" + Messages.getString("RepetitionAnalysis.16") + "</h2>\n");
 			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
 			writeString(out,
-					"<tr><th>#</th><th>" + "Document" + "</th><th>" + "New" + "</th><th>" + "ICE" + "</th><th>"
-							+ "Not Translatable" + "</th><th>" + "100%" + "</th><th>" + "Repeated" + "</th><th>"
-							+ "95-99%" + "</th><th>" + "85-94%" + "</th><th>" + "75-84%" + "</th><th>" + "50-74%"
-							+ "</th><th>" + "SUM" + "</th></tr>\n");
+					"<tr><th>#</th><th>" + Messages.getString("RepetitionAnalysis.8") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.9") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.19") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.20") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.21") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.22") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.23") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.24") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.25") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.26")
+							+ "</th><th>" + Messages.getString("RepetitionAnalysis.14") + "</th></tr>\n");
 			for (int i = 0; i < files.size(); i++) {
 				List<Element> content = segments.get(files.get(i));
 				it = content.iterator();
@@ -450,7 +463,7 @@ Where:
 			writeString(out, "<tr>");
 			writeString(out,
 					"<td bgcolor=\"#ededed\" style=\"border-right:1px #adbfbe solid;border-bottom:1px #adbfbe solid;\">&nbsp;</td><td align=\"center\" bgcolor=\"#ededed\"><b>"
-							+ "SUM");
+							+ Messages.getString("RepetitionAnalysis.14"));
 			writeString(out,
 					"</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + newSegsTotal
 							+ "</b></td><td align=\"right\" bgcolor=\"#ededed\"><b>" + iceSegsTotal
@@ -468,17 +481,21 @@ Where:
 			writeString(out, "</tr>\n");
 			writeString(out, "</table>\n");
 
-			writeString(out, "<h2>" + "Translation Status Analysis" + "</h2>\n");
+			writeString(out, "<h2>" + Messages.getString("RepetitionAnalysis.29") + "</h2>\n");
 			//
 			// Translation status by segments
 			//
 
-			writeString(out, "<h3>" + "Segments" + "</h3>\n");
+			writeString(out, "<h3>" + Messages.getString("RepetitionAnalysis.30") + "</h3>\n");
 
 			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
 			writeString(out,
-					"<tr><th>#</th><th>" + "Document" + "</th><th>" + "Not Translated" + "</th><th>" + "Translated"
-							+ "</th><th>" + "Approved" + "</th><th>" + "Not Approved" + "</th><th>" + "SUM"
+					"<tr><th>#</th><th>" + Messages.getString("RepetitionAnalysis.8") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.32") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.33")
+							+ "</th><th>" + Messages.getString("RepetitionAnalysis.34") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.35") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.14")
 							+ "</th></tr>\n");
 
 			int allnumapproved = 0;
@@ -521,7 +538,7 @@ Where:
 
 			writeString(out,
 					"<tr><td  bgcolor=\"#ededed\" style=\"border-right:1px #adbfbe solid;border-bottom:1px #adbfbe solid;\">&nbsp;</td><td align=\"center\" bgcolor=\"#ededed\"><b>"
-							+ "SUM" + "</b>");
+							+ Messages.getString("RepetitionAnalysis.14") + "</b>");
 			writeString(out,
 					"</td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnottranslated
 							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnumtranslated
@@ -536,15 +553,15 @@ Where:
 			Element approvedSvg = svgStats.generateApprovedSvg();
 
 			writeString(out, "<div style=\"padding-left:50px;\">\n");
-			writeString(out, "<h3>Translated Segments</h3>\n");
+			writeString(out, "<h3>" + Messages.getString("RepetitionAnalysis.38") + "</h3>\n");
 			writeString(out, translatedSvg.toString());
 			writeString(out, "\n<br>\n");
 
-			writeString(out, "<h3>Approved Segments</h3>\n");
+			writeString(out, "<h3>" + Messages.getString("RepetitionAnalysis.39") + "</h3>\n");
 			writeString(out, approvedSvg.toString());
 			writeString(out, "\n<br>\n");
 
-			writeString(out, "<h3>TM Matches Quality</h3>\n");
+			writeString(out, "<h3>" + Messages.getString("RepetitionAnalysis.40") + "</h3>\n");
 			writeString(out, matchesSvg.toString());
 			writeString(out, "\n<br>\n");
 			writeString(out, "</div>\n");
@@ -553,13 +570,17 @@ Where:
 			// Translation status by words
 			//
 
-			writeString(out, "<h3>" + "Words" + "</h3>\n");
+			writeString(out, "<h3>" + Messages.getString("RepetitionAnalysis.41") + "</h3>\n");
 
 			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
 			writeString(out,
-					"<tr><th>#</th><th>" + "Document" + "</th><th>" + "Not Translated" + "</th><th>" + "Translated"
-							+ "</th><th>" + "Not Translatable" + "</th><th>" + "Approved" + "</th><th>" + "Not Approved"
-							+ "</th><th>" + "SUM" + "</th></tr>\n");
+					"<tr><th>#</th><th>" + Messages.getString("RepetitionAnalysis.8") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.32") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.33")
+							+ "</th><th>" + Messages.getString("RepetitionAnalysis.20") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.34") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.35")
+							+ "</th><th>" + Messages.getString("RepetitionAnalysis.14") + "</th></tr>\n");
 
 			allnumapproved = 0;
 			allnumtranslated = 0;
@@ -608,7 +629,7 @@ Where:
 
 			writeString(out,
 					"<tr><td bgcolor=\"#ededed\" style=\"border-right:1px #adbfbe solid;border-bottom:1px #adbfbe solid;\">&nbsp;</td><td align=\"center\" bgcolor=\"#ededed\"><b>"
-							+ "SUM" + "</b>");
+							+ Messages.getString("RepetitionAnalysis.14") + "</b>");
 			writeString(out,
 					"</td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnottranslated
 							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnumtranslated
@@ -619,11 +640,11 @@ Where:
 							+ (allnumapproved + allnotapproved + alluntranslatable) + "</b></td></tr>\n");
 			writeString(out, "</table>\n");
 
-			writeString(out, "<p><b><u>" + "Comments:" + "</u></b><br />");
-			writeString(out, "<b>" + "Int.Rep." + "</b> "
-					+ "Internal Repetition = Segment repetitions within one document" + "<br />");
-			writeString(out, "<b>" + "Ext.Rep." + "</b> "
-					+ "External Repetition = Segment repetitions between all documents" + "</p>");
+			writeString(out, "<p><b><u>" + Messages.getString("RepetitionAnalysis.50") + "</u></b><br />");
+			writeString(out, "<b>" + Messages.getString("RepetitionAnalysis.51") + "</b> "
+					+ Messages.getString("RepetitionAnalysis.52") + "<br />");
+			writeString(out, "<b>" + Messages.getString("RepetitionAnalysis.53") + "</b> "
+					+ Messages.getString("RepetitionAnalysis.54") + "</p>");
 			writeString(out, "</body>\n");
 			writeString(out, "</html>\n");
 		}
@@ -946,7 +967,7 @@ Where:
 			writeString(out, "<!DOCTYPE html>\n");
 			writeString(out, "<html>\n");
 			writeString(out, "<head>\n");
-			writeString(out, "<title>" + "Translation Status History" + "</title>\n");
+			writeString(out, "<title>" + Messages.getString("RepetitionAnalysis.55") + "</title>\n");
 			writeString(out, "  <style>\n");
 			writeString(out, "   h2 {\n");
 			writeString(out, "       font-family: Arial,Helvetica,sans-serif;\n");
@@ -957,21 +978,30 @@ Where:
 			writeString(out, "  </style>\n");
 			writeString(out, "</head>\n");
 			writeString(out, "<body>\n");
-			writeString(out, "<h2>" + "Translation Status History" + "</h2>\n");
-			MessageFormat mf = new MessageFormat("File: {0}");
+			writeString(out, "<h2>" + Messages.getString("RepetitionAnalysis.55") + "</h2>\n");
+			MessageFormat mf = new MessageFormat(Messages.getString("RepetitionAnalysis.56"));
 			Object[] args = { filename };
 			writeString(out, "<h2>" + mf.format(args) + "</h2>\n");
 			writeString(out, "<table width=\"100%\">\n");
 			writeString(out,
-					"<tr><td bgcolor=\"#ededed\">" + "Description" + "</th><td bgcolor=\"#ededed\">" + "Date"
-							+ "</th><td bgcolor=\"#ededed\">" + "New" + "</th><td bgcolor=\"#ededed\">" + "ICE"
-							+ "</th><td bgcolor=\"#ededed\">" + "100%" + "</th><td bgcolor=\"#ededed\">" + "Repeated"
-							+ "</th><td bgcolor=\"#ededed\">" + "95-99%" + "</th><td bgcolor=\"#ededed\">" + "85-94%"
-							+ "</th><td bgcolor=\"#ededed\">" + "75-84%" + "</th><td bgcolor=\"#ededed\">" + "50-74%"
-							+ "</th><td bgcolor=\"#ededed\">" + "SUM" + "</th><td bgcolor=\"#ededed\">" + "Approved"
-							+ "</th><td bgcolor=\"#ededed\">" + "Not Approved" + "</th><td bgcolor=\"#ededed\">"
-							+ "Translated" + "</th><td bgcolor=\"#ededed\">" + "Not Translated"
-							+ "</th><td bgcolor=\"#ededed\">" + "SUM" + "</th></tr>\n");
+					"<tr><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.57")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.58")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.9")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.60")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.61")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.62")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.23")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.24")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.25")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.26")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.14")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.34")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.35")
+							+ "</th><td bgcolor=\"#ededed\">"
+							+ Messages.getString("RepetitionAnalysis.33") + "</th><td bgcolor=\"#ededed\">"
+							+ Messages.getString("RepetitionAnalysis.32")
+							+ "</th><td bgcolor=\"#ededed\">" + Messages.getString("RepetitionAnalysis.14")
+							+ "</th></tr>\n");
 
 			for (int i = 0; i < status.length; i++) {
 				Status stat = status[i];

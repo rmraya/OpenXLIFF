@@ -47,7 +47,7 @@ public class SvgStats {
 		Document document = builder.build(file);
 		Element root = document.getRootElement();
 		if (!"xliff".equals(root.getLocalName())) {
-			throw new IOException("Selected file is not an XLIFF document");
+			throw new IOException(Messages.getString("SvgStats.1"));
 		}
 		segmentsList = new ArrayList<>();
 		if (root.getAttributeValue("version").startsWith("1.")) {
@@ -56,7 +56,7 @@ public class SvgStats {
 			parseXliff2(root);
 		}
 		if (segmentsList.isEmpty()) {
-			throw new IOException("Empty XLIFF");
+			throw new IOException(Messages.getString("SvgStats.2"));
 		}
 		int listSize = segmentsList.size();
 		if (listSize <= 10) {
