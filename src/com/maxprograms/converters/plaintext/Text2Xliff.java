@@ -140,7 +140,7 @@ public class Text2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Text2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting TEXT file", e);
+			logger.log(Level.ERROR, Messages.getString("Text2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

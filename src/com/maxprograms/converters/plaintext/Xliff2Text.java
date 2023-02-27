@@ -91,7 +91,7 @@ public class Xliff2Text {
 									line = line.substring(line.indexOf("%%%") + 3);
 									Element segment = segments.get(code);
 									if (segment == null) {
-										MessageFormat mf = new MessageFormat("Segment {0} not found");
+										MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Text.1"));
 										throw new IOException(mf.format(new String[] { code }));
 									}
 									Element source = segment.getChild("source");
@@ -120,7 +120,7 @@ public class Xliff2Text {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Text.class.getName());
-			logger.log(Level.ERROR, "Error merging TEXT file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Text.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
