@@ -73,7 +73,7 @@ public class Xliff2Resx {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | ParserConfigurationException | SAXException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Resx.class.getName());
-			logger.log(Level.ERROR, "Error merging ResX file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Resx.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

@@ -84,7 +84,7 @@ public class Resx2Xliff {
 			}
 		} catch (IOException | ParserConfigurationException | SAXException | URISyntaxException e) {
 			Logger logger = System.getLogger(Resx2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting ResX file", e);
+			logger.log(Level.ERROR, Messages.getString("Resx2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
