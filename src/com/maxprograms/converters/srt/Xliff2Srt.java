@@ -103,7 +103,7 @@ public class Xliff2Srt {
                                     }
                                 } else {
                                     result.add(Constants.ERROR);
-                                    MessageFormat mf = new MessageFormat("Segment {0} not found");
+                                    MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Srt.0"));
                                     result.add(mf.format(new String[] { code }));
                                     return result;
                                 }
@@ -123,7 +123,7 @@ public class Xliff2Srt {
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2Srt.class.getName());
-            logger.log(Level.ERROR, "Error merging SRT file", e);
+            logger.log(Level.ERROR, Messages.getString("Xliff2Srt.1"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

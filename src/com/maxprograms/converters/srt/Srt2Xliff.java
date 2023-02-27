@@ -122,7 +122,7 @@ public class Srt2Xliff {
             result.add(Constants.SUCCESS);
         } catch (IOException e) {
             Logger logger = System.getLogger(Srt2Xliff.class.getName());
-            logger.log(Level.ERROR, "Error converting .srt file", e);
+            logger.log(Level.ERROR, Messages.getString("Srt2Xliff.0"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }
