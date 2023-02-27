@@ -65,7 +65,7 @@ public class Xliff2Po {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
@@ -94,7 +94,7 @@ public class Xliff2Po {
 							if (segment != null) {
 								writeSegment(segment);
 							} else {
-								MessageFormat mf = new MessageFormat("Segment {0} not found.");
+								MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Po.1"));
 								throw new UnexistentSegmentException(mf.format(new Object[] { code }));
 							}
 
@@ -117,7 +117,7 @@ public class Xliff2Po {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | UnexistentSegmentException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Po.class.getName());
-			logger.log(Level.ERROR, "Error merging PO file.", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Po.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

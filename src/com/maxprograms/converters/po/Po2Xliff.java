@@ -9,7 +9,6 @@
  * Contributors:
  *     Maxprograms - initial API and implementation
  *******************************************************************************/
-
 package com.maxprograms.converters.po;
 
 import java.io.BufferedReader;
@@ -261,7 +260,7 @@ public class Po2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Po2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting PO file", e);
+			logger.log(Level.ERROR, Messages.getString("Po2Xliff.0"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
