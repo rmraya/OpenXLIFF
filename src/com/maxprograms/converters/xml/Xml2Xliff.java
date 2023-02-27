@@ -163,8 +163,7 @@ public class Xml2Xliff {
 			}
 			File f = new File(iniFile);
 			if (!f.exists()) {
-				MessageFormat mf = new MessageFormat(
-						"Configuration file ''{0}'' not found. \n\nWrite a new configuration file for the XML Converter or set file type to ''XML (Generic)''.");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.0"));
 				throw new IOException(mf.format(new Object[] { f.getName() }));
 			}
 
@@ -196,7 +195,7 @@ public class Xml2Xliff {
 				byte[] array = new byte[size];
 				if (size != input.read(array)) {
 					result.add(Constants.ERROR);
-					result.add("Error reading from input file.");
+					result.add(Messages.getString("Xml2Xliff.1"));
 					return result;
 				}
 				String file = new String(array, srcEncoding);
@@ -238,18 +237,19 @@ public class Xml2Xliff {
 				Files.deleteIfExists(new File(skeletonFile).toPath());
 				Files.deleteIfExists(new File(xliffFile).toPath());
 				result.add(Constants.ERROR);
-				result.add(inputFile + " does not contain text");
+				MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.2"));
+				result.add(mf.format(new String[] { inputFile }));
 				if (ditaBased || rootElement.equals("svg")) {
 					result.add("EMPTY");
 				} else {
-					logger.log(Level.WARNING, inputFile + " does not contain text");
+					logger.log(Level.WARNING, mf.format(new String[] { inputFile }));
 				}
 				return result;
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException
 				| IllegalArgumentException e) {
-			logger.log(Level.ERROR, "Error converting XML file", e);
+			logger.log(Level.ERROR, Messages.getString("Xml2Xliff.4"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -319,7 +319,7 @@ public class Xml2Xliff {
 					}
 				}
 			}
-			MessageFormat mf = new MessageFormat("Base DITA class ''{0}'' not found in ''config_dita.xml''");
+			MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.5"));
 			throw new IOException(mf.format(new Object[] { cls }));
 		}
 
@@ -553,7 +553,7 @@ public class Xml2Xliff {
 		try {
 			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
 		} catch (SAXException sax) {
-			MessageFormat mf = new MessageFormat("Broken segment: {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.6"));
 			logger.log(Level.ERROR, mf.format(new String[] { source }));
 			throw sax;
 		}
@@ -582,7 +582,7 @@ public class Xml2Xliff {
 					} else if ("mrk".equals(e.getName())) {
 						result.append(cleanMrk(e));
 					} else {
-						throw new SAXException("broken tagged text");
+						throw new SAXException(Messages.getString("Xml2Xliff.7"));
 					}
 					break;
 				case XMLNode.TEXT_NODE:
@@ -603,7 +603,7 @@ public class Xml2Xliff {
 	private static String cleanMrk(Element element) throws SAXException {
 		String ts = element.getAttributeValue("ts");
 		if (ts.isEmpty()) {
-			throw new SAXException("Broken <mrk> element.");
+			throw new SAXException(Messages.getString("Xml2Xliff.8"));
 		}
 		ts = restoreChars(ts).trim();
 		StringBuilder name = new StringBuilder();
@@ -805,7 +805,7 @@ public class Xml2Xliff {
 		try {
 			d = b.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
 		} catch (SAXException sax) {
-			MessageFormat mf = new MessageFormat("Broken segment: {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.9"));
 			logger.log(Level.ERROR, mf.format(new String[] { string }));
 			throw sax;
 		}
@@ -1152,7 +1152,7 @@ public class Xml2Xliff {
 	private static void parseNode(XMLNode n) throws SAXException, IOException {
 		switch (n.getNodeType()) {
 			case XMLNode.ATTRIBUTE_NODE:
-				throw new SAXException("Parsed undeclared attribute node." + n);
+				throw new SAXException(Messages.getString("Xml2Xliff.10") + n);
 			case XMLNode.CDATA_SECTION_NODE:
 				String name = stack.peek();
 				if (startsSegment.containsKey(name)) {
@@ -1420,7 +1420,8 @@ public class Xml2Xliff {
 				return;
 			}
 		}
-		logger.log(Level.WARNING, "Unknown element: " + e.getName());
+		MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.11"));
+		logger.log(Level.WARNING, mf.format(new String[] { e.getName() }));
 	}
 
 	private static boolean isKnownElement(String name) {
@@ -1520,7 +1521,7 @@ public class Xml2Xliff {
 		byte[] array = new byte[2];
 		try (FileInputStream inputStream = new FileInputStream(fileName)) {
 			if (inputStream.read(array) == -1) {
-				throw new IOException("Premature end of file");
+				throw new IOException(Messages.getString("Xml2Xliff.12"));
 			}
 		}
 		byte[] lt = "<".getBytes();

@@ -135,7 +135,7 @@ public class Xliff2Xml {
 									}
 								} else {
 									result.add(Constants.ERROR);
-									MessageFormat mf = new MessageFormat("Segment {0} not found.");
+									MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Xml.1"));
 									result.add(mf.format(new Object[] { code }));
 									return result;
 								}
@@ -178,7 +178,8 @@ public class Xliff2Xml {
 						recoverImages(outputFile);
 					}
 				} catch (SAXException sax) {
-					logger.log(Level.ERROR, "removeTranslate error: " + outputFile);
+					MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Xml.2"));
+					logger.log(Level.ERROR, mf.format(new String[] { outputFile }));
 					throw sax;
 				}
 			}
@@ -187,7 +188,7 @@ public class Xliff2Xml {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			logger.log(Level.ERROR, "Error merging file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Xml.3"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -219,7 +220,7 @@ public class Xliff2Xml {
 				}
 			}
 		} catch (IOException | SecurityException | JSONException e) {
-			MessageFormat mf = new MessageFormat("Error updating images for {0}");
+			MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Xml.4"));
 			logger.log(Level.WARNING, mf.format(new String[] { outputFile }));
 		}
 	}
@@ -323,7 +324,7 @@ public class Xliff2Xml {
 	private static String cleanMrk(Element element) throws SAXException {
 		String ts = element.getAttributeValue("ts");
 		if (ts.isEmpty()) {
-			throw new SAXException("Broken <mrk> element.");
+			throw new SAXException(Messages.getString("Xliff2Xml.5"));
 		}
 		ts = restoreChars(ts).trim();
 		String name = "";
