@@ -11,6 +11,8 @@ package com.maxprograms.converters.wpml;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -105,6 +107,8 @@ public class Wpml2Xliff {
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            Logger logger = System.getLogger(Wpml2Xliff.class.getName());
+            logger.log(Level.ERROR, Messages.getString("Wpml2Xliff.1"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

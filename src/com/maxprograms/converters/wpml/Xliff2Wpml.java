@@ -17,6 +17,7 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,7 +65,7 @@ public class Xliff2Wpml {
             if (p == null) {
                 p = new File(System.getProperty("user.dir"));
             }
-            if (Files.notExists(p.toPath()))  {
+            if (Files.notExists(p.toPath())) {
                 Files.createDirectories(p.toPath());
             }
             if (!f.exists()) {
@@ -78,7 +79,7 @@ public class Xliff2Wpml {
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2Wpml.class.getName());
-            logger.log(Level.ERROR, "Error merging WPML file.", e);
+            logger.log(Level.ERROR, Messages.getString("Xliff2Wpml.1"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }
@@ -105,7 +106,8 @@ public class Xliff2Wpml {
                         content.addAll(segment.getChild("source").getContent());
                     }
                 } else {
-                    throw new IOException("Missing segment: " + code);
+                    MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Wpml.2"));
+                    throw new IOException(mf.format(new String[] { code }));
                 }
                 index = text.indexOf("%%%");
             }
