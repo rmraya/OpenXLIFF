@@ -93,7 +93,7 @@ public class Xliff2Php {
 									line = line.substring(line.indexOf("%%%") + 3);
 									Element segment = segments.get(code);
 									if (segment == null) {
-										MessageFormat mf = new MessageFormat("Segment {0} not found");
+										MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Php.1"));
 										throw new IOException(mf.format(new String[] { code }));
 									}
 									Element source = segment.getChild("source");

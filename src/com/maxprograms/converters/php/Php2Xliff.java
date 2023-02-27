@@ -127,7 +127,7 @@ public class Php2Xliff {
 						}
 					}
 					if (start.isEmpty()) {
-						throw new IOException("Initial array delimiter not found");
+						throw new IOException(Messages.getString("Php2Xliff.1"));
 					}
 					writeSkeleton(skeleton, start);
 					text = text.substring(index + "array(".length());
@@ -195,7 +195,7 @@ public class Php2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (Exception e) {
 			Logger logger = System.getLogger(Php2Xliff.class.getName());
-			logger.log(Level.ERROR, e);
+			logger.log(Level.ERROR, Messages.getString("Php2Xliff.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -264,7 +264,7 @@ public class Php2Xliff {
 
 				String tag = text.substring(start, end);
 				Element ph = new Element("ph");
-				ph.setAttribute("id", "" + count); //$NON-NLS-2$
+				ph.setAttribute("id", "" + count);
 				ph.setText(tag);
 				table.put("[[[" + count + "]]]", ph);
 
@@ -291,7 +291,7 @@ public class Php2Xliff {
 
 				String tag = temp.substring(start, end);
 				Element ph = new Element("ph");
-				ph.setAttribute("id", "" + count); //$NON-NLS-2$
+				ph.setAttribute("id", "" + count);
 				ph.setText(tag);
 				table.put("[[[" + count + "]]]", ph);
 
