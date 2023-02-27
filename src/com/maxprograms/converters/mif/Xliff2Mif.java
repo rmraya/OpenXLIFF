@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,7 +70,7 @@ public class Xliff2Mif {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
@@ -99,7 +100,8 @@ public class Xliff2Mif {
 								if (target != null) {
 									process(target);
 								} else {
-									throw new UnexistentSegmentException("Missing target in segment " + code);
+									MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Mif.1"));
+									throw new UnexistentSegmentException(mf.format(new String[] { code }));
 								}
 							} else {
 								// process source
@@ -107,7 +109,8 @@ public class Xliff2Mif {
 								process(source);
 							}
 						} else {
-							throw new UnexistentSegmentException("Missing segment " + code);
+							MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Mif.2"));
+							throw new UnexistentSegmentException(mf.format(new String[] { code }));
 						}
 					} else {
 						//
@@ -123,7 +126,7 @@ public class Xliff2Mif {
 		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException
 				| URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Mif.class.getName());
-			logger.log(Level.ERROR, "Error mering MIF file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Mif.3"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -192,16 +195,16 @@ public class Xliff2Mif {
 
 	private static String getCleanChar(char c) {
 		switch (c) {
-		case '\u0009':
-			return "\\t";
-		case '\'':
-			return "\\q";
-		case '`':
-			return "\\Q";
-		case '\\':
-			return "\\\\";
-		case '>':
-			return "\\>";
+			case '\u0009':
+				return "\\t";
+			case '\'':
+				return "\\q";
+			case '`':
+				return "\\Q";
+			case '\\':
+				return "\\\\";
+			case '>':
+				return "\\>";
 		}
 		if (useUnicode) {
 			return "" + c;

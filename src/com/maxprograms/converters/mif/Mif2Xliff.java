@@ -213,7 +213,7 @@ public class Mif2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Mif2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting MIF file", e);
+			logger.log(Level.ERROR, Messages.getString("Mif2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
