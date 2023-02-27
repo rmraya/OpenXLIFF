@@ -94,7 +94,7 @@ public class Rc2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException e) {
 			Logger logger = System.getLogger(Rc2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error convering RC file", e);
+			logger.log(Level.ERROR, Messages.getString("Rc2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

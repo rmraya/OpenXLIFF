@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -129,9 +130,10 @@ public class Xliff2Rc {
 			dlgInitLengths(params);
 			Files.delete(Paths.get(tempFile.toURI()));
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException | URISyntaxException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException
+				| URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Rc.class.getName());
-			logger.log(Level.ERROR, "Error merging RC file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Rc.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -175,8 +177,8 @@ public class Xliff2Rc {
 		return byteWord;
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
-
+	private static void loadSegments()
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 
@@ -221,7 +223,8 @@ public class Xliff2Rc {
 						if (segment != null) {
 							dlgText.put(code, Integer.valueOf(0));
 						} else {
-							throw new UnexistentSegmentException("Missing segment " + code);
+							MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Rc.2"));
+							throw new UnexistentSegmentException(mf.format(new String[] { code }));
 						}
 						index = line.indexOf("###");
 					} // end while
