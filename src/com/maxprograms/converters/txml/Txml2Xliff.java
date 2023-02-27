@@ -79,12 +79,12 @@ public class Txml2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Txml2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting TXML file", e);
+			logger.log(Level.ERROR, Messages.getString("Txml2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			if (e.getMessage() != null) {
 				result.add(e.getMessage());
 			} else {
-				result.add("Unknown error");
+				result.add(Messages.getString("Txml2Xliff.2"));
 			}
 		}
 		return result;

@@ -75,7 +75,7 @@ public class Xliff2Txml {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
@@ -87,12 +87,12 @@ public class Xliff2Txml {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Txml.class.getName());
-			logger.log(Level.ERROR, "Error merging file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Txml.1"), e);
 			result.add(Constants.ERROR);
 			if (e.getMessage() != null) {
 				result.add(e.getMessage());
 			} else {
-				result.add("Unknown error");
+				result.add(Messages.getString("Xliff2Txml.2"));
 			}
 		}
 
@@ -138,7 +138,8 @@ public class Xliff2Txml {
 		return tag;
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
+	private static void loadSegments()
+			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
