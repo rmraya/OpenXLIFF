@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.4.0 | Extracted localizable strings | February 27th, 2023
 3.3.0 | Detected loops while processing @keyref in DITA | February 20th, 2023
 3.2.0 | Improved file management | February 4th, 2023
 3.1.0 | Improved DITA merge | January 24th, 2023
