@@ -62,9 +62,9 @@ public class ApproveAll {
         }
         if (catalog.isEmpty()) {
             String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
+            if (home == null) {
+                home = System.getProperty("user.dir");
+            }
             File catalogFolder = new File(new File(home), "catalog");
             if (!catalogFolder.exists()) {
                 logger.log(Level.ERROR, Messages.getString("ApproveAll.1"));
@@ -86,24 +86,9 @@ public class ApproveAll {
     }
 
     private static void help() {
-        String launcher = "approveall.sh";
-        if ("\\".equals(File.pathSeparator)) {
-            launcher = "approveall.bat";
-        }
-        String help = """
-
-
-{0} [-help] -xliff xliffFile [-catalog catalogFile]
-
-Where:
-
-    -help:      (optional) Display this help information and exit
-    -xliff:     XLIFF file to process
-    -catalog:   (optional) XML catalog to use for processing
-
-""";
-        MessageFormat mf = new MessageFormat(help);
-		logger.log(Level.INFO, mf.format(new String[] { launcher }));
+        MessageFormat mf = new MessageFormat(Messages.getString("ApproveAll.help"));
+        String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "approveall.bat" : "approveall.sh" });
+        System.out.println(help);
     }
 
     public static void approveAll(String xliff, String catalog)

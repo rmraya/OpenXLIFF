@@ -253,28 +253,9 @@ public class Merge {
 	}
 
 	private static void help() {
-		String launcher = "merge.sh";
-		if ("\\".equals(File.pathSeparator)) {
-			launcher = "merge.bat";
-		}
-		String help = """
-
-
-{0} [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
-
-Where:
-
-        -help:       (optional) display this help information and exit
-        -version:    (optional) display version & build information and exit
-        -xliff:      XLIFF file to merge
-        -target:     (optional) translated file or folder where to store translated files
-        -catalog:    (optional) XML catalog to use for processing
-        -unapproved: (optional) accept translations from unapproved segments
-        -export:     (optional) generate TMX file from approved segments
-
-""";
-		MessageFormat mf = new MessageFormat(help);
-		logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("Merge.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "merge.bat" : "merge.sh" });
+		System.out.println(help);
 	}
 
 	private static void approveAll(Element e) {

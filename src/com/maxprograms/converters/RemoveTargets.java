@@ -124,24 +124,9 @@ public class RemoveTargets {
     }
 
     private static void help() {
-        String launcher = "removetargets.sh";
-        if ("\\".equals(File.pathSeparator)) {
-            launcher = "removetargets.bat";
-        }
-        String help = """
-
-
-{0} [-help] -xliff xliffFile [-catalog catalogFile]
-
-Where:
-
-    -help:      (optional) Display this help information and exit
-    -xliff:     XLIFF file to process
-    -catalog:   (optional) XML catalog to use for processing
-
-""";
-        MessageFormat mf = new MessageFormat(help);
-        logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("RemoveTargets.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "removetargets.bat" : "removetargets.sh" });
+		System.out.println(help);
     }
 
 }

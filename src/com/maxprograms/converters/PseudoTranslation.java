@@ -89,24 +89,9 @@ public class PseudoTranslation {
     }
 
     private static void help() {
-        String launcher = "pseudotranslate.sh";
-        if ("\\".equals(File.pathSeparator)) {
-            launcher = "pseudotranslate.bat";
-        }
-        String help = """
-
-
-{0} [-help] -xliff xliffFile [-catalog catalogFile]
-
-Where:
-
-    -help:      (optional) Display this help information and exit
-    -xliff:     XLIFF file to pseudo-translate
-    -catalog:   (optional) XML catalog to use for processing
-
-""";
-        MessageFormat mf = new MessageFormat(help);
-        logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("PseudoTranslation.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "pseudotranslate.bat" : "pseudotranslate.sh" });
+		System.out.println(help);
     }
 
     public static void pseudoTranslate(String xliff, String catalog)

@@ -97,24 +97,9 @@ public class RepetitionAnalysis {
 	}
 
 	private static void help() {
-		String launcher = "analysis.sh";
-		if ("\\".equals(File.pathSeparator)) {
-			launcher = "analysis.bat";
-		}
-		String help = """
-
-
-				{0} [-help] -file xliffFile [-catalog catalogFile]
-
-				Where:
-
-				    -help:      (optional) Display this help information and exit
-				    -file:      XLIFF file to analyze
-				    -catalog:   (optional) XML catalog to use for processing
-
-				""";
-		MessageFormat mf = new MessageFormat(help);
-		logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("RepetitionAnalysis.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "analysis.bat" : "analysis.sh" });
+		System.out.println(help);
 	}
 
 	private void createList(Element root) {

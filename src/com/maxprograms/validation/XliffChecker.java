@@ -127,24 +127,9 @@ public class XliffChecker {
 	}
 
 	private static void help() {
-		String launcher = "xliffchecker.sh";
-		if ("\\".equals(File.pathSeparator)) {
-			launcher = "xliffchecker.bat";
-		}
-		String help = """
-
-
-{0} [-help] -file xliffFile [-catalog catalogFile]
-
-Where:
-
-    -help:      (optional) Display this help information and exit
-    -file:      XLIFF file to validate
-    -catalog:   (optional) XML catalog to use for processing
-
-""";
-		MessageFormat mf = new MessageFormat(help);
-		logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "xliffchecker.bat" : "xliffchecker.sh" });
+		System.out.println(help);
 	}
 
 	public String getVersion() {

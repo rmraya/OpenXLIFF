@@ -88,24 +88,9 @@ public class Join {
 	}
 
 	private static void help() {
-		String launcher = "join.sh";
-		if ("\\".equals(File.pathSeparator)) {
-			launcher = "join.bat";
-		}
-		String help = """
-
-
-{0} [-help] -target targetFile -files file1,file2,file3...
-
-Where:
-
-        -help:     (optional) Display this help information and exit
-        -target:   combined output XLIFF file
-        -files:    list of XLIFF files to join, separated by ','
-	   
-""";
-		MessageFormat mf = new MessageFormat(help);
-		logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("Join.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "join.bat" : "join.sh" });
+		System.out.println(help);
 	}
 
 	public static void join(List<String> xliffs, String out)

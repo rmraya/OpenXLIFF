@@ -75,7 +75,7 @@ public class Convert {
 
 		String[] arguments = Utils.fixPath(args);
 
-		String source = Messages.getString("Convert.01");
+		String source = "";
 		String type = "";
 		String enc = "";
 		String srcLang = "";
@@ -306,73 +306,9 @@ public class Convert {
 	}
 
 	private static void help() {
-		String launcher = "convert.sh";
-		if ("\\".equals(File.pathSeparator)) {
-			launcher = "convert.bat";
-		}
-		String help = """
-
-
-{0} [-help] [-version] -file sourceFile -srcLang sourceLang 
-        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
-        [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
-        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
-        [-xmlfilter folder][-2.0] [-ignoretc][-charsets]
-
-Where:
-
-   -help:      (optional) display this help information and exit
-   -version:   (optional) display version & build information and exit
-   -file:      source file to convert
-   -srcLang:   source language code
-   -tgtLang:   (optional) target language code
-   -xliff:     (optional) XLIFF file to generate
-   -skl:       (optional) skeleton file to generate
-   -type:      (optional) document type
-   -enc:       (optional) character set code for the source file
-   -srx:       (optional) SRX file to use for segmentation
-   -catalog:   (optional) XML catalog to use for processing
-   -ditaval:   (optional) conditional processing file to use when converting DITA maps
-   -config:    (optional) configuration file to use when converting JSON documents
-   -embed:     (optional) store skeleton inside the XLIFF file
-   -paragraph: (optional) use paragraph segmentation
-   -xmlfilter: (optional) folder containing configuration files for the XML filter
-   -ignoretc:  (optional) ignore tracked changes from Oxygen XML Editor in XML files
-   -2.0:       (optional) generate XLIFF 2.0
-   -charsets:  (optional) display a list of available character sets and exit
-
-Document Types
-
-   INX = Adobe InDesign Interchange
-   ICML = Adobe InCopy ICML
-   IDML = Adobe InDesign IDML
-   DITA = DITA Map
-   HTML = HTML Page
-   JS = JavaScript
-   JSON = JSON
-   JAVA = Java Properties
-   MIF = MIF (Maker Interchange Format)
-   OFF = Microsoft Office 2007 Document
-   OO = OpenOffice Document
-   PHPA = PHP Array
-   PO = PO (Portable Objects)
-   RC = RC (Windows C/C++ Resources)
-   RESX = ResX (Windows .NET Resources)
-   SDLPPX = Trados Studio Package
-   SDLXLIFF = SDLXLIFF Document
-   SRT = SRT Subtitle
-   TEXT = Plain Text
-   TS = TS (Qt Linguist translation source)
-   TXLF = Wordfast/GlobalLink XLIFF
-   TXML = TXML Document
-   WPML = WPML XLIFF
-   XLIFF = XLIFF Document
-   XML = XML Document
-   XMLG = XML (Generic)
-
-""";
-		MessageFormat mf = new MessageFormat(help);
-		logger.log(Level.INFO, mf.format(new String[] { launcher }));
+		MessageFormat mf = new MessageFormat(Messages.getString("Convert.help"));
+		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "convert.bat" : "convert.sh" });
+		System.out.println(help);
 	}
 
 	public static List<String> addSkeleton(String fileName, String catalog) {
