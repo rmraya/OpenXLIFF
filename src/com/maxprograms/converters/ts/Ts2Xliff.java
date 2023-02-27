@@ -34,7 +34,7 @@ import com.maxprograms.xml.XMLOutputter;
 import org.xml.sax.SAXException;
 
 public class Ts2Xliff {
-	
+
 	private static int segId;
 	private static FileOutputStream output;
 
@@ -94,7 +94,7 @@ public class Ts2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Ts2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting .ts file", e);
+			logger.log(Level.ERROR, Messages.getString("Ts2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

@@ -64,7 +64,7 @@ public class Xliff2Ts {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
@@ -81,7 +81,7 @@ public class Xliff2Ts {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Xliff2Ts.class.getName());
-			logger.log(Level.ERROR, "Error merging TS file.", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Ts.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
