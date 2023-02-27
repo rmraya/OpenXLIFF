@@ -76,7 +76,7 @@ public class XliffUtils {
         Document doc = builder.build(file);
         Element root = doc.getRootElement();
         if (!"xliff".equals(root.getName())) {
-            throw new IOException("Selected file is not an XLIFF document");
+            throw new IOException(Messages.getString("XliffUtils.1"));
         }
         JSONObject result = new JSONObject();
         if (root.getAttributeValue("version").startsWith("1.")) {
@@ -87,7 +87,7 @@ public class XliffUtils {
             result.put("srcLang", root.getAttributeValue("srcLang"));
             result.put("tgtLang", root.getAttributeValue("trgLang"));
         } else {
-            throw new IOException("Unsupported version of XLIFF");
+            throw new IOException(Messages.getString("XliffUtils.2"));
         }
         return result;
     }

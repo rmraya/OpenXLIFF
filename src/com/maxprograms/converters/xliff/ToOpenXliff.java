@@ -12,6 +12,8 @@ package com.maxprograms.converters.xliff;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -101,7 +103,7 @@ public class ToOpenXliff {
             }
             if (units.isEmpty()) {
                 result.add(Constants.ERROR);
-                result.add("Nothing extracted");
+                result.add(Messages.getString("ToOpenXliff.1"));
                 return result;
             }
 
@@ -124,6 +126,8 @@ public class ToOpenXliff {
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            Logger logger = System.getLogger(ToOpenXliff.class.getName());
+            logger.log(Level.ERROR, Messages.getString("ToOpenXliff.2"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

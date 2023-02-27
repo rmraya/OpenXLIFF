@@ -7,7 +7,6 @@
  *
  * Contributors: Maxprograms - initial API and implementation
  *******************************************************************************/
-
 package com.maxprograms.converters.xliff;
 
 import java.io.ByteArrayInputStream;
@@ -79,7 +78,7 @@ public class FromOpenXliff {
             if (p == null) {
                 p = new File(System.getProperty("user.dir"));
             }
-            if (Files.notExists(p.toPath()))  {
+            if (Files.notExists(p.toPath())) {
                 Files.createDirectories(p.toPath());
             }
             if (!f.exists()) {
@@ -94,7 +93,7 @@ public class FromOpenXliff {
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(FromOpenXliff.class.getName());
-            logger.log(Level.ERROR, "Error merging XLIFF file.", e);
+            logger.log(Level.ERROR, Messages.getString("FromOpenXliff.1"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }
@@ -330,7 +329,7 @@ public class FromOpenXliff {
 
     private static void recurseXliff(Element e) throws IOException {
         if ("xliff".equals(e.getName()) && !"1.2".equals(e.getAttributeValue("version"))) {
-            throw new IOException("Wrong XLIFF version");
+            throw new IOException(Messages.getString("FromOpenXliff.2"));
         }
         if ("file".equals(e.getName()) && tgtLang.isEmpty()) {
             tgtLang = e.getAttributeValue("target-language");
