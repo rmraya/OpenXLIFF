@@ -109,7 +109,7 @@ public class MSOffice2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(MSOffice2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting MS Office file", e);
+			logger.log(Level.ERROR, Messages.getString("MSOffice2Xliff.0"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
