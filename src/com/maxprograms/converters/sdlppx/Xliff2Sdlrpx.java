@@ -80,7 +80,7 @@ public class Xliff2Sdlrpx {
                 Element file = it.next();
                 Element header = file.getChild("header");
                 if (header == null) {
-                    throw new SAXException("Missing <header>");
+                    throw new SAXException(Messages.getString("Xliff2Sdlrpx.0"));
                 }
                 Element skl = header.getChild("skl");
                 if (skl == null) {
@@ -88,7 +88,7 @@ public class Xliff2Sdlrpx {
                 }
                 List<Element> propGroups = header.getChildren("prop-group");
                 if (propGroups == null) {
-                    throw new SAXException("Missing <prp-groups>");
+                    throw new SAXException(Messages.getString("Xliff2Sdlrpx.1"));
                 }
                 String sdlxliffFile = "";
                 for (int i = 0; i < propGroups.size(); i++) {
@@ -104,7 +104,7 @@ public class Xliff2Sdlrpx {
                     }
                 }
                 if (sdlxliffFile.isEmpty()) {
-                    throw new SAXException("Missing sdlxliff file name");
+                    throw new SAXException(Messages.getString("Xliff2Sdlrpx.2"));
                 }
                 if (tgtLang.isEmpty()) {
                     tgtLang = file.getAttributeValue("target-language");
@@ -183,7 +183,7 @@ public class Xliff2Sdlrpx {
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2Sdlrpx.class.getName());
-            logger.log(Level.ERROR, "Error merging XLIFF file", e);
+            logger.log(Level.ERROR, Messages.getString("Xliff2Sdlrpx.3"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

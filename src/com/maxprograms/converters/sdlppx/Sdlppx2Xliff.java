@@ -85,7 +85,7 @@ public class Sdlppx2Xliff {
 			}
 			if (!tgtLangs.contains(targetLanguage)) {
 				result.add(Constants.ERROR);
-				StringBuilder string = new StringBuilder("Incorrect target language. Valid options:");
+				StringBuilder string = new StringBuilder(Messages.getString("Sdlppx2Xliff.0"));
 				for (int i = 0; i < tgtLangs.size(); i++) {
 					string.append(' ');
 					string.append(tgtLangs.get(i));
@@ -96,7 +96,7 @@ public class Sdlppx2Xliff {
 
 			if (!srcLangs.contains(sourceLanguage)) {
 				result.add(Constants.ERROR);
-				StringBuilder string = new StringBuilder("Incorrect source language. Valid options:");
+				StringBuilder string = new StringBuilder(Messages.getString("Sdlppx2Xliff.1"));
 				for (int i = 0; i < srcLangs.size(); i++) {
 					string.append(' ');
 					string.append(srcLangs.get(i));
@@ -108,8 +108,6 @@ public class Sdlppx2Xliff {
 			out = new ZipOutputStream(new FileOutputStream(skeleton));
 			List<String> xliffList = new ArrayList<>();
 			try (ZipInputStream in = new ZipInputStream(new FileInputStream(inputFile))) {
-
-
 				ZipEntry entry = null;
 				while ((entry = in.getNextEntry()) != null) {
 					String entryName = entry.getName();
@@ -199,7 +197,7 @@ public class Sdlppx2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			Logger logger = System.getLogger(Sdlppx2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting SDL package", e);
+			logger.log(Level.ERROR, Messages.getString("Sdlppx2Xliff.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -275,7 +273,7 @@ public class Sdlppx2Xliff {
 		}
 		if (project == null) {
 			result.put("result", "Failed");
-			result.put("reason", "Project file not found in package");
+			result.put("reason", Messages.getString("Sdlppx2Xliff.3"));
 			return result;
 		}
 		SAXBuilder builder = new SAXBuilder();
@@ -283,7 +281,7 @@ public class Sdlppx2Xliff {
 		Element projectRoot = proj.getRootElement();
 		if (!"ProjectPackage".equals(projectRoot.getAttributeValue("PackageType"))) {
 			result.put("result", "Failed");
-			result.put("reason", "Selected file is a return package");
+			result.put("reason", Messages.getString("Sdlppx2Xliff.4"));
 			return result;
 		}
 		Element directions = projectRoot.getChild("LanguageDirections");
