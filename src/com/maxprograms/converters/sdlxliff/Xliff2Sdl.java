@@ -116,7 +116,7 @@ public class Xliff2Sdl {
 		} catch (IOException | SAXException | ParserConfigurationException | UnexistentSegmentException
 				| URISyntaxException e) {
 			Logger logger = System.getLogger(Xliff2Sdl.class.getName());
-			logger.log(Level.ERROR, "Error merging SDLXLIFF file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Sdl.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -130,7 +130,7 @@ public class Xliff2Sdl {
 		}
 		Element unit = locateUnit(root, id);
 		if (unit == null) {
-			MessageFormat mf = new MessageFormat("Segment {0} not found");
+			MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Sdl.2"));
 			throw new UnexistentSegmentException(mf.format(new String[] { id }));
 		}
 		Element target = unit.getChild("target");

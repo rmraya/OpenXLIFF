@@ -112,7 +112,7 @@ public class Sdl2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Sdl2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting SDLXLIFF file", e);
+			logger.log(Level.ERROR, Messages.getString("Sdl2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -166,7 +166,7 @@ public class Sdl2Xliff {
 				if (root.getAttributeValue("translate", "yes").equals("no")) {
 					writeStr(root.toString());
 				} else {
-					throw new IOException("Segmentation problem found.");
+					throw new IOException(Messages.getString("Sdl2Xliff.2"));
 				}
 			}
 		} else {
