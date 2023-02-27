@@ -7,11 +7,12 @@
  *
  * Contributors: Maxprograms - initial API and implementation
  *******************************************************************************/
-
 package com.maxprograms.converters.txlf;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -97,7 +98,7 @@ public class Txlf2Xliff {
             }
             if (units.isEmpty()) {
                 result.add(Constants.ERROR);
-                result.add("Nothing extracted");
+                result.add(Messages.getString("Txlf2Xliff.1"));
                 return result;
             }
             Element body = new Element("body");
@@ -118,6 +119,8 @@ public class Txlf2Xliff {
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            Logger logger = System.getLogger(Txlf2Xliff.class.getName());
+            logger.log(Level.ERROR, Messages.getString("Txlf2Xliff.2"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

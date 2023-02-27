@@ -79,7 +79,7 @@ public class Xliff2Txlf {
             if (p == null) {
                 p = new File(System.getProperty("user.dir"));
             }
-            if (Files.notExists(p.toPath()))  {
+            if (Files.notExists(p.toPath())) {
                 Files.createDirectories(p.toPath());
             }
             if (!f.exists()) {
@@ -94,7 +94,7 @@ public class Xliff2Txlf {
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2Txlf.class.getName());
-            logger.log(Level.ERROR, "Error merging XLIFF file.", e);
+            logger.log(Level.ERROR, Messages.getString("Xliff2Txlf.1"), e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }
