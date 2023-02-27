@@ -177,9 +177,9 @@ public class Office2Xliff {
 			} catch (IOException e) {
 				result.add(Constants.ERROR);
 				if (params.get("format").equals(FileFormats.OFF)) {
-					result.add("Selected file is not a Microsoft Office 2007 document.");
+					result.add(Messages.getString("Office2Xliff.1"));
 				} else {
-					result.add("Wrong document type.");
+					result.add(Messages.getString("Office2Xliff.2"));
 				}
 				return result;
 			}
@@ -201,7 +201,7 @@ public class Office2Xliff {
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Office2Xliff.class.getName());
-			logger.log(Level.ERROR, "Error converting Office file", e);
+			logger.log(Level.ERROR, Messages.getString("Office2Xliff.3"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}

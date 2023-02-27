@@ -20,6 +20,7 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -78,7 +79,7 @@ public class Xliff2Office {
 			if (p == null) {
 				p = new File(System.getProperty("user.dir"));
 			}
-			if (Files.notExists(p.toPath()))  {
+			if (Files.notExists(p.toPath())) {
 				Files.createDirectories(p.toPath());
 			}
 			if (!f.exists()) {
@@ -101,7 +102,8 @@ public class Xliff2Office {
 							Map<String, String> table = new HashMap<>();
 							String s = filesTable.get(name);
 							if (s == null) {
-								logger.log(Level.WARNING, "Skeleton not found for file " + name);
+								MessageFormat mf = new MessageFormat(Messages.getString("Xliff2Office.1"));
+								logger.log(Level.WARNING, mf.format(new String[] { name }));
 								continue;
 							}
 							table.put("xliff", s);
@@ -162,7 +164,7 @@ public class Xliff2Office {
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			logger.log(Level.ERROR, "Error converting Office file", e);
+			logger.log(Level.ERROR, Messages.getString("Xliff2Office.2"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
 		}
@@ -184,7 +186,7 @@ public class Xliff2Office {
 
 	private static void addPreserveSpace(Element e) {
 		// a:t is used in PowerPoint and should not be modified
-		// <t> is a simple type, does not support  attributes
+		// <t> is a simple type, does not support attributes
 		if (e.getName().matches("[w-z]:t")) {
 			e.setAttribute("xml:space", "preserve");
 		}
@@ -217,7 +219,7 @@ public class Xliff2Office {
 			isEmbedded = true;
 		}
 		file.getChild("header").getChild("skl").getChild("external-file").setAttribute("href",
-				xliff.getAbsolutePath() + ".skl"); 
+				xliff.getAbsolutePath() + ".skl");
 		XMLOutputter outputter = new XMLOutputter();
 		try (FileOutputStream output = new FileOutputStream(xliff.getAbsolutePath())) {
 			outputter.output(doc, output);
