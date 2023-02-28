@@ -277,6 +277,13 @@ public class FromXliff2 {
 						}
 						attributes.put(id, list);
 					}
+					if ("transUnitAttributes".equals(group.getAttributeValue("category"))) {
+						List<Element> metas = group.getChildren("mda:meta");
+						for (int i = 0; i < metas.size(); i++) {
+							Element meta = metas.get(i);
+							transUnit.setAttribute(meta.getAttributeValue("type"), meta.getText());
+						}
+					}
 				}
 			}
 

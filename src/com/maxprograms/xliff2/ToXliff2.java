@@ -46,6 +46,11 @@ public class ToXliff2 {
 	private static int fileId;
 	private static int mrkCount;
 
+	private static List<String> preserveAttributes = Arrays.asList("reformat", "datatype", "ts", "phase-name",
+			"restype", "resname", "extradata", "help-id", "menu", "menu-option", "menu-name", "coord", "font",
+			"css-style", "style", "exstyle", "extype", "maxbytes", "minbytes", "size-unit", "maxheight", "minheight",
+			"maxwidth", "minwidth", "charclass");
+
 	private ToXliff2() {
 		// do not instantiate this class
 		// use run or main methods instead
@@ -305,10 +310,28 @@ public class ToXliff2 {
 			}
 			List<Attribute> atts = source.getAttributes();
 			Iterator<Attribute> at = atts.iterator();
+			List<Attribute> otherAttributes = new ArrayList<>();
 			while (at.hasNext()) {
 				Attribute a = at.next();
 				if (a.getName().indexOf(':') != -1 && !a.getName().startsWith("xml:")) {
 					unit.setAttribute(a);
+				} else if (preserveAttributes.contains(a.getName())) {
+					otherAttributes.add(a);
+				}
+			}
+			if (!otherAttributes.isEmpty()) {
+				Element metadata = new Element("mda:metadata");
+				unit.addContent(metadata);
+				Element metaGroup = new Element("mda:metaGroup");
+				metaGroup.setAttribute("category", "transUnitAttributes");
+				metadata.addContent(metaGroup);
+				Iterator<Attribute> ats = otherAttributes.iterator();
+				while (ats.hasNext()) {
+					Attribute a = ats.next();
+					Element meta = new Element("mda:meta");
+					meta.setAttribute("type", a.getName());
+					meta.setText(a.getValue());
+					metaGroup.addContent(meta);
 				}
 			}
 			target.addContent(unit);
