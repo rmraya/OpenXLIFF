@@ -152,7 +152,7 @@ public class Xliff2Properties {
 				result = result + extractText(e);
 			}
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				result = result + ((TextNode) n).getText();
+				result = result + ((TextNode) n).getText().replace("\n", "\\n");
 			}
 		}
 		return cleanChars(result);

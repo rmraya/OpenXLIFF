@@ -106,7 +106,6 @@ public class Properties2Xliff {
 
 				String line;
 				while ((line = buffer.readLine()) != null) {
-
 					if (line.isBlank()) {
 						// no text in this line
 						// segment separator
@@ -120,7 +119,7 @@ public class Properties2Xliff {
 						if (line.endsWith("\\")) {
 							do {
 								line = buffer.readLine();
-								tmp += "\n" + line;
+								tmp += '\n' + line;
 							} while (line != null && line.endsWith("\\"));
 						}
 						int index = tmp.indexOf('=');
@@ -128,7 +127,7 @@ public class Properties2Xliff {
 							String key = tmp.substring(0, index + 1);
 							writeSkeleton(key);
 							source = tmp.substring(index + 1);
-							writeSegment();
+							writeSegment(key);
 							writeSkeleton("\n");
 						} else {
 							// this line may be wrong, send to skeleton
@@ -165,7 +164,7 @@ public class Properties2Xliff {
 		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void writeSegment() throws IOException {
+	private static void writeSegment(String key) throws IOException {
 		String[] segments;
 		if (!segByElement) {
 			segments = segmenter.segment(fixChars(source));
@@ -175,8 +174,8 @@ public class Properties2Xliff {
 		}
 		for (int i = 0; i < segments.length; i++) {
 			if (!segments[i].trim().isEmpty()) {
-				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
-						+ "      <source>" + Utils.cleanString(segments[i])
+				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\" resname=\""
+						+ key + "\">\n" + "      <source>" + Utils.cleanString(segments[i])
 						+ "</source>\n");
 				writeString("   </trans-unit>\n");
 				writeSkeleton("%%%" + segId++ + "%%%");
@@ -188,7 +187,7 @@ public class Properties2Xliff {
 	}
 
 	private static String fixChars(String string) {
-		String result = string;
+		String result = string.replace("\\n", "\n");
 		int start = result.indexOf("\\u");
 		while (start != -1) {
 			if (result.substring(start + 2, start + 6).toLowerCase()
