@@ -43,7 +43,7 @@ public class MyMemoryTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return Messages.getString("MyMemoryTranslator.1");
+        return "MyMemory";
     }
 
     @Override

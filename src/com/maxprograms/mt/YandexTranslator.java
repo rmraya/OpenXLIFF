@@ -44,7 +44,7 @@ public class YandexTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return Messages.getString("YandexTranslator.1");
+        return "Yandex Translate API";
     }
 
     @Override

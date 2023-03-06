@@ -47,7 +47,7 @@ public class GoogleTranslator implements MTEngine {
 
     @Override
     public String getName() {
-        return Messages.getString("GoogleTranslator.1");
+        return "Google Cloud Translation";
     }
 
     @Override

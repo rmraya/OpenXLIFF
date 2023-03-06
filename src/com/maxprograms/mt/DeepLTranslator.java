@@ -45,7 +45,7 @@ public class DeepLTranslator implements MTEngine {
 
 	@Override
 	public String getName() {
-		return Messages.getString("DeepLTranslator.1");
+		return "DeepL API";
 	}
 
 	@Override
