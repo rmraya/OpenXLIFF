@@ -40,100 +40,82 @@ Mj0lJSU1JSUlClRvWGxpZmYyLjM9JSUlNiUlJQpUb1hsaWZmMi40PSUlJTclJSUKCg==</internal-f
 <file original="com/maxprograms/mt/mt.properties" source-language="en" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
     <header>
       <skl>
-        <internal-file form="base64">QXp1cmVUcmFuc2xhdG9yLjE9JSUlMCUlJQpEZWVwTFRyYW5zbGF0b3IuMT0lJSUxJSUlCkRlZXBM
-VHJhbnNsYXRvci4yPSUlJTIlJSUKRGVlcExUcmFuc2xhdG9yLjM9JSUlMyUlJQpEZWVwTFRyYW5z
-bGF0b3IuND0lJSU0JSUlCkRlZXBMVHJhbnNsYXRvci41PSUlJTUlJSUKRGVlcExUcmFuc2xhdG9y
-LjY9JSUlNiUlJQpEZWVwTFRyYW5zbGF0b3IuNz0lJSU3JSUlCkRlZXBMVHJhbnNsYXRvci44PSUl
-JTglJSUKRGVlcExUcmFuc2xhdG9yLjk9JSUlOSUlJQpEZWVwTFRyYW5zbGF0b3IuMTA9JSUlMTAl
-JSUKR29vZ2xlVHJhbnNsYXRvci4xPSUlJTExJSUlCkdvb2dsZVRyYW5zbGF0b3IuMj0lJSUxMiUl
-JQpHb29nbGVUcmFuc2xhdG9yLjM9JSUlMTMlJSUKTVRyYW5zbGF0b3IuMT0lJSUxNCUlJQpNVHJh
-bnNsYXRvci4yPSUlJTE1JSUlCk15TWVtb3J5VHJhbnNsYXRvci4xPSUlJTE2JSUlCk15TWVtb3J5
-VHJhbnNsYXRvci4yPSUlJTE3JSUlCk15TWVtb3J5VHJhbnNsYXRvci4zPSUlJTE4JSUlCllhbmRl
-eFRyYW5zbGF0b3IuMT0lJSUxOSUlJQpZYW5kZXhUcmFuc2xhdG9yLjI9JSUlMjAlJSUKWWFuZGV4
-VHJhbnNsYXRvci4zPSUlJTIxJSUlCllhbmRleFRyYW5zbGF0b3IuND0lJSUyMiUlJQpZYW5kZXhU
-cmFuc2xhdG9yLjU9JSUlMjMlJSUKWWFuZGV4VHJhbnNsYXRvci42PSUlJTI0JSUlCllhbmRleFRy
-YW5zbGF0b3IuNz0lJSUyNSUlJQo=</internal-file>
+        <internal-file form="base64">RGVlcExUcmFuc2xhdG9yLjI9JSUlMCUlJQpEZWVwTFRyYW5zbGF0b3IuMz0lJSUxJSUlCkRlZXBM
+VHJhbnNsYXRvci40PSUlJTIlJSUKRGVlcExUcmFuc2xhdG9yLjU9JSUlMyUlJQpEZWVwTFRyYW5z
+bGF0b3IuNj0lJSU0JSUlCkRlZXBMVHJhbnNsYXRvci43PSUlJTUlJSUKRGVlcExUcmFuc2xhdG9y
+Ljg9JSUlNiUlJQpEZWVwTFRyYW5zbGF0b3IuOT0lJSU3JSUlCkRlZXBMVHJhbnNsYXRvci4xMD0l
+JSU4JSUlCkdvb2dsZVRyYW5zbGF0b3IuMj0lJSU5JSUlCkdvb2dsZVRyYW5zbGF0b3IuMz0lJSUx
+MCUlJQpNVHJhbnNsYXRvci4xPSUlJTExJSUlCk1UcmFuc2xhdG9yLjI9JSUlMTIlJSUKTXlNZW1v
+cnlUcmFuc2xhdG9yLjI9JSUlMTMlJSUKTXlNZW1vcnlUcmFuc2xhdG9yLjM9JSUlMTQlJSUKWWFu
+ZGV4VHJhbnNsYXRvci4yPSUlJTE1JSUlCllhbmRleFRyYW5zbGF0b3IuMz0lJSUxNiUlJQpZYW5k
+ZXhUcmFuc2xhdG9yLjQ9JSUlMTclJSUKWWFuZGV4VHJhbnNsYXRvci41PSUlJTE4JSUlCllhbmRl
+eFRyYW5zbGF0b3IuNj0lJSUxOSUlJQpZYW5kZXhUcmFuc2xhdG9yLjc9JSUlMjAlJSUK</internal-file>
       </skl>
       <tool tool-version="3.4.0 20230306_0912" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
     </header>
     <?encoding ISO-8859-1?>
     <body>
-      <trans-unit resname="AzureTranslator.1=" approved="no" id="0" xml:space="preserve">
-      <source>Azure Translator Text</source>
-   </trans-unit>
-      <trans-unit resname="DeepLTranslator.1=" approved="no" id="1" xml:space="preserve">
-      <source>DeepL API</source>
-   </trans-unit>
-      <trans-unit resname="DeepLTranslator.2=" approved="no" id="2" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.2=" approved="no" id="0" xml:space="preserve">
       <source>Null response received</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.3=" approved="no" id="3" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.3=" approved="no" id="1" xml:space="preserve">
       <source>Bad request. Please check error message and your parameters.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.4=" approved="no" id="4" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.4=" approved="no" id="2" xml:space="preserve">
       <source>Authorization failed. Please supply a valid auth_key parameter.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.5=" approved="no" id="5" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.5=" approved="no" id="3" xml:space="preserve">
       <source>The requested resource could not be found.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.6=" approved="no" id="6" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.6=" approved="no" id="4" xml:space="preserve">
       <source>The request size exceeds the limit.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.7=" approved="no" id="7" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.7=" approved="no" id="5" xml:space="preserve">
       <source>Too many requests. Please wait and resend your request.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.8=" approved="no" id="8" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.8=" approved="no" id="6" xml:space="preserve">
       <source>Quota exceeded. The character limit has been reached.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.9=" approved="no" id="9" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.9=" approved="no" id="7" xml:space="preserve">
       <source>Resource currently unavailable. Try again later.</source>
    </trans-unit>
-      <trans-unit resname="DeepLTranslator.10=" approved="no" id="10" xml:space="preserve">
+      <trans-unit resname="DeepLTranslator.10=" approved="no" id="8" xml:space="preserve">
       <source>Server status code: {0}</source>
    </trans-unit>
-      <trans-unit resname="GoogleTranslator.1=" approved="no" id="11" xml:space="preserve">
-      <source>Google Cloud Translation</source>
-   </trans-unit>
-      <trans-unit resname="GoogleTranslator.2=" approved="no" id="12" xml:space="preserve">
+      <trans-unit resname="GoogleTranslator.2=" approved="no" id="9" xml:space="preserve">
       <source>Null response received</source>
    </trans-unit>
-      <trans-unit resname="GoogleTranslator.3=" approved="no" id="13" xml:space="preserve">
+      <trans-unit resname="GoogleTranslator.3=" approved="no" id="10" xml:space="preserve">
       <source>Server status code: {0}</source>
    </trans-unit>
-      <trans-unit resname="MTranslator.1=" approved="no" id="14" xml:space="preserve">
+      <trans-unit resname="MTranslator.1=" approved="no" id="11" xml:space="preserve">
       <source>Empty or null translation received from {0}</source>
    </trans-unit>
-      <trans-unit resname="MTranslator.2=" approved="no" id="15" xml:space="preserve">
+      <trans-unit resname="MTranslator.2=" approved="no" id="12" xml:space="preserve">
       <source>Unsupported element {0}</source>
    </trans-unit>
-      <trans-unit resname="MyMemoryTranslator.1=" approved="no" id="16" xml:space="preserve">
-      <source>MyMemory</source>
-   </trans-unit>
-      <trans-unit resname="MyMemoryTranslator.2=" approved="no" id="17" xml:space="preserve">
+      <trans-unit resname="MyMemoryTranslator.2=" approved="no" id="13" xml:space="preserve">
       <source>Null response received</source>
    </trans-unit>
-      <trans-unit resname="MyMemoryTranslator.3=" approved="no" id="18" xml:space="preserve">
+      <trans-unit resname="MyMemoryTranslator.3=" approved="no" id="14" xml:space="preserve">
       <source>Server status code: {0}</source>
    </trans-unit>
-      <trans-unit resname="YandexTranslator.1=" approved="no" id="19" xml:space="preserve">
-      <source>Yandex Translate API</source>
-   </trans-unit>
-      <trans-unit resname="YandexTranslator.2=" approved="no" id="20" xml:space="preserve">
+      <trans-unit resname="YandexTranslator.2=" approved="no" id="15" xml:space="preserve">
       <source>Text size exceeds the maximum</source>
    </trans-unit>
-      <trans-unit resname="YandexTranslator.3=" approved="no" id="21" xml:space="preserve">
+      <trans-unit resname="YandexTranslator.3=" approved="no" id="16" xml:space="preserve">
       <source>The text could not be translated</source>
    </trans-unit>
-      <trans-unit resname="YandexTranslator.4=" approved="no" id="22" xml:space="preserve">
+      <trans-unit resname="YandexTranslator.4=" approved="no" id="17" xml:space="preserve">
       <source>The specified translation direction is not supported</source>
    </trans-unit>
-      <trans-unit resname="YandexTranslator.5=" approved="no" id="23" xml:space="preserve">
+      <trans-unit resname="YandexTranslator.5=" approved="no" id="18" xml:space="preserve">
       <source>Status code: {0}</source>
    </trans-unit>
-      <trans-unit resname="YandexTranslator.6=" approved="no" id="24" xml:space="preserve">
+      <trans-unit resname="YandexTranslator.6=" approved="no" id="19" xml:space="preserve">
       <source>Null response received</source>
    </trans-unit>
-      <trans-unit resname="YandexTranslator.7=" approved="no" id="25" xml:space="preserve">
+      <trans-unit resname="YandexTranslator.7=" approved="no" id="20" xml:space="preserve">
       <source>Server status code: {0}</source>
    </trans-unit>
     </body>
@@ -796,13 +778,13 @@ cGVCdWlsZGVyLjI9JSUlMjQlJSUKWGxpZmYyRGl0YU1hcC4xPSUlJTI1JSUlCg==</internal-file>
       <source>Error converting DITA Map</source>
    </trans-unit>
       <trans-unit resname="DitaMap2Xliff.06=" approved="no" id="5" xml:space="preserve">
-      <source>Key not defined for conkeyref: ''{0}''</source>
+      <source>Key not defined for @conkeyref: ''{0}''</source>
    </trans-unit>
       <trans-unit resname="DitaMap2Xliff.07=" approved="no" id="6" xml:space="preserve">
-      <source>Invalid conkeyref: ''{0}'' - Element with id=''{1}'' not found in ''{2}''</source>
+      <source>Invalid @conkeyref: ''{0}'' - Element with id=''{1}'' not found in ''{2}''</source>
    </trans-unit>
       <trans-unit resname="DitaMap2Xliff.08=" approved="no" id="7" xml:space="preserve">
-      <source>Invalid conkeyref: ''{0}'' - Bad format.</source>
+      <source>Invalid @conkeyref: ''{0}'' - Bad format.</source>
    </trans-unit>
       <trans-unit resname="DitaParser.01=" approved="no" id="8" xml:space="preserve">
       <source>Building key scopes</source>
@@ -1018,7 +1000,7 @@ JTQlJSUK</internal-file>
       <source>Error converting JavaScript file</source>
    </trans-unit>
       <trans-unit resname="Xliff2jscript.1=" approved="no" id="3" xml:space="preserve">
-      <source>Missing target for segment ''{0}''</source>
+      <source>Missing &lt;target&gt; in segment ''{0}''</source>
    </trans-unit>
       <trans-unit resname="Xliff2jscript.2=" approved="no" id="4" xml:space="preserve">
       <source>Segment ''{0}'' not found</source>
@@ -1155,7 +1137,7 @@ JSUKWGxpZmYyTWlmLjM9JSUlMyUlJQo=</internal-file>
       <source>Error converting MIF file</source>
    </trans-unit>
       <trans-unit resname="Xliff2Mif.1=" approved="no" id="1" xml:space="preserve">
-      <source>Missing target in segment ''{0}''</source>
+      <source>Missing &lt;target&gt; in segment ''{0}''</source>
    </trans-unit>
       <trans-unit resname="Xliff2Mif.2=" approved="no" id="2" xml:space="preserve">
       <source>Segment ''{0}'' not found</source>
