@@ -521,7 +521,7 @@ public class Xliff20 {
 					cantDelete.add(id);
 				}
 			}
-			if (inTarget && e.getAttributeValue(Messages.getString("Xliff20.41"), "yes").equals("no")) {
+			if (inTarget && e.getAttributeValue("canDelete", "yes").equals("no")) {
 				cantDelete.remove(id);
 			}
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();

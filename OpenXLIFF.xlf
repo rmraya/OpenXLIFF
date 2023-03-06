@@ -12,7 +12,7 @@ Mj0lJSU1JSUlClRvWGxpZmYyLjM9JSUlNiUlJQpUb1hsaWZmMi40PSUlJTclJSUKCg==</internal-f
     <?encoding ISO-8859-1?>
     <body>
       <trans-unit resname="FromXliff2.1=" approved="no" id="0" xml:space="preserve">
-      <source>Wrong XLIFF version.</source>
+      <source>Wrong XLIFF version</source>
    </trans-unit>
       <trans-unit resname="FromXliff2.2=" approved="no" id="1" xml:space="preserve">
       <source>Error processing XLIFF 2.0</source>
@@ -24,7 +24,7 @@ Mj0lJSU1JSUlClRvWGxpZmYyLjM9JSUlNiUlJQpUb1hsaWZmMi40PSUlJTclJSUKCg==</internal-f
       <source>Unexpected element found: {0}</source>
    </trans-unit>
       <trans-unit resname="ToXliff2.1=" approved="no" id="4" xml:space="preserve">
-      <source>Wrong XLIFF version.</source>
+      <source>Wrong XLIFF version</source>
    </trans-unit>
       <trans-unit resname="ToXliff2.2=" approved="no" id="5" xml:space="preserve">
       <source>Error generating XLIFF 2.0</source>
@@ -293,7 +293,7 @@ Document Types
       <source>Auto-detected type: {0}</source>
    </trans-unit>
       <trans-unit resname="Convert.06=" approved="no" id="8" xml:space="preserve">
-      <source>Unable to auto-detect file format. Use '-type' parameter</source>
+      <source>Unable to auto-detect file format. Use '-type' parameter.</source>
    </trans-unit>
       <trans-unit resname="Convert.07=" approved="no" id="9" xml:space="preserve">
       <source>Unknown file format</source>
@@ -302,7 +302,7 @@ Document Types
       <source>Auto-detected encoding: {0}</source>
    </trans-unit>
       <trans-unit resname="Convert.09=" approved="no" id="11" xml:space="preserve">
-      <source>Unable to auto-detect character set. Use '-enc' parameter</source>
+      <source>Unable to auto-detect character set. Use '-enc' parameter.</source>
    </trans-unit>
       <trans-unit resname="Convert.10=" approved="no" id="12" xml:space="preserve">
       <source>Unsupported encoding</source>
@@ -477,7 +477,7 @@ Where:
       <source>Selected file is not a valid XLIFF document</source>
    </trans-unit>
       <trans-unit resname="Merge.14=" approved="no" id="56" xml:space="preserve">
-      <source>Missing target language</source>
+      <source>Missing target language declaration</source>
    </trans-unit>
       <trans-unit resname="PseudoTranslation.help=" approved="no" id="57" xml:space="preserve">
       <source>
@@ -528,7 +528,7 @@ Where:
       <source>Catalog file does not exist</source>
    </trans-unit>
       <trans-unit resname="UnexistentSegmentException.1=" approved="no" id="65" xml:space="preserve">
-      <source>Requested segment does not exist in skeleton file.</source>
+      <source>Requested segment does not exist in skeleton file</source>
    </trans-unit>
       <trans-unit resname="Utils.1=" approved="no" id="66" xml:space="preserve">
       <source>Invalid path</source>
@@ -618,10 +618,10 @@ ZmYyUHJvcGVydGllcy4yPSUlJTIlJSUK</internal-file>
       <source>Error converting .properties file</source>
    </trans-unit>
       <trans-unit resname="Xliff2Properties.1=" approved="no" id="1" xml:space="preserve">
-      <source>Segment {0} not found.</source>
+      <source>Segment ''{0}'' not found</source>
    </trans-unit>
       <trans-unit resname="Xliff2Properties.2=" approved="no" id="2" xml:space="preserve">
-      <source>Error merging .properties file.</source>
+      <source>Error merging .properties file</source>
    </trans-unit>
     </body>
   </file>
@@ -657,13 +657,13 @@ JTIlJSUKWGxpZmYySHRtbC4xPSUlJTMlJSUK</internal-file>
     <?encoding ISO-8859-1?>
     <body>
       <trans-unit resname="Html2Xliff.1=" approved="no" id="0" xml:space="preserve">
-      <source>Error reading from input file.</source>
+      <source>Error reading from input file</source>
    </trans-unit>
       <trans-unit resname="Html2Xliff.2=" approved="no" id="1" xml:space="preserve">
       <source>Error converting HTML file</source>
    </trans-unit>
       <trans-unit resname="Html2Xliff.3=" approved="no" id="2" xml:space="preserve">
-      <source>Invalid HTML markup found.</source>
+      <source>Invalid HTML markup found</source>
    </trans-unit>
       <trans-unit resname="Xliff2Html.1=" approved="no" id="3" xml:space="preserve">
       <source>Error merging HTML file</source>
@@ -835,10 +835,10 @@ cGVCdWlsZGVyLjI9JSUlMjQlJSUKWGxpZmYyRGl0YU1hcC4xPSUlJTI1JSUlCg==</internal-file>
       <source>Broken @conref ''{0}'' in file {1}</source>
    </trans-unit>
       <trans-unit resname="DitaParser.11=" approved="no" id="18" xml:space="preserve">
-      <source>Key not defined for @conkeyref: ''{0}''.</source>
+      <source>Key not defined for @conkeyref: ''{0}''</source>
    </trans-unit>
       <trans-unit resname="DitaParser.12=" approved="no" id="19" xml:space="preserve">
-      <source>Key not defined for @conkeyref: ''{0}''.</source>
+      <source>Key not defined for @conkeyref: ''{0}''</source>
    </trans-unit>
       <trans-unit resname="DitaParser.13=" approved="no" id="20" xml:space="preserve">
       <source>Broken @conkeyref ''{0}'' in file {1}</source>
@@ -874,7 +874,7 @@ JTIlJSUK</internal-file>
       <source>Error converting WPML file</source>
    </trans-unit>
       <trans-unit resname="Xliff2Wpml.1=" approved="no" id="1" xml:space="preserve">
-      <source>Error merging WPML file.</source>
+      <source>Error merging WPML file</source>
    </trans-unit>
       <trans-unit resname="Xliff2Wpml.2=" approved="no" id="2" xml:space="preserve">
       <source>Segment ''{0}'' not found</source>
@@ -894,7 +894,7 @@ ZmYyanNvbi4yPSUlJTglJSUKWGxpZmYyanNvbi4zPSUlJTklJSUK</internal-file>
     <?encoding ISO-8859-1?>
     <body>
       <trans-unit resname="Json2Xliff.1=" approved="no" id="0" xml:space="preserve">
-      <source>Nothing to translate.</source>
+      <source>Nothing to translate</source>
    </trans-unit>
       <trans-unit resname="Json2Xliff.2=" approved="no" id="1" xml:space="preserve">
       <source>Selected file is not supported</source>
@@ -915,7 +915,7 @@ ZmYyanNvbi4yPSUlJTglJSUKWGxpZmYyanNvbi4zPSUlJTklJSUK</internal-file>
       <source>Missing 'sourceKey' in configuration object</source>
    </trans-unit>
       <trans-unit resname="Xliff2json.1=" approved="no" id="7" xml:space="preserve">
-      <source>Error merging file.</source>
+      <source>Error merging file</source>
    </trans-unit>
       <trans-unit resname="Xliff2json.2=" approved="no" id="8" xml:space="preserve">
       <source>Missing encoding</source>
@@ -1021,7 +1021,7 @@ JTQlJSUK</internal-file>
       <source>Missing target for segment ''{0}''</source>
    </trans-unit>
       <trans-unit resname="Xliff2jscript.2=" approved="no" id="4" xml:space="preserve">
-      <source>Missing segment ''{0}''</source>
+      <source>Segment ''{0}'' not found</source>
    </trans-unit>
     </body>
   </file>
@@ -1049,7 +1049,7 @@ JTQlJSUK</internal-file>
     <?encoding ISO-8859-1?>
     <body>
       <trans-unit resname="Rc2Xliff.1=" approved="no" id="0" xml:space="preserve">
-      <source>Error convering RC file</source>
+      <source>Error converting RC file</source>
    </trans-unit>
       <trans-unit resname="Xliff2Rc.1=" approved="no" id="1" xml:space="preserve">
       <source>Error merging RC file</source>
@@ -1072,7 +1072,7 @@ JTQlJSUK</internal-file>
       <source>Error converting TS file</source>
    </trans-unit>
       <trans-unit resname="Xliff2Ts.1=" approved="no" id="1" xml:space="preserve">
-      <source>Error merging TS file.</source>
+      <source>Error merging TS file</source>
    </trans-unit>
     </body>
   </file>
@@ -1158,7 +1158,7 @@ JSUKWGxpZmYyTWlmLjM9JSUlMyUlJQo=</internal-file>
       <source>Missing target in segment ''{0}''</source>
    </trans-unit>
       <trans-unit resname="Xliff2Mif.2=" approved="no" id="2" xml:space="preserve">
-      <source>Missing segment ''{0}''</source>
+      <source>Segment ''{0}'' not found</source>
    </trans-unit>
       <trans-unit resname="Xliff2Mif.3=" approved="no" id="3" xml:space="preserve">
       <source>Error merging MIF file</source>
@@ -1196,10 +1196,10 @@ JSUyJSUlCg==</internal-file>
     <?encoding ISO-8859-1?>
     <body>
       <trans-unit resname="Segmenter.1=" approved="no" id="0" xml:space="preserve">
-      <source>Selected file is not an SRX document.</source>
+      <source>Selected file is not an SRX document</source>
    </trans-unit>
       <trans-unit resname="Segmenter.2=" approved="no" id="1" xml:space="preserve">
-      <source>Incorrect SRX version.</source>
+      <source>Incorrect SRX version</source>
    </trans-unit>
     </body>
   </file>
@@ -1253,10 +1253,10 @@ Where:
 </source>
    </trans-unit>
       <trans-unit resname="RepetitionAnalysis.1=" approved="no" id="1" xml:space="preserve">
-      <source>Missing '-file' parameter.</source>
+      <source>Missing '-file' parameter</source>
    </trans-unit>
       <trans-unit resname="RepetitionAnalysis.2=" approved="no" id="2" xml:space="preserve">
-      <source>Catalog file does not exist.</source>
+      <source>Catalog file does not exist</source>
    </trans-unit>
       <trans-unit resname="RepetitionAnalysis.3=" approved="no" id="3" xml:space="preserve">
       <source>Error analyzing file</source>
@@ -1429,47 +1429,47 @@ ZjIwLjI4PSUlJTY3JSUlClhsaWZmMjAuMjk9JSUlNjglJSUKWGxpZmYyMC4zMD0lJSU2OSUlJQpY
 bGlmZjIwLjMxPSUlJTcwJSUlClhsaWZmMjAuMzI9JSUlNzElJSUKWGxpZmYyMC4zMz0lJSU3MiUl
 JQpYbGlmZjIwLjM0PSUlJTczJSUlClhsaWZmMjAuMzU9JSUlNzQlJSUKWGxpZmYyMC4zNj0lJSU3
 NSUlJQpYbGlmZjIwLjM3PSUlJTc2JSUlClhsaWZmMjAuMzg9JSUlNzclJSUKWGxpZmYyMC4zOT0l
-JSU3OCUlJQpYbGlmZjIwLjQwPSUlJTc5JSUlClhsaWZmMjAuNDE9JSUlODAlJSUKWGxpZmYyMC40
-Mj0lJSU4MSUlJQpYbGlmZjIwLjQzPSUlJTgyJSUlClhsaWZmMjAuNDQ9JSUlODMlJSUKWGxpZmYy
-MC40NT0lJSU4NCUlJQpYbGlmZjIwLjQ2PSUlJTg1JSUlClhsaWZmMjAuNDc9JSUlODYlJSUKWGxp
-ZmYyMC40OD0lJSU4NyUlJQpYbGlmZjIwLjQ5PSUlJTg4JSUlClhsaWZmMjAuNTA9JSUlODklJSUK
-WGxpZmYyMC41MT0lJSU5MCUlJQpYbGlmZjIwLjUyPSUlJTkxJSUlClhsaWZmMjAuNTM9JSUlOTIl
-JSUKWGxpZmYyMC41ND0lJSU5MyUlJQpYbGlmZjIwLjU1PSUlJTk0JSUlClhsaWZmMjAuNTY9JSUl
-OTUlJSUKWGxpZmYyMC41Nz0lJSU5NiUlJQpYbGlmZjIwLjU4PSUlJTk3JSUlClhsaWZmMjAuNTk9
-JSUlOTglJSUKWGxpZmYyMC42MD0lJSU5OSUlJQpYbGlmZjIwLjYxPSUlJTEwMCUlJQpYbGlmZjIw
-LjYyPSUlJTEwMSUlJQpYbGlmZjIwLjYzPSUlJTEwMiUlJQpYbGlmZjIwLjY0PSUlJTEwMyUlJQpY
-bGlmZjIwLjY1PSUlJTEwNCUlJQpYbGlmZjIwLjY2PSUlJTEwNSUlJQpYbGlmZjIwLjY3PSUlJTEw
-NiUlJQpYbGlmZjIwLjY4PSUlJTEwNyUlJQpYbGlmZjIwLjY5PSUlJTEwOCUlJQpYbGlmZjIwLjcw
-PSUlJTEwOSUlJQpYbGlmZjIwLjcxPSUlJTExMCUlJQpYbGlmZjIwLjcyPSUlJTExMSUlJQpYbGlm
-ZjIwLjczPSUlJTExMiUlJQpYbGlmZjIwLjc0PSUlJTExMyUlJQpYbGlmZjIwLjc1PSUlJTExNCUl
-JQpYbGlmZjIwLjc2PSUlJTExNSUlJQpYbGlmZjIwLjc3PSUlJTExNiUlJQpYbGlmZjIwLjc4PSUl
-JTExNyUlJQpYbGlmZjIwLjc5PSUlJTExOCUlJQpYbGlmZjIwLjgwPSUlJTExOSUlJQpYbGlmZjIw
-LjgxPSUlJTEyMCUlJQpYbGlmZjIwLjgyPSUlJTEyMSUlJQpYbGlmZjIwLjgzPSUlJTEyMiUlJQpY
-bGlmZjIwLjg0PSUlJTEyMyUlJQpYbGlmZjIwLjg1PSUlJTEyNCUlJQpYbGlmZjIwLjg2PSUlJTEy
-NSUlJQpYbGlmZjIwLjg3PSUlJTEyNiUlJQpYbGlmZjIwLjg4PSUlJTEyNyUlJQpYbGlmZjIwLjg5
-PSUlJTEyOCUlJQpYbGlmZjIwLjkwPSUlJTEyOSUlJQpYbGlmZjIwLjkxPSUlJTEzMCUlJQpYbGlm
-ZjIwLjkyPSUlJTEzMSUlJQpYbGlmZjIwLjkzPSUlJTEzMiUlJQpYbGlmZjIwLjk0PSUlJTEzMyUl
-JQpYbGlmZjIwLjk1PSUlJTEzNCUlJQpYbGlmZjIwLjk2PSUlJTEzNSUlJQpYbGlmZjIwLjk3PSUl
-JTEzNiUlJQpYbGlmZjIwLjk4PSUlJTEzNyUlJQpYbGlmZjIwLjk5PSUlJTEzOCUlJQpYbGlmZkNo
-ZWNrZXIuaGVscD0lJSUxMzklJSUKWGxpZmZDaGVja2VyLjE9JSUlMTQwJSUlClhsaWZmQ2hlY2tl
-ci4xMD0lJSUxNDElJSUKWGxpZmZDaGVja2VyLjExPSUlJTE0MiUlJQpYbGlmZkNoZWNrZXIuMTI9
-JSUlMTQzJSUlClhsaWZmQ2hlY2tlci4xMz0lJSUxNDQlJSUKWGxpZmZDaGVja2VyLjE0PSUlJTE0
-NSUlJQpYbGlmZkNoZWNrZXIuMTU9JSUlMTQ2JSUlClhsaWZmQ2hlY2tlci4xNj0lJSUxNDclJSUK
-WGxpZmZDaGVja2VyLjE3PSUlJTE0OCUlJQpYbGlmZkNoZWNrZXIuMTg9JSUlMTQ5JSUlClhsaWZm
-Q2hlY2tlci4xOT0lJSUxNTAlJSUKWGxpZmZDaGVja2VyLjI9JSUlMTUxJSUlClhsaWZmQ2hlY2tl
-ci4yMD0lJSUxNTIlJSUKWGxpZmZDaGVja2VyLjIxPSUlJTE1MyUlJQpYbGlmZkNoZWNrZXIuMjI9
-JSUlMTU0JSUlClhsaWZmQ2hlY2tlci4yMz0lJSUxNTUlJSUKWGxpZmZDaGVja2VyLjI0PSUlJTE1
-NiUlJQpYbGlmZkNoZWNrZXIuMjU9JSUlMTU3JSUlClhsaWZmQ2hlY2tlci4yNj0lJSUxNTglJSUK
-WGxpZmZDaGVja2VyLjI3PSUlJTE1OSUlJQpYbGlmZkNoZWNrZXIuMjg9JSUlMTYwJSUlClhsaWZm
-Q2hlY2tlci4yOT0lJSUxNjElJSUKWGxpZmZDaGVja2VyLjM9JSUlMTYyJSUlClhsaWZmQ2hlY2tl
-ci4zMD0lJSUxNjMlJSUKWGxpZmZDaGVja2VyLjMxPSUlJTE2NCUlJQpYbGlmZkNoZWNrZXIuMzI9
-JSUlMTY1JSUlClhsaWZmQ2hlY2tlci4zMz0lJSUxNjYlJSUKWGxpZmZDaGVja2VyLjM0PSUlJTE2
-NyUlJQpYbGlmZkNoZWNrZXIuMzU9JSUlMTY4JSUlClhsaWZmQ2hlY2tlci4zNj0lJSUxNjklJSUK
-WGxpZmZDaGVja2VyLjM3PSUlJTE3MCUlJQpYbGlmZkNoZWNrZXIuMzg9JSUlMTcxJSUlClhsaWZm
-Q2hlY2tlci4zOT0lJSUxNzIlJSUKWGxpZmZDaGVja2VyLjQ9JSUlMTczJSUlClhsaWZmQ2hlY2tl
-ci40MD0lJSUxNzQlJSUKWGxpZmZDaGVja2VyLjU9JSUlMTc1JSUlClhsaWZmQ2hlY2tlci42PSUl
-JTE3NiUlJQpYbGlmZkNoZWNrZXIuNz0lJSUxNzclJSUKWGxpZmZDaGVja2VyLjg9JSUlMTc4JSUl
-ClhsaWZmQ2hlY2tlci45PSUlJTE3OSUlJQo=</internal-file>
+JSU3OCUlJQpYbGlmZjIwLjQwPSUlJTc5JSUlClhsaWZmMjAuNDI9JSUlODAlJSUKWGxpZmYyMC40
+Mz0lJSU4MSUlJQpYbGlmZjIwLjQ0PSUlJTgyJSUlClhsaWZmMjAuNDU9JSUlODMlJSUKWGxpZmYy
+MC40Nj0lJSU4NCUlJQpYbGlmZjIwLjQ3PSUlJTg1JSUlClhsaWZmMjAuNDg9JSUlODYlJSUKWGxp
+ZmYyMC40OT0lJSU4NyUlJQpYbGlmZjIwLjUwPSUlJTg4JSUlClhsaWZmMjAuNTE9JSUlODklJSUK
+WGxpZmYyMC41Mj0lJSU5MCUlJQpYbGlmZjIwLjUzPSUlJTkxJSUlClhsaWZmMjAuNTQ9JSUlOTIl
+JSUKWGxpZmYyMC41NT0lJSU5MyUlJQpYbGlmZjIwLjU2PSUlJTk0JSUlClhsaWZmMjAuNTc9JSUl
+OTUlJSUKWGxpZmYyMC41OD0lJSU5NiUlJQpYbGlmZjIwLjU5PSUlJTk3JSUlClhsaWZmMjAuNjA9
+JSUlOTglJSUKWGxpZmYyMC42MT0lJSU5OSUlJQpYbGlmZjIwLjYyPSUlJTEwMCUlJQpYbGlmZjIw
+LjYzPSUlJTEwMSUlJQpYbGlmZjIwLjY0PSUlJTEwMiUlJQpYbGlmZjIwLjY1PSUlJTEwMyUlJQpY
+bGlmZjIwLjY2PSUlJTEwNCUlJQpYbGlmZjIwLjY3PSUlJTEwNSUlJQpYbGlmZjIwLjY4PSUlJTEw
+NiUlJQpYbGlmZjIwLjY5PSUlJTEwNyUlJQpYbGlmZjIwLjcwPSUlJTEwOCUlJQpYbGlmZjIwLjcx
+PSUlJTEwOSUlJQpYbGlmZjIwLjcyPSUlJTExMCUlJQpYbGlmZjIwLjczPSUlJTExMSUlJQpYbGlm
+ZjIwLjc0PSUlJTExMiUlJQpYbGlmZjIwLjc1PSUlJTExMyUlJQpYbGlmZjIwLjc2PSUlJTExNCUl
+JQpYbGlmZjIwLjc3PSUlJTExNSUlJQpYbGlmZjIwLjc4PSUlJTExNiUlJQpYbGlmZjIwLjc5PSUl
+JTExNyUlJQpYbGlmZjIwLjgwPSUlJTExOCUlJQpYbGlmZjIwLjgxPSUlJTExOSUlJQpYbGlmZjIw
+LjgyPSUlJTEyMCUlJQpYbGlmZjIwLjgzPSUlJTEyMSUlJQpYbGlmZjIwLjg0PSUlJTEyMiUlJQpY
+bGlmZjIwLjg1PSUlJTEyMyUlJQpYbGlmZjIwLjg2PSUlJTEyNCUlJQpYbGlmZjIwLjg3PSUlJTEy
+NSUlJQpYbGlmZjIwLjg4PSUlJTEyNiUlJQpYbGlmZjIwLjg5PSUlJTEyNyUlJQpYbGlmZjIwLjkw
+PSUlJTEyOCUlJQpYbGlmZjIwLjkxPSUlJTEyOSUlJQpYbGlmZjIwLjkyPSUlJTEzMCUlJQpYbGlm
+ZjIwLjkzPSUlJTEzMSUlJQpYbGlmZjIwLjk0PSUlJTEzMiUlJQpYbGlmZjIwLjk1PSUlJTEzMyUl
+JQpYbGlmZjIwLjk2PSUlJTEzNCUlJQpYbGlmZjIwLjk3PSUlJTEzNSUlJQpYbGlmZjIwLjk4PSUl
+JTEzNiUlJQpYbGlmZjIwLjk5PSUlJTEzNyUlJQpYbGlmZkNoZWNrZXIuaGVscD0lJSUxMzglJSUK
+WGxpZmZDaGVja2VyLjE9JSUlMTM5JSUlClhsaWZmQ2hlY2tlci4xMD0lJSUxNDAlJSUKWGxpZmZD
+aGVja2VyLjExPSUlJTE0MSUlJQpYbGlmZkNoZWNrZXIuMTI9JSUlMTQyJSUlClhsaWZmQ2hlY2tl
+ci4xMz0lJSUxNDMlJSUKWGxpZmZDaGVja2VyLjE0PSUlJTE0NCUlJQpYbGlmZkNoZWNrZXIuMTU9
+JSUlMTQ1JSUlClhsaWZmQ2hlY2tlci4xNj0lJSUxNDYlJSUKWGxpZmZDaGVja2VyLjE3PSUlJTE0
+NyUlJQpYbGlmZkNoZWNrZXIuMTg9JSUlMTQ4JSUlClhsaWZmQ2hlY2tlci4xOT0lJSUxNDklJSUK
+WGxpZmZDaGVja2VyLjI9JSUlMTUwJSUlClhsaWZmQ2hlY2tlci4yMD0lJSUxNTElJSUKWGxpZmZD
+aGVja2VyLjIxPSUlJTE1MiUlJQpYbGlmZkNoZWNrZXIuMjI9JSUlMTUzJSUlClhsaWZmQ2hlY2tl
+ci4yMz0lJSUxNTQlJSUKWGxpZmZDaGVja2VyLjI0PSUlJTE1NSUlJQpYbGlmZkNoZWNrZXIuMjU9
+JSUlMTU2JSUlClhsaWZmQ2hlY2tlci4yNj0lJSUxNTclJSUKWGxpZmZDaGVja2VyLjI3PSUlJTE1
+OCUlJQpYbGlmZkNoZWNrZXIuMjg9JSUlMTU5JSUlClhsaWZmQ2hlY2tlci4yOT0lJSUxNjAlJSUK
+WGxpZmZDaGVja2VyLjM9JSUlMTYxJSUlClhsaWZmQ2hlY2tlci4zMD0lJSUxNjIlJSUKWGxpZmZD
+aGVja2VyLjMxPSUlJTE2MyUlJQpYbGlmZkNoZWNrZXIuMzI9JSUlMTY0JSUlClhsaWZmQ2hlY2tl
+ci4zMz0lJSUxNjUlJSUKWGxpZmZDaGVja2VyLjM0PSUlJTE2NiUlJQpYbGlmZkNoZWNrZXIuMzU9
+JSUlMTY3JSUlClhsaWZmQ2hlY2tlci4zNj0lJSUxNjglJSUKWGxpZmZDaGVja2VyLjM3PSUlJTE2
+OSUlJQpYbGlmZkNoZWNrZXIuMzg9JSUlMTcwJSUlClhsaWZmQ2hlY2tlci4zOT0lJSUxNzElJSUK
+WGxpZmZDaGVja2VyLjQ9JSUlMTcyJSUlClhsaWZmQ2hlY2tlci40MD0lJSUxNzMlJSUKWGxpZmZD
+aGVja2VyLjU9JSUlMTc0JSUlClhsaWZmQ2hlY2tlci42PSUlJTE3NSUlJQpYbGlmZkNoZWNrZXIu
+Nz0lJSUxNzYlJSUKWGxpZmZDaGVja2VyLjg9JSUlMTc3JSUlClhsaWZmQ2hlY2tlci45PSUlJTE3
+OCUlJQo=</internal-file>
       </skl>
       <tool tool-version="3.4.0 20230306_0912" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
     </header>
@@ -1715,184 +1715,181 @@ ClhsaWZmQ2hlY2tlci45PSUlJTE3OSUlJQo=</internal-file>
       <trans-unit resname="Xliff20.40=" approved="no" id="79" xml:space="preserve">
       <source>Duplicated 'id' in &lt;pc/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.41=" approved="no" id="80" xml:space="preserve">
-      <source>canDelete</source>
-   </trans-unit>
-      <trans-unit resname="Xliff20.42=" approved="no" id="81" xml:space="preserve">
+      <trans-unit resname="Xliff20.42=" approved="no" id="80" xml:space="preserve">
       <source>&lt;pc&gt; element with both 'copyOf' and 'dataRefStart'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.43=" approved="no" id="82" xml:space="preserve">
+      <trans-unit resname="Xliff20.43=" approved="no" id="81" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by 'dataRefStart' &lt;pc&gt; in &lt;mtc:match&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.44=" approved="no" id="83" xml:space="preserve">
+      <trans-unit resname="Xliff20.44=" approved="no" id="82" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by 'dataRefStart' &lt;pc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.45=" approved="no" id="84" xml:space="preserve">
+      <trans-unit resname="Xliff20.45=" approved="no" id="83" xml:space="preserve">
       <source>&lt;pc&gt; element with both 'copyOf' and 'dataRefEnd'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.46=" approved="no" id="85" xml:space="preserve">
+      <trans-unit resname="Xliff20.46=" approved="no" id="84" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by 'dataRefEnd' in &lt;pc&gt; in &lt;mtc:match&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.47=" approved="no" id="86" xml:space="preserve">
+      <trans-unit resname="Xliff20.47=" approved="no" id="85" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by 'dataRefEnd' in &lt;pc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.48=" approved="no" id="87" xml:space="preserve">
+      <trans-unit resname="Xliff20.48=" approved="no" id="86" xml:space="preserve">
       <source>Invalid 'type' attribute in &lt;pc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.49=" approved="no" id="88" xml:space="preserve">
+      <trans-unit resname="Xliff20.49=" approved="no" id="87" xml:space="preserve">
       <source>Missing 'type' attribute in &lt;pc&gt; that has 'subType'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.50=" approved="no" id="89" xml:space="preserve">
+      <trans-unit resname="Xliff20.50=" approved="no" id="88" xml:space="preserve">
       <source>Invalid 'subType' attribute value: {0}</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.51=" approved="no" id="90" xml:space="preserve">
+      <trans-unit resname="Xliff20.51=" approved="no" id="89" xml:space="preserve">
       <source>Invalid 'subType' attribute value: ''{0}'' in &lt;pc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.52=" approved="no" id="91" xml:space="preserve">
+      <trans-unit resname="Xliff20.52=" approved="no" id="90" xml:space="preserve">
       <source>Invalid 'subType' attribute value for type='ui' in &lt;pc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.53=" approved="no" id="92" xml:space="preserve">
+      <trans-unit resname="Xliff20.53=" approved="no" id="91" xml:space="preserve">
       <source>Invalid 'subType' attribute value for type='fmt' in &lt;pc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.54=" approved="no" id="93" xml:space="preserve">
+      <trans-unit resname="Xliff20.54=" approved="no" id="92" xml:space="preserve">
       <source>Duplicated 'id' in &lt;sc/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.55=" approved="no" id="94" xml:space="preserve">
+      <trans-unit resname="Xliff20.55=" approved="no" id="93" xml:space="preserve">
       <source>&lt;sc&gt; element with both 'copyOf' and 'dataRef'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.56=" approved="no" id="95" xml:space="preserve">
+      <trans-unit resname="Xliff20.56=" approved="no" id="94" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by &lt;sc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.57=" approved="no" id="96" xml:space="preserve">
+      <trans-unit resname="Xliff20.57=" approved="no" id="95" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by &lt;sc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.58=" approved="no" id="97" xml:space="preserve">
+      <trans-unit resname="Xliff20.58=" approved="no" id="96" xml:space="preserve">
       <source>Invalid 'type' attribute in &lt;sc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.59=" approved="no" id="98" xml:space="preserve">
+      <trans-unit resname="Xliff20.59=" approved="no" id="97" xml:space="preserve">
       <source>Missing 'type' attribute in &lt;sc&gt; that has 'subType'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.60=" approved="no" id="99" xml:space="preserve">
+      <trans-unit resname="Xliff20.60=" approved="no" id="98" xml:space="preserve">
       <source>Invalid 'subType' attribute value: {0}</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.61=" approved="no" id="100" xml:space="preserve">
+      <trans-unit resname="Xliff20.61=" approved="no" id="99" xml:space="preserve">
       <source>Invalid 'subType' attribute value: ''{0}'' in &lt;sc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.62=" approved="no" id="101" xml:space="preserve">
+      <trans-unit resname="Xliff20.62=" approved="no" id="100" xml:space="preserve">
       <source>Invalid 'subType' attribute value for type='ui' in &lt;sc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.63=" approved="no" id="102" xml:space="preserve">
+      <trans-unit resname="Xliff20.63=" approved="no" id="101" xml:space="preserve">
       <source>Invalid 'subType' attribute value for type='fmt' in &lt;sc&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.64=" approved="no" id="103" xml:space="preserve">
+      <trans-unit resname="Xliff20.64=" approved="no" id="102" xml:space="preserve">
       <source>Missing 'id' attribute in &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.65=" approved="no" id="104" xml:space="preserve">
+      <trans-unit resname="Xliff20.65=" approved="no" id="103" xml:space="preserve">
       <source>Duplicated 'id' in &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.66=" approved="no" id="105" xml:space="preserve">
+      <trans-unit resname="Xliff20.66=" approved="no" id="104" xml:space="preserve">
       <source>Non isolated &lt;ec/&gt; has 'dir' attribute</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.67=" approved="no" id="106" xml:space="preserve">
+      <trans-unit resname="Xliff20.67=" approved="no" id="105" xml:space="preserve">
       <source>Missing 'startRef' attribute in &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.68=" approved="no" id="107" xml:space="preserve">
+      <trans-unit resname="Xliff20.68=" approved="no" id="106" xml:space="preserve">
       <source>Missing &lt;sc/&gt; element with id=''{0}'' referenced by &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.69=" approved="no" id="108" xml:space="preserve">
+      <trans-unit resname="Xliff20.69=" approved="no" id="107" xml:space="preserve">
       <source>Different 'canCopy' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.70=" approved="no" id="109" xml:space="preserve">
+      <trans-unit resname="Xliff20.70=" approved="no" id="108" xml:space="preserve">
       <source>Different 'canDelete' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.71=" approved="no" id="110" xml:space="preserve">
+      <trans-unit resname="Xliff20.71=" approved="no" id="109" xml:space="preserve">
       <source>Different 'canOverlap' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.72=" approved="no" id="111" xml:space="preserve">
+      <trans-unit resname="Xliff20.72=" approved="no" id="110" xml:space="preserve">
       <source>Different 'canReorder' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.73=" approved="no" id="112" xml:space="preserve">
+      <trans-unit resname="Xliff20.73=" approved="no" id="111" xml:space="preserve">
       <source>&lt;ec&gt; element with both 'copyOf' and 'dataRef'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.74=" approved="no" id="113" xml:space="preserve">
+      <trans-unit resname="Xliff20.74=" approved="no" id="112" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by &lt;ec&gt; in &lt;mtc:match&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.75=" approved="no" id="114" xml:space="preserve">
+      <trans-unit resname="Xliff20.75=" approved="no" id="113" xml:space="preserve">
       <source>Missing &lt;data&gt; element referenced by &lt;ec&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.76=" approved="no" id="115" xml:space="preserve">
+      <trans-unit resname="Xliff20.76=" approved="no" id="114" xml:space="preserve">
       <source>Invalid 'type' attribute in &lt;ec&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.77=" approved="no" id="116" xml:space="preserve">
+      <trans-unit resname="Xliff20.77=" approved="no" id="115" xml:space="preserve">
       <source>Missing 'type' attribute in &lt;ec&gt; that has 'subType'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.78=" approved="no" id="117" xml:space="preserve">
+      <trans-unit resname="Xliff20.78=" approved="no" id="116" xml:space="preserve">
       <source>Invalid 'subType' attribute value: {0}</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.79=" approved="no" id="118" xml:space="preserve">
+      <trans-unit resname="Xliff20.79=" approved="no" id="117" xml:space="preserve">
       <source>Invalid 'subType' attribute value: ''{0}'' in &lt;ec&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.80=" approved="no" id="119" xml:space="preserve">
+      <trans-unit resname="Xliff20.80=" approved="no" id="118" xml:space="preserve">
       <source>Invalid 'subType' attribute value for type='ui' in &lt;ec&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.81=" approved="no" id="120" xml:space="preserve">
+      <trans-unit resname="Xliff20.81=" approved="no" id="119" xml:space="preserve">
       <source>Invalid 'subType' attribute value for type='fmt' in &lt;ec&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.82=" approved="no" id="121" xml:space="preserve">
+      <trans-unit resname="Xliff20.82=" approved="no" id="120" xml:space="preserve">
       <source>Duplicated 'id' in &lt;mrk/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.83=" approved="no" id="122" xml:space="preserve">
+      <trans-unit resname="Xliff20.83=" approved="no" id="121" xml:space="preserve">
       <source>Missing 'ref' in comment annotation</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.84=" approved="no" id="123" xml:space="preserve">
+      <trans-unit resname="Xliff20.84=" approved="no" id="122" xml:space="preserve">
       <source>Invalid fragment identifier ''{0}'' in comment annotation</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.85=" approved="no" id="124" xml:space="preserve">
+      <trans-unit resname="Xliff20.85=" approved="no" id="123" xml:space="preserve">
       <source>Missing &lt;note&gt; referenced in comment annotation</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.86=" approved="no" id="125" xml:space="preserve">
+      <trans-unit resname="Xliff20.86=" approved="no" id="124" xml:space="preserve">
       <source>Comment annotation contains both 'value' and 'ref'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.87=" approved="no" id="126" xml:space="preserve">
+      <trans-unit resname="Xliff20.87=" approved="no" id="125" xml:space="preserve">
       <source>Duplicated 'id' in &lt;sm/&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.88=" approved="no" id="127" xml:space="preserve">
+      <trans-unit resname="Xliff20.88=" approved="no" id="126" xml:space="preserve">
       <source>Missing &lt;sm&gt; with id=''{0}'' referenced by &lt;em&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.89=" approved="no" id="128" xml:space="preserve">
+      <trans-unit resname="Xliff20.89=" approved="no" id="127" xml:space="preserve">
       <source>Attribute ''{0}:subFs' without corresponding ''{1}:fs'</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.90=" approved="no" id="129" xml:space="preserve">
+      <trans-unit resname="Xliff20.90=" approved="no" id="128" xml:space="preserve">
       <source>&lt;sc&gt; element without matching &lt;ec&gt; in &lt;source&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.91=" approved="no" id="130" xml:space="preserve">
+      <trans-unit resname="Xliff20.91=" approved="no" id="129" xml:space="preserve">
       <source>&lt;sc&gt; element without matching &lt;ec&gt; in &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.92=" approved="no" id="131" xml:space="preserve">
+      <trans-unit resname="Xliff20.92=" approved="no" id="130" xml:space="preserve">
       <source>Inline element with 'canDelete' set to 'no' is missing in &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.93=" approved="no" id="132" xml:space="preserve">
+      <trans-unit resname="Xliff20.93=" approved="no" id="131" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.94=" approved="no" id="133" xml:space="preserve">
+      <trans-unit resname="Xliff20.94=" approved="no" id="132" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.95=" approved="no" id="134" xml:space="preserve">
+      <trans-unit resname="Xliff20.95=" approved="no" id="133" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.96=" approved="no" id="135" xml:space="preserve">
+      <trans-unit resname="Xliff20.96=" approved="no" id="134" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.97=" approved="no" id="136" xml:space="preserve">
+      <trans-unit resname="Xliff20.97=" approved="no" id="135" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.98=" approved="no" id="137" xml:space="preserve">
+      <trans-unit resname="Xliff20.98=" approved="no" id="136" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="Xliff20.99=" approved="no" id="138" xml:space="preserve">
+      <trans-unit resname="Xliff20.99=" approved="no" id="137" xml:space="preserve">
       <source>&lt;ph&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.help=" approved="no" id="139" xml:space="preserve">
+      <trans-unit resname="XliffChecker.help=" approved="no" id="138" xml:space="preserve">
       <source>
 
 Usage:
@@ -1907,124 +1904,124 @@ Where:
 
 </source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.1=" approved="no" id="140" xml:space="preserve">
-      <source>Missing '-file' parameter.</source>
+      <trans-unit resname="XliffChecker.1=" approved="no" id="139" xml:space="preserve">
+      <source>Missing '-file' parameter</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.10=" approved="no" id="141" xml:space="preserve">
+      <trans-unit resname="XliffChecker.10=" approved="no" id="140" xml:space="preserve">
       <source>Invalid XLIFF version</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.11=" approved="no" id="142" xml:space="preserve">
-      <source>Invalid attribute in &lt;{0}&gt;: {1}.</source>
+      <trans-unit resname="XliffChecker.11=" approved="no" id="141" xml:space="preserve">
+      <source>Invalid attribute in &lt;{0}&gt;: {1}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.12=" approved="no" id="143" xml:space="preserve">
+      <trans-unit resname="XliffChecker.12=" approved="no" id="142" xml:space="preserve">
       <source>Invalid date: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.13=" approved="no" id="144" xml:space="preserve">
+      <trans-unit resname="XliffChecker.13=" approved="no" id="143" xml:space="preserve">
       <source>Invalid URI: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.14=" approved="no" id="145" xml:space="preserve">
+      <trans-unit resname="XliffChecker.14=" approved="no" id="144" xml:space="preserve">
       <source>Invalid URI: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.15=" approved="no" id="146" xml:space="preserve">
+      <trans-unit resname="XliffChecker.15=" approved="no" id="145" xml:space="preserve">
       <source>Invalid language: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.16=" approved="no" id="147" xml:space="preserve">
+      <trans-unit resname="XliffChecker.16=" approved="no" id="146" xml:space="preserve">
       <source>Invalid source language: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.17=" approved="no" id="148" xml:space="preserve">
+      <trans-unit resname="XliffChecker.17=" approved="no" id="147" xml:space="preserve">
       <source>Invalid target language: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.18=" approved="no" id="149" xml:space="preserve">
+      <trans-unit resname="XliffChecker.18=" approved="no" id="148" xml:space="preserve">
       <source>Duplicated "name" in &lt;phase&gt;: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.19=" approved="no" id="150" xml:space="preserve">
+      <trans-unit resname="XliffChecker.19=" approved="no" id="149" xml:space="preserve">
       <source>Duplicated "tool-id" in &lt;tool&gt;: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.2=" approved="no" id="151" xml:space="preserve">
-      <source>'catalog' folder not found.</source>
+      <trans-unit resname="XliffChecker.2=" approved="no" id="150" xml:space="preserve">
+      <source>'catalog' folder not found</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.20=" approved="no" id="152" xml:space="preserve">
-      <source>Incorrect segment referenced in &lt;alt-trans&gt; element.</source>
+      <trans-unit resname="XliffChecker.20=" approved="no" id="151" xml:space="preserve">
+      <source>Incorrect segment referenced in &lt;alt-trans&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.21=" approved="no" id="153" xml:space="preserve">
-      <source>Undeclared &lt;tool&gt; referenced in &lt;alt-trans&gt; element.</source>
+      <trans-unit resname="XliffChecker.21=" approved="no" id="152" xml:space="preserve">
+      <source>Undeclared &lt;tool&gt; referenced in &lt;alt-trans&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.22=" approved="no" id="154" xml:space="preserve">
-      <source>Undeclared &lt;phase&gt; referenced in &lt;alt-trans&gt; element.</source>
+      <trans-unit resname="XliffChecker.22=" approved="no" id="153" xml:space="preserve">
+      <source>Undeclared &lt;phase&gt; referenced in &lt;alt-trans&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.23=" approved="no" id="155" xml:space="preserve">
+      <trans-unit resname="XliffChecker.23=" approved="no" id="154" xml:space="preserve">
       <source>Found &lt;source&gt; with wrong language code: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.24=" approved="no" id="156" xml:space="preserve">
+      <trans-unit resname="XliffChecker.24=" approved="no" id="155" xml:space="preserve">
       <source>Found &lt;target&gt; with wrong language code: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.25=" approved="no" id="157" xml:space="preserve">
+      <trans-unit resname="XliffChecker.25=" approved="no" id="156" xml:space="preserve">
       <source>Duplicated "id" in &lt;trans-unit&gt;: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.26=" approved="no" id="158" xml:space="preserve">
+      <trans-unit resname="XliffChecker.26=" approved="no" id="157" xml:space="preserve">
       <source>Duplicated "mid" in &lt;mrk&gt;: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.27=" approved="no" id="159" xml:space="preserve">
-      <source>Incorrect segment referenced in &lt;target&gt; element.</source>
+      <trans-unit resname="XliffChecker.27=" approved="no" id="158" xml:space="preserve">
+      <source>Incorrect segment referenced in &lt;target&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.28=" approved="no" id="160" xml:space="preserve">
+      <trans-unit resname="XliffChecker.28=" approved="no" id="159" xml:space="preserve">
       <source>Duplicated "id" in &lt;group&gt;: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.29=" approved="no" id="161" xml:space="preserve">
-      <source>Found duplicated &lt;it&gt; element.</source>
+      <trans-unit resname="XliffChecker.29=" approved="no" id="160" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.3=" approved="no" id="162" xml:space="preserve">
-      <source>Catalog file does not exist.</source>
+      <trans-unit resname="XliffChecker.3=" approved="no" id="161" xml:space="preserve">
+      <source>Catalog file does not exist</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.30=" approved="no" id="163" xml:space="preserve">
-      <source>Found duplicated &lt;it&gt; element.</source>
+      <trans-unit resname="XliffChecker.30=" approved="no" id="162" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.31=" approved="no" id="164" xml:space="preserve">
-      <source>Found duplicated &lt;it&gt; element.</source>
+      <trans-unit resname="XliffChecker.31=" approved="no" id="163" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.32=" approved="no" id="165" xml:space="preserve">
-      <source>Found duplicated &lt;it&gt; element.</source>
+      <trans-unit resname="XliffChecker.32=" approved="no" id="164" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.33=" approved="no" id="166" xml:space="preserve">
-      <source>Found &lt;bx&gt; without "rid" or "id" attributes.</source>
+      <trans-unit resname="XliffChecker.33=" approved="no" id="165" xml:space="preserve">
+      <source>Found &lt;bx&gt; without "rid" or "id" attributes</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.34=" approved="no" id="167" xml:space="preserve">
-      <source>Found &lt;ex&gt; without "rid" or "id" attributes.</source>
+      <trans-unit resname="XliffChecker.34=" approved="no" id="166" xml:space="preserve">
+      <source>Found &lt;ex&gt; without "rid" or "id" attributes</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.35=" approved="no" id="168" xml:space="preserve">
-      <source>Found &lt;bpt&gt; without "rid" or "id" attributes.</source>
+      <trans-unit resname="XliffChecker.35=" approved="no" id="167" xml:space="preserve">
+      <source>Found &lt;bpt&gt; without "rid" or "id" attributes</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.36=" approved="no" id="169" xml:space="preserve">
-      <source>Found &lt;ept&gt; without "rid" or "id" attributes.</source>
+      <trans-unit resname="XliffChecker.36=" approved="no" id="168" xml:space="preserve">
+      <source>Found &lt;ept&gt; without "rid" or "id" attributes</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.37=" approved="no" id="170" xml:space="preserve">
-      <source>Unmatched &lt;ex&gt;/&lt;bx&gt; in &lt;{0}&gt;.</source>
+      <trans-unit resname="XliffChecker.37=" approved="no" id="169" xml:space="preserve">
+      <source>Unmatched &lt;ex&gt;/&lt;bx&gt; in &lt;{0}&gt;</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.38=" approved="no" id="171" xml:space="preserve">
-      <source>Unmatched &lt;bpt&gt;/&lt;ept&gt; in &lt;{0}&gt;.</source>
+      <trans-unit resname="XliffChecker.38=" approved="no" id="170" xml:space="preserve">
+      <source>Unmatched &lt;bpt&gt;/&lt;ept&gt; in &lt;{0}&gt;</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.39=" approved="no" id="172" xml:space="preserve">
-      <source>Unmatched &lt;it&gt; in &lt;file&gt;.</source>
+      <trans-unit resname="XliffChecker.39=" approved="no" id="171" xml:space="preserve">
+      <source>Unmatched &lt;it&gt; in &lt;file&gt;</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.4=" approved="no" id="173" xml:space="preserve">
+      <trans-unit resname="XliffChecker.4=" approved="no" id="172" xml:space="preserve">
       <source>Invalid XLIFF. Reason: {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.40=" approved="no" id="174" xml:space="preserve">
-      <source>Incorrect segment referenced in "xid" attribute.</source>
+      <trans-unit resname="XliffChecker.40=" approved="no" id="173" xml:space="preserve">
+      <source>Incorrect segment referenced in "xid" attribute</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.5=" approved="no" id="175" xml:space="preserve">
+      <trans-unit resname="XliffChecker.5=" approved="no" id="174" xml:space="preserve">
       <source>File is valid XLIFF {0}</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.6=" approved="no" id="176" xml:space="preserve">
+      <trans-unit resname="XliffChecker.6=" approved="no" id="175" xml:space="preserve">
       <source>Error creating validator</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.7=" approved="no" id="177" xml:space="preserve">
+      <trans-unit resname="XliffChecker.7=" approved="no" id="176" xml:space="preserve">
       <source>Selected file is not an XLIFF document</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.8=" approved="no" id="178" xml:space="preserve">
+      <trans-unit resname="XliffChecker.8=" approved="no" id="177" xml:space="preserve">
       <source>Missing version attribute</source>
    </trans-unit>
-      <trans-unit resname="XliffChecker.9=" approved="no" id="179" xml:space="preserve">
+      <trans-unit resname="XliffChecker.9=" approved="no" id="178" xml:space="preserve">
       <source>XLIFF {0} not supported yet</source>
    </trans-unit>
     </body>
