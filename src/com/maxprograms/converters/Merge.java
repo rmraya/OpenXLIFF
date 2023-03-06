@@ -172,7 +172,6 @@ public class Merge {
 				FromXliff2.run(xliff, tmpXliff.getAbsolutePath(), catalog);
 				loadXliff(tmpXliff.getAbsolutePath(), catalog);
 				Files.delete(Paths.get(tmpXliff.toURI()));
-				unapproved = true;
 			}
 			if (unapproved) {
 				approveAll(root);
