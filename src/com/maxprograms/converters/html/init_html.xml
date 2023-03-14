@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE ini-file PUBLIC "-//MAXPROGRAMS//Converters 2.0.0//EN" "configuration.dtd" >
+<ini-file>
+	<tag hard-break="segment">?</tag>
+	<tag hard-break="segment">!--</tag>
+	<tag hard-break="segment" attributes="title">body</tag>
+	<tag hard-break="segment" attributes="title">p</tag>
+	<tag hard-break="segment">br</tag>
+	<tag hard-break="segment">title</tag>
+	<tag hard-break="segment">caption</tag>
+	<tag hard-break="segment" attributes="title">table</tag>
+	<tag hard-break="segment" attributes="title">tr</tag>
+	<tag hard-break="segment" attributes="title">td</tag>
+	<tag hard-break="segment" attributes="title">th</tag>
+	<tag hard-break="segment">dd</tag>
+	<tag hard-break="segment" attributes="title">div</tag>
+	<tag hard-break="segment" attributes="title">h1</tag>
+	<tag hard-break="segment" attributes="title">h2</tag>
+	<tag hard-break="segment" attributes="title">h3</tag>
+	<tag hard-break="segment" attributes="title">h4</tag>
+	<tag hard-break="segment" attributes="title">h5</tag>
+	<tag hard-break="segment" attributes="title">h6</tag>
+	<tag hard-break="segment">ol</tag>
+	<tag hard-break="segment">ul</tag>
+	<tag hard-break="segment">li</tag>
+	<tag hard-break="segment">label</tag>
+	<tag hard-break="segment">legend</tag>
+	<tag hard-break="segment" keep-format="yes" attributes="title">code</tag>
+	<tag hard-break="segment" attributes="value">param</tag>
+	<tag hard-break="segment" attributes="value">option</tag>
+	<tag hard-break="segment" attributes="value">input</tag>
+	<tag hard-break="segment" attributes="title;value">button</tag>
+	<tag hard-break="segment" attributes="content">meta</tag>
+	<tag hard-break="segment" keep-format="yes" attributes="title">pre</tag>
+	<tag hard-break="segment">blockquote</tag>
+	<tag hard-break="segment">address</tag>
+	
+	<tag hard-break="inline" ctype="image" attributes="alt;title">img</tag>
+	<tag hard-break="inline" ctype="x-link" attributes="title">a</tag>
+	<tag hard-break="inline" ctype="x-bold">b</tag>
+	<tag hard-break="inline" ctype="x-bold">strong</tag>
+	<tag hard-break="inline" ctype="x-italic">i</tag>
+	<tag hard-break="inline" ctype="x-underlined">u</tag>
+	<tag hard-break="inline" ctype="x-other">span</tag>
+</ini-file>
