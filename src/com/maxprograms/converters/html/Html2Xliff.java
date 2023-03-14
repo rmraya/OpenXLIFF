@@ -60,8 +60,6 @@ public class Html2Xliff {
 	private static int tagId;
 
 	private static boolean segByElement;
-	private static boolean keepFormat;
-
 	private static Segmenter segmenter;
 	private static String catalog;
 	private static String first;
@@ -72,10 +70,11 @@ public class Html2Xliff {
 	private static StringBuffer segmentText;
 
 	private static List<String> inlineElements = Arrays.asList("a", "abbr", "acronym", "audio", "b", "bdi", "bdo",
-			"big", "br", "button", "canvas", "cite", "code", "data", "datalist", "del", "dfn", "em", "embed", "i",
-			"iframe", "img", "input", "ins", "kbd", "label", "map", "mark", "meter", "noscript", "object", "output",
+			"big", /* "br", */ "button", "canvas", "cite", "code", "data", "datalist", "del", "dfn", "em", "embed", "i",
+			"iframe", /* "img", "input", */ "ins", "kbd", /* "label",*/ "map", "mark", "meter", "noscript", "object",
+			"output",
 			"picture", "progress", "q", "ruby", "s", "samp", "script", "select", "slot", "small", "span", "strong",
-			"sub", "sup", "svg", "template", "textarea", "time", "u", "tt", "var", "video", "wbr");
+			"sub", "sup", /* "svg", */"template", "textarea", "time", "u", "tt", "var", "video", "wbr");
 
 	private static List<String> translatableAttributes = Arrays.asList("alt", "label", "placeholder", "title");
 
@@ -140,6 +139,11 @@ public class Html2Xliff {
 			boolean inline = inlineElements.contains(element.nodeName());
 			boolean emptyElement = element.childNodes().isEmpty();
 
+			if (!segmentText.isEmpty() && segmentText.toString().isBlank()) {
+				write(skl, segmentText.toString());
+				segmentText = new StringBuffer();
+			}
+
 			if (!isTranslatable(element)) {
 				write(skl, element.toString());
 				return;
@@ -155,14 +159,13 @@ public class Html2Xliff {
 						segmentText.append("<ph id=\"");
 						segmentText.append(tagId++);
 						segmentText.append("\">");
-						segmentText.append(getHead(element));
-						segmentText.append(element.toString());
+						segmentText.append(Utils.cleanString(element.toString()));
 						segmentText.append("</ph>");
 					} else {
 						segmentText.append("<ph id=\"");
 						segmentText.append(tagId++);
 						segmentText.append("\">");
-						segmentText.append(getHead(element));
+						segmentText.append(Utils.cleanString(getHead(element)));
 						segmentText.append("</ph>");
 					}
 				}
@@ -172,18 +175,34 @@ public class Html2Xliff {
 			segmentText.append(text.getWholeText());
 		}
 		if (node instanceof CDataNode cdata) {
+			if (!segmentText.isEmpty() && segmentText.toString().isBlank()) {
+				write(skl, segmentText.toString());
+				segmentText = new StringBuffer();
+			}
 			write(skl, cdata.toString());
 		}
 		if (node instanceof Comment comment) {
+			if (!segmentText.isEmpty() && segmentText.toString().isBlank()) {
+				write(skl, segmentText.toString());
+				segmentText = new StringBuffer();
+			}
 			write(skl, comment.toString());
 		}
 		if (node instanceof DataNode data) {
+			if (!segmentText.isEmpty() && segmentText.toString().isBlank()) {
+				write(skl, segmentText.toString());
+				segmentText = new StringBuffer();
+			}
 			write(skl, data.toString());
 		}
 		if (node instanceof FormElement form) {
-			// process form elements
+			// process forms as elements
 		}
 		if (node instanceof XmlDeclaration decl) {
+			if (!segmentText.isEmpty() && segmentText.toString().isBlank()) {
+				write(skl, segmentText.toString());
+				segmentText = new StringBuffer();
+			}
 			write(skl, decl.toString());
 		}
 
@@ -200,8 +219,12 @@ public class Html2Xliff {
 			boolean emptyElement = element.childNodes().isEmpty();
 
 			if (!inline) {
-				writeSegment(xlf, skl, segmentText.toString());
+				String segment = segmentText.toString();
+				String endSpaces = getEndingSpaces(segment);
+				writeSegment(xlf, skl, segment.substring(0, segment.length() - endSpaces.length()),
+						"pre".equalsIgnoreCase(element.nodeName()));
 				segmentText = new StringBuffer();
+				write(skl, endSpaces);
 			}
 
 			if (!emptyElement) {
@@ -220,6 +243,19 @@ public class Html2Xliff {
 		}
 	}
 
+	private static String getEndingSpaces(String segment) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = segment.length(); i > 0; i--) {
+			char c = segment.charAt(i - 1);
+			if (Character.isWhitespace(c)) {
+				sb.append(c);
+			} else {
+				break;
+			}
+		}
+		return sb.toString();
+	}
+
 	private static String getTranslatableHead(org.jsoup.nodes.Element element) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<ph>&lt;");
@@ -232,7 +268,7 @@ public class Html2Xliff {
 			sb.append(' ');
 			sb.append(a.getKey());
 			sb.append("=\"");
-			if (translatableAttributes.contains(a.getKey().toLowerCase())) {
+			if (translatableAttributes.contains(a.getKey().toLowerCase()) || "content".equalsIgnoreCase(a.getKey())) {
 				sb.append("</ph>");
 				sb.append(Utils.cleanString(a.getValue()));
 				sb.append("<ph>");
@@ -251,6 +287,13 @@ public class Html2Xliff {
 		while (it.hasNext()) {
 			if (atts.hasKeyIgnoreCase(it.next())) {
 				return true;
+			}
+		}
+		if ("meta".equalsIgnoreCase(element.nodeName()) && atts.hasKeyIgnoreCase("name")) {
+			String name = atts.getIgnoreCase("name");
+			if ("description".equalsIgnoreCase(name) || "author".equalsIgnoreCase(name)
+					|| "keywords".equalsIgnoreCase(name)) {
+				return atts.hasKeyIgnoreCase("content");
 			}
 		}
 		return false;
@@ -272,6 +315,9 @@ public class Html2Xliff {
 	}
 
 	private static boolean isTranslatable(org.jsoup.nodes.Element element) {
+		if ("script".equalsIgnoreCase(element.nodeName())) {
+			return false;
+		}
 		Attributes atts = element.attributes();
 		boolean translate = true;
 		if (atts.hasKeyIgnoreCase("translate")) {
@@ -311,9 +357,8 @@ public class Html2Xliff {
 		write(xlf, "</xliff>");
 	}
 
-	private static void writeSegment(FileOutputStream xlf, FileOutputStream skl, String segment)
+	private static void writeSegment(FileOutputStream xlf, FileOutputStream skl, String segment, boolean preserve)
 			throws IOException, SAXException, ParserConfigurationException {
-		segment = segment.replace("\u2029", "");
 		String pure = removePH(segment);
 		if (pure.isBlank()) {
 			write(skl, phContent(segment));
@@ -323,69 +368,69 @@ public class Html2Xliff {
 			write(skl, segment);
 			return;
 		}
-
-		first = "";
-		last = "";
-
-		segment = segmentCleanup(segment);
-
-		write(skl, first);
-		tagId = 0;
-		write(xlf, "      <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
-				+ "        <source>");
-		if (keepFormat) {
-			write(xlf, segment);
-		} else {
-			write(xlf, normalize(segment));
+		if (!preserve) {
+			segment = segment.replaceAll("\\s+", " ");
 		}
-		write(xlf, "</source>\n      </trans-unit>\n");
 
-		write(skl, "%%%" + segId++ + "%%%" + last);
+		Element source = builder
+				.build(new ByteArrayInputStream(("<source>" + segment + "</source>").getBytes(StandardCharsets.UTF_8)))
+				.getRootElement();
+
+		Element segmentSource = segmenter.segment(source);
+		List<Element> mrks = segmentSource.getChildren();
+		for (int i = 0; i < mrks.size(); i++) {
+			Element mrk = mrks.get(i);
+			mrk.removeAttribute("mid");
+			mrk.removeAttribute("mtype");
+			first = "";
+			last = "";
+			segment = segmentCleanup(mrk);
+			if (segment.isBlank()) {
+				write(skl, first + segment + last);
+				continue;
+			}
+			write(skl, first);
+			tagId = 0;
+			write(xlf, "      <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n"
+					+ "        <source>");
+			write(xlf, segment);
+			write(xlf, "</source>\n      </trans-unit>\n");
+			write(skl, "%%%" + segId++ + "%%%" + last);
+		}
 	}
 
-	private static String segmentCleanup(String segment)
+	private static String segmentCleanup(Element e)
 			throws SAXException, IOException, ParserConfigurationException {
-		ByteArrayInputStream stream = new ByteArrayInputStream(
-				("<x>" + segment + "</x>").getBytes(StandardCharsets.UTF_8));
-		Document d = builder.build(stream);
-		Element e = d.getRootElement();
 		List<XMLNode> content = e.getContent();
-		Iterator<XMLNode> it = content.iterator();
-		int count = 0;
-		while (it.hasNext()) {
-			XMLNode n = it.next();
-			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-				count++;
-			}
-		}
+		int count = e.getChildren().size();
 
 		if (count == 1) {
-			XMLNode n = content.get(0);
-			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-				first = phContent(n.toString());
+			XMLNode node = content.get(0);
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				first = phContent(node.toString());
 				content.remove(0);
 			} else {
-				n = content.get(content.size() - 1);
-				if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-					last = phContent(n.toString());
+				node = content.get(content.size() - 1);
+				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+					last = phContent(node.toString());
 					content.remove(content.size() - 1);
 				}
 			}
 		}
 
 		if (count == 2) {
-			XMLNode n = content.get(0);
-			XMLNode s = content.get(content.size() - 1);
-			if (n.getNodeType() == XMLNode.ELEMENT_NODE && s.getNodeType() == XMLNode.ELEMENT_NODE) {
-				first = ((Element) n).getText();
-				content.remove(n);
-				last = ((Element) s).getText();
-				content.remove(s);
+			XMLNode firstNode = content.get(0);
+			XMLNode lastNode = content.get(content.size() - 1);
+			if (firstNode.getNodeType() == XMLNode.ELEMENT_NODE && lastNode.getNodeType() == XMLNode.ELEMENT_NODE) {
+				first = ((Element) firstNode).getText();
+				content.remove(firstNode);
+				last = ((Element) lastNode).getText();
+				content.remove(lastNode);
 			}
 		}
 		e.setContent(content);
 		String es = e.toString();
-		return es.substring(3, es.length() - 4);
+		return es.substring("<mrk>".length(), es.length() - "</mrk>".length());
 	}
 
 	private static String phContent(String segment) throws SAXException, IOException, ParserConfigurationException {
@@ -423,27 +468,6 @@ public class Html2Xliff {
 			}
 		}
 		return result;
-	}
-
-	private static String normalize(String string) {
-		string = string.replace('\n', ' ');
-		string = string.replace('\t', ' ');
-		string = string.replace('\r', ' ');
-		string = string.replace('\f', ' ');
-		String rs = "";
-		int length = string.length();
-		for (int i = 0; i < length; i++) {
-			char ch = string.charAt(i);
-			if (ch != ' ') {
-				rs = rs + ch;
-			} else {
-				rs = rs + ch;
-				while (i < (length - 1) && string.charAt(i + 1) == ' ') {
-					i++;
-				}
-			}
-		}
-		return rs;
 	}
 
 	private static void write(FileOutputStream out, String string) throws IOException {
