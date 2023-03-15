@@ -20,6 +20,7 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -28,17 +29,18 @@ import java.util.StringTokenizer;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
-
-import org.xml.sax.SAXException;
 
 public class Html2Xliff {
 
@@ -454,6 +456,48 @@ public class Html2Xliff {
 	private static String tag(String element) {
 		String result = "";
 		String type = getType(element);
+
+		if (element.startsWith("<") && !element.startsWith("</")) {
+			Map<String, Attribute> atts = attributesMap(type, element);
+			if ("meta".equalsIgnoreCase(type)) {
+				if (atts.containsKey("name")) {
+					Attribute name = atts.get("name");
+					if ("application-name".equalsIgnoreCase(name.getValue()) ||
+							"author".equalsIgnoreCase(name.getValue())
+							|| "description".equalsIgnoreCase(name.getValue())
+							|| "keywords".equalsIgnoreCase(name.getValue())) {
+						translatableAttributes.put("meta", Arrays.asList("content"));
+					} else {
+						translatableAttributes.remove("meta");
+					}
+				} else {
+					translatableAttributes.remove("meta");
+				}
+			} else {
+				List<String> translatables = new ArrayList<>();
+				if (atts.containsKey("alt")) {
+					translatables.add("alt");
+				}
+				if (atts.containsKey("content")) {
+					translatables.add("content");
+				}
+				if (atts.containsKey("label")) {
+					translatables.add("label");
+				}
+				if (atts.containsKey("placeholder")) {
+					translatables.add("placeholder");
+				}
+				if (atts.containsKey("placeholder")) {
+					translatables.add("placeholder");
+				}
+				if (!translatables.isEmpty()) {
+					translatableAttributes.put(type.toLowerCase(), translatables);
+				} else {
+					translatableAttributes.remove(type.toLowerCase());
+				}
+			}
+		}
+
 		if (translatableAttributes.containsKey(type)) {
 			result = extractAttributes(type, element);
 			if (result.indexOf("\u2029") == -1) {
@@ -742,6 +786,42 @@ public class Html2Xliff {
 		}
 
 		return false;
+	}
+
+	private static Map<String, Attribute> attributesMap(String type, String element) {
+		Map<String, Attribute> atts = new HashMap<>();
+		StringTokenizer tokenizer = new StringTokenizer(element, "=<> \t\n\r\f/", true);
+		String name = "";
+		String key = "";
+		StringBuilder sb = new StringBuilder();
+		while (tokenizer.hasMoreTokens()) {
+			String token = tokenizer.nextToken();
+			if ("=".equals(token) && !name.isEmpty()) {
+				key = name.toLowerCase();
+				continue;
+			}
+			if (!token.isBlank()) {
+				name = token;
+			}
+			if (token.startsWith("\"") || token.startsWith("'")) {
+				String quote = token.substring(0, 1);
+				if (token.endsWith(quote)) {
+					// value is one word
+					atts.put(key, new Attribute(key, token.substring(1, token.length() - 1)));
+				} else {
+					// attribute value is quoted, but it has more than one word
+					sb.append(token.substring(1));
+					token = tokenizer.nextToken();
+					do {
+						sb.append(token);
+						token = tokenizer.nextToken();
+					} while (token.indexOf(quote) == -1);
+					sb.append(token.substring(0, token.indexOf(quote)));
+					atts.put(key, new Attribute(key, sb.toString()));
+				}
+			}
+		}
+		return atts;
 	}
 
 	private static String extractAttributes(String type, String element) {
