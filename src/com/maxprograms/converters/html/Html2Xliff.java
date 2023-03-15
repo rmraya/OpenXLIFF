@@ -56,11 +56,13 @@ public class Html2Xliff {
 	private static int tagId;
 
 	private static List<String> segments;
-	private static Map<String, String> startsSegment;
+	private static List<String> startsSegment = Arrays.asList("address", "article", "aside", "blockquote", "br",
+			"details", "dialog", "dd", "div", "dl", "dt", "fieldset", "figcaption", "figure", "footer", "form", "h1",
+			"h2", "h3", "h4", "h5", "h6", "header", "hgroup", "hr", "html", "label", "li", "main", "meta", "nav", "ol",
+			"p", "pre", "script", "section", "table", "td", "tr", "ul");
 	private static Map<String, List<String>> translatableAttributes;
 	private static Map<String, String> entities;
 	private static Map<String, String> ctypes;
-	private static Map<String, String> keepFormating;
 
 	private static boolean segByElement;
 	private static boolean keepFormat;
@@ -99,6 +101,7 @@ public class Html2Xliff {
 			}
 		}
 		try {
+			builder = new SAXBuilder();
 			if (!segByElement) {
 				String initSegmenter = params.get("srxFile");
 				segmenter = new Segmenter(initSegmenter, sourceLanguage, new Catalog(catalog));
@@ -457,47 +460,6 @@ public class Html2Xliff {
 		String result = "";
 		String type = getType(element);
 
-		if (element.startsWith("<") && !element.startsWith("</")) {
-			Map<String, Attribute> atts = attributesMap(type, element);
-			if ("meta".equalsIgnoreCase(type)) {
-				if (atts.containsKey("name")) {
-					Attribute name = atts.get("name");
-					if ("application-name".equalsIgnoreCase(name.getValue()) ||
-							"author".equalsIgnoreCase(name.getValue())
-							|| "description".equalsIgnoreCase(name.getValue())
-							|| "keywords".equalsIgnoreCase(name.getValue())) {
-						translatableAttributes.put("meta", Arrays.asList("content"));
-					} else {
-						translatableAttributes.remove("meta");
-					}
-				} else {
-					translatableAttributes.remove("meta");
-				}
-			} else {
-				List<String> translatables = new ArrayList<>();
-				if (atts.containsKey("alt")) {
-					translatables.add("alt");
-				}
-				if (atts.containsKey("content")) {
-					translatables.add("content");
-				}
-				if (atts.containsKey("label")) {
-					translatables.add("label");
-				}
-				if (atts.containsKey("placeholder")) {
-					translatables.add("placeholder");
-				}
-				if (atts.containsKey("placeholder")) {
-					translatables.add("placeholder");
-				}
-				if (!translatables.isEmpty()) {
-					translatableAttributes.put(type.toLowerCase(), translatables);
-				} else {
-					translatableAttributes.remove(type.toLowerCase());
-				}
-			}
-		}
-
 		if (translatableAttributes.containsKey(type)) {
 			result = extractAttributes(type, element);
 			if (result.indexOf("\u2029") == -1) {
@@ -749,8 +711,13 @@ public class Html2Xliff {
 				start = string.indexOf('<');
 				end = string.indexOf('>');
 			}
-			type = getType(string.substring(start, end));
-			keepFormat = keepFormating.containsKey(type);
+			String fragment = string.substring(start, end);
+			type = getType(fragment);
+			keepFormat = "pre".equalsIgnoreCase(type) || "code".equalsIgnoreCase(type);
+
+			if (fragment.startsWith("<") && !fragment.startsWith("</")) {
+				updateAttributes(type, fragment + ">");
+			}
 
 			if (type.equals("script") || type.equals("style")) {
 				return false;
@@ -786,6 +753,49 @@ public class Html2Xliff {
 		}
 
 		return false;
+	}
+
+	private static void updateAttributes(String type, String fragment) {
+		Map<String, Attribute> atts = attributesMap(type, fragment);
+		if ("meta".equalsIgnoreCase(type)) {
+			if (atts.containsKey("name")) {
+				Attribute name = atts.get("name");
+				if ("application-name".equalsIgnoreCase(name.getValue()) ||
+						"author".equalsIgnoreCase(name.getValue())
+						|| "description".equalsIgnoreCase(name.getValue())
+						|| "keywords".equalsIgnoreCase(name.getValue())) {
+					translatableAttributes.put("meta", Arrays.asList("content"));
+				} else {
+					translatableAttributes.remove("meta");
+				}
+			} else {
+				translatableAttributes.remove("meta");
+			}
+		} else {
+			List<String> translatables = new ArrayList<>();
+			if ("button".equalsIgnoreCase(type) || "input".equalsIgnoreCase(type)) {
+				if (atts.containsKey("value")) {
+					translatables.add("value");
+				}
+			}
+			if (atts.containsKey("alt")) {
+				translatables.add("alt");
+			}
+			if (atts.containsKey("content")) {
+				translatables.add("content");
+			}
+			if (atts.containsKey("label")) {
+				translatables.add("label");
+			}
+			if (atts.containsKey("placeholder")) {
+				translatables.add("placeholder");
+			}
+			if (!translatables.isEmpty()) {
+				translatableAttributes.put(type.toLowerCase(), translatables);
+			} else {
+				translatableAttributes.remove(type.toLowerCase());
+			}
+		}
 	}
 
 	private static Map<String, Attribute> attributesMap(String type, String element) {
@@ -876,51 +886,17 @@ public class Html2Xliff {
 		return result;
 	}
 
-	private static void buildTables()
-			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
-
-		if (builder == null) {
-			builder = new SAXBuilder();
-		}
-		Catalog cat = new Catalog(catalog);
-		builder.setEntityResolver(cat);
-		Document doc = builder.build(Html2Xliff.class.getResource("init_html.xml"));
-		Element root = doc.getRootElement();
-		List<Element> tags = root.getChildren("tag");
-
-		startsSegment = new HashMap<>();
+	private static void buildTables() throws SAXException, IOException, ParserConfigurationException {
 		translatableAttributes = new HashMap<>();
 		entities = new HashMap<>();
 		ctypes = new HashMap<>();
-		keepFormating = new HashMap<>();
-
-		Iterator<Element> i = tags.iterator();
-		while (i.hasNext()) {
-			Element t = i.next();
-			if (t.getAttributeValue("hard-break", "inline").equals("segment")) {
-				startsSegment.put(t.getText(), "yes");
-			}
-			if (t.getAttributeValue("keep-format", "no").equals("yes")) {
-				keepFormating.put(t.getText(), "yes");
-			}
-			String attributes = t.getAttributeValue("attributes");
-			if (!attributes.isEmpty()) {
-				StringTokenizer tokenizer = new StringTokenizer(attributes, ";");
-				int count = tokenizer.countTokens();
-				List<String> v = new ArrayList<>(count);
-				for (int j = 0; j < count; j++) {
-					v.add(tokenizer.nextToken());
-				}
-				translatableAttributes.put(t.getText(), v);
-			}
-			String ctype = t.getAttributeValue("ctype");
-			if (!ctype.isEmpty()) {
-				ctypes.put(t.getText(), ctype);
-			}
-		}
-
-		doc = builder.build(Html2Xliff.class.getResource("entities.xml"));
-		root = doc.getRootElement();
+		ctypes.put("img", "image");
+		ctypes.put("b", "x-bold");
+		ctypes.put("strong", "x-bold");
+		ctypes.put("i", "x-italic");
+		ctypes.put("u", "x-underlined");
+		Document doc = builder.build(Html2Xliff.class.getResource("entities.xml"));
+		Element root = doc.getRootElement();
 		List<Element> ents = root.getChildren("entity");
 		Iterator<Element> it = ents.iterator();
 		while (it.hasNext()) {
@@ -997,14 +973,14 @@ public class Html2Xliff {
 				}
 				continue;
 			}
-			if (startsSegment.containsKey(type)) {
+			if (startsSegment.contains(type)) {
 				segments.add(text);
 				file = file.substring(text.length());
 				start = start - text.length();
 				end = end - text.length();
 				text = "";
 			}
-			if (type.startsWith("/") && startsSegment.containsKey(type.substring(1))) {
+			if (type.startsWith("/") && startsSegment.contains(type.substring(1))) {
 				segments.add(text);
 				file = file.substring(text.length());
 				start = start - text.length();
