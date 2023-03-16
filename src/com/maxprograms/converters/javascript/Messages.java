@@ -11,21 +11,35 @@
  *******************************************************************************/
 package com.maxprograms.converters.javascript;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Properties;
 
 public class Messages {
-    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".javascript";
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+    private static Properties props;
 
     private Messages() {
     }
 
     public static String getString(String key) {
         try {
-            return RESOURCE_BUNDLE.getString(key);
-        } catch (MissingResourceException e) {
+            if (props == null) {
+                Locale locale = Locale.getDefault();
+                String extension = "en".equals(locale.getLanguage()) ? ".properties"
+                        : "_" + locale.getLanguage() + ".properties";
+                try (InputStream is = Messages.class.getResourceAsStream("javascript" + extension)) {
+                    try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+                        props = new Properties();
+                        props.load(reader);
+                    }
+                }
+            }
+            return props.getProperty(key, '!' + key + '!');
+        } catch (IOException e) {
             return '!' + key + '!';
         }
     }
