@@ -561,18 +561,18 @@ Tipos de documentos
 </tu>
 <tu creationtool="OpenXLIFF Filters" creationtoolversion="3.4.0" tuid="-1421998855-3-1574" creationdate="20230316T171232Z">
 <tuv xml:lang="en" creationdate="20230316T171232Z">
-<seg>SRX file does not exist</seg>
+<seg>SRX file ''{0}'' does not exist</seg>
 </tuv>
 <tuv xml:lang="es" creationdate="20230316T171232Z">
-<seg>El archivo SRX no existe</seg>
+<seg>El archivo SRX ''{0}'' no existe</seg>
 </tuv>
 </tu>
 <tu creationtool="OpenXLIFF Filters" creationtoolversion="3.4.0" tuid="-1421998855-3-1575" creationdate="20230316T171232Z">
 <tuv xml:lang="en" creationdate="20230316T171232Z">
-<seg>'catalog' folder not found</seg>
+<seg>Catalog folder ''{0}'' not found</seg>
 </tuv>
 <tuv xml:lang="es" creationdate="20230316T171232Z">
-<seg>No se encontró la carpeta 'catalog'</seg>
+<seg>No se encontró la carpeta de catálogo ''{0}''</seg>
 </tuv>
 </tu>
 <tu creationtool="OpenXLIFF Filters" creationtoolversion="3.4.0" tuid="-1421998855-3-1576" creationdate="20230316T171232Z">

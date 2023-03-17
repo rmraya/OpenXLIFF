@@ -135,7 +135,8 @@ public class Merge {
 			}
 			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
-				logger.log(Level.ERROR, Messages.getString("Merge.05"));
+				MessageFormat mf = new MessageFormat(Messages.getString("Merge.05"));
+				logger.log(Level.ERROR, mf.format(new String[]{catalogFolder.getAbsolutePath()}));
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();

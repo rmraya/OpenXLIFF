@@ -229,7 +229,8 @@ public class Convert {
 		}
 		File srxFile = new File(srx);
 		if (!srxFile.exists()) {
-			logger.log(Level.ERROR, Messages.getString("Convert.15"));
+			MessageFormat mf = new MessageFormat(Messages.getString("Convert.15"));
+			logger.log(Level.ERROR, mf.format(new String[]{srxFile.getAbsolutePath()}));
 			return;
 		}
 		if (xmlfilter.isEmpty()) {
