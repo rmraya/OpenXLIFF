@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<languages>
+  <lang code="bs-Latn" bidi="false"/>
+  <lang code="bs-Latn-BA" bidi="false"/>
+  <lang code="en-US-POSIX" bidi="false"/>
+  <lang code="pa-Guru" bidi="false"/>
+  <lang code="pa-Guru-IN" bidi="false"/>
+  <lang code="sq-XK" bidi="false"/>
+  <lang code="sr-Cyrl-XK" bidi="false"/>
+  <lang code="sr-Latn-XK" bidi="false"/>
+  <lang code="ab" bidi="false">Abjaso</lang>
+  <lang code="aa" bidi="false">Afar</lang>
+  <lang code="af" bidi="false">Afrikaans</lang>
+  <lang code="af-NA" bidi="false">Afrikaans (Namibia)</lang>
+  <lang code="af-ZA" bidi="false">Afrikaans (Sudáfrica)</lang>
+  <lang code="agq" bidi="false">Aghem</lang>
+  <lang code="agq-CM" bidi="false">Aghem (Camerún)</lang>
+  <lang code="ak" bidi="false">Acano</lang>
+  <lang code="ak-GH" bidi="false">Acano (Ghana)</lang>
+  <lang code="sq" bidi="false">Albanés</lang>
+  <lang code="sq-AL" bidi="false">Albanés (Albania)</lang>
+  <lang code="sq-MK" bidi="false">Albanés (Macedonia del Norte)</lang>
+  <lang code="am" bidi="false">Amárico</lang>
+  <lang code="am-ET" bidi="false">Amárico (Etiopía)</lang>
+  <lang code="ar" bidi="true">Árabe</lang>
+  <lang code="ar-DZ" bidi="true">Árabe (Argelia)</lang>
+  <lang code="ar-BH" bidi="true">Árabe (Bahréin)</lang>
+  <lang code="ar-TD" bidi="true">Árabe (Chad)</lang>
+  <lang code="ar-KM" bidi="true">Árabe (Comoras)</lang>
+  <lang code="ar-DJ" bidi="true">Árabe (Yibuti)</lang>
+  <lang code="ar-EG" bidi="true">Árabe (Egipto)</lang>
+  <lang code="ar-ER" bidi="true">Árabe (Eritrea)</lang>
+  <lang code="ar-IQ" bidi="true">Árabe (Irak)</lang>
+  <lang code="ar-IL" bidi="true">Árabe (Israel)</lang>
+  <lang code="ar-JO" bidi="true">Árabe (Jordania)</lang>
+  <lang code="ar-KW" bidi="true">Árabe (Kuwait)</lang>
+  <lang code="ar-LB" bidi="true">Árabe (Líbano)</lang>
+  <lang code="ar-LY" bidi="true">Árabe (Libia)</lang>
+  <lang code="ar-MR" bidi="true">Árabe (Mauritania)</lang>
+  <lang code="ar-MA" bidi="true">Árabe (Marruecos)</lang>
+  <lang code="ar-OM" bidi="true">Árabe (Omán)</lang>
+  <lang code="ar-QA" bidi="true">Árabe (Qatar)</lang>
+  <lang code="ar-SA" bidi="true">Árabe (Arabia Saudita)</lang>
+  <lang code="ar-SO" bidi="true">Árabe (Somalia)</lang>
+  <lang code="ar-SS" bidi="true">Árabe (Sudán del Sur)</lang>
+  <lang code="ar-PS" bidi="true">Árabe (Estado de Palestina)</lang>
+  <lang code="ar-SD" bidi="true">Árabe (Sudán)</lang>
+  <lang code="ar-SY" bidi="true">Árabe (República Árabe Siria)</lang>
+  <lang code="ar-TN" bidi="true">Árabe (Túnez)</lang>
+  <lang code="ar-AE" bidi="true">Árabe (Emiratos Árabes Unidos)</lang>
+  <lang code="ar-EH" bidi="true">Árabe (Sáhara Occidental)</lang>
+  <lang code="ar-001" bidi="true">Árabe (mundo)</lang>
+  <lang code="ar-YE" bidi="true">Árabe (Yemen)</lang>
+  <lang code="an" bidi="false">Aragonés</lang>
+  <lang code="hy" bidi="false">Armenio</lang>
+  <lang code="hy-AM" bidi="false">Armenio (Armenia)</lang>
+  <lang code="as" bidi="false">Asamés</lang>
+  <lang code="as-IN" bidi="false">Asamés (India)</lang>
+  <lang code="ast" bidi="false">Asturiano</lang>
+  <lang code="ast-ES" bidi="false">Asturiano (España)</lang>
+  <lang code="asa" bidi="false">Asu</lang>
+  <lang code="asa-TZ" bidi="false">Asu (República Unida de Tanzanía)</lang>
+  <lang code="av" bidi="false">Avaric</lang>
+  <lang code="ae" bidi="false">Avéstico</lang>
+  <lang code="ay" bidi="false">Aymara</lang>
+  <lang code="az" bidi="false">Azerbaiyano</lang>
+  <lang code="az-Cyrl" bidi="false">Azerbaiyano (cirílico)</lang>
+  <lang code="az-Cyrl-AZ" bidi="false">Azerbaiyano (cirílico, Azerbaiyán)</lang>
+  <lang code="az-Latn" bidi="false">Azerbaiyano (latín)</lang>
+  <lang code="az-Latn-AZ" bidi="false">Azerbaiyano (latín, Azerbaiyán)</lang>
+  <lang code="ksf" bidi="false">Bafia</lang>
+  <lang code="ksf-CM" bidi="false">Bafia (Camerún)</lang>
+  <lang code="bm" bidi="false">Bambara</lang>
+  <lang code="bm-ML" bidi="false">Bambara (Malí)</lang>
+  <lang code="bas" bidi="false">Basa</lang>
+  <lang code="bas-CM" bidi="false">Basa (Camerún)</lang>
+  <lang code="ba" bidi="false">Baskir</lang>
+  <lang code="eu" bidi="false">Euskera</lang>
+  <lang code="eu-ES" bidi="false">Euskera (España)</lang>
+  <lang code="be" bidi="false">Bielorruso</lang>
+  <lang code="be-BY" bidi="false">Bielorruso (Bielorrusia)</lang>
+  <lang code="bem" bidi="false">Bemba</lang>
+  <lang code="bem-ZM" bidi="false">Bemba (Zambia)</lang>
+  <lang code="bez" bidi="false">Bena</lang>
+  <lang code="bez-TZ" bidi="false">Bena (República Unida de Tanzanía)</lang>
+  <lang code="bn" bidi="false">Bengalí</lang>
+  <lang code="bn-BD" bidi="false">Bengalí (Bangladesh)</lang>
+  <lang code="bn-IN" bidi="false">Bengalí (India)</lang>
+  <lang code="bh" bidi="false">Lenguas Bihari</lang>
+  <lang code="bi" bidi="false">Bislama</lang>
+  <lang code="brx" bidi="false">Bodo</lang>
+  <lang code="brx-IN" bidi="false">Bodo (India)</lang>
+  <lang code="bs" bidi="false">Bosnio</lang>
+  <lang code="bs-Cyrl" bidi="false">Bosnio (cirílico)</lang>
+  <lang code="bs-Cyrl-BA" bidi="false">Bosnio (cirílico, Bosnia y Herzegovina)</lang>
+  <lang code="br" bidi="false">Bretón</lang>
+  <lang code="br-FR" bidi="false">Bretón (Francia)</lang>
+  <lang code="bg" bidi="false">Búlgaro</lang>
+  <lang code="bg-BG" bidi="false">Búlgaro (Bulgaria)</lang>
+  <lang code="my" bidi="false">Birmano</lang>
+  <lang code="my-MM" bidi="false">Birmano (Myanmar)</lang>
+  <lang code="ca" bidi="false">Catalán</lang>
+  <lang code="ca-AD" bidi="false">Catalán (Andorra)</lang>
+  <lang code="ca-FR" bidi="false">Catalán (Francia)</lang>
+  <lang code="ca-IT" bidi="false">Catalán (Italia)</lang>
+  <lang code="ca-ES" bidi="false">Catalán (España)</lang>
+  <lang code="ceb" bidi="false">Cebuano</lang>
+  <lang code="ceb-PH" bidi="false">Cebuano (Filipinas)</lang>
+  <lang code="tzm" bidi="false">Atlas Central Tamazight</lang>
+  <lang code="tzm-MA" bidi="false">Atlas Central Tamazight (Marruecos)</lang>
+  <lang code="ckb" bidi="true">Kurdo central</lang>
+  <lang code="ckb-IQ" bidi="true">Kurdo central (Irak)</lang>
+  <lang code="ckb-IR" bidi="true">Kurdo central (República Islámica del Irán)</lang>
+  <lang code="ccp" bidi="false">Chakma</lang>
+  <lang code="ccp-BD" bidi="false">Chakma (Bangladesh)</lang>
+  <lang code="ccp-IN" bidi="false">Chakma (India)</lang>
+  <lang code="ch" bidi="false">Chamorro</lang>
+  <lang code="ce" bidi="false">Checheno</lang>
+  <lang code="ce-RU" bidi="false">Checheno (Federación Rusa)</lang>
+  <lang code="chr" bidi="false">Cheroqui</lang>
+  <lang code="chr-US" bidi="false">Cheroqui (Estados Unidos)</lang>
+  <lang code="cgg" bidi="false">Chiga</lang>
+  <lang code="cgg-UG" bidi="false">Chiga (Uganda)</lang>
+  <lang code="zh" bidi="false">Chino</lang>
+  <lang code="zh-CN" bidi="false">Chino (China)</lang>
+  <lang code="zh-Hans" bidi="false">Chino (Han [variante simplificada])</lang>
+  <lang code="zh-Hans-CN" bidi="false">Chino (Han [variante simplificada], China)</lang>
+  <lang code="zh-Hans-HK" bidi="false">Chino (Han [variante simplificada], Hong Kong)</lang>
+  <lang code="zh-Hans-MO" bidi="false">Chino (Han [variante simplificada], Macao)</lang>
+  <lang code="zh-Hans-SG" bidi="false">Chino (Han [variante simplificada], Singapur)</lang>
+  <lang code="zh-Hant" bidi="false">Chino (Han [variante tradicional])</lang>
+  <lang code="zh-Hant-HK" bidi="false">Chino (Han [variante tradicional], Hong Kong)</lang>
+  <lang code="zh-Hant-MO" bidi="false">Chino (Han [variante tradicional], Macao)</lang>
+  <lang code="zh-Hant-TW" bidi="false">Chino (Han [variante tradicional], Taiwán, Provincia de China)</lang>
+  <lang code="zh-HK" bidi="false">Chino (Hong Kong)</lang>
+  <lang code="zh-SG" bidi="false">Chino (Singapur)</lang>
+  <lang code="zh-TW" bidi="false">Chino (Taiwán, Provincia de China)</lang>
+  <lang code="cu" bidi="false">Eslavo eclesiástico</lang>
+  <lang code="cv" bidi="false">Chuvasio</lang>
+  <lang code="kw" bidi="false">Córnico</lang>
+  <lang code="kw-GB" bidi="false">Córnico (Reino Unido)</lang>
+  <lang code="co" bidi="false">Corso</lang>
+  <lang code="cr" bidi="false">Cree</lang>
+  <lang code="hr" bidi="false">Croata</lang>
+  <lang code="hr-BA" bidi="false">Croata (Bosnia y Herzegovina)</lang>
+  <lang code="hr-HR" bidi="false">Croata (Croacia)</lang>
+  <lang code="cs" bidi="false">Checo</lang>
+  <lang code="cs-CZ" bidi="false">Checo (Chequia | República Checa)</lang>
+  <lang code="da" bidi="false">Danés</lang>
+  <lang code="da-DK" bidi="false">Danés (Dinamarca)</lang>
+  <lang code="da-GL" bidi="false">Danés (Groenlandia)</lang>
+  <lang code="dv" bidi="false">Dhivehi</lang>
+  <lang code="doi" bidi="false">Dogri</lang>
+  <lang code="doi-IN" bidi="false">Dogri (India)</lang>
+  <lang code="dua" bidi="false">Duala</lang>
+  <lang code="dua-CM" bidi="false">Duala (Camerún)</lang>
+  <lang code="nl" bidi="false">Neerlandés</lang>
+  <lang code="nl-AW" bidi="false">Neerlandés (Aruba)</lang>
+  <lang code="nl-BE" bidi="false">Neerlandés (Bélgica)</lang>
+  <lang code="nl-BQ" bidi="false">Neerlandés (Bonaire, San Eustaquio y Saba)</lang>
+  <lang code="nl-CW" bidi="false">Neerlandés (Curazao)</lang>
+  <lang code="nl-NL" bidi="false">Neerlandés (Países Bajos)</lang>
+  <lang code="nl-SX" bidi="false">Neerlandés (Sint Maarten (parte neerlandesa))</lang>
+  <lang code="nl-SR" bidi="false">Neerlandés (Surinam)</lang>
+  <lang code="dz" bidi="false">Dzongkha</lang>
+  <lang code="dz-BT" bidi="false">Dzongkha (Bután)</lang>
+  <lang code="ebu" bidi="false">Embu</lang>
+  <lang code="ebu-KE" bidi="false">Embu (Kenia)</lang>
+  <lang code="en" bidi="false">Inglés</lang>
+  <lang code="en-AS" bidi="false">Inglés (Samoa Americana)</lang>
+  <lang code="en-AI" bidi="false">Inglés (Anguila)</lang>
+  <lang code="en-AG" bidi="false">Inglés (Antigua y Barbuda)</lang>
+  <lang code="en-AU" bidi="false">Inglés (Australia)</lang>
+  <lang code="en-AT" bidi="false">Inglés (Austria)</lang>
+  <lang code="en-BS" bidi="false">Inglés (Bahamas)</lang>
+  <lang code="en-BB" bidi="false">Inglés (Barbados)</lang>
+  <lang code="en-BE" bidi="false">Inglés (Bélgica)</lang>
+  <lang code="en-BZ" bidi="false">Inglés (Belice)</lang>
+  <lang code="en-BM" bidi="false">Inglés (Bermudas)</lang>
+  <lang code="en-BW" bidi="false">Inglés (Botsuana)</lang>
+  <lang code="en-IO" bidi="false">Inglés (Territorio Británico del Océano Índico)</lang>
+  <lang code="en-VG" bidi="false">Inglés (Islas Vírgenes Británicas)</lang>
+  <lang code="en-BI" bidi="false">Inglés (Burundi)</lang>
+  <lang code="en-CM" bidi="false">Inglés (Camerún)</lang>
+  <lang code="en-CA" bidi="false">Inglés (Canadá)</lang>
+  <lang code="en-029" bidi="false">Inglés (Caribe)</lang>
+  <lang code="en-KY" bidi="false">Inglés (Islas Caimán)</lang>
+  <lang code="en-CX" bidi="false">Inglés (Isla de Navidad)</lang>
+  <lang code="en-CC" bidi="false">Inglés (Islas Cocos [Keeling])</lang>
+  <lang code="en-CK" bidi="false">Inglés (Islas Cook)</lang>
+  <lang code="en-CY" bidi="false">Inglés (Chipre)</lang>
+  <lang code="en-DK" bidi="false">Inglés (Dinamarca)</lang>
+  <lang code="en-DG" bidi="false">Inglés (Diego Garcia)</lang>
+  <lang code="en-DM" bidi="false">Inglés (Dominica)</lang>
+  <lang code="en-ER" bidi="false">Inglés (Eritrea)</lang>
+  <lang code="en-SZ" bidi="false">Inglés (Eswatini | eSwatini | Swazilandia)</lang>
+  <lang code="en-150" bidi="false">Inglés (Europa)</lang>
+  <lang code="en-FK" bidi="false">Inglés (Islas Falkland (Malvinas))</lang>
+  <lang code="en-FM" bidi="false">Inglés (Estados Federados de Micronesia)</lang>
+  <lang code="en-FJ" bidi="false">Inglés (Fiyi)</lang>
+  <lang code="en-FI" bidi="false">Inglés (Finlandia)</lang>
+  <lang code="en-GM" bidi="false">Inglés (Gambia)</lang>
+  <lang code="en-DE" bidi="false">Inglés (Alemania)</lang>
+  <lang code="en-GH" bidi="false">Inglés (Ghana)</lang>
+  <lang code="en-GI" bidi="false">Inglés (Gibraltar)</lang>
+  <lang code="en-GD" bidi="false">Inglés (Granada)</lang>
+  <lang code="en-GU" bidi="false">Inglés (Guam)</lang>
+  <lang code="en-GG" bidi="false">Inglés (Guernsey)</lang>
+  <lang code="en-GY" bidi="false">Inglés (Guyana)</lang>
+  <lang code="en-HK" bidi="false">Inglés (Hong Kong)</lang>
+  <lang code="en-IN" bidi="false">Inglés (India)</lang>
+  <lang code="en-IE" bidi="false">Inglés (Irlanda)</lang>
+  <lang code="en-IM" bidi="false">Inglés (Isla de Man)</lang>
+  <lang code="en-IL" bidi="false">Inglés (Israel)</lang>
+  <lang code="en-JM" bidi="false">Inglés (Jamaica)</lang>
+  <lang code="en-JE" bidi="false">Inglés (Jersey)</lang>
+  <lang code="en-KE" bidi="false">Inglés (Kenia)</lang>
+  <lang code="en-KI" bidi="false">Inglés (Kiribati)</lang>
+  <lang code="en-LS" bidi="false">Inglés (Lesotho)</lang>
+  <lang code="en-LR" bidi="false">Inglés (Liberia)</lang>
+  <lang code="en-MO" bidi="false">Inglés (Macao)</lang>
+  <lang code="en-MG" bidi="false">Inglés (Madagascar)</lang>
+  <lang code="en-MW" bidi="false">Inglés (Malawi)</lang>
+  <lang code="en-MY" bidi="false">Inglés (Malasia)</lang>
+  <lang code="en-MV" bidi="false">Inglés (Maldivas)</lang>
+  <lang code="en-MT" bidi="false">Inglés (Malta)</lang>
+  <lang code="en-MH" bidi="false">Inglés (Islas Marshall)</lang>
+  <lang code="en-MU" bidi="false">Inglés (Mauricio)</lang>
+  <lang code="en-MS" bidi="false">Inglés (Montserrat)</lang>
+  <lang code="en-NA" bidi="false">Inglés (Namibia)</lang>
+  <lang code="en-NR" bidi="false">Inglés (Nauru)</lang>
+  <lang code="en-NL" bidi="false">Inglés (Países Bajos)</lang>
+  <lang code="en-NZ" bidi="false">Inglés (Nueva Zelandia)</lang>
+  <lang code="en-NG" bidi="false">Inglés (Nigeria)</lang>
+  <lang code="en-NU" bidi="false">Inglés (Niue)</lang>
+  <lang code="en-NF" bidi="false">Inglés (Isla Norfolk)</lang>
+  <lang code="en-MP" bidi="false">Inglés (Islas Marianas del Norte)</lang>
+  <lang code="en-PK" bidi="false">Inglés (Pakistán)</lang>
+  <lang code="en-PW" bidi="false">Inglés (Palau)</lang>
+  <lang code="en-PG" bidi="false">Inglés (Papúa Nueva Guinea)</lang>
+  <lang code="en-PH" bidi="false">Inglés (Filipinas)</lang>
+  <lang code="en-PN" bidi="false">Inglés (Pitcairn)</lang>
+  <lang code="en-PR" bidi="false">Inglés (Puerto Rico)</lang>
+  <lang code="en-RW" bidi="false">Inglés (Ruanda)</lang>
+  <lang code="en-SH" bidi="false">Inglés (Santa Elena, Ascensión y Tristán da Cunha)</lang>
+  <lang code="en-KN" bidi="false">Inglés (San Cristóbal y Nieves)</lang>
+  <lang code="en-LC" bidi="false">Inglés (Santa Lucía)</lang>
+  <lang code="en-VC" bidi="false">Inglés (San Vicente y las Granadinas)</lang>
+  <lang code="en-WS" bidi="false">Inglés (Samoa)</lang>
+  <lang code="en-SC" bidi="false">Inglés (Seychelles)</lang>
+  <lang code="en-SL" bidi="false">Inglés (Sierra Leona)</lang>
+  <lang code="en-SG" bidi="false">Inglés (Singapur)</lang>
+  <lang code="en-SX" bidi="false">Inglés (Sint Maarten (parte neerlandesa))</lang>
+  <lang code="en-SI" bidi="false">Inglés (Eslovenia)</lang>
+  <lang code="en-SB" bidi="false">Inglés (Islas Salomón)</lang>
+  <lang code="en-ZA" bidi="false">Inglés (Sudáfrica)</lang>
+  <lang code="en-SS" bidi="false">Inglés (Sudán del Sur)</lang>
+  <lang code="en-SD" bidi="false">Inglés (Sudán)</lang>
+  <lang code="en-SE" bidi="false">Inglés (Suecia)</lang>
+  <lang code="en-CH" bidi="false">Inglés (Suiza)</lang>
+  <lang code="en-TK" bidi="false">Inglés (Tokelau)</lang>
+  <lang code="en-TO" bidi="false">Inglés (Tonga)</lang>
+  <lang code="en-TT" bidi="false">Inglés (Trinidad y Tobago)</lang>
+  <lang code="en-TC" bidi="false">Inglés (Islas Turcas y Caicos)</lang>
+  <lang code="en-TV" bidi="false">Inglés (Tuvalu)</lang>
+  <lang code="en-VI" bidi="false">English (U.S. Virgin Islands)</lang>
+  <lang code="en-UG" bidi="false">Inglés (Uganda)</lang>
+  <lang code="en-AE" bidi="false">Inglés (Emiratos Árabes Unidos)</lang>
+  <lang code="en-GB" bidi="false">Inglés (Reino Unido)</lang>
+  <lang code="en-TZ" bidi="false">Inglés (República Unida de Tanzanía)</lang>
+  <lang code="en-UM" bidi="false">Inglés (Islas periféricas de los Estados Unidos)</lang>
+  <lang code="en-US" bidi="false">Inglés (Estados Unidos)</lang>
+  <lang code="en-VU" bidi="false">Inglés (Vanuatu)</lang>
+  <lang code="en-001" bidi="false">Inglés (mundo)</lang>
+  <lang code="en-ZM" bidi="false">Inglés (Zambia)</lang>
+  <lang code="en-ZW" bidi="false">Inglés (Zimbabue)</lang>
+  <lang code="eo" bidi="false">Esperanto</lang>
+  <lang code="eo-001" bidi="false">Esperanto (mundo)</lang>
+  <lang code="et" bidi="false">Estonio</lang>
+  <lang code="et-EE" bidi="false">Estonio (Estonia)</lang>
+  <lang code="ee" bidi="false">Oveja</lang>
+  <lang code="ee-GH" bidi="false">Oveja (Ghana)</lang>
+  <lang code="ee-TG" bidi="false">Oveja (Togo)</lang>
+  <lang code="ewo" bidi="false">Ewondo</lang>
+  <lang code="ewo-CM" bidi="false">Ewondo (Camerún)</lang>
+  <lang code="fo" bidi="false">Feroés</lang>
+  <lang code="fo-DK" bidi="false">Feroés (Dinamarca)</lang>
+  <lang code="fo-FO" bidi="false">Feroés (Islas Feroe)</lang>
+  <lang code="fj" bidi="false">Fiyiano</lang>
+  <lang code="fil" bidi="false">Filipino</lang>
+  <lang code="fil-PH" bidi="false">Filipino (Filipinas)</lang>
+  <lang code="fi" bidi="false">Finlandés</lang>
+  <lang code="fi-FI" bidi="false">Finlandés (Finlandia)</lang>
+  <lang code="fr" bidi="false">Francés</lang>
+  <lang code="fr-DZ" bidi="false">Francés (Argelia)</lang>
+  <lang code="fr-BE" bidi="false">Francés (Bélgica)</lang>
+  <lang code="fr-BJ" bidi="false">Francés (Benín)</lang>
+  <lang code="fr-BF" bidi="false">Francés (Burkina Faso)</lang>
+  <lang code="fr-BI" bidi="false">Francés (Burundi)</lang>
+  <lang code="fr-CM" bidi="false">Francés (Camerún)</lang>
+  <lang code="fr-CA" bidi="false">Francés (Canadá)</lang>
+  <lang code="fr-CF" bidi="false">Francés (República Centroafricana)</lang>
+  <lang code="fr-TD" bidi="false">Francés (Chad)</lang>
+  <lang code="fr-KM" bidi="false">Francés (Comoras)</lang>
+  <lang code="fr-CG" bidi="false">Francés (Congo)</lang>
+  <lang code="fr-CI" bidi="false">Francés (Costa de Marfil)</lang>
+  <lang code="fr-DJ" bidi="false">Francés (Yibuti)</lang>
+  <lang code="fr-GQ" bidi="false">Francés (Guinea Ecuatorial)</lang>
+  <lang code="fr-FR" bidi="false">Francés (Francia)</lang>
+  <lang code="fr-GF" bidi="false">Francés (Guayana Francesa)</lang>
+  <lang code="fr-PF" bidi="false">Francés (Polinesia Francesa)</lang>
+  <lang code="fr-GA" bidi="false">Francés (Gabón)</lang>
+  <lang code="fr-GP" bidi="false">Francés (Guadalupe)</lang>
+  <lang code="fr-GN" bidi="false">Francés (Guinea)</lang>
+  <lang code="fr-HT" bidi="false">Francés (Haití)</lang>
+  <lang code="fr-LU" bidi="false">Francés (Luxemburgo)</lang>
+  <lang code="fr-MG" bidi="false">Francés (Madagascar)</lang>
+  <lang code="fr-ML" bidi="false">Francés (Malí)</lang>
+  <lang code="fr-MQ" bidi="false">Francés (Martinica)</lang>
+  <lang code="fr-MR" bidi="false">Francés (Mauritania)</lang>
+  <lang code="fr-MU" bidi="false">Francés (Mauricio)</lang>
+  <lang code="fr-YT" bidi="false">Francés (Mayotte)</lang>
+  <lang code="fr-MC" bidi="false">Francés (Mónaco)</lang>
+  <lang code="fr-MA" bidi="false">Francés (Marruecos)</lang>
+  <lang code="fr-NC" bidi="false">Francés (Nueva Caledonia)</lang>
+  <lang code="fr-NE" bidi="false">Francés (Níger)</lang>
+  <lang code="fr-RW" bidi="false">Francés (Ruanda)</lang>
+  <lang code="fr-RE" bidi="false">Francés (Reunión)</lang>
+  <lang code="fr-BL" bidi="false">Francés (San Bartolomé)</lang>
+  <lang code="fr-MF" bidi="false">Francés (Saint Martin (parte francesa))</lang>
+  <lang code="fr-PM" bidi="false">Francés (San Pedro y Miquelón)</lang>
+  <lang code="fr-SN" bidi="false">Francés (Senegal)</lang>
+  <lang code="fr-SC" bidi="false">Francés (Seychelles)</lang>
+  <lang code="fr-CH" bidi="false">Francés (Suiza)</lang>
+  <lang code="fr-SY" bidi="false">Francés (República Árabe Siria)</lang>
+  <lang code="fr-CD" bidi="false">Francés (República Democrática del Congo)</lang>
+  <lang code="fr-TG" bidi="false">Francés (Togo)</lang>
+  <lang code="fr-TN" bidi="false">Francés (Túnez)</lang>
+  <lang code="fr-VU" bidi="false">Francés (Vanuatu)</lang>
+  <lang code="fr-WF" bidi="false">Francés (Wallis &amp; Futuna)</lang>
+  <lang code="fur" bidi="false">Friulano</lang>
+  <lang code="fur-IT" bidi="false">Friulano (Italia)</lang>
+  <lang code="ff" bidi="false">Fulá</lang>
+  <lang code="ff-Adlm" bidi="true">Fulah (Adlam)</lang>
+  <lang code="ff-Adlm-BF" bidi="true">Fulah (Adlam, Burkina Faso)</lang>
+  <lang code="ff-Adlm-CM" bidi="true">Fulah (Adlam, Camerún)</lang>
+  <lang code="ff-Adlm-GM" bidi="true">Fulah (Adlam, Gambia)</lang>
+  <lang code="ff-Adlm-GH" bidi="true">Fulah (Adlam, Ghana)</lang>
+  <lang code="ff-Adlm-GN" bidi="true">Fulah (Adlam, Guinea)</lang>
+  <lang code="ff-Adlm-GW" bidi="true">Fulah (Adlam, Guinea-Bissau)</lang>
+  <lang code="ff-Adlm-LR" bidi="true">Fulah (Adlam, Liberia)</lang>
+  <lang code="ff-Adlm-MR" bidi="true">Fulah (Adlam, Mauritania)</lang>
+  <lang code="ff-Adlm-NE" bidi="true">Fulah (Adlam, Níger)</lang>
+  <lang code="ff-Adlm-NG" bidi="true">Fulah (Adlam, Nigeria)</lang>
+  <lang code="ff-Adlm-SN" bidi="true">Fulah (Adlam, Senegal)</lang>
+  <lang code="ff-Adlm-SL" bidi="true">Fulah (Adlam, Sierra Leona)</lang>
+  <lang code="ff-Latn" bidi="false">Fulah (latín)</lang>
+  <lang code="ff-Latn-BF" bidi="false">Fulah (latín, Burkina Faso)</lang>
+  <lang code="ff-Latn-CM" bidi="false">Fulah (latín, Camerún)</lang>
+  <lang code="ff-Latn-GM" bidi="false">Fulah (latín, Gambia)</lang>
+  <lang code="ff-Latn-GH" bidi="false">Fulah (latín, Ghana)</lang>
+  <lang code="ff-Latn-GN" bidi="false">Fulah (latín, Guinea)</lang>
+  <lang code="ff-Latn-GW" bidi="false">Fulah (latín, Guinea-Bissau)</lang>
+  <lang code="ff-Latn-LR" bidi="false">Fulah (latín, Liberia)</lang>
+  <lang code="ff-Latn-MR" bidi="false">Fulah (latín, Mauritania)</lang>
+  <lang code="ff-Latn-NE" bidi="false">Fulah (latín, Níger)</lang>
+  <lang code="ff-Latn-NG" bidi="false">Fulah (latín, Nigeria)</lang>
+  <lang code="ff-Latn-SN" bidi="false">Fulah (latín, Senegal)</lang>
+  <lang code="ff-Latn-SL" bidi="false">Fulah (latín, Sierra Leona)</lang>
+  <lang code="gl" bidi="false">Gallego</lang>
+  <lang code="gl-ES" bidi="false">Gallego (España)</lang>
+  <lang code="lg" bidi="false">Ganda</lang>
+  <lang code="lg-UG" bidi="false">Ganda (Uganda)</lang>
+  <lang code="ka" bidi="false">Georgiano</lang>
+  <lang code="ka-GE" bidi="false">Georgiano (Georgia)</lang>
+  <lang code="de" bidi="false">Alemán</lang>
+  <lang code="de-AT" bidi="false">Alemán (Austria)</lang>
+  <lang code="de-BE" bidi="false">Alemán (Bélgica)</lang>
+  <lang code="de-DE" bidi="false">Alemán (Alemania)</lang>
+  <lang code="de-IT" bidi="false">Alemán (Italia)</lang>
+  <lang code="de-LI" bidi="false">Alemán (Liechtenstein)</lang>
+  <lang code="de-LU" bidi="false">Alemán (Luxemburgo)</lang>
+  <lang code="de-CH" bidi="false">Alemán (Suiza)</lang>
+  <lang code="el" bidi="false">Griego</lang>
+  <lang code="el-CY" bidi="false">Griego (Chipre)</lang>
+  <lang code="el-GR" bidi="false">Griego (Grecia)</lang>
+  <lang code="gn" bidi="false">Guaraní</lang>
+  <lang code="gu" bidi="false">Gujarati</lang>
+  <lang code="gu-IN" bidi="false">Gujarati (India)</lang>
+  <lang code="guz" bidi="false">Gusii</lang>
+  <lang code="guz-KE" bidi="false">Gusii (Kenia)</lang>
+  <lang code="ht" bidi="false">Haitiano</lang>
+  <lang code="ha" bidi="false">Hausa</lang>
+  <lang code="ha-GH" bidi="false">Hausa (Ghana)</lang>
+  <lang code="ha-NE" bidi="false">Hausa (Níger)</lang>
+  <lang code="ha-NG" bidi="false">Hausa (Nigeria)</lang>
+  <lang code="haw" bidi="false">Hawaiano</lang>
+  <lang code="haw-US" bidi="false">Hawaiano (Estados Unidos)</lang>
+  <lang code="he" bidi="true">Hebreo</lang>
+  <lang code="he-IL" bidi="true">Hebreo (Israel)</lang>
+  <lang code="hz" bidi="false">Herero</lang>
+  <lang code="hi" bidi="false">Hindi</lang>
+  <lang code="hi-IN" bidi="false">Hindi (India)</lang>
+  <lang code="hi-Latn" bidi="false">Hindi (latín)</lang>
+  <lang code="hi-Latn-IN" bidi="false">Hindi (latín, India)</lang>
+  <lang code="ho" bidi="false">Hiri Motu</lang>
+  <lang code="hu" bidi="false">Húngaro</lang>
+  <lang code="hu-HU" bidi="false">Húngaro (Hungría)</lang>
+  <lang code="is" bidi="false">Islandés</lang>
+  <lang code="is-IS" bidi="false">Islandés (Islandia)</lang>
+  <lang code="io" bidi="false">Ido</lang>
+  <lang code="ig" bidi="false">Igbo</lang>
+  <lang code="ig-NG" bidi="false">Igbo (Nigeria)</lang>
+  <lang code="smn" bidi="false">Inari Sami</lang>
+  <lang code="smn-FI" bidi="false">Inari Sami (Finlandia)</lang>
+  <lang code="id" bidi="false">Indonesio</lang>
+  <lang code="in" bidi="false">Indonesio</lang>
+  <lang code="id-ID" bidi="false">Indonesio (Indonesia)</lang>
+  <lang code="ia" bidi="false">Interlingua</lang>
+  <lang code="ia-001" bidi="false">Interlingua (mundo)</lang>
+  <lang code="ie" bidi="false">Interlingua</lang>
+  <lang code="iu" bidi="false">Inuktitut</lang>
+  <lang code="ik" bidi="false">Inupiaq</lang>
+  <lang code="ga" bidi="false">Irlandés</lang>
+  <lang code="ga-IE" bidi="false">Irlandés (Irlanda)</lang>
+  <lang code="ga-GB" bidi="false">Irlandés (Reino Unido)</lang>
+  <lang code="it" bidi="false">Italiano</lang>
+  <lang code="it-VA" bidi="false">Italiano (Santa Sede (Estado de la Ciudad del Vaticano))</lang>
+  <lang code="it-IT" bidi="false">Italiano (Italia)</lang>
+  <lang code="it-SM" bidi="false">Italiano (San Marino)</lang>
+  <lang code="it-CH" bidi="false">Italiano (Suiza)</lang>
+  <lang code="ja" bidi="false">Japonés</lang>
+  <lang code="ja-JP" bidi="false">Japonés (Japón)</lang>
+  <lang code="jv" bidi="false">Javanés</lang>
+  <lang code="jv-ID" bidi="false">Javanés (Indonesia)</lang>
+  <lang code="dyo" bidi="false">Jola-Fonyi</lang>
+  <lang code="dyo-SN" bidi="false">Jola-Fonyi (Senegal)</lang>
+  <lang code="kea" bidi="false">Kabuverdianu</lang>
+  <lang code="kea-CV" bidi="false">Kabuverdianu (Cabo Verde)</lang>
+  <lang code="kab" bidi="false">Cabilio</lang>
+  <lang code="kab-DZ" bidi="false">Cabilio (Argelia)</lang>
+  <lang code="kgp" bidi="false">Kaingang</lang>
+  <lang code="kgp-BR" bidi="false">Kaingang (Brasil)</lang>
+  <lang code="kkj" bidi="false">Kako</lang>
+  <lang code="kkj-CM" bidi="false">Kako (Camerún)</lang>
+  <lang code="kl" bidi="false">Groenlandés</lang>
+  <lang code="kl-GL" bidi="false">Groenlandés (Groenlandia)</lang>
+  <lang code="kln" bidi="false">Kalenjin</lang>
+  <lang code="kln-KE" bidi="false">Kalenjin (Kenia)</lang>
+  <lang code="kam" bidi="false">Kamba</lang>
+  <lang code="kam-KE" bidi="false">Kamba (Kenia)</lang>
+  <lang code="kn" bidi="false">Kannada</lang>
+  <lang code="kn-IN" bidi="false">Kannada (India)</lang>
+  <lang code="kr" bidi="false">Kanuri</lang>
+  <lang code="ks" bidi="true">Cachemir</lang>
+  <lang code="ks-Arab" bidi="true">Cachemir (árabe)</lang>
+  <lang code="ks-Arab-IN" bidi="true">Cachemir (árabe, India)</lang>
+  <lang code="ks-Deva" bidi="false">Cachemir (Devanagari | Nagari)</lang>
+  <lang code="ks-Deva-IN" bidi="false">Cachemir (Devanagari | Nagari, India)</lang>
+  <lang code="kk" bidi="false">Kazajo</lang>
+  <lang code="kk-KZ" bidi="false">Kazajo (Kazajstán)</lang>
+  <lang code="km" bidi="false">Jemer</lang>
+  <lang code="km-KH" bidi="false">Jemer (Camboya)</lang>
+  <lang code="naq" bidi="false">Khoekhoe</lang>
+  <lang code="naq-NA" bidi="false">Khoekhoe (Namibia)</lang>
+  <lang code="ki" bidi="false">Kikuyu</lang>
+  <lang code="ki-KE" bidi="false">Kikuyu (Kenia)</lang>
+  <lang code="rw" bidi="false">Kinyarwanda</lang>
+  <lang code="rw-RW" bidi="false">Kinyarwanda (Ruanda)</lang>
+  <lang code="ky" bidi="false">Kirghiz</lang>
+  <lang code="ky-KG" bidi="false">Kirghiz (Kirguistán)</lang>
+  <lang code="kv" bidi="false">Komi</lang>
+  <lang code="kg" bidi="false">Kongo</lang>
+  <lang code="kok" bidi="false">Konkani</lang>
+  <lang code="kok-IN" bidi="false">Konkani (India)</lang>
+  <lang code="ko" bidi="false">Coreano</lang>
+  <lang code="ko-KP" bidi="false">Coreano (República Popular Democrática de Corea)</lang>
+  <lang code="ko-KR" bidi="false">Coreano (República de Corea)</lang>
+  <lang code="khq" bidi="false">Koyra Chiini Songhay</lang>
+  <lang code="khq-ML" bidi="false">Koyra Chiini Songhay (Malí)</lang>
+  <lang code="ses" bidi="false">Koyraboro Senni Songhai</lang>
+  <lang code="ses-ML" bidi="false">Koyraboro Senni Songhai (Mali)</lang>
+  <lang code="kj" bidi="false">Kuanyama</lang>
+  <lang code="ku" bidi="false">Kurdo</lang>
+  <lang code="ku-TR" bidi="false">Kurdo (Türkiye | Turquía)</lang>
+  <lang code="nmg" bidi="false">Kwasio</lang>
+  <lang code="nmg-CM" bidi="false">Kwasio (Camerún)</lang>
+  <lang code="ksh" bidi="false">Kölsch</lang>
+  <lang code="ksh-DE" bidi="false">Kölsch (Alemania)</lang>
+  <lang code="lkt" bidi="false">Lakota</lang>
+  <lang code="lkt-US" bidi="false">Lakota (Estados Unidos)</lang>
+  <lang code="lag" bidi="false">Langi</lang>
+  <lang code="lag-TZ" bidi="false">Langi (República Unida de Tanzanía)</lang>
+  <lang code="lo" bidi="false">Lao</lang>
+  <lang code="lo-LA" bidi="false">Lao (República Democrática Popular Lao)</lang>
+  <lang code="la" bidi="false">Latín</lang>
+  <lang code="lv" bidi="false">Letón</lang>
+  <lang code="lv-LV" bidi="false">Letón (Letonia)</lang>
+  <lang code="li" bidi="false">Limburgués</lang>
+  <lang code="ln" bidi="false">Lingala</lang>
+  <lang code="ln-AO" bidi="false">Lingala (Angola)</lang>
+  <lang code="ln-CF" bidi="false">Lingala (República Centroafricana)</lang>
+  <lang code="ln-CG" bidi="false">Lingala (Congo)</lang>
+  <lang code="ln-CD" bidi="false">Lingala (República Democrática del Congo)</lang>
+  <lang code="lt" bidi="false">Lituano</lang>
+  <lang code="lt-LT" bidi="false">Lituano (Lituania)</lang>
+  <lang code="dsb" bidi="false">Bajo sorabo</lang>
+  <lang code="dsb-DE" bidi="false">Bajo sorabo (Alemania)</lang>
+  <lang code="lu" bidi="false">Luba-Katanga</lang>
+  <lang code="lu-CD" bidi="false">Luba-Katanga (República Democrática del Congo)</lang>
+  <lang code="luo" bidi="false">Luo</lang>
+  <lang code="luo-KE" bidi="false">Luo (Kenia)</lang>
+  <lang code="lb" bidi="false">Luxemburgués</lang>
+  <lang code="lb-LU" bidi="false">Luxemburgués (Luxemburgo)</lang>
+  <lang code="luy" bidi="false">Luyia</lang>
+  <lang code="luy-KE" bidi="false">Luyia (Kenia)</lang>
+  <lang code="mk" bidi="false">Macedonio</lang>
+  <lang code="mk-MK" bidi="false">Macedonio (Macedonia del Norte)</lang>
+  <lang code="jmc" bidi="false">Machame</lang>
+  <lang code="jmc-TZ" bidi="false">Machame (República Unida de Tanzanía)</lang>
+  <lang code="mai" bidi="false">Maithili</lang>
+  <lang code="mai-IN" bidi="false">Maithili (India)</lang>
+  <lang code="mgh" bidi="false">Makhuwa-Meetto</lang>
+  <lang code="mgh-MZ" bidi="false">Makhuwa-Meetto (Mozambique)</lang>
+  <lang code="kde" bidi="false">Makonde</lang>
+  <lang code="kde-TZ" bidi="false">Makonde (República Unida de Tanzanía)</lang>
+  <lang code="mg" bidi="false">Malgache</lang>
+  <lang code="mg-MG" bidi="false">Malgache (Madagascar)</lang>
+  <lang code="ms" bidi="false">Malayo</lang>
+  <lang code="ms-BN" bidi="false">Malayo (Brunei Darussalam)</lang>
+  <lang code="ms-ID" bidi="false">Malayo (Indonesia)</lang>
+  <lang code="ms-MY" bidi="false">Malayo (Malasia)</lang>
+  <lang code="ms-SG" bidi="false">Malayo (Singapur)</lang>
+  <lang code="ml" bidi="false">Malayalam</lang>
+  <lang code="ml-IN" bidi="false">Malayalam (India)</lang>
+  <lang code="mt" bidi="false">Maltés</lang>
+  <lang code="mt-MT" bidi="false">Maltés (Malta)</lang>
+  <lang code="mni" bidi="false">Manipurí</lang>
+  <lang code="mni-Beng" bidi="false">Manipurí (Bengalí | Bangla)</lang>
+  <lang code="mni-Beng-IN" bidi="false">Manipurí (Bengalí | Bangla, India)</lang>
+  <lang code="gv" bidi="false">Manés</lang>
+  <lang code="gv-IM" bidi="false">Manés (Isla de Man)</lang>
+  <lang code="mi" bidi="false">Maorí</lang>
+  <lang code="mi-NZ" bidi="false">Maorí (Nueva Zelanda)</lang>
+  <lang code="mr" bidi="false">Marathi</lang>
+  <lang code="mr-IN" bidi="false">Marathi (India)</lang>
+  <lang code="mh" bidi="false">Marshalés</lang>
+  <lang code="mas" bidi="false">Masai</lang>
+  <lang code="mas-KE" bidi="false">Masai (Kenia)</lang>
+  <lang code="mas-TZ" bidi="false">Masai (República Unida de Tanzanía)</lang>
+  <lang code="mzn" bidi="true">Mazanderani</lang>
+  <lang code="mzn-IR" bidi="true">Mazanderani (República Islámica del Irán)</lang>
+  <lang code="mer" bidi="false">Meru</lang>
+  <lang code="mer-KE" bidi="false">Meru (Kenia)</lang>
+  <lang code="mgo" bidi="false">Metaʼ</lang>
+  <lang code="mgo-CM" bidi="false">Metaʼ (Camerún)</lang>
+  <lang code="mo" bidi="false">Moldavo</lang>
+  <lang code="mn" bidi="false">Mongol</lang>
+  <lang code="mn-MN" bidi="false">Mongol (Mongolia)</lang>
+  <lang code="mfe" bidi="false">Morisyen</lang>
+  <lang code="mfe-MU" bidi="false">Morisyen (Mauricio)</lang>
+  <lang code="mua" bidi="false">Mundang</lang>
+  <lang code="mua-CM" bidi="false">Mundang (Camerún)</lang>
+  <lang code="na" bidi="false">Nauru</lang>
+  <lang code="nv" bidi="false">Navajo</lang>
+  <lang code="ng" bidi="false">Ndonga</lang>
+  <lang code="ne" bidi="false">Nepalí</lang>
+  <lang code="ne-IN" bidi="false">Nepalí (India)</lang>
+  <lang code="ne-NP" bidi="false">Nepalí (Nepal)</lang>
+  <lang code="nnh" bidi="false">Ngiemboon</lang>
+  <lang code="nnh-CM" bidi="false">Ngiemboon (Camerún)</lang>
+  <lang code="jgo" bidi="false">Ngomba</lang>
+  <lang code="jgo-CM" bidi="false">Ngomba (Camerún)</lang>
+  <lang code="yrl" bidi="false">Nhengatu</lang>
+  <lang code="yrl-BR" bidi="false">Nhengatu (Brasil)</lang>
+  <lang code="yrl-CO" bidi="false">Nhengatu (Colombia)</lang>
+  <lang code="yrl-VE" bidi="false">Nhengatu (Venezuela)</lang>
+  <lang code="pcm" bidi="false">Pidgin nigeriano</lang>
+  <lang code="pcm-NG" bidi="false">Pidgin nigeriano (Nigeria)</lang>
+  <lang code="nd" bidi="false">Ndebele Norte</lang>
+  <lang code="nd-ZW" bidi="false">Ndebele del Norte (Zimbabue)</lang>
+  <lang code="lrc" bidi="true">Luri septentrional</lang>
+  <lang code="lrc-IQ" bidi="true">Luri septentrional (Irak)</lang>
+  <lang code="lrc-IR" bidi="true">Luri septentrional (República Islámica del Irán)</lang>
+  <lang code="se" bidi="false">Sami septentrional</lang>
+  <lang code="se-FI" bidi="false">Sami septentrional (Finlandia)</lang>
+  <lang code="se-NO" bidi="false">Sami septentrional (Noruega)</lang>
+  <lang code="se-SE" bidi="false">Sami septentrional (Suecia)</lang>
+  <lang code="no" bidi="false">Noruego</lang>
+  <lang code="no-NO" bidi="false">Noruego (Noruega)</lang>
+  <lang code="nb" bidi="false">Noruego Bokmål</lang>
+  <lang code="nb-NO" bidi="false">Noruego Bokmål (Noruega)</lang>
+  <lang code="nb-SJ" bidi="false">Noruego Bokmål (Svalbard y Jan Mayen)</lang>
+  <lang code="nn" bidi="false">Noruego Nynorsk</lang>
+  <lang code="nn-NO" bidi="false">Noruego Nynorsk (Noruega)</lang>
+  <lang code="nus" bidi="false">Nuer</lang>
+  <lang code="nus-SS" bidi="false">Nuer (Sudán del Sur)</lang>
+  <lang code="ny" bidi="false">Nyanja</lang>
+  <lang code="nyn" bidi="false">Nyankole</lang>
+  <lang code="nyn-UG" bidi="false">Nyankole (Uganda)</lang>
+  <lang code="oc" bidi="false">Occitano</lang>
+  <lang code="oj" bidi="false">Ojibwa</lang>
+  <lang code="or" bidi="false">Oriya</lang>
+  <lang code="or-IN" bidi="false">Oriya (India)</lang>
+  <lang code="om" bidi="false">Oromo</lang>
+  <lang code="om-ET" bidi="false">Oromo (Etiopía)</lang>
+  <lang code="om-KE" bidi="false">Oromo (Kenia)</lang>
+  <lang code="os" bidi="false">Osetio</lang>
+  <lang code="os-GE" bidi="false">Osetio (Georgia)</lang>
+  <lang code="os-RU" bidi="false">Osetio (Federación Rusia)</lang>
+  <lang code="pi" bidi="false">Pali</lang>
+  <lang code="pa" bidi="false">Panyabí</lang>
+  <lang code="pa-Arab" bidi="true">Panyabí (árabe)</lang>
+  <lang code="pa-Arab-PK" bidi="true">Panyabí (árabe, Pakistán)</lang>
+  <lang code="fa" bidi="true">Persa</lang>
+  <lang code="fa-AF" bidi="true">Persa (Afganistán)</lang>
+  <lang code="fa-IR" bidi="true">Persa (República Islámica del Irán)</lang>
+  <lang code="pl" bidi="false">Polaco</lang>
+  <lang code="pl-PL" bidi="false">Polaco (Polonia)</lang>
+  <lang code="pt" bidi="false">Portugués</lang>
+  <lang code="pt-AO" bidi="false">Portugués (Angola)</lang>
+  <lang code="pt-BR" bidi="false">Portugués (Brasil)</lang>
+  <lang code="pt-CV" bidi="false">Portugués (Cabo Verde)</lang>
+  <lang code="pt-GQ" bidi="false">Portugués (Guinea Ecuatorial)</lang>
+  <lang code="pt-GW" bidi="false">Portugués (Guinea-Bissau)</lang>
+  <lang code="pt-LU" bidi="false">Portugués (Luxemburgo)</lang>
+  <lang code="pt-MO" bidi="false">Portugués (Macao)</lang>
+  <lang code="pt-MZ" bidi="false">Portugués (Mozambique)</lang>
+  <lang code="pt-PT" bidi="false">Portugués (Portugal)</lang>
+  <lang code="pt-ST" bidi="false">Portugués (Santo Tomé y Príncipe)</lang>
+  <lang code="pt-CH" bidi="false">Portugués (Suiza)</lang>
+  <lang code="pt-TL" bidi="false">Portugués (Timor-Leste)</lang>
+  <lang code="ps" bidi="true">Pushto</lang>
+  <lang code="ps-AF" bidi="true">Pushto (Afganistán)</lang>
+  <lang code="ps-PK" bidi="true">Pushto (Pakistán)</lang>
+  <lang code="qu" bidi="false">Quechua</lang>
+  <lang code="qu-BO" bidi="false">Quechua (Bolivia)</lang>
+  <lang code="qu-EC" bidi="false">Quechua (Ecuador)</lang>
+  <lang code="qu-PE" bidi="false">Quechua (Perú)</lang>
+  <lang code="ro" bidi="false">Rumano</lang>
+  <lang code="ro-MD" bidi="false">Rumano (Moldavia)</lang>
+  <lang code="ro-RO" bidi="false">Rumano (Rumania)</lang>
+  <lang code="rm" bidi="false">Romanche</lang>
+  <lang code="rm-CH" bidi="false">Romanche (Suiza)</lang>
+  <lang code="rof" bidi="false">Rombo</lang>
+  <lang code="rof-TZ" bidi="false">Rombo (República Unida de Tanzanía)</lang>
+  <lang code="rn" bidi="false">Rundi</lang>
+  <lang code="rn-BI" bidi="false">Rundi (Burundi)</lang>
+  <lang code="ru" bidi="false">Ruso</lang>
+  <lang code="ru-BY" bidi="false">Ruso (Bielorrusia)</lang>
+  <lang code="ru-KZ" bidi="false">Ruso (Kazajstán)</lang>
+  <lang code="ru-KG" bidi="false">Ruso (Kirguistán)</lang>
+  <lang code="ru-MD" bidi="false">Ruso (Moldavia)</lang>
+  <lang code="ru-RU" bidi="false">Ruso (Federación Rusia)</lang>
+  <lang code="ru-UA" bidi="false">Ruso (Ucrania)</lang>
+  <lang code="rwk" bidi="false">Rwa</lang>
+  <lang code="rwk-TZ" bidi="false">Rwa (República Unida de Tanzanía)</lang>
+  <lang code="saq" bidi="false">Samburu</lang>
+  <lang code="saq-KE" bidi="false">Samburu (Kenia)</lang>
+  <lang code="sm" bidi="false">Samoano</lang>
+  <lang code="sg" bidi="false">Sango</lang>
+  <lang code="sg-CF" bidi="false">Sango (República Centroafricana)</lang>
+  <lang code="sbp" bidi="false">Sangu</lang>
+  <lang code="sbp-TZ" bidi="false">Sangu (República Unida de Tanzanía)</lang>
+  <lang code="sa" bidi="false">Sánscrito</lang>
+  <lang code="sa-IN" bidi="false">Sánscrito (India)</lang>
+  <lang code="sat" bidi="false">Santali</lang>
+  <lang code="sat-Olck" bidi="false">Santali (Ol Chiki | Ol Cemet' | OL | Santali)</lang>
+  <lang code="sat-Olck-IN" bidi="false">Santali (Ol Chiki | Ol Cemet' | OL | Santali, India)</lang>
+  <lang code="sc" bidi="false">Sardo</lang>
+  <lang code="sc-IT" bidi="false">Sardo (Italia)</lang>
+  <lang code="gd" bidi="false">Gaélico escocés</lang>
+  <lang code="gd-GB" bidi="false">Gaélico escocés (Reino Unido)</lang>
+  <lang code="seh" bidi="false">Sena</lang>
+  <lang code="seh-MZ" bidi="false">Sena (Mozambique)</lang>
+  <lang code="sr" bidi="false">Serbio</lang>
+  <lang code="sr-Cyrl" bidi="false">Serbio (cirílico)</lang>
+  <lang code="sr-Cyrl-BA" bidi="false">Serbio (cirílico, Bosnia y Herzegovina)</lang>
+  <lang code="sr-Cyrl-ME" bidi="false">Serbio (cirílico, Montenegro)</lang>
+  <lang code="sr-Cyrl-RS" bidi="false">Serbio (cirílico, Serbia)</lang>
+  <lang code="sr-Latn" bidi="false">Serbio (latino)</lang>
+  <lang code="sr-Latn-BA" bidi="false">Serbio (latino, Bosnia y Herzegovina)</lang>
+  <lang code="sr-Latn-ME" bidi="false">Serbio (latino, Montenegro)</lang>
+  <lang code="sr-Latn-RS" bidi="false">Serbio (latino, Serbia)</lang>
+  <lang code="sr-RS" bidi="false">Serbio (Serbia)</lang>
+  <lang code="ksb" bidi="false">Shambala</lang>
+  <lang code="ksb-TZ" bidi="false">Shambala (República Unida de Tanzanía)</lang>
+  <lang code="sn" bidi="false">Shona</lang>
+  <lang code="sn-ZW" bidi="false">Shona (Zimbabue)</lang>
+  <lang code="ii" bidi="false">Sichuan Yi</lang>
+  <lang code="ii-CN" bidi="false">Sichuan Yi (China)</lang>
+  <lang code="sd" bidi="true">Sindhi</lang>
+  <lang code="sd-Arab" bidi="true">Sindhi (árabe)</lang>
+  <lang code="sd-Arab-PK" bidi="true">Sindhi (árabe, Pakistán)</lang>
+  <lang code="sd-Deva" bidi="false">Sindhi (Devanagari | Nagari)</lang>
+  <lang code="sd-Deva-IN" bidi="false">Sindhi (Devanagari | Nagari, India)</lang>
+  <lang code="si" bidi="false">Cingalés</lang>
+  <lang code="si-LK" bidi="false">Cingalés (Sri Lanka)</lang>
+  <lang code="sk" bidi="false">Eslovaco</lang>
+  <lang code="sk-SK" bidi="false">Eslovaco (Eslovaquia)</lang>
+  <lang code="sl" bidi="false">Esloveno</lang>
+  <lang code="sl-SI" bidi="false">Esloveno (Eslovenia)</lang>
+  <lang code="xog" bidi="false">Soga</lang>
+  <lang code="xog-UG" bidi="false">Soga (Uganda)</lang>
+  <lang code="so" bidi="false">Somalí</lang>
+  <lang code="so-DJ" bidi="false">Somalí (Yibuti)</lang>
+  <lang code="so-ET" bidi="false">Somalí (Etiopía)</lang>
+  <lang code="so-KE" bidi="false">Somalí (Kenia)</lang>
+  <lang code="so-SO" bidi="false">Somalí (Somalia)</lang>
+  <lang code="nr" bidi="false">Ndebele del Sur</lang>
+  <lang code="st" bidi="false">Sesotho</lang>
+  <lang code="es" bidi="false">Español</lang>
+  <lang code="es-AR" bidi="false">Español (Argentina)</lang>
+  <lang code="es-BZ" bidi="false">Español (Belice)</lang>
+  <lang code="es-BO" bidi="false">Español (Bolivia)</lang>
+  <lang code="es-BR" bidi="false">Español (Brasil)</lang>
+  <lang code="es-IC" bidi="false">Español (Islas Canarias)</lang>
+  <lang code="es-EA" bidi="false">Español (Ceuta, Melilla)</lang>
+  <lang code="es-CL" bidi="false">Español (Chile)</lang>
+  <lang code="es-CO" bidi="false">Español (Colombia)</lang>
+  <lang code="es-CR" bidi="false">Español (Costa Rica)</lang>
+  <lang code="es-CU" bidi="false">Español (Cuba)</lang>
+  <lang code="es-DO" bidi="false">Español (República Dominicana)</lang>
+  <lang code="es-EC" bidi="false">Español (Ecuador)</lang>
+  <lang code="es-SV" bidi="false">Español (El Salvador)</lang>
+  <lang code="es-GQ" bidi="false">Español (Guinea Ecuatorial)</lang>
+  <lang code="es-GT" bidi="false">Español (Guatemala)</lang>
+  <lang code="es-HN" bidi="false">Español (Honduras)</lang>
+  <lang code="es-419" bidi="false">Español (América Latina y el Caribe)</lang>
+  <lang code="es-MX" bidi="false">Español (México)</lang>
+  <lang code="es-NI" bidi="false">Español (Nicaragua)</lang>
+  <lang code="es-PA" bidi="false">Español (Panamá)</lang>
+  <lang code="es-PY" bidi="false">Español (Paraguay)</lang>
+  <lang code="es-PE" bidi="false">Español (Perú)</lang>
+  <lang code="es-PH" bidi="false">Español (Filipinas)</lang>
+  <lang code="es-PR" bidi="false">Español (Puerto Rico)</lang>
+  <lang code="es-ES" bidi="false">Español (España)</lang>
+  <lang code="es-US" bidi="false">Español (Estados Unidos)</lang>
+  <lang code="es-UY" bidi="false">Español (Uruguay)</lang>
+  <lang code="es-VE" bidi="false">Español (Venezuela)</lang>
+  <lang code="zgh" bidi="false">Tamazight marroquí estándar</lang>
+  <lang code="zgh-MA" bidi="false">Tamazight marroquí estándar (Marruecos)</lang>
+  <lang code="su" bidi="false">Sundanés</lang>
+  <lang code="su-Latn" bidi="false">Sundanés (latín)</lang>
+  <lang code="su-Latn-ID" bidi="false">Sundanés (latín, Indonesia)</lang>
+  <lang code="sw" bidi="false">Swahili</lang>
+  <lang code="sw-KE" bidi="false">Swahili (Kenia)</lang>
+  <lang code="sw-CD" bidi="false">Swahili (República Democrática del Congo)</lang>
+  <lang code="sw-UG" bidi="false">Swahili (Uganda)</lang>
+  <lang code="sw-TZ" bidi="false">Swahili (República Unida de Tanzanía)</lang>
+  <lang code="ss" bidi="false">Swati</lang>
+  <lang code="sv" bidi="false">Sueco</lang>
+  <lang code="sv-FI" bidi="false">Sueco (Finlandia)</lang>
+  <lang code="sv-SE" bidi="false">Sueco (Suecia)</lang>
+  <lang code="sv-AX" bidi="false">Sueco (Islas Åland)</lang>
+  <lang code="gsw" bidi="false">Alemán suizo</lang>
+  <lang code="gsw-FR" bidi="false">Alemán suizo (Francia)</lang>
+  <lang code="gsw-LI" bidi="false">Alemán suizo (Liechtenstein)</lang>
+  <lang code="gsw-CH" bidi="false">Alemán suizo (Suiza)</lang>
+  <lang code="shi" bidi="false">Tachelhit</lang>
+  <lang code="shi-Latn" bidi="false">Tachelhit (latín)</lang>
+  <lang code="shi-Latn-MA" bidi="false">Tachelhit (latín, Marruecos)</lang>
+  <lang code="shi-Tfng" bidi="false">Tachelhit (Tifinagh | Bereber)</lang>
+  <lang code="shi-Tfng-MA" bidi="false">Tachelhit (Tifinagh | Bereber, Marruecos)</lang>
+  <lang code="tl" bidi="false">Tagalo</lang>
+  <lang code="ty" bidi="false">Tahitiano</lang>
+  <lang code="dav" bidi="false">Taita</lang>
+  <lang code="dav-KE" bidi="false">Taita (Kenia)</lang>
+  <lang code="tg" bidi="false">Tayiko</lang>
+  <lang code="tg-TJ" bidi="false">Tayiko (Tayikistán)</lang>
+  <lang code="ta" bidi="false">Tamil</lang>
+  <lang code="ta-IN" bidi="false">Tamil (India)</lang>
+  <lang code="ta-MY" bidi="false">Tamil (Malasia)</lang>
+  <lang code="ta-SG" bidi="false">Tamil (Singapur)</lang>
+  <lang code="ta-LK" bidi="false">Tamil (Sri Lanka)</lang>
+  <lang code="twq" bidi="false">Tasawaq</lang>
+  <lang code="twq-NE" bidi="false">Tasawaq (Níger)</lang>
+  <lang code="tt" bidi="false">Tártaro</lang>
+  <lang code="tt-RU" bidi="false">Tártaro (Federación Rusia)</lang>
+  <lang code="te" bidi="false">Telugu</lang>
+  <lang code="te-IN" bidi="false">Telugu (India)</lang>
+  <lang code="teo" bidi="false">Teso</lang>
+  <lang code="teo-KE" bidi="false">Teso (Kenia)</lang>
+  <lang code="teo-UG" bidi="false">Teso (Uganda)</lang>
+  <lang code="th" bidi="false">Tailandés</lang>
+  <lang code="th-TH" bidi="false">Tailandés (Tailandia)</lang>
+  <lang code="bo" bidi="false">Tibetano</lang>
+  <lang code="bo-CN" bidi="false">Tibetano (China)</lang>
+  <lang code="bo-IN" bidi="false">Tibetano (India)</lang>
+  <lang code="ti" bidi="false">Tigriña</lang>
+  <lang code="ti-ER" bidi="false">Tigriña (Eritrea)</lang>
+  <lang code="ti-ET" bidi="false">Tigriña (Etiopía)</lang>
+  <lang code="to" bidi="false">Tongano</lang>
+  <lang code="to-TO" bidi="false">Tongano (Tonga)</lang>
+  <lang code="ts" bidi="false">Tsonga</lang>
+  <lang code="tn" bidi="false">Setswana</lang>
+  <lang code="tr" bidi="false">Turco</lang>
+  <lang code="tr-CY" bidi="false">Turco (Chipre)</lang>
+  <lang code="tr-TR" bidi="false">Turco (Türkiye | Turquía)</lang>
+  <lang code="tk" bidi="false">Turcomano</lang>
+  <lang code="tk-TM" bidi="false">Turcomano (Turkmenistán)</lang>
+  <lang code="tw" bidi="false">Twi</lang>
+  <lang code="ug" bidi="true">Uigur</lang>
+  <lang code="ug-CN" bidi="true">Uigur (China)</lang>
+  <lang code="uk" bidi="false">Ucraniano</lang>
+  <lang code="uk-UA" bidi="false">Ucraniano (Ucrania)</lang>
+  <lang code="hsb" bidi="false">Alto sorabo</lang>
+  <lang code="hsb-DE" bidi="false">Alto sorabo (Alemania)</lang>
+  <lang code="ur" bidi="true">Urdu</lang>
+  <lang code="ur-IN" bidi="true">Urdu (India)</lang>
+  <lang code="ur-PK" bidi="true">Urdu (Pakistán)</lang>
+  <lang code="uz" bidi="false">Uzbek</lang>
+  <lang code="uz-Arab" bidi="true">Uzbeko (árabe)</lang>
+  <lang code="uz-Arab-AF" bidi="true">Uzbeko (árabe, Afganistán)</lang>
+  <lang code="uz-Cyrl" bidi="false">Uzbek (cirílico)</lang>
+  <lang code="uz-Cyrl-UZ" bidi="false">Uzbeko (cirílico, Uzbekistán)</lang>
+  <lang code="uz-Latn" bidi="false">Uzbeko (latín)</lang>
+  <lang code="uz-Latn-UZ" bidi="false">Uzbeko (latín, Uzbekistán)</lang>
+  <lang code="vai" bidi="false">Vai</lang>
+  <lang code="vai-Latn" bidi="false">Vai (latín)</lang>
+  <lang code="vai-Latn-LR" bidi="false">Vai (latín, Liberia)</lang>
+  <lang code="vai-Vaii" bidi="false">Vai (Vai)</lang>
+  <lang code="vai-Vaii-LR" bidi="false">Vai (Vai, Liberia)</lang>
+  <lang code="ve" bidi="false">Venda</lang>
+  <lang code="vi" bidi="false">Vietnamita</lang>
+  <lang code="vi-VN" bidi="false">Vietnamita (Vietnam)</lang>
+  <lang code="vo" bidi="false">Volapük</lang>
+  <lang code="vun" bidi="false">Vunjo</lang>
+  <lang code="vun-TZ" bidi="false">Vunjo (República Unida de Tanzanía)</lang>
+  <lang code="wa" bidi="false">Valón</lang>
+  <lang code="wae" bidi="false">Walser</lang>
+  <lang code="wae-CH" bidi="false">Walser (Suiza)</lang>
+  <lang code="cy" bidi="false">Galés</lang>
+  <lang code="cy-GB" bidi="false">Galés (Reino Unido)</lang>
+  <lang code="fy" bidi="false">Frisón occidental</lang>
+  <lang code="fy-NL" bidi="false">Frisón Occidental (Países Bajos)</lang>
+  <lang code="wo" bidi="false">Wolof</lang>
+  <lang code="wo-SN" bidi="false">Wolof (Senegal)</lang>
+  <lang code="xh" bidi="false">Xosa</lang>
+  <lang code="xh-ZA" bidi="false">Xosa (Sudáfrica)</lang>
+  <lang code="sah" bidi="false">Yakuto</lang>
+  <lang code="sah-RU" bidi="false">Yakuto (Federación Rusia)</lang>
+  <lang code="yav" bidi="false">Yangben</lang>
+  <lang code="yav-CM" bidi="false">Yangben (Camerún)</lang>
+  <lang code="yi" bidi="true">Yiddish</lang>
+  <lang code="yi-001" bidi="true">Yiddish (mundo)</lang>
+  <lang code="yo" bidi="false">Yoruba</lang>
+  <lang code="yo-BJ" bidi="false">Yoruba (Benín)</lang>
+  <lang code="yo-NG" bidi="false">Yoruba (Nigeria)</lang>
+  <lang code="yue" bidi="false">Chino Yue</lang>
+  <lang code="yue-Hans" bidi="false">Chino Yue (Han [variante simplificada])</lang>
+  <lang code="yue-Hans-CN" bidi="false">Chino Yue (Han [variante simplificada], China)</lang>
+  <lang code="yue-Hant" bidi="false">Chino Yue (Han [variante tradicional])</lang>
+  <lang code="yue-Hant-HK" bidi="false">Chino Yue (Han [variante tradicional], Hong Kong)</lang>
+  <lang code="dje" bidi="false">Zarma</lang>
+  <lang code="dje-NE" bidi="false">Zarma (Níger)</lang>
+  <lang code="za" bidi="false">Zhuang</lang>
+  <lang code="zu" bidi="false">Zulú</lang>
+  <lang code="zu-ZA" bidi="false">Zulú (Sudáfrica)</lang>
+</languages>

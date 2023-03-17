@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -38,20 +39,22 @@ public class LanguageUtils {
 	}
 
 	public static List<Language> getAllLanguages() throws SAXException, IOException, ParserConfigurationException {
-		if (registry == null) {
-			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
-		}
 		if (extendedLanguages == null) {
 			extendedLanguages = new Vector<>();
 			bidiCodes = new TreeSet<>();
 			SAXBuilder builder = new SAXBuilder();
-			Element root = builder.build(Language.class.getResource("extendedLanguageList.xml")).getRootElement();
+			Locale locale = Locale.getDefault();
+			String resource = "extendedLanguageList_" + locale.getLanguage() + ".xml";
+			if (LanguageUtils.class.getResourceAsStream(resource) == null) {
+				resource = "extendedLanguageList.xml";
+			}
+			Element root = builder.build(LanguageUtils.class.getResource(resource)).getRootElement();
 			List<Element> children = root.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
 				Element lang = it.next();
 				String code = lang.getAttributeValue("code");
-				String description = registry.getTagDescription(code);
+				String description = lang.getText();
 				extendedLanguages.add(new Language(code, description));
 				if ("true".equals(lang.getAttributeValue("bidi"))) {
 					bidiCodes.add(code);
@@ -63,19 +66,21 @@ public class LanguageUtils {
 	}
 
 	public static List<Language> getCommonLanguages() throws SAXException, IOException, ParserConfigurationException {
-		if (registry == null) {
-			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
-		}
 		if (languages == null) {
 			languages = new Vector<>();
 			SAXBuilder builder = new SAXBuilder();
-			Element root = builder.build(Language.class.getResource("languageList.xml")).getRootElement();
+			Locale locale = Locale.getDefault();
+			String resource = "languageList_" + locale.getLanguage() + ".xml";
+			if (LanguageUtils.class.getResourceAsStream(resource) == null) {
+				resource = "languageList.xml";
+			}
+			Element root = builder.build(LanguageUtils.class.getResource(resource)).getRootElement();
 			List<Element> children = root.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
 				Element lang = it.next();
 				String code = lang.getAttributeValue("code");
-				String description = registry.getTagDescription(code);
+				String description = lang.getText();
 				languages.add(new Language(code, description));
 			}
 			Collections.sort(languages);
@@ -85,7 +90,7 @@ public class LanguageUtils {
 
 	public static Language getLanguage(String code) throws IOException {
 		if (registry == null) {
-			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
+			registry = new RegistryParser(LanguageUtils.class.getResource("language-subtag-registry.txt"));
 		}
 		String description = registry.getTagDescription(code);
 		if (description != null) {
@@ -109,7 +114,7 @@ public class LanguageUtils {
 
 	public static String normalizeCode(String code) throws IOException {
 		if (registry == null) {
-			registry = new RegistryParser(Language.class.getResource("language-subtag-registry.txt"));
+			registry = new RegistryParser(LanguageUtils.class.getResource("language-subtag-registry.txt"));
 		}
 		return registry.normalizeCode(code);
 	}

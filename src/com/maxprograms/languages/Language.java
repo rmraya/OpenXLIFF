@@ -13,6 +13,8 @@ package com.maxprograms.languages;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.Collator;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -25,6 +27,8 @@ public class Language implements Comparable<Language>, Serializable {
 	private String code;
 	private String description;
 	private String script;
+
+	private static Collator collator;
 
 	public Language(String code, String description) {
 		this.code = code;
@@ -55,7 +59,16 @@ public class Language implements Comparable<Language>, Serializable {
 
 	@Override
 	public int compareTo(Language arg0) {
-		return description.compareTo(arg0.getDescription());
+		if (collator == null) {
+			Locale locale = Locale.getDefault();
+			String resource = "extendedLanguageList_" + locale.getLanguage() + ".xml";
+			if (Language.class.getResourceAsStream(resource) == null) {
+				collator = Collator.getInstance(locale);
+			} else {
+				collator = Collator.getInstance(new Locale("en"));
+			}			
+		}
+		return collator.compare(description, arg0.getDescription());
 	}
 
 	public void setSuppressedScript(String value) {

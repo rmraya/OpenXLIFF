@@ -75,8 +75,8 @@ public class RegistryParser {
 						// official description is "Modern Greek (1453-)", use a familiar name
 						description = "Greek";
 					}
-					description = description.replaceAll("\\(.*\\)", "");
-					Language lang = new Language(subtag, description);
+					description = description.replaceAll("\\(.*\\)", "").trim();
+					Language lang = new Language(subtag, description.trim());
 					String suppressedScript = entry.get("Suppress-Script");
 					if (suppressedScript != null) {
 						lang.setSuppressedScript(suppressedScript);
@@ -91,7 +91,7 @@ public class RegistryParser {
 				}
 				String subtag = entry.getSubtag();
 				if (subtag != null) {
-					regions.put(subtag, new Region(subtag, description));
+					regions.put(subtag, new Region(subtag, description.trim()));
 				}
 			}
 			if (type.equals("script")) {
@@ -103,7 +103,7 @@ public class RegistryParser {
 				description = description.replace(')', ']');
 				String subtag = entry.getSubtag();
 				if (subtag != null) {
-					scripts.put(subtag, new Script(subtag, description));
+					scripts.put(subtag, new Script(subtag, description.trim()));
 				}
 			}
 			if (type.equals("variant")) {
@@ -116,7 +116,7 @@ public class RegistryParser {
 				String subtag = entry.getSubtag();
 				String prefix = entry.get("Prefix");
 				if (subtag != null) {
-					variants.put(subtag, new Variant(subtag, description, prefix));
+					variants.put(subtag, new Variant(subtag, description.trim(), prefix));
 				}
 			}
 		}
