@@ -84,8 +84,8 @@ public class JsonConfig {
         if (configObject.has("trimTags")) {
             config.trimTags = configObject.getBoolean("trimTags");
         }
-        if (configObject.has("exportUnicode")) {
-            config.exportHTML = configObject.getBoolean("exportUnicode");
+        if (configObject.has("exportHTML")) {
+            config.exportHTML = configObject.getBoolean("exportHTML");
         }
         return config;
     }
