@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -255,6 +256,11 @@ public class FileFormats {
 			return RC;
 		}
 		return null;
+	}
+
+	public static String getLocalizedName(String type) {
+		MessageFormat mf = new MessageFormat("FileFormats.{0}");
+		return Messages.getString(mf.format(new String[] { getShortName(type) }));
 	}
 
 	public static String getShortName(String type) {
