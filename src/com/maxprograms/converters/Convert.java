@@ -212,7 +212,7 @@ public class Convert {
 				logger.log(Level.WARNING, mf.format(new String[] { srcLang }));
 			}
 			if (!tgtLang.isEmpty() && !Utils.isValidLanguage(tgtLang)) {
-				MessageFormat mf = new MessageFormat(Messages.getString("Convert.13"));
+				MessageFormat mf = new MessageFormat(Messages.getString("Convert.12"));
 				logger.log(Level.WARNING, mf.format(new String[] { tgtLang }));
 			}
 		} catch (IOException e) {
