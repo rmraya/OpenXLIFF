@@ -83,15 +83,8 @@ public class MSOffice2Xliff {
 
 		segnum = 0;
 
-		if (elementSegmentation == null) {
-			segByElement = false;
-		} else {
-			if (elementSegmentation.equals("yes")) {
-				segByElement = true;
-			} else {
-				segByElement = false;
-			}
-		}
+		segByElement = (elementSegmentation == null) ? false : elementSegmentation.equals("yes");
+
 		try {
 			if (!segByElement) {
 				segmenter = new Segmenter(initSegmenter, sourceLanguage, new Catalog(catalog));
@@ -294,7 +287,7 @@ public class MSOffice2Xliff {
 					}
 					continue;
 				}
-				if (child.getName().matches("[a-z]:p") || child.getName().equals("t")) {
+				if (child.getName().matches("[a-z]:p") || "si".equals(child.getName()) || "t".equals(child.getName())) {
 					recursePara(child);
 				} else {
 					recurse(child);
