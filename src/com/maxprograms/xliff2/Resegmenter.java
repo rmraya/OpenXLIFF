@@ -39,6 +39,8 @@ import com.maxprograms.xml.XMLOutputter;
 public class Resegmenter {
 
     private static Segmenter segmenter;
+    private static boolean canResegment;
+    private static boolean translate;
 
     private Resegmenter() {
         // do not instantiate this class
@@ -50,6 +52,7 @@ public class Resegmenter {
         try {
             segmenter = new Segmenter(srx, srcLang, catalog);
             SAXBuilder builder = new SAXBuilder();
+            builder.setEntityResolver(catalog);
             Document doc = builder.build(xliff);
             Element root = doc.getRootElement();
             recurse(root);
@@ -84,16 +87,25 @@ public class Resegmenter {
     }
 
     private static void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
+        if ("file".equals(root.getName())) {
+            canResegment = "yes".equals(root.getAttributeValue("canResegment", "yes"));
+            translate = "yes".equals(root.getAttributeValue("translate", "yes"));
+        } else if (root.hasAttribute("canResegment")) {
+            canResegment = "yes".equals(root.getAttributeValue("canResegment", canResegment ? "yes" : "no"));
+            translate = "yes".equals(root.getAttributeValue("translate", translate ? "yes" : "no"));
+        }
         if ("unit".equals(root.getName())) {
-            if (root.getChildren("segment").size() == 1) {
+            if (translate && canResegment && root.getChildren("segment").size() == 1) {
                 Element segment = root.getChild("segment");
+                String originalId = segment.getAttributeValue("id");
+                String unitId = root.getAttributeValue("id");
                 Element source = segment.getChild("source");
                 Element target = segment.getChild("target");
                 boolean isSourceCopy = target != null && source.getContent().equals(target.getContent());
                 boolean isEmpty = target != null && target.getContent().isEmpty();
                 if (target == null || isSourceCopy || isEmpty) {
-                    root.removeAttribute("canResegment");
                     Element segSource = segmenter.segment(source);
+                    int newSegments = segSource.getChildren("mrk").size();
                     int id = 0;
                     root.removeChild(segment);
                     List<XMLNode> content = segSource.getContent();
@@ -109,7 +121,6 @@ public class Resegmenter {
                                     Element firstTag = e.getChildren().get(0);
                                     if (!hasText(firstTag)) {
                                         Element ignorable = new Element("ignorable");
-                                        ignorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
                                         Element ignorableSource = new Element("source");
                                         ignorableSource.setAttribute("xml:space", "preserve");
                                         ignorable.addContent(ignorableSource);
@@ -136,7 +147,7 @@ public class Resegmenter {
                                 if (!hasText(e)) {
                                     newSeg = new Element("ignorable");
                                 }
-                                newSeg.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
+                                newSeg.setAttribute("id", newSegments == 1 ? originalId : unitId + '-' + id++);
                                 root.addContent(newSeg);
                                 Element newSource = new Element("source");
                                 newSource.setAttribute("xml:space", source.getAttributeValue("xml:space", "default"));
@@ -153,7 +164,6 @@ public class Resegmenter {
                                     newTarget.addContent(e.getContent());
                                 }
                                 if (lastIgnorable != null) {
-                                    lastIgnorable.setAttribute("id", root.getAttributeValue("id") + '-' + id++);
                                     root.addContent(lastIgnorable);
                                 }
                             } else {
