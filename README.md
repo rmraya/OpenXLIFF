@@ -42,6 +42,7 @@ XML and JSON filters are configurable
 - **[TMXEditor](https://github.com/rmraya/TMXEditor)** relies on OpenXLIFF Filters XML support for processing TMX files.
 - **[XLIFF Validation](https://github.com/rmraya/XLIFFValidation)** web-based XLIFF Validation Service.
 - **[Fluenta](https://github.com/rmraya/Fluenta)** a Translation Manager that uses OpenXLIFF Filters to generate XLIFF from DITA projects
+- **[JavaPM](https://github.com/rmraya/JavaPM)** a set of scripts for localizing Java `.properties` files using XLIFF.
 
 ## Releases
 
