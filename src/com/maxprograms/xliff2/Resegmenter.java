@@ -95,7 +95,8 @@ public class Resegmenter {
             translate = "yes".equals(root.getAttributeValue("translate", translate ? "yes" : "no"));
         }
         if ("unit".equals(root.getName())) {
-            if (translate && canResegment && root.getChildren("segment").size() == 1) {
+            boolean hasMatches = !root.getChildren("mtc:matches").isEmpty();
+            if (translate && canResegment && !hasMatches && root.getChildren("segment").size() == 1) {
                 Element segment = root.getChild("segment");
                 String originalId = segment.getAttributeValue("id");
                 String unitId = root.getAttributeValue("id");

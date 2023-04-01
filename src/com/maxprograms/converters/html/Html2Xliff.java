@@ -68,7 +68,6 @@ public class Html2Xliff {
 	private static boolean keepFormat;
 
 	private static Segmenter segmenter;
-	private static String catalog;
 	private static String first;
 	private static String last;
 	private static String targetLanguage;
@@ -89,7 +88,7 @@ public class Html2Xliff {
 		sourceLanguage = params.get("srcLang");
 		targetLanguage = params.get("tgtLang");
 		srcEncoding = params.get("srcEncoding");
-		catalog = params.get("catalog");
+		String catalog = params.get("catalog");
 		String paragraphSegmentation = params.get("paragraph");
 		if (paragraphSegmentation == null) {
 			segByElement = false;
