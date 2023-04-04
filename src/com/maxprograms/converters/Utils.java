@@ -57,8 +57,15 @@ public class Utils {
 
 	public static String getAbsolutePath(String homeFile, String relative) throws IOException {
 		try {
-			File result = relative.indexOf('%') != -1 ? new File(URLDecoder.decode(relative, StandardCharsets.UTF_8))
-					: new File(relative);
+			if (relative.indexOf('%') != -1) {
+				try {
+					String decoded = URLDecoder.decode(relative, StandardCharsets.UTF_8);
+					relative = decoded;
+				} catch (IllegalArgumentException e) {
+					// do nothing, '%' may be part of the name
+				}
+			}
+			File result = new File(relative);
 			if (!result.isAbsolute()) {
 				File home = new File(homeFile);
 				// If home is a file, get the parent
