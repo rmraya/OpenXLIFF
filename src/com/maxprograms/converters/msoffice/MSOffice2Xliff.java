@@ -383,6 +383,9 @@ public class MSOffice2Xliff {
 	}
 
 	private static void recursePara(Element e) throws IOException, SAXException, ParserConfigurationException {
+		if ("si".equals(e.getName())) {
+			cleanPhonetics(e);
+		}
 		if ("w:p".equals(e.getName()) || "a:p".equals(e.getName())) {
 			if (!text.isEmpty()) {
 				if (segByElement) {
@@ -442,6 +445,17 @@ public class MSOffice2Xliff {
 		}
 		// send closing tag to skeleton
 		writeSkel("</" + e.getName() + ">");
+	}
+
+	private static void cleanPhonetics(Element e) {
+		List<Element> phonetics = e.getChildren("rPh");
+		for (int i = 0; i < phonetics.size(); i++) {
+			e.removeChild(phonetics.get(i));
+		}
+		List<Element> properties = e.getChildren("phoneticPr");
+		for (int i = 0; i < properties.size(); i++) {
+			e.removeChild(properties.get(i));
+		}
 	}
 
 	private static void cleanPara(Element e) {
