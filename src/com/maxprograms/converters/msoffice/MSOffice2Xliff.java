@@ -626,6 +626,10 @@ public class MSOffice2Xliff {
 	}
 
 	private static void recursePhrase(Element e) throws IOException, SAXException, ParserConfigurationException {
+		if ("mc:AlternateContent".equals(e.getName())) { //
+			text = text + "<ph>" + getImageText(e) + "</ph>";
+			return;
+		}
 		if ("w:r".equals(e.getName()) && isBreak(e)) {
 			if (!text.isEmpty()) {
 				if (segByElement) {
@@ -674,6 +678,51 @@ public class MSOffice2Xliff {
 			}
 		}
 		text = text + "<ph>&lt;/" + e.getName() + " &gt;</ph>";
+	}
+
+	private static String getImageText(Element e) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("&lt;");
+		sb.append(e.getName());
+		List<Attribute> atts = e.getAttributes();
+		Iterator<Attribute> ia = atts.iterator();
+		while (ia.hasNext()) {
+			Attribute a = ia.next();
+			sb.append(' ');
+			sb.append(a.getName());
+			sb.append("=\"");
+			if ("pic:cNvPr".equals(e.getName()) && ("title".equals(a.getName()) || "descr".equals(a.getName()))) {
+				sb.append("</ph>");
+				sb.append(Utils.cleanString(a.getValue()));
+				sb.append("<ph>");
+			} else {
+				sb.append(cleanAttribute(a.getValue()));
+			}
+			sb.append("\"");
+		}
+		List<XMLNode> content = e.getContent();
+		if (content.isEmpty()) {
+			sb.append("/&gt;");
+		} else {
+			sb.append("&gt;");
+		}
+		Iterator<XMLNode> it = content.iterator();
+		while (it.hasNext()) {
+			XMLNode n = it.next();
+			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element child = (Element) n;
+				sb.append(getImageText(child));
+			}
+			if (n.getNodeType() == XMLNode.TEXT_NODE) {
+				sb.append(Utils.cleanString(n.toString()));
+			}
+		}
+		if (!content.isEmpty()) {
+			sb.append("&lt;/");
+			sb.append(e.getName());
+			sb.append("&gt;");
+		}
+		return sb.toString();
 	}
 
 	private static String cleanAttribute(String value) {
