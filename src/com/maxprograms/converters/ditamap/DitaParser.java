@@ -64,11 +64,10 @@ public class DitaParser {
 
 		@Override
 		public boolean equals(Object obj) {
-			if (!(obj instanceof StringArray)) {
-				return false;
+			if (obj instanceof StringArray a) {
+				return a.getFile().equals(file) && a.getId().equals(id);
 			}
-			StringArray a = (StringArray) obj;
-			return a.getFile().equals(file) && a.getId().equals(id);
+			return false;
 		}
 
 		@Override

@@ -42,9 +42,6 @@ public class Variant implements Comparable<Variant> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
 		if (obj instanceof Variant variant) {
 			return code.equals(variant.getCode()) && description.equals(variant.getDescription()) && prefix.equals(variant.getPrefix());
 		}

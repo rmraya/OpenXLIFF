@@ -36,9 +36,6 @@ public class Script implements Comparable<Script> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
 		if (obj instanceof Script script) {
 			return code.equals(script.getCode()) && description.equals(script.getDescription());
 		}

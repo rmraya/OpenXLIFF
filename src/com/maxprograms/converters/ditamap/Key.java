@@ -56,11 +56,10 @@ public class Key implements Comparable<Key> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Key)) {
-			return false;
+		if (obj instanceof Key k) {
+			return k.name.equals(name) && k.defined.equals(defined);
 		}
-		Key k = (Key) obj;
-		return k.name.equals(name) && k.defined.equals(defined);
+		return false;
 	}
 
 	@Override

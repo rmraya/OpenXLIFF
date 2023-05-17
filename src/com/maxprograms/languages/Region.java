@@ -36,9 +36,6 @@ public class Region implements Comparable<Region> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
 		if (obj instanceof Region reg) {
 			return code.equals(reg.getCode()) && description.equals(reg.getDescription());
 		}
