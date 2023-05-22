@@ -141,8 +141,9 @@ public class ScopeBuilder {
 						issues.add(issue);
 					}
 				} else {
+					boolean translate = "yes".equals(e.getAttributeValue("translate", "yes"));
 					if (href.isEmpty()) {
-						if (!currentScope.addKey(new Key(key, parentFile, topicmeta, parentFile))) {
+						if (!currentScope.addKey(new Key(key, parentFile, topicmeta, parentFile, translate))) {
 							MessageFormat mf = new MessageFormat(Messages.getString("ScopeBuilder.2"));
 							String issue = mf.format(new Object[] { key });
 							logger.log(Level.WARNING, issue);
@@ -153,7 +154,7 @@ public class ScopeBuilder {
 							path = Utils.getAbsolutePath(parentFile, href);
 							File f = new File(path);
 							if (f.exists() && f.isFile()
-									&& !currentScope.addKey(new Key(key, path, topicmeta, parentFile))) {
+									&& !currentScope.addKey(new Key(key, path, topicmeta, parentFile, translate))) {
 								MessageFormat mf = new MessageFormat(Messages.getString("ScopeBuilder.1"));
 								String issue = mf.format(new Object[] { key, path });
 								logger.log(Level.WARNING, issue);

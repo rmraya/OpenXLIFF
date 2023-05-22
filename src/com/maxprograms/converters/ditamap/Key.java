@@ -20,6 +20,7 @@ public class Key implements Comparable<Key> {
 	private Element topicmeta;
 	private String keyref;
 	private String defined;
+	private boolean translate;
 
 	public Key(String name, String keyref, String defined) {
 		this.name = name;
@@ -27,11 +28,12 @@ public class Key implements Comparable<Key> {
 		this.defined = defined;
 	}
 
-	public Key(String name, String href, Element topicmeta, String defined) {
+	public Key(String name, String href, Element topicmeta, String defined, boolean translate) {
 		this.name = name;
 		this.href = href;
 		this.topicmeta = topicmeta;
 		this.defined = defined;
+		this.translate = translate;
 	}
 
 	public String getName() {
@@ -52,6 +54,10 @@ public class Key implements Comparable<Key> {
 
 	public String getDefined() {
 		return defined;
+	}
+
+	public boolean isTranslate() {
+		return translate;
 	}
 
 	@Override
