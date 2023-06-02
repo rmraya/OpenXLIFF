@@ -48,6 +48,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.8.0 | Improved localization handling | June 2nd, 2023
 3.7.0 | Extracted "alt" text from Word images | May 15th, 2023
 3.6.0 | Improved segmentation of XLIFF 2.0 | April 1st, 2023
 3.5.0 | Improved HTML filter | March 15th, 2023
