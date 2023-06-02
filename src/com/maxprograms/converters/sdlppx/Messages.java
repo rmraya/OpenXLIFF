@@ -23,6 +23,7 @@ public class Messages {
     private static Properties props;
 
     private Messages() {
+        // do not instantiate this class
     }
 
     public static String getString(String key) {
@@ -31,6 +32,9 @@ public class Messages {
                 Locale locale = Locale.getDefault();
                 String extension = "en".equals(locale.getLanguage()) ? ".properties"
                         : "_" + locale.getLanguage() + ".properties";
+                if (Messages.class.getResource("sdlppx" + extension) == null) {
+                    extension = ".properties";
+                }
                 try (InputStream is = Messages.class.getResourceAsStream("sdlppx" + extension)) {
                     try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
                         props = new Properties();
@@ -39,7 +43,7 @@ public class Messages {
                 }
             }
             return props.getProperty(key, '!' + key + '!');
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return '!' + key + '!';
         }
     }
