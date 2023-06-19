@@ -130,9 +130,8 @@ public class Xml2Xliff {
 		String isResx = params.get("resx");
 		resx = isResx != null;
 		String dita = params.get("dita_based");
-		if (dita != null) {
-			ditaBased = dita.equals("yes");
-		}
+		ditaBased = dita == null ? false : dita.equals("yes");
+
 		String ignoreTrackedChanges = params.get("ignoretc");
 		if (ignoreTrackedChanges != null) {
 			ignoreTC = ignoreTrackedChanges.equals("yes");
