@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xliff.FromOpenXliff;
-import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -53,7 +52,7 @@ public class Xliff2Txlf {
     private static Map<String, Element> segments;
     private static String tgtLang;
     private static int auto;
-    private static String phaseName;
+    private static boolean hasTarget;
 
     private Xliff2Txlf() {
         // do not instantiate this class
@@ -63,7 +62,7 @@ public class Xliff2Txlf {
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
         tgtLang = "";
-        phaseName = "";
+        hasTarget = false;
         String xliffFile = params.get("xliff");
         String sklFile = params.get("skeleton");
         String outputFile = params.get("backfile");
@@ -85,9 +84,13 @@ public class Xliff2Txlf {
             if (!f.exists()) {
                 Files.createFile(Paths.get(f.toURI()));
             }
+            Element file = root.getChild("file");
+            if (!file.hasAttribute("target-language") && hasTarget) {
+                file.setAttribute("target-language", tgtLang);
+            }
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
                 XMLOutputter outputter = new XMLOutputter();
-                Indenter.indent(root, 2);
+                Indenter.indent(root, 0);
                 outputter.preserveSpace(true);
                 outputter.output(skeleton, out);
             }
@@ -131,11 +134,8 @@ public class Xliff2Txlf {
     }
 
     private static void recurseSkeleton(Element root) throws SAXException, IOException, ParserConfigurationException {
-        if ("file".equals(root.getName())) {
+        if ("file".equals(root.getName()) && root.hasAttribute("target-language")) {
             tgtLang = root.getAttributeValue("target-language");
-        }
-        if ("phase".equals(root.getName())) {
-            phaseName = root.getAttributeValue("phase-name");
         }
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             List<PI> instructions = root.getPI(Constants.TOOLID);
@@ -152,39 +152,17 @@ public class Xliff2Txlf {
                     oldTarget.setContent(target.getContent());
                     Element translation = segment.getChild("target");
                     target.setContent(translation.getContent());
-                    if (!target.getContent().isEmpty() && ("new".equals(target.getAttributeValue("state"))
-                            || "needs-translation".equals(target.getAttributeValue("state")))) {
-                        target.setAttribute("state", "translated");
-                    }
                     if (!target.getChildren().isEmpty()) {
                         replaceTags(target, 1);
                     }
-                    if (!oldTarget.getContent().isEmpty() && !target.getContent().equals(oldTarget.getContent())) {
-                        Element altTrans = new Element("alt-trans");
-                        altTrans.setAttribute("alttranstype", "previous-version");
-                        String editStatus = root.getAttributeValue("gs4tr__editStatus");
-                        if (!editStatus.isEmpty()) {
-                            altTrans.setAttribute("gs4tr:editStatus", editStatus);
-                        }
-                        if (!phaseName.isEmpty()) {
-                            altTrans.setAttribute("phase-name", phaseName);
-                        }
-                        List<Attribute> atts = oldTarget.getAttributes();
-                        for (int i = 0; i < atts.size(); i++) {
-                            Attribute a = atts.get(i);
-                            if (a.getName().startsWith("gs4tr__")) {
-                                altTrans.setAttribute(a);
-                            }
-                        }
-                        oldTarget.setAttributes(new ArrayList<>());
-                        altTrans.addContent(oldTarget);
-                        root.addContent("\n");
-                        root.addContent(altTrans);
-                    }
-                    root.setAttribute("gs4tr__editStatus", "modified");
-                    root.setAttribute("approved", "yes");
+                    target.setAttribute("state", "translated");
+                } else {
+                    // TODO handle unapproved target
                 }
                 root.removePI(Constants.TOOLID);
+            }
+            if (!hasTarget) {
+                hasTarget = root.getChild("target") != null;
             }
             return;
         }

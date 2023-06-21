@@ -107,7 +107,7 @@ public class Txlf2Xliff {
                 body.addContent(units.get(i));
             }
             try (FileOutputStream out = new FileOutputStream(xliffFile)) {
-                Indenter.indent(newRoot, 2);
+                Indenter.indent(newRoot, 0);
                 XMLOutputter outputter = new XMLOutputter();
                 outputter.preserveSpace(true);
                 outputter.output(newDoc, out);
@@ -134,7 +134,6 @@ public class Txlf2Xliff {
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             Element unit = new Element("trans-unit");
             unit.setAttribute("id", "" + units.size());
-            unit.setAttribute("approved", root.getAttributeValue("approved", "no"));
             boolean space = root.getAttributeValue("xml:space").equals("preserve");
             if (space) {
                 unit.setAttribute("xml:space", "preserve");
@@ -151,17 +150,17 @@ public class Txlf2Xliff {
             Element originalTarget = root.getChild("target");
             if (originalTarget != null) {
                 if (originalTarget.hasAttribute("state")) {
-                    target.setAttribute(originalTarget.getAttribute("state"));
+                    String state = originalTarget.getAttributeValue("state");
+                    target.setAttribute("state", state);
+                    unit.setAttribute("approved", "translated".equals(state) ? "yes" : "no");
                 }
                 if (originalTarget.hasAttribute("state-qualifier")
                         && !originalTarget.getAttributeValue("state-qualifier").startsWith("x-")) {
                     target.setAttribute(originalTarget.getAttribute("state-qualifier"));
                 }
                 target.setContent(originalTarget.getContent());
+                unit.addContent(target);
             }
-
-            unit.addContent(target);
-
             units.add(unit);
             root.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
             return;
