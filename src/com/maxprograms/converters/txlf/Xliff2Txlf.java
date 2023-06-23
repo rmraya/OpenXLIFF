@@ -21,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +50,6 @@ public class Xliff2Txlf {
     private static Document skeleton;
     private static Map<String, Element> segments;
     private static String tgtLang;
-    private static int auto;
     private static boolean hasTarget;
 
     private Xliff2Txlf() {
@@ -153,11 +151,14 @@ public class Xliff2Txlf {
                     Element translation = segment.getChild("target");
                     target.setContent(translation.getContent());
                     if (!target.getChildren().isEmpty()) {
-                        replaceTags(target, 1);
+                        replaceTags(target);
                     }
                     target.setAttribute("state", "translated");
                 } else {
-                    // TODO handle unapproved target
+                    Element target = root.getChild("target");
+                    if (target != null) {
+                        target.setAttribute("state", "needs-review");
+                    }
                 }
                 root.removePI(Constants.TOOLID);
             }
@@ -183,7 +184,7 @@ public class Xliff2Txlf {
             if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element e = (Element) node;
                 if (e.getName().equals("source")) {
-                    newContent.add(new TextNode("\n      "));
+                    newContent.add(new TextNode("\n"));
                     newContent.add(new Element("target"));
                 }
             }
@@ -191,12 +192,10 @@ public class Xliff2Txlf {
         root.setContent(newContent);
     }
 
-    private static void replaceTags(Element target, int version)
-            throws SAXException, IOException, ParserConfigurationException {
+    private static void replaceTags(Element target) throws SAXException, IOException, ParserConfigurationException {
         StringBuilder sb = new StringBuilder();
         sb.append("<target>");
         List<XMLNode> content = target.getContent();
-        auto = 1;
         Iterator<XMLNode> it = content.iterator();
         while (it.hasNext()) {
             XMLNode node = it.next();
@@ -207,12 +206,7 @@ public class Xliff2Txlf {
             if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element e = (Element) node;
                 if ("mrk".equals(e.getName())) {
-                    if (version == 1) {
-                        sb.append(e.toString());
-                    } else {
-                        Element mrk = processMrk(e);
-                        sb.append(mrk.toString());
-                    }
+                    sb.append(e.toString());
                 } else {
                     sb.append(e.getText());
                 }
@@ -223,43 +217,5 @@ public class Xliff2Txlf {
         String string = sb.toString();
         Document d = builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
         target.setContent(d.getRootElement().getContent());
-    }
-
-    private static Element processMrk(Element e) {
-        Element mrk = new Element("mrk");
-        mrk.setAttribute("id", e.hasAttribute("mid") ? e.getAttributeValue("mid") : ("auto" + auto++));
-        if (e.hasAttribute("ts")) {
-            mrk.setAttribute("value", e.getAttributeValue("ts"));
-        }
-        String mtype = e.getAttributeValue("mtype");
-        if ("protected".equals(mtype)) {
-            mrk.setAttribute("translate", "no");
-        }
-        if (Arrays.asList("generic", "comment", "term").contains(mtype)) {
-            mrk.setAttribute("type", mtype);
-        } else {
-            mrk.setAttribute("type", "oxlf:" + mtype.replace(":", "_"));
-        }
-        List<XMLNode> newContent = new Vector<>();
-        List<XMLNode> content = e.getContent();
-        Iterator<XMLNode> it = content.iterator();
-        while (it.hasNext()) {
-            XMLNode node = it.next();
-            if (node.getNodeType() == XMLNode.TEXT_NODE) {
-                newContent.add(node);
-            }
-            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element child = (Element) node;
-                if ("mrk".equals(child.getName())) {
-                    Element processed = processMrk(child);
-                    newContent.add(processed);
-                } else {
-                    String text = child.getText();
-                    newContent.add(new TextNode(text));
-                }
-            }
-        }
-        mrk.setContent(newContent);
-        return mrk;
     }
 }
