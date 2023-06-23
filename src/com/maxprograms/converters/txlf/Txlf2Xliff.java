@@ -134,8 +134,7 @@ public class Txlf2Xliff {
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             Element unit = new Element("trans-unit");
             unit.setAttribute("id", "" + units.size());
-            boolean space = root.getAttributeValue("xml:space").equals("preserve");
-            if (space) {
+            if ("preserve".equals(root.getAttributeValue("xml:space"))) {
                 unit.setAttribute("xml:space", "preserve");
             }
             Element source = new Element("source");

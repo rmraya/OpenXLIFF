@@ -898,10 +898,8 @@ public class Xliff20 {
 			}
 			inTarget = false;
 		}
-		if ("ignorable".equals(e.getLocalName())) {
-			if (!validateInlineElements(e)) {
-				return false;
-			}
+		if ("ignorable".equals(e.getLocalName()) && !validateInlineElements(e)) {
+			return false;
 		}
 		return true;
 	}

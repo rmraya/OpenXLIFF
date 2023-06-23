@@ -755,7 +755,7 @@ public class Html2Xliff {
 	}
 
 	private static void updateAttributes(String type, String fragment) {
-		Map<String, Attribute> atts = attributesMap(type, fragment);
+		Map<String, Attribute> atts = attributesMap(fragment);
 		if ("meta".equalsIgnoreCase(type)) {
 			if (atts.containsKey("name")) {
 				Attribute name = atts.get("name");
@@ -772,10 +772,8 @@ public class Html2Xliff {
 			}
 		} else {
 			List<String> translatables = new ArrayList<>();
-			if ("button".equalsIgnoreCase(type) || "input".equalsIgnoreCase(type)) {
-				if (atts.containsKey("value")) {
-					translatables.add("value");
-				}
+			if (("button".equalsIgnoreCase(type) || "input".equalsIgnoreCase(type)) && atts.containsKey("value")) {
+				translatables.add("value");
 			}
 			if (atts.containsKey("alt")) {
 				translatables.add("alt");
@@ -797,7 +795,7 @@ public class Html2Xliff {
 		}
 	}
 
-	private static Map<String, Attribute> attributesMap(String type, String element) {
+	private static Map<String, Attribute> attributesMap(String element) {
 		Map<String, Attribute> atts = new HashMap<>();
 		StringTokenizer tokenizer = new StringTokenizer(element, "=<> \t\n\r\f/", true);
 		String name = "";
