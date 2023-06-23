@@ -35,12 +35,14 @@ public class DeepLTranslator implements MTEngine {
 	private String apiKey;
 	private String srcLang;
 	private String tgtLang;
+	String domain;
 
 	private List<Language> srcLanguages;
 	private List<Language> tgtLanguages;
 
-	public DeepLTranslator(String apiKey) {
+	public DeepLTranslator(String apiKey, boolean proPlan) {
 		this.apiKey = apiKey;
+		domain = proPlan ? "https://api.deepl.com/v1/" : "https://api-free.deepl.com/v2/";
 	}
 
 	@Override
@@ -93,12 +95,11 @@ public class DeepLTranslator implements MTEngine {
 	public String translate(String source) throws IOException, InterruptedException {
 		HttpClient httpclient = HttpClient.newBuilder().build();
 		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://api.deepl.com/v1/translate?auth_key=" + apiKey + "&text="
+				.uri(URI.create(domain + "translate?auth_key=" + apiKey + "&text="
 						+ URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source_lang=" + srcLang.toUpperCase()
 						+ "&target_lang=" + tgtLang.toUpperCase()))
 				.build();
 		HttpResponse<String> response = httpclient.send(request, BodyHandlers.ofString());
-
 		if (response.statusCode() == 200) {
 			String body = response.body();
 			if (body != null) {
