@@ -154,7 +154,7 @@ public class ToOpenXliff {
                 Element source = new Element("source");
                 tag = 1;
                 source.setContent(getContent2x(src));
-                if (!XliffUtils.hasText(source)) {
+                if (!hasTranslatableText(source)) {
                     return;
                 }
                 unit.addContent(source);
@@ -319,7 +319,7 @@ public class ToOpenXliff {
                             Element source = new Element("source");
                             tag = 1;
                             source.setContent(getContent1x(e));
-                            if (!XliffUtils.hasText(source)) {
+                            if (!hasTranslatableText(source)) {
                                 return;
                             }
                             unit.addContent(source);
@@ -350,7 +350,7 @@ public class ToOpenXliff {
                 Element source = new Element("source");
                 tag = 1;
                 source.setContent(getContent1x(root.getChild("source")));
-                if (!XliffUtils.hasText(source)) {
+                if (!hasTranslatableText(source)) {
                     return;
                 }
                 unit.addContent(source);
@@ -394,6 +394,21 @@ public class ToOpenXliff {
         while (it.hasNext()) {
             recurse1x(it.next(), units);
         }
+    }
+
+    private static boolean hasTranslatableText(Element e) {
+        if (("source".equals(e.getName()) || "target".equals(e.getName()) || "mrk".equals(e.getName())
+                || "pc".equals(e.getName()) || "sub".equals(e.getName())) && XliffUtils.hasText(e)) {
+            return true;
+        }
+        List<Element> children = e.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            if (hasTranslatableText(it.next())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected static Element locateMrk(Element target, String mid) {
