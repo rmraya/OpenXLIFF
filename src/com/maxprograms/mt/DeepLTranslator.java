@@ -99,16 +99,17 @@ public class DeepLTranslator implements MTEngine {
 	public String translate(String source) throws IOException, InterruptedException, JSONException {
 		String data = "&text=" + URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source_lang=" +
 				srcLang.toUpperCase() + "&target_lang=" + tgtLang.toUpperCase();
+		byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
 		URL url = new URL(domain);
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);
 		con.setRequestProperty("User-Agent", Constants.TOOLNAME);
 		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		con.setRequestProperty("Content-Length", Integer.toString(data.length()));
+		con.setRequestProperty("Content-Length", Integer.toString(bytes.length));
 		con.setDoOutput(true);
 		try (OutputStream out = con.getOutputStream()) {
-			out.write(data.getBytes(StandardCharsets.UTF_8));
+			out.write(bytes);
 			out.flush();
 		}
 		int status = con.getResponseCode();

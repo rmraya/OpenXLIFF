@@ -103,16 +103,17 @@ public class ChatGptTranslator implements MTEngine {
         json.put("frequency_penalty", 0);
         json.put("presence_penalty", 0);
         String data = json.toString();
-       
+        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+
         URL url = new URL("https://api.openai.com/v1/completions");
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Authorization", "Bearer " + apiKey);
-        con.setRequestProperty("Content-Length", Integer.toString(data.length()));
+        con.setRequestProperty("Content-Length", Integer.toString(bytes.length));
         con.setDoOutput(true);
         try (OutputStream out = con.getOutputStream()) {
-            out.write(data.getBytes(StandardCharsets.UTF_8));
+            out.write(bytes);
             out.flush();
         }
 
