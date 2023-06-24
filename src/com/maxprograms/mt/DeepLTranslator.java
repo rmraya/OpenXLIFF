@@ -13,9 +13,9 @@
 package com.maxprograms.mt;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -62,8 +62,8 @@ public class DeepLTranslator implements MTEngine {
 	public List<Language> getSourceLanguages() throws IOException {
 		if (srcLanguages == null) {
 			srcLanguages = new ArrayList<>();
-			String[] codes = { "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hu", "it", "ja", "lt", "lv",
-					"nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "zh" };
+			String[] codes = { "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hu", "id", "it", "ja", "ko",
+					"lt", "lv", "nb", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "tr", "uk", "zh" };
 			for (int i = 0; i < codes.length; i++) {
 				srcLanguages.add(LanguageUtils.getLanguage(codes[i]));
 			}
@@ -75,8 +75,9 @@ public class DeepLTranslator implements MTEngine {
 	public List<Language> getTargetLanguages() throws IOException {
 		if (tgtLanguages == null) {
 			tgtLanguages = new ArrayList<>();
-			String[] codes = { "bg", "cs", "da", "de", "el", "en-GB", "en-US", "es", "et", "fi", "fr", "hu", "it", "ja",
-					"lt", "lv", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sk", "sl", "sv", "zh" };
+			String[] codes = { "bg", "cs", "da", "de", "el", "en-GB", "en-US", "es", "et", "fi", "fr", "hu", "id", "it",
+					"ja", "ko", "lt", "lv", "nb", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sk", "sl", "sv", "tr",
+					"uk", "zh" };
 			for (int i = 0; i < codes.length; i++) {
 				tgtLanguages.add(LanguageUtils.getLanguage(codes[i]));
 			}
@@ -96,23 +97,25 @@ public class DeepLTranslator implements MTEngine {
 
 	@Override
 	public String translate(String source) throws IOException, InterruptedException, JSONException {
+		String data = "&text=" + URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source_lang=" +
+				srcLang.toUpperCase() + "&target_lang=" + tgtLang.toUpperCase();
 		URL url = new URL(domain);
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);
 		con.setRequestProperty("User-Agent", Constants.TOOLNAME);
 		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		con.setRequestProperty("Content-Length", Integer.toString(data.length()));
 		con.setDoOutput(true);
-		try (DataOutputStream out = new DataOutputStream(con.getOutputStream())) {
-			out.writeBytes("&text=" + URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source_lang=" +
-					srcLang.toUpperCase() + "&target_lang=" + tgtLang.toUpperCase());
+		try (OutputStream out = con.getOutputStream()) {
+			out.write(data.getBytes(StandardCharsets.UTF_8));
 			out.flush();
 		}
 		int status = con.getResponseCode();
 		if (status == 200) {
 			StringBuffer content = new StringBuffer();
-			try (InputStreamReader inptStream = new InputStreamReader(con.getInputStream())) {
-				try (BufferedReader in = new BufferedReader(inptStream)) {
+			try (InputStreamReader inputStream = new InputStreamReader(con.getInputStream())) {
+				try (BufferedReader in = new BufferedReader(inputStream)) {
 					String inputLine;
 					while ((inputLine = in.readLine()) != null) {
 						if (!content.isEmpty()) {
