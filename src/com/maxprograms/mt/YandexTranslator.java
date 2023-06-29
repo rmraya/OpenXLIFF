@@ -22,6 +22,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.maxprograms.languages.Language;
@@ -36,7 +38,6 @@ public class YandexTranslator implements MTEngine {
     private String srcLang;
     private String tgtLang;
     private List<String> directions;
-    private List<Language> languages;
 
     public YandexTranslator(String apiKey) {
         this.apiKey = apiKey;
@@ -54,27 +55,58 @@ public class YandexTranslator implements MTEngine {
 
     @Override
     public List<Language> getSourceLanguages() throws IOException, InterruptedException {
-        if (languages == null) {
-            getLanguages();
+        if (directions == null) {
+            getDirections();
         }
-        return languages;
+        List<Language> result = new ArrayList<>();
+        for (int i = 0; i < directions.size(); i++) {
+            String dir = directions.get(i);
+            Language lang = LanguageUtils.getLanguage(dir.substring(0, dir.indexOf("-")));
+            if (!result.contains(lang)) {
+                result.add(lang);
+            }
+        }
+        Collections.sort(result, new Comparator<Language>() {
+
+            @Override
+            public int compare(Language o1, Language o2) {
+                return o1.getCode().compareTo(o2.getCode());
+            }
+
+        });
+        return result;
     }
 
     @Override
     public List<Language> getTargetLanguages() throws IOException, InterruptedException {
-        if (languages == null) {
-            getLanguages();
+        if (directions == null) {
+            getDirections();
         }
-        return languages;
+        List<Language> result = new ArrayList<>();
+        for (int i = 0; i < directions.size(); i++) {
+            String dir = directions.get(i);
+            Language lang = LanguageUtils.getLanguage(dir.substring(dir.indexOf("-") + 1));
+            if (!result.contains(lang)) {
+                result.add(lang);
+            }
+        }
+        Collections.sort(result, new Comparator<Language>() {
+
+            @Override
+            public int compare(Language o1, Language o2) {
+                return o1.getCode().compareTo(o2.getCode());
+            }
+
+        });
+        return result;
     }
 
-    private void getLanguages() throws IOException, InterruptedException {
+    private void getDirections() throws IOException, InterruptedException {
         HttpClient httpclient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=" + apiKey + "&ui=en"))
+                .uri(URI.create("https://translate.yandex.net/api/v1.5/tr.json/getLangs?key=" + this.apiKey + "&ui=en"))
                 .build();
         HttpResponse<String> response = httpclient.send(request, BodyHandlers.ofString());
-
         if (response.statusCode() == 200) {
             String body = response.body();
             if (body != null) {
@@ -84,20 +116,19 @@ public class YandexTranslator implements MTEngine {
                 for (int i = 0; i < dirs.length(); i++) {
                     directions.add(dirs.getString(i));
                 }
-                JSONObject langs = json.getJSONObject("langs");
-                String[] codes = JSONObject.getNames(langs);
-                languages = new ArrayList<>();
-                for (int i = 0; i < codes.length; i++) {
-                    languages.add(LanguageUtils.getLanguage(codes[i]));
-                }
+                return;
             }
+            throw new IOException(Messages.getString("YandexTranslator.6"));
         }
+        MessageFormat mf = new MessageFormat(Messages.getString("YandexTranslator.7"));
+        throw new IOException(mf.format(new String[] { "" + response.statusCode() }));
     }
 
-    public List<String> getDirections() throws IOException, InterruptedException {
+    public List<String> getTranslationDirections() throws IOException, InterruptedException {
         if (directions == null) {
-            getLanguages();
+            getDirections();
         }
+        Collections.sort(directions);
         return directions;
     }
 
@@ -138,7 +169,7 @@ public class YandexTranslator implements MTEngine {
                 }
                 if (code == 501) {
                     if (directions == null) {
-                        getLanguages();
+                        getDirections();
                     }
                     if (!directions.contains(srcLang + "-" + tgtLang)) {
                         throw new IOException(Messages.getString("YandexTranslator.4"));
