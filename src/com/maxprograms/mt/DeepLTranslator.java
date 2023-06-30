@@ -38,14 +38,17 @@ public class DeepLTranslator implements MTEngine {
 	private String apiKey;
 	private String srcLang;
 	private String tgtLang;
-	String domain;
+	String translateUrl;
+	String languageUrl;
 
 	private List<Language> srcLanguages;
 	private List<Language> tgtLanguages;
 
 	public DeepLTranslator(String apiKey, boolean proPlan) {
 		this.apiKey = apiKey;
-		domain = proPlan ? "https://api.deepl.com/v1/translate" : "https://api-free.deepl.com/v2/translate";
+		translateUrl = proPlan ? "https://api.deepl.com/v1/translate" : "https://api-free.deepl.com/v2/translate";
+		languageUrl = proPlan ? "https://api.deepl.com/v2/languages?type="
+				: "https://api-free.deepl.com/v2/languages?type=";
 	}
 
 	@Override
@@ -61,12 +64,7 @@ public class DeepLTranslator implements MTEngine {
 	@Override
 	public List<Language> getSourceLanguages() throws IOException {
 		if (srcLanguages == null) {
-			srcLanguages = new ArrayList<>();
-			String[] codes = { "bg", "cs", "da", "de", "el", "en", "es", "et", "fi", "fr", "hu", "id", "it", "ja", "ko",
-					"lt", "lv", "nb", "nl", "pl", "pt", "ro", "ru", "sk", "sl", "sv", "tr", "uk", "zh" };
-			for (int i = 0; i < codes.length; i++) {
-				srcLanguages.add(LanguageUtils.getLanguage(codes[i]));
-			}
+			srcLanguages = getLanguages("source");
 		}
 		return srcLanguages;
 	}
@@ -74,13 +72,7 @@ public class DeepLTranslator implements MTEngine {
 	@Override
 	public List<Language> getTargetLanguages() throws IOException {
 		if (tgtLanguages == null) {
-			tgtLanguages = new ArrayList<>();
-			String[] codes = { "bg", "cs", "da", "de", "el", "en-GB", "en-US", "es", "et", "fi", "fr", "hu", "id", "it",
-					"ja", "ko", "lt", "lv", "nb", "nl", "pl", "pt-BR", "pt-PT", "ro", "ru", "sk", "sl", "sv", "tr",
-					"uk", "zh" };
-			for (int i = 0; i < codes.length; i++) {
-				tgtLanguages.add(LanguageUtils.getLanguage(codes[i]));
-			}
+			tgtLanguages = getLanguages("target");
 		}
 		return tgtLanguages;
 	}
@@ -100,7 +92,7 @@ public class DeepLTranslator implements MTEngine {
 		String data = "&text=" + URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source_lang=" +
 				srcLang.toUpperCase() + "&target_lang=" + tgtLang.toUpperCase();
 		byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
-		URL url = new URL(domain);
+		URL url = new URL(translateUrl);
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);
@@ -130,24 +122,28 @@ public class DeepLTranslator implements MTEngine {
 			JSONArray array = json.getJSONArray("translations");
 			return array.getJSONObject(0).getString("text");
 		}
+		throw new IOException(getStatusError(status));
+	}
+
+	private String getStatusError(int status) {
 		switch (status) {
 			case 400:
-				throw new IOException(Messages.getString("DeepLTranslator.3"));
+				return Messages.getString("DeepLTranslator.3");
 			case 403:
-				throw new IOException(Messages.getString("DeepLTranslator.4"));
+				return Messages.getString("DeepLTranslator.4");
 			case 404:
-				throw new IOException(Messages.getString("DeepLTranslator.5"));
+				return Messages.getString("DeepLTranslator.5");
 			case 413:
-				throw new IOException(Messages.getString("DeepLTranslator.6"));
+				return Messages.getString("DeepLTranslator.6");
 			case 429:
-				throw new IOException(Messages.getString("DeepLTranslator.7"));
+				return Messages.getString("DeepLTranslator.7");
 			case 456:
-				throw new IOException(Messages.getString("DeepLTranslator.8"));
+				return Messages.getString("DeepLTranslator.8");
 			case 503:
-				throw new IOException(Messages.getString("DeepLTranslator.9"));
+				return Messages.getString("DeepLTranslator.9");
 			default:
 				MessageFormat mf = new MessageFormat(Messages.getString("DeepLTranslator.10"));
-				throw new IOException(mf.format(new String[] { "" + status }));
+				return mf.format(new String[] { "" + status });
 		}
 	}
 
@@ -155,7 +151,7 @@ public class DeepLTranslator implements MTEngine {
 	public boolean equals(Object obj) {
 		if (obj instanceof DeepLTranslator dl) {
 			return srcLang.equals(dl.getSourceLanguage()) && tgtLang.equals(dl.getTargetLanguage())
-					&& apiKey.equals(dl.apiKey) && domain.equals(dl.domain);
+					&& apiKey.equals(dl.apiKey) && translateUrl.equals(dl.translateUrl);
 		}
 		return false;
 	}
@@ -173,5 +169,37 @@ public class DeepLTranslator implements MTEngine {
 	@Override
 	public String getTargetLanguage() {
 		return tgtLang;
+	}
+
+	private List<Language> getLanguages(String type) throws IOException, JSONException {
+		List<Language> result = new ArrayList<>();
+		URL url = new URL(languageUrl + type);
+		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		con.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);
+
+		int status = con.getResponseCode();
+		if (status == 200) {
+			StringBuffer content = new StringBuffer();
+			try (InputStreamReader inputStream = new InputStreamReader(con.getInputStream())) {
+				try (BufferedReader in = new BufferedReader(inputStream)) {
+					String inputLine;
+					while ((inputLine = in.readLine()) != null) {
+						if (!content.isEmpty()) {
+							content.append('\n');
+						}
+						content.append(inputLine);
+					}
+				}
+			}
+			JSONArray array = new JSONArray(content.toString());
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject json = array.getJSONObject(i);
+				String code = LanguageUtils.normalizeCode(json.getString("language"));
+				result.add(LanguageUtils.getLanguage(code));
+			}
+			return result;
+		}
+		throw new IOException(getStatusError(status));
 	}
 }

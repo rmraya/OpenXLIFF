@@ -23,14 +23,13 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-
-import com.maxprograms.languages.Language;
-import com.maxprograms.languages.LanguageUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.maxprograms.languages.Language;
+import com.maxprograms.languages.LanguageUtils;
 
 public class YandexTranslator implements MTEngine {
 
@@ -66,14 +65,7 @@ public class YandexTranslator implements MTEngine {
                 result.add(lang);
             }
         }
-        Collections.sort(result, new Comparator<Language>() {
-
-            @Override
-            public int compare(Language o1, Language o2) {
-                return o1.getCode().compareTo(o2.getCode());
-            }
-
-        });
+        Collections.sort(result, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
         return result;
     }
 
@@ -90,14 +82,7 @@ public class YandexTranslator implements MTEngine {
                 result.add(lang);
             }
         }
-        Collections.sort(result, new Comparator<Language>() {
-
-            @Override
-            public int compare(Language o1, Language o2) {
-                return o1.getCode().compareTo(o2.getCode());
-            }
-
-        });
+        Collections.sort(result, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
         return result;
     }
 
