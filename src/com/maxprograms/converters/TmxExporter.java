@@ -256,18 +256,18 @@ public class TmxExporter {
 			if (!assoc.isEmpty()) {
 				assoc = " assoc=\"" + XMLUtils.cleanText(assoc) + "\"";
 			}
-			String id = "";
+			String x = "";
 			if (type.equals("ph")) {
-				id = src.getAttributeValue("id");
-				if (!id.isEmpty()) {
-					id = " x=\"" + XMLUtils.cleanText(id) + "\"";
+				x = src.getAttributeValue("id");
+				if (!x.isEmpty()) {
+					x = " x=\"" + XMLUtils.cleanText(x).hashCode() + "\"";
 				}
 			}
 			StringBuilder text = new StringBuilder();
 			text.append("<ph");
 			text.append(ctype);
 			text.append(assoc);
-			text.append(id);
+			text.append(x);
 			text.append('>');
 			while (i.hasNext()) {
 				XMLNode o = i.next();
@@ -378,9 +378,9 @@ public class TmxExporter {
 			}
 			String rid = src.getAttributeValue("rid");
 			if (!rid.isEmpty()) {
-				rid = " i=\"" + XMLUtils.cleanText(rid) + "\"";
+				rid = " i=\"" + XMLUtils.cleanText(rid).hashCode() + "\"";
 			} else {
-				rid = " i=\"" + XMLUtils.cleanText(src.getAttributeValue("id")) + "\"";
+				rid = " i=\"" + XMLUtils.cleanText(src.getAttributeValue("id")).hashCode() + "\"";
 			}
 			StringBuilder text = new StringBuilder();
 			text.append('<');
@@ -446,7 +446,8 @@ public class TmxExporter {
 					}
 					name.append(ts.charAt(i));
 				}
-				return "<ph type=\"mrk-protected\" x=\"" + XMLUtils.cleanText(src.getAttributeValue("mid", "-"))
+				return "<ph type=\"mrk-protected\" x=\""
+						+ XMLUtils.cleanText(src.getAttributeValue("mid", "-")).hashCode()
 						+ "\">" + XMLUtils.cleanText(ts) + "</ph>" + XMLUtils.cleanText(src.getText())
 						+ "<ph type=\"mrk-close\">" + XMLUtils.cleanText("</" + name.toString() + ">") + "</ph>";
 			}
