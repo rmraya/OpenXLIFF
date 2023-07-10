@@ -48,6 +48,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.10.0 | Fixed TMX exports | July 10th, 2023
 3.9.0 | Improved Machine Translation support and internal code | June 30th, 2023
 3.8.0 | Improved localization handling | June 2nd, 2023
 3.7.0 | Extracted "alt" text from Word images | May 15th, 2023
