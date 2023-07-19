@@ -140,6 +140,9 @@ public class ChatGptTranslator implements MTEngine {
             if (translation.startsWith("\"\"\"") && translation.endsWith("\"\"\"")) {
                 translation = translation.substring(3, translation.length() - 3);
             }
+            if (translation.startsWith("\"") && translation.endsWith("\"")) {
+                translation = translation.substring(1, translation.length() - 1);
+            }
             return translation;
         }
         con.disconnect();
