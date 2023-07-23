@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <languages>
-  <lang code="bs-Latn" bidi="false"/>
-  <lang code="bs-Latn-BA" bidi="false"/>
-  <lang code="en-US-POSIX" bidi="false"/>
-  <lang code="pa-Guru" bidi="false"/>
-  <lang code="pa-Guru-IN" bidi="false"/>
-  <lang code="sq-XK" bidi="false"/>
-  <lang code="sr-Cyrl-XK" bidi="false"/>
-  <lang code="sr-Latn-XK" bidi="false"/>
   <lang code="ab" bidi="false">Abkhazian</lang>
   <lang code="aa" bidi="false">Afar</lang>
   <lang code="af" bidi="false">Afrikaans</lang>

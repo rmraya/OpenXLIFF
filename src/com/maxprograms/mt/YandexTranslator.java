@@ -25,8 +25,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 import com.maxprograms.languages.Language;
 import com.maxprograms.languages.LanguageUtils;
@@ -53,7 +56,7 @@ public class YandexTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getSourceLanguages() throws IOException, InterruptedException {
+    public List<Language> getSourceLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException {
         if (directions == null) {
             getDirections();
         }
@@ -70,7 +73,7 @@ public class YandexTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getTargetLanguages() throws IOException, InterruptedException {
+    public List<Language> getTargetLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException {
         if (directions == null) {
             getDirections();
         }

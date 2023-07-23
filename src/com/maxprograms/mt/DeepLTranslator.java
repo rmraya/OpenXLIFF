@@ -24,10 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.languages.Language;
@@ -62,7 +64,8 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	@Override
-	public List<Language> getSourceLanguages() throws IOException {
+	public List<Language> getSourceLanguages()
+			throws IOException, JSONException, SAXException, ParserConfigurationException {
 		if (srcLanguages == null) {
 			srcLanguages = getLanguages("source");
 		}
@@ -70,7 +73,8 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	@Override
-	public List<Language> getTargetLanguages() throws IOException {
+	public List<Language> getTargetLanguages()
+			throws IOException, JSONException, SAXException, ParserConfigurationException {
 		if (tgtLanguages == null) {
 			tgtLanguages = getLanguages("target");
 		}
@@ -171,7 +175,8 @@ public class DeepLTranslator implements MTEngine {
 		return tgtLang;
 	}
 
-	private List<Language> getLanguages(String type) throws IOException, JSONException {
+	private List<Language> getLanguages(String type)
+			throws IOException, JSONException, SAXException, ParserConfigurationException {
 		List<Language> result = new ArrayList<>();
 		URL url = new URL(languageUrl + type);
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();

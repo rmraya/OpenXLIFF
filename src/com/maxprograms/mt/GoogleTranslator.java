@@ -26,11 +26,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.maxprograms.languages.Language;
-import com.maxprograms.languages.LanguageUtils;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
+import com.maxprograms.languages.Language;
+import com.maxprograms.languages.LanguageUtils;
 
 public class GoogleTranslator implements MTEngine {
 
@@ -56,7 +60,8 @@ public class GoogleTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getSourceLanguages() throws IOException, InterruptedException {
+    public List<Language> getSourceLanguages()
+            throws IOException, InterruptedException, JSONException, SAXException, ParserConfigurationException {
         if (languages == null) {
             getLanguages();
         }
@@ -64,14 +69,16 @@ public class GoogleTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getTargetLanguages() throws IOException, InterruptedException {
+    public List<Language> getTargetLanguages()
+            throws IOException, InterruptedException, JSONException, SAXException, ParserConfigurationException {
         if (languages == null) {
             getLanguages();
         }
         return languages;
     }
 
-    private void getLanguages() throws IOException, InterruptedException {
+    private void getLanguages()
+            throws IOException, InterruptedException, JSONException, SAXException, ParserConfigurationException {
         HttpClient httpclient = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://translation.googleapis.com/language/translate/v2/languages?key=" + apiKey

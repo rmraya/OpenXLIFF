@@ -21,11 +21,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.maxprograms.languages.Language;
-import com.maxprograms.languages.LanguageUtils;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
+import com.maxprograms.languages.Language;
+import com.maxprograms.languages.LanguageUtils;
 
 public class AzureTranslator implements MTEngine {
 
@@ -51,14 +54,14 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getSourceLanguages() throws IOException {
+    public List<Language> getSourceLanguages() throws IOException, SAXException, ParserConfigurationException {
         if (languages == null) {
             getLanguages();
         }
         return languages;
     }
 
-    private void getLanguages() throws IOException {
+    private void getLanguages() throws IOException, SAXException, ParserConfigurationException {
         URL url = new URL("https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -79,7 +82,7 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getTargetLanguages() throws IOException {
+    public List<Language> getTargetLanguages() throws IOException, SAXException, ParserConfigurationException {
         if (languages == null) {
             getLanguages();
         }

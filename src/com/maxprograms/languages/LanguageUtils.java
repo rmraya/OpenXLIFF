@@ -12,6 +12,7 @@
 package com.maxprograms.languages;
 
 import java.io.IOException;
+import java.text.Collator;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +61,8 @@ public class LanguageUtils {
 					bidiCodes.add(code);
 				}
 			}
-			Collections.sort(extendedLanguages);
+			Collator collator = Collator.getInstance(Locale.getDefault());
+			Collections.sort(extendedLanguages, (l1, l2) -> collator.compare(l1.getDescription(), l2.getDescription()));
 		}
 		return extendedLanguages;
 	}
@@ -83,12 +85,21 @@ public class LanguageUtils {
 				String description = lang.getText();
 				languages.add(new Language(code, description));
 			}
-			Collections.sort(languages);
+			Collator collator = Collator.getInstance(Locale.getDefault());
+			Collections.sort(languages, (l1, l2) -> collator.compare(l1.getDescription(), l2.getDescription()));
 		}
 		return languages;
 	}
 
-	public static Language getLanguage(String code) throws IOException {
+	public static Language getLanguage(String code) throws IOException, SAXException, ParserConfigurationException {
+		List<Language> list = getAllLanguages();
+		Iterator<Language> it = list.iterator();
+		while (it.hasNext()) {
+			Language l = it.next();
+			if (l.getCode().equals(code)) {
+				return l;
+			}
+		}
 		if (registry == null) {
 			registry = new RegistryParser(LanguageUtils.class.getResource("language-subtag-registry.txt"));
 		}
@@ -132,12 +143,12 @@ public class LanguageUtils {
 	}
 
 	public static String[] getLanguageNames() throws SAXException, IOException, ParserConfigurationException {
-		Set<String> set = new TreeSet<>();
 		List<Language> list = getCommonLanguages();
 		Iterator<Language> it = list.iterator();
+		List<String> result = new Vector<>();
 		while (it.hasNext()) {
-			set.add(it.next().getDescription());
+			result.add(it.next().getDescription());
 		}
-		return set.toArray(new String[set.size()]);
+		return result.toArray(new String[result.size()]);
 	}
 }
