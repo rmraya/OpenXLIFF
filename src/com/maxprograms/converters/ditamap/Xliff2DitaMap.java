@@ -108,9 +108,11 @@ public class Xliff2DitaMap {
 					restoreGUID(r);
 				}
 				cleanAttributes(r);
-				r.setAttribute("xml:lang", tgtlang);
-				Indenter.indent(r, 2);
-				instance.cleanConref(r);
+				if (!"svg".equals(r.getName())) {
+					r.setAttribute("xml:lang", tgtlang);
+					Indenter.indent(r, 2);
+					instance.cleanConref(r);
+				}								
 				try (FileOutputStream out = new FileOutputStream(topic)) {
 					outputter.output(doc, out);
 				}
