@@ -1,0 +1,1725 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff srcLang="en" xmlns:mtc="urn:oasis:names:tc:xliff:matches:2.0" version="2.0" xmlns:mda="urn:oasis:names:tc:xliff:metadata:2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0">
+  <file original="/Users/rmraya/Documents/GitHub/OpenXLIFF/src/com/maxprograms/languages/languageList.xml" id="1">
+    <skeleton>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiID8+CjxsYW5ndWFnZXM+CiAgPGxh
+bmcgY29kZT0iYWEiPiUlJTElJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFiIj4lJSUyJSUlCjwv
+bGFuZz4KICA8bGFuZyBjb2RlPSJhZSI+JSUlMyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYWYi
+PiUlJTQlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFrIj4lJSU1JSUlCjwvbGFuZz4KICA8bGFu
+ZyBjb2RlPSJhbSI+JSUlNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYW4iPiUlJTclJSUKPC9s
+YW5nPgogIDxsYW5nIGNvZGU9ImFyIj4lJSU4JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJhci1B
+RSI+JSUlOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXItQkgiPiUlJTEwJSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJhci1EWiI+JSUlMTElJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFyLUVH
+Ij4lJSUxMiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXItSVEiPiUlJTEzJSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJhci1KTyI+JSUlMTQlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFyLUtX
+Ij4lJSUxNSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXItTEIiPiUlJTE2JSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJhci1MWSI+JSUlMTclJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFyLU1B
+Ij4lJSUxOCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXItT00iPiUlJTE5JSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJhci1RQSI+JSUlMjAlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFyLVNB
+Ij4lJSUyMSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXItU1kiPiUlJTIyJSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJhci1UTiI+JSUlMjMlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImFyLVlF
+Ij4lJSUyNCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXMiPiUlJTI1JSUlCjwvbGFuZz4KICA8
+bGFuZyBjb2RlPSJhdiI+JSUlMjYlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImF5Ij4lJSUyNyUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYXoiPiUlJTI4JSUlCjwvbGFuZz4KICA8bGFuZyBjb2Rl
+PSJiYSI+JSUlMjklJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImJlIj4lJSUzMCUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iYmciPiUlJTMxJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJiZy1CRyI+
+JSUlMzIlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImJoIj4lJSUzMyUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0iYmkiPiUlJTM0JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJibSI+JSUlMzUlJSUK
+PC9sYW5nPgogIDxsYW5nIGNvZGU9ImJuIj4lJSUzNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+Ym4tQkQiPiUlJTM3JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJibi1JTiI+JSUlMzglJSUKPC9s
+YW5nPgogIDxsYW5nIGNvZGU9ImJvIj4lJSUzOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iYnIi
+PiUlJTQwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJicyI+JSUlNDElJSUKPC9sYW5nPgogIDxs
+YW5nIGNvZGU9ImNhIj4lJSU0MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iY2UiPiUlJTQzJSUl
+CjwvbGFuZz4KICA8bGFuZyBjb2RlPSJjaCI+JSUlNDQlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9
+ImNvIj4lJSU0NSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iY3IiPiUlJTQ2JSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJjcyI+JSUlNDclJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImNzLUNaIj4l
+JSU0OCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iY3UiPiUlJTQ5JSUlCjwvbGFuZz4KICA8bGFu
+ZyBjb2RlPSJjdiI+JSUlNTAlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImN5Ij4lJSU1MSUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0iZGEiPiUlJTUyJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJk
+YS1ESyI+JSUlNTMlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImRlIj4lJSU1NCUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZGUtQVQiPiUlJTU1JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJkZS1D
+SCI+JSUlNTYlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImRlLURFIj4lJSU1NyUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZGUtTEkiPiUlJTU4JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJkZS1M
+VSI+JSUlNTklJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImR2Ij4lJSU2MCUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0iZHoiPiUlJTYxJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlZSI+JSUlNjIl
+JSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVsIj4lJSU2MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0iZWwtR1IiPiUlJTY0JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlbiI+JSUlNjUlJSUKPC9s
+YW5nPgogIDxsYW5nIGNvZGU9ImVuLTAyOSI+JSUlNjYlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9
+ImVuLUFVIj4lJSU2NyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZW4tQloiPiUlJTY4JSUlCjwv
+bGFuZz4KICA8bGFuZyBjb2RlPSJlbi1DQSI+JSUlNjklJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9
+ImVuLUdCIj4lJSU3MCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZW4tSUUiPiUlJTcxJSUlCjwv
+bGFuZz4KICA8bGFuZyBjb2RlPSJlbi1KTSI+JSUlNzIlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9
+ImVuLU5aIj4lJSU3MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZW4tVFQiPiUlJTc0JSUlCjwv
+bGFuZz4KICA8bGFuZyBjb2RlPSJlbi1VUyI+JSUlNzUlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9
+ImVuLVpBIj4lJSU3NiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZW8iPiUlJTc3JSUlCjwvbGFu
+Zz4KICA8bGFuZyBjb2RlPSJlcyI+JSUlNzglJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLTQx
+OSI+JSUlNzklJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLUFSIj4lJSU4MCUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtQk8iPiUlJTgxJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlcy1D
+TCI+JSUlODIlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLUNPIj4lJSU4MyUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtQ1IiPiUlJTg0JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlcy1E
+TyI+JSUlODUlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLUVDIj4lJSU4NiUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtRVMiPiUlJTg3JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlcy1H
+VCI+JSUlODglJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLUhOIj4lJSU4OSUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtTVgiPiUlJTkwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlcy1O
+SSI+JSUlOTElJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLVBBIj4lJSU5MiUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtUEUiPiUlJTkzJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlcy1Q
+UiI+JSUlOTQlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLVBZIj4lJSU5NSUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtU1YiPiUlJTk2JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJlcy1V
+UyI+JSUlOTclJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9ImVzLVVZIj4lJSU5OCUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iZXMtVkUiPiUlJTk5JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJldCI+
+JSUlMTAwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJldC1FRSI+JSUlMTAxJSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJldSI+JSUlMTAyJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJmYSI+JSUl
+MTAzJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJmZiI+JSUlMTA0JSUlCjwvbGFuZz4KICA8bGFu
+ZyBjb2RlPSJmaSI+JSUlMTA1JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJmaS1GSSI+JSUlMTA2
+JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJmaWwiPiUlJTEwNyUlJQo8L2xhbmc+CiAgPGxhbmcg
+Y29kZT0iZmoiPiUlJTEwOCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZm8iPiUlJTEwOSUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0iZnIiPiUlJTExMCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+ZnItQkUiPiUlJTExMSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZnItQ0EiPiUlJTExMiUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0iZnItQ0giPiUlJTExMyUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0iZnItRlIiPiUlJTExNCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZnItTFUiPiUlJTExNSUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZnkiPiUlJTExNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0iZ2EiPiUlJTExNyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZ2QiPiUlJTExOCUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0iZ2wiPiUlJTExOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZ24i
+PiUlJTEyMCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iZ3UiPiUlJTEyMSUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0iZ3YiPiUlJTEyMiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaGEiPiUlJTEy
+MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaGUiPiUlJTEyNCUlJQo8L2xhbmc+CiAgPGxhbmcg
+Y29kZT0iaGUtSUwiPiUlJTEyNSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaGkiPiUlJTEyNiUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaG8iPiUlJTEyNyUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0iaHIiPiUlJTEyOCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaHItSFIiPiUlJTEyOSUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0iaHQiPiUlJTEzMCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+aHUiPiUlJTEzMSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaHUtSFUiPiUlJTEzMiUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0iaHkiPiUlJTEzMyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaHoi
+PiUlJTEzNCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaWEiPiUlJTEzNSUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0iaWQiPiUlJTEzNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaWQtSUQiPiUl
+JTEzNyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaWUiPiUlJTEzOCUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0iaWciPiUlJTEzOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaWkiPiUlJTE0MCUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaWsiPiUlJTE0MSUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0iaW4iPiUlJTE0MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaW8iPiUlJTE0MyUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0iaXMiPiUlJTE0NCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaXMt
+SVMiPiUlJTE0NSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaXQiPiUlJTE0NiUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iaXQtQ0giPiUlJTE0NyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaXQt
+SVQiPiUlJTE0OCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iaXUiPiUlJTE0OSUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iamEiPiUlJTE1MCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iamEtSlAi
+PiUlJTE1MSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ianYiPiUlJTE1MiUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0ia2EiPiUlJTE1MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia2EtR0UiPiUl
+JTE1NCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia2ciPiUlJTE1NSUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0ia2kiPiUlJTE1NiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia2oiPiUlJTE1NyUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia2siPiUlJTE1OCUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0ia2wiPiUlJTE1OSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia20iPiUlJTE2MCUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0ia24iPiUlJTE2MSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia28i
+PiUlJTE2MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia28tS1IiPiUlJTE2MyUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0ia3IiPiUlJTE2NCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia3MiPiUl
+JTE2NSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia3UiPiUlJTE2NiUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0ia3YiPiUlJTE2NyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia3ciPiUlJTE2OCUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ia3kiPiUlJTE2OSUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0ibGEiPiUlJTE3MCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibGIiPiUlJTE3MSUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0ibGciPiUlJTE3MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibGki
+PiUlJTE3MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibG4iPiUlJTE3NCUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0ibG8iPiUlJTE3NSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibHQiPiUlJTE3
+NiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibHQtTFQiPiUlJTE3NyUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0ibHUiPiUlJTE3OCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibHYiPiUlJTE3OSUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibHYtTFYiPiUlJTE4MCUlJQo8L2xhbmc+CiAgPGxhbmcg
+Y29kZT0ibWciPiUlJTE4MSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibWgiPiUlJTE4MiUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0ibWkiPiUlJTE4MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+bWsiPiUlJTE4NCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibWstTUsiPiUlJTE4NSUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0ibWwiPiUlJTE4NiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibW4i
+PiUlJTE4NyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibW8iPiUlJTE4OCUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0ibXIiPiUlJTE4OSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibXMiPiUlJTE5
+MCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibXMtTVkiPiUlJTE5MSUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0ibXQiPiUlJTE5MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibXkiPiUlJTE5MyUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibmEiPiUlJTE5NCUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0ibmIiPiUlJTE5NSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibmItTk8iPiUlJTE5NiUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0ibmQiPiUlJTE5NyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+bmUiPiUlJTE5OCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibmciPiUlJTE5OSUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0ibmwiPiUlJTIwMCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibmwtQkUi
+PiUlJTIwMSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibmwtTkwiPiUlJTIwMiUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0ibm4iPiUlJTIwMyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibm8iPiUl
+JTIwNCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibm8tTk8iPiUlJTIwNSUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0ibnIiPiUlJTIwNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibnYiPiUlJTIw
+NyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ibnkiPiUlJTIwOCUlJQo8L2xhbmc+CiAgPGxhbmcg
+Y29kZT0ib2MiPiUlJTIwOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ib2oiPiUlJTIxMCUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0ib20iPiUlJTIxMSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+b3IiPiUlJTIxMiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ib3MiPiUlJTIxMyUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0icGEiPiUlJTIxNCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icGkiPiUl
+JTIxNSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icGwiPiUlJTIxNiUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0icGwtUEwiPiUlJTIxNyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icHMiPiUlJTIx
+OCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icHQiPiUlJTIxOSUlJQo8L2xhbmc+CiAgPGxhbmcg
+Y29kZT0icHQtQlIiPiUlJTIyMCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icHQtUFQiPiUlJTIy
+MSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icXUiPiUlJTIyMiUlJQo8L2xhbmc+CiAgPGxhbmcg
+Y29kZT0icm0iPiUlJTIyMyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icm4iPiUlJTIyNCUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0icm8iPiUlJTIyNSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+cm8tUk8iPiUlJTIyNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0icnUiPiUlJTIyNyUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0icnUtUlUiPiUlJTIyOCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+cnciPiUlJTIyOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic2EiPiUlJTIzMCUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0ic2MiPiUlJTIzMSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic2QiPiUl
+JTIzMiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic2UiPiUlJTIzMyUlJQo8L2xhbmc+CiAgPGxh
+bmcgY29kZT0ic2ciPiUlJTIzNCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic2kiPiUlJTIzNSUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic2siPiUlJTIzNiUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0ic2stU0siPiUlJTIzNyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic2wiPiUlJTIzOCUlJQo8
+L2xhbmc+CiAgPGxhbmcgY29kZT0ic2wtU0kiPiUlJTIzOSUlJQo8L2xhbmc+CiAgPGxhbmcgY29k
+ZT0ic20iPiUlJTI0MCUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic24iPiUlJTI0MSUlJQo8L2xh
+bmc+CiAgPGxhbmcgY29kZT0ic28iPiUlJTI0MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic3Ei
+PiUlJTI0MyUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic3IiPiUlJTI0NCUlJQo8L2xhbmc+CiAg
+PGxhbmcgY29kZT0ic3ItQ3lybCI+JSUlMjQ1JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJzci1D
+eXJsLVJTIj4lJSUyNDYlJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9InNyLUxhdG4iPiUlJTI0NyUl
+JQo8L2xhbmc+CiAgPGxhbmcgY29kZT0ic3ItTGF0bi1SUyI+JSUlMjQ4JSUlCjwvbGFuZz4KICA8
+bGFuZyBjb2RlPSJzci1SUyI+JSUlMjQ5JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJzcyI+JSUl
+MjUwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJzdCI+JSUlMjUxJSUlCjwvbGFuZz4KICA8bGFu
+ZyBjb2RlPSJzdSI+JSUlMjUyJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJzdiI+JSUlMjUzJSUl
+CjwvbGFuZz4KICA8bGFuZyBjb2RlPSJzdi1GSSI+JSUlMjU0JSUlCjwvbGFuZz4KICA8bGFuZyBj
+b2RlPSJzdi1TRSI+JSUlMjU1JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJzdyI+JSUlMjU2JSUl
+CjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0YSI+JSUlMjU3JSUlCjwvbGFuZz4KICA8bGFuZyBjb2Rl
+PSJ0ZSI+JSUlMjU4JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0ZyI+JSUlMjU5JSUlCjwvbGFu
+Zz4KICA8bGFuZyBjb2RlPSJ0aCI+JSUlMjYwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0aC1U
+SCI+JSUlMjYxJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0aSI+JSUlMjYyJSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJ0ayI+JSUlMjYzJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0bCI+JSUl
+MjY0JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0biI+JSUlMjY1JSUlCjwvbGFuZz4KICA8bGFu
+ZyBjb2RlPSJ0byI+JSUlMjY2JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0ciI+JSUlMjY3JSUl
+CjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0ci1UUiI+JSUlMjY4JSUlCjwvbGFuZz4KICA8bGFuZyBj
+b2RlPSJ0cyI+JSUlMjY5JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0dCI+JSUlMjcwJSUlCjwv
+bGFuZz4KICA8bGFuZyBjb2RlPSJ0dyI+JSUlMjcxJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ0
+eSI+JSUlMjcyJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ1ZyI+JSUlMjczJSUlCjwvbGFuZz4K
+ICA8bGFuZyBjb2RlPSJ1ayI+JSUlMjc0JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ1ay1VQSI+
+JSUlMjc1JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ1ciI+JSUlMjc2JSUlCjwvbGFuZz4KICA8
+bGFuZyBjb2RlPSJ1eiI+JSUlMjc3JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ2ZSI+JSUlMjc4
+JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ2aSI+JSUlMjc5JSUlCjwvbGFuZz4KICA8bGFuZyBj
+b2RlPSJ2aS1WTiI+JSUlMjgwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ2byI+JSUlMjgxJSUl
+CjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ3YSI+JSUlMjgyJSUlCjwvbGFuZz4KICA8bGFuZyBjb2Rl
+PSJ3byI+JSUlMjgzJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ4aCI+JSUlMjg0JSUlCjwvbGFu
+Zz4KICA8bGFuZyBjb2RlPSJ5aSI+JSUlMjg1JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ5byI+
+JSUlMjg2JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6YSI+JSUlMjg3JSUlCjwvbGFuZz4KICA8
+bGFuZyBjb2RlPSJ6aCI+JSUlMjg4JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6aC1DTiI+JSUl
+Mjg5JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6aC1ISyI+JSUlMjkwJSUlCjwvbGFuZz4KICA8
+bGFuZyBjb2RlPSJ6aC1IYW5zIj4lJSUyOTElJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9InpoLUhh
+bnMtQ04iPiUlJTI5MiUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0iemgtSGFucy1ISyI+JSUlMjkz
+JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6aC1IYW5zLU1PIj4lJSUyOTQlJSUKPC9sYW5nPgog
+IDxsYW5nIGNvZGU9InpoLUhhbnMtU0ciPiUlJTI5NSUlJQo8L2xhbmc+CiAgPGxhbmcgY29kZT0i
+emgtSGFudCI+JSUlMjk2JSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6aC1IYW50LUhLIj4lJSUy
+OTclJSUKPC9sYW5nPgogIDxsYW5nIGNvZGU9InpoLUhhbnQtTU8iPiUlJTI5OCUlJQo8L2xhbmc+
+CiAgPGxhbmcgY29kZT0iemgtSGFudC1UVyI+JSUlMjk5JSUlCjwvbGFuZz4KICA8bGFuZyBjb2Rl
+PSJ6aC1TRyI+JSUlMzAwJSUlCjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6aC1UVyI+JSUlMzAxJSUl
+CjwvbGFuZz4KICA8bGFuZyBjb2RlPSJ6dSI+JSUlMzAyJSUlCjwvbGFuZz4KPC9sYW5ndWFnZXM+</skeleton>
+    <mda:metadata>
+      <mda:metaGroup category="format">
+        <mda:meta type="datatype">xml</mda:meta>
+      </mda:metaGroup>
+      <mda:metaGroup category="tool">
+        <mda:meta type="tool-id">OpenXLIFF</mda:meta>
+        <mda:meta type="tool-name">OpenXLIFF Filters</mda:meta>
+        <mda:meta type="tool-version">3.11.0 20230728_1913</mda:meta>
+      </mda:metaGroup>
+      <mda:metaGroup category="PI">
+        <mda:meta type="encoding">UTF-8</mda:meta>
+      </mda:metaGroup>
+    </mda:metadata>
+    <unit id="1">
+      <segment id="1">
+        <source xml:space="preserve">Afar</source>
+      </segment>
+    </unit>
+    <unit id="2">
+      <segment id="2">
+        <source xml:space="preserve">Abkhazian</source>
+      </segment>
+    </unit>
+    <unit id="3">
+      <segment id="3">
+        <source xml:space="preserve">Avestan</source>
+      </segment>
+    </unit>
+    <unit id="4">
+      <segment id="4">
+        <source xml:space="preserve">Afrikaans</source>
+      </segment>
+    </unit>
+    <unit id="5">
+      <segment id="5">
+        <source xml:space="preserve">Akan</source>
+      </segment>
+    </unit>
+    <unit id="6">
+      <segment id="6">
+        <source xml:space="preserve">Amharic</source>
+      </segment>
+    </unit>
+    <unit id="7">
+      <segment id="7">
+        <source xml:space="preserve">Aragonese</source>
+      </segment>
+    </unit>
+    <unit id="8">
+      <segment id="8">
+        <source xml:space="preserve">Arabic</source>
+      </segment>
+    </unit>
+    <unit id="9">
+      <segment id="9">
+        <source xml:space="preserve">Arabic (United Arab Emirates)</source>
+      </segment>
+    </unit>
+    <unit id="10">
+      <segment id="10">
+        <source xml:space="preserve">Arabic (Bahrain)</source>
+      </segment>
+    </unit>
+    <unit id="11">
+      <segment id="11">
+        <source xml:space="preserve">Arabic (Algeria)</source>
+      </segment>
+    </unit>
+    <unit id="12">
+      <segment id="12">
+        <source xml:space="preserve">Arabic (Egypt)</source>
+      </segment>
+    </unit>
+    <unit id="13">
+      <segment id="13">
+        <source xml:space="preserve">Arabic (Iraq)</source>
+      </segment>
+    </unit>
+    <unit id="14">
+      <segment id="14">
+        <source xml:space="preserve">Arabic (Jordan)</source>
+      </segment>
+    </unit>
+    <unit id="15">
+      <segment id="15">
+        <source xml:space="preserve">Arabic (Kuwait)</source>
+      </segment>
+    </unit>
+    <unit id="16">
+      <segment id="16">
+        <source xml:space="preserve">Arabic (Lebanon)</source>
+      </segment>
+    </unit>
+    <unit id="17">
+      <segment id="17">
+        <source xml:space="preserve">Arabic (Libya)</source>
+      </segment>
+    </unit>
+    <unit id="18">
+      <segment id="18">
+        <source xml:space="preserve">Arabic (Morocco)</source>
+      </segment>
+    </unit>
+    <unit id="19">
+      <segment id="19">
+        <source xml:space="preserve">Arabic (Oman)</source>
+      </segment>
+    </unit>
+    <unit id="20">
+      <segment id="20">
+        <source xml:space="preserve">Arabic (Qatar)</source>
+      </segment>
+    </unit>
+    <unit id="21">
+      <segment id="21">
+        <source xml:space="preserve">Arabic (Saudi Arabia)</source>
+      </segment>
+    </unit>
+    <unit id="22">
+      <segment id="22">
+        <source xml:space="preserve">Arabic (Syrian Arab Republic)</source>
+      </segment>
+    </unit>
+    <unit id="23">
+      <segment id="23">
+        <source xml:space="preserve">Arabic (Tunisia)</source>
+      </segment>
+    </unit>
+    <unit id="24">
+      <segment id="24">
+        <source xml:space="preserve">Arabic (Yemen)</source>
+      </segment>
+    </unit>
+    <unit id="25">
+      <segment id="25">
+        <source xml:space="preserve">Assamese</source>
+      </segment>
+    </unit>
+    <unit id="26">
+      <segment id="26">
+        <source xml:space="preserve">Avaric</source>
+      </segment>
+    </unit>
+    <unit id="27">
+      <segment id="27">
+        <source xml:space="preserve">Aymara</source>
+      </segment>
+    </unit>
+    <unit id="28">
+      <segment id="28">
+        <source xml:space="preserve">Azerbaijani</source>
+      </segment>
+    </unit>
+    <unit id="29">
+      <segment id="29">
+        <source xml:space="preserve">Bashkir</source>
+      </segment>
+    </unit>
+    <unit id="30">
+      <segment id="30">
+        <source xml:space="preserve">Belarusian</source>
+      </segment>
+    </unit>
+    <unit id="31">
+      <segment id="31">
+        <source xml:space="preserve">Bulgarian</source>
+      </segment>
+    </unit>
+    <unit id="32">
+      <segment id="32">
+        <source xml:space="preserve">Bulgarian (Bulgaria)</source>
+      </segment>
+    </unit>
+    <unit id="33">
+      <segment id="33">
+        <source xml:space="preserve">Bihari languages</source>
+      </segment>
+    </unit>
+    <unit id="34">
+      <segment id="34">
+        <source xml:space="preserve">Bislama</source>
+      </segment>
+    </unit>
+    <unit id="35">
+      <segment id="35">
+        <source xml:space="preserve">Bambara</source>
+      </segment>
+    </unit>
+    <unit id="36">
+      <segment id="36">
+        <source xml:space="preserve">Bengali</source>
+      </segment>
+    </unit>
+    <unit id="37">
+      <segment id="37">
+        <source xml:space="preserve">Bengali (Bangladesh)</source>
+      </segment>
+    </unit>
+    <unit id="38">
+      <segment id="38">
+        <source xml:space="preserve">Bengali (India)</source>
+      </segment>
+    </unit>
+    <unit id="39">
+      <segment id="39">
+        <source xml:space="preserve">Tibetan</source>
+      </segment>
+    </unit>
+    <unit id="40">
+      <segment id="40">
+        <source xml:space="preserve">Breton</source>
+      </segment>
+    </unit>
+    <unit id="41">
+      <segment id="41">
+        <source xml:space="preserve">Bosnian</source>
+      </segment>
+    </unit>
+    <unit id="42">
+      <segment id="42">
+        <source xml:space="preserve">Catalan</source>
+      </segment>
+    </unit>
+    <unit id="43">
+      <segment id="43">
+        <source xml:space="preserve">Chechen</source>
+      </segment>
+    </unit>
+    <unit id="44">
+      <segment id="44">
+        <source xml:space="preserve">Chamorro</source>
+      </segment>
+    </unit>
+    <unit id="45">
+      <segment id="45">
+        <source xml:space="preserve">Corsican</source>
+      </segment>
+    </unit>
+    <unit id="46">
+      <segment id="46">
+        <source xml:space="preserve">Cree</source>
+      </segment>
+    </unit>
+    <unit id="47">
+      <segment id="47">
+        <source xml:space="preserve">Czech</source>
+      </segment>
+    </unit>
+    <unit id="48">
+      <segment id="48">
+        <source xml:space="preserve">Czech (Czechia | Czech Republic)</source>
+      </segment>
+    </unit>
+    <unit id="49">
+      <segment id="49">
+        <source xml:space="preserve">Church Slavic</source>
+      </segment>
+    </unit>
+    <unit id="50">
+      <segment id="50">
+        <source xml:space="preserve">Chuvash</source>
+      </segment>
+    </unit>
+    <unit id="51">
+      <segment id="51">
+        <source xml:space="preserve">Welsh</source>
+      </segment>
+    </unit>
+    <unit id="52">
+      <segment id="52">
+        <source xml:space="preserve">Danish</source>
+      </segment>
+    </unit>
+    <unit id="53">
+      <segment id="53">
+        <source xml:space="preserve">Danish (Denmark)</source>
+      </segment>
+    </unit>
+    <unit id="54">
+      <segment id="54">
+        <source xml:space="preserve">German</source>
+      </segment>
+    </unit>
+    <unit id="55">
+      <segment id="55">
+        <source xml:space="preserve">German (Austria)</source>
+      </segment>
+    </unit>
+    <unit id="56">
+      <segment id="56">
+        <source xml:space="preserve">German (Switzerland)</source>
+      </segment>
+    </unit>
+    <unit id="57">
+      <segment id="57">
+        <source xml:space="preserve">German (Germany)</source>
+      </segment>
+    </unit>
+    <unit id="58">
+      <segment id="58">
+        <source xml:space="preserve">German (Liechtenstein)</source>
+      </segment>
+    </unit>
+    <unit id="59">
+      <segment id="59">
+        <source xml:space="preserve">German (Luxembourg)</source>
+      </segment>
+    </unit>
+    <unit id="60">
+      <segment id="60">
+        <source xml:space="preserve">Dhivehi</source>
+      </segment>
+    </unit>
+    <unit id="61">
+      <segment id="61">
+        <source xml:space="preserve">Dzongkha</source>
+      </segment>
+    </unit>
+    <unit id="62">
+      <segment id="62">
+        <source xml:space="preserve">Ewe</source>
+      </segment>
+    </unit>
+    <unit id="63">
+      <segment id="63">
+        <source xml:space="preserve">Greek</source>
+      </segment>
+    </unit>
+    <unit id="64">
+      <segment id="64">
+        <source xml:space="preserve">Greek (Greece)</source>
+      </segment>
+    </unit>
+    <unit id="65">
+      <segment id="65">
+        <source xml:space="preserve">English</source>
+      </segment>
+    </unit>
+    <unit id="66">
+      <segment id="66">
+        <source xml:space="preserve">English (Caribbean)</source>
+      </segment>
+    </unit>
+    <unit id="67">
+      <segment id="67">
+        <source xml:space="preserve">English (Australia)</source>
+      </segment>
+    </unit>
+    <unit id="68">
+      <segment id="68">
+        <source xml:space="preserve">English (Belize)</source>
+      </segment>
+    </unit>
+    <unit id="69">
+      <segment id="69">
+        <source xml:space="preserve">English (Canada)</source>
+      </segment>
+    </unit>
+    <unit id="70">
+      <segment id="70">
+        <source xml:space="preserve">English (United Kingdom)</source>
+      </segment>
+    </unit>
+    <unit id="71">
+      <segment id="71">
+        <source xml:space="preserve">English (Ireland)</source>
+      </segment>
+    </unit>
+    <unit id="72">
+      <segment id="72">
+        <source xml:space="preserve">English (Jamaica)</source>
+      </segment>
+    </unit>
+    <unit id="73">
+      <segment id="73">
+        <source xml:space="preserve">English (New Zealand)</source>
+      </segment>
+    </unit>
+    <unit id="74">
+      <segment id="74">
+        <source xml:space="preserve">English (Trinidad and Tobago)</source>
+      </segment>
+    </unit>
+    <unit id="75">
+      <segment id="75">
+        <source xml:space="preserve">English (United States)</source>
+      </segment>
+    </unit>
+    <unit id="76">
+      <segment id="76">
+        <source xml:space="preserve">English (South Africa)</source>
+      </segment>
+    </unit>
+    <unit id="77">
+      <segment id="77">
+        <source xml:space="preserve">Esperanto</source>
+      </segment>
+    </unit>
+    <unit id="78">
+      <segment id="78">
+        <source xml:space="preserve">Spanish</source>
+      </segment>
+    </unit>
+    <unit id="79">
+      <segment id="79">
+        <source xml:space="preserve">Spanish (Latin America and the Caribbean)</source>
+      </segment>
+    </unit>
+    <unit id="80">
+      <segment id="80">
+        <source xml:space="preserve">Spanish (Argentina)</source>
+      </segment>
+    </unit>
+    <unit id="81">
+      <segment id="81">
+        <source xml:space="preserve">Spanish (Bolivia)</source>
+      </segment>
+    </unit>
+    <unit id="82">
+      <segment id="82">
+        <source xml:space="preserve">Spanish (Chile)</source>
+      </segment>
+    </unit>
+    <unit id="83">
+      <segment id="83">
+        <source xml:space="preserve">Spanish (Colombia)</source>
+      </segment>
+    </unit>
+    <unit id="84">
+      <segment id="84">
+        <source xml:space="preserve">Spanish (Costa Rica)</source>
+      </segment>
+    </unit>
+    <unit id="85">
+      <segment id="85">
+        <source xml:space="preserve">Spanish (Dominican Republic)</source>
+      </segment>
+    </unit>
+    <unit id="86">
+      <segment id="86">
+        <source xml:space="preserve">Spanish (Ecuador)</source>
+      </segment>
+    </unit>
+    <unit id="87">
+      <segment id="87">
+        <source xml:space="preserve">Spanish (Spain)</source>
+      </segment>
+    </unit>
+    <unit id="88">
+      <segment id="88">
+        <source xml:space="preserve">Spanish (Guatemala)</source>
+      </segment>
+    </unit>
+    <unit id="89">
+      <segment id="89">
+        <source xml:space="preserve">Spanish (Honduras)</source>
+      </segment>
+    </unit>
+    <unit id="90">
+      <segment id="90">
+        <source xml:space="preserve">Spanish (Mexico)</source>
+      </segment>
+    </unit>
+    <unit id="91">
+      <segment id="91">
+        <source xml:space="preserve">Spanish (Nicaragua)</source>
+      </segment>
+    </unit>
+    <unit id="92">
+      <segment id="92">
+        <source xml:space="preserve">Spanish (Panama)</source>
+      </segment>
+    </unit>
+    <unit id="93">
+      <segment id="93">
+        <source xml:space="preserve">Spanish (Peru)</source>
+      </segment>
+    </unit>
+    <unit id="94">
+      <segment id="94">
+        <source xml:space="preserve">Spanish (Puerto Rico)</source>
+      </segment>
+    </unit>
+    <unit id="95">
+      <segment id="95">
+        <source xml:space="preserve">Spanish (Paraguay)</source>
+      </segment>
+    </unit>
+    <unit id="96">
+      <segment id="96">
+        <source xml:space="preserve">Spanish (El Salvador)</source>
+      </segment>
+    </unit>
+    <unit id="97">
+      <segment id="97">
+        <source xml:space="preserve">Spanish (United States)</source>
+      </segment>
+    </unit>
+    <unit id="98">
+      <segment id="98">
+        <source xml:space="preserve">Spanish (Uruguay)</source>
+      </segment>
+    </unit>
+    <unit id="99">
+      <segment id="99">
+        <source xml:space="preserve">Spanish (Venezuela)</source>
+      </segment>
+    </unit>
+    <unit id="100">
+      <segment id="100">
+        <source xml:space="preserve">Estonian</source>
+      </segment>
+    </unit>
+    <unit id="101">
+      <segment id="101">
+        <source xml:space="preserve">Estonian (Estonia)</source>
+      </segment>
+    </unit>
+    <unit id="102">
+      <segment id="102">
+        <source xml:space="preserve">Basque</source>
+      </segment>
+    </unit>
+    <unit id="103">
+      <segment id="103">
+        <source xml:space="preserve">Persian</source>
+      </segment>
+    </unit>
+    <unit id="104">
+      <segment id="104">
+        <source xml:space="preserve">Fulah</source>
+      </segment>
+    </unit>
+    <unit id="105">
+      <segment id="105">
+        <source xml:space="preserve">Finnish</source>
+      </segment>
+    </unit>
+    <unit id="106">
+      <segment id="106">
+        <source xml:space="preserve">Finnish (Finland)</source>
+      </segment>
+    </unit>
+    <unit id="107">
+      <segment id="107">
+        <source xml:space="preserve">Filipino</source>
+      </segment>
+    </unit>
+    <unit id="108">
+      <segment id="108">
+        <source xml:space="preserve">Fijian</source>
+      </segment>
+    </unit>
+    <unit id="109">
+      <segment id="109">
+        <source xml:space="preserve">Faroese</source>
+      </segment>
+    </unit>
+    <unit id="110">
+      <segment id="110">
+        <source xml:space="preserve">French</source>
+      </segment>
+    </unit>
+    <unit id="111">
+      <segment id="111">
+        <source xml:space="preserve">French (Belgium)</source>
+      </segment>
+    </unit>
+    <unit id="112">
+      <segment id="112">
+        <source xml:space="preserve">French (Canada)</source>
+      </segment>
+    </unit>
+    <unit id="113">
+      <segment id="113">
+        <source xml:space="preserve">French (Switzerland)</source>
+      </segment>
+    </unit>
+    <unit id="114">
+      <segment id="114">
+        <source xml:space="preserve">French (France)</source>
+      </segment>
+    </unit>
+    <unit id="115">
+      <segment id="115">
+        <source xml:space="preserve">French (Luxembourg)</source>
+      </segment>
+    </unit>
+    <unit id="116">
+      <segment id="116">
+        <source xml:space="preserve">Western Frisian</source>
+      </segment>
+    </unit>
+    <unit id="117">
+      <segment id="117">
+        <source xml:space="preserve">Irish</source>
+      </segment>
+    </unit>
+    <unit id="118">
+      <segment id="118">
+        <source xml:space="preserve">Scottish Gaelic</source>
+      </segment>
+    </unit>
+    <unit id="119">
+      <segment id="119">
+        <source xml:space="preserve">Galician</source>
+      </segment>
+    </unit>
+    <unit id="120">
+      <segment id="120">
+        <source xml:space="preserve">Guarani</source>
+      </segment>
+    </unit>
+    <unit id="121">
+      <segment id="121">
+        <source xml:space="preserve">Gujarati</source>
+      </segment>
+    </unit>
+    <unit id="122">
+      <segment id="122">
+        <source xml:space="preserve">Manx</source>
+      </segment>
+    </unit>
+    <unit id="123">
+      <segment id="123">
+        <source xml:space="preserve">Hausa</source>
+      </segment>
+    </unit>
+    <unit id="124">
+      <segment id="124">
+        <source xml:space="preserve">Hebrew</source>
+      </segment>
+    </unit>
+    <unit id="125">
+      <segment id="125">
+        <source xml:space="preserve">Hebrew (Israel)</source>
+      </segment>
+    </unit>
+    <unit id="126">
+      <segment id="126">
+        <source xml:space="preserve">Hindi</source>
+      </segment>
+    </unit>
+    <unit id="127">
+      <segment id="127">
+        <source xml:space="preserve">Hiri Motu</source>
+      </segment>
+    </unit>
+    <unit id="128">
+      <segment id="128">
+        <source xml:space="preserve">Croatian</source>
+      </segment>
+    </unit>
+    <unit id="129">
+      <segment id="129">
+        <source xml:space="preserve">Croatian (Croatia)</source>
+      </segment>
+    </unit>
+    <unit id="130">
+      <segment id="130">
+        <source xml:space="preserve">Haitian</source>
+      </segment>
+    </unit>
+    <unit id="131">
+      <segment id="131">
+        <source xml:space="preserve">Hungarian</source>
+      </segment>
+    </unit>
+    <unit id="132">
+      <segment id="132">
+        <source xml:space="preserve">Hungarian (Hungary)</source>
+      </segment>
+    </unit>
+    <unit id="133">
+      <segment id="133">
+        <source xml:space="preserve">Armenian</source>
+      </segment>
+    </unit>
+    <unit id="134">
+      <segment id="134">
+        <source xml:space="preserve">Herero</source>
+      </segment>
+    </unit>
+    <unit id="135">
+      <segment id="135">
+        <source xml:space="preserve">Interlingua</source>
+      </segment>
+    </unit>
+    <unit id="136">
+      <segment id="136">
+        <source xml:space="preserve">Indonesian</source>
+      </segment>
+    </unit>
+    <unit id="137">
+      <segment id="137">
+        <source xml:space="preserve">Indonesian (Indonesia)</source>
+      </segment>
+    </unit>
+    <unit id="138">
+      <segment id="138">
+        <source xml:space="preserve">Interlingue</source>
+      </segment>
+    </unit>
+    <unit id="139">
+      <segment id="139">
+        <source xml:space="preserve">Igbo</source>
+      </segment>
+    </unit>
+    <unit id="140">
+      <segment id="140">
+        <source xml:space="preserve">Sichuan Yi</source>
+      </segment>
+    </unit>
+    <unit id="141">
+      <segment id="141">
+        <source xml:space="preserve">Inupiaq</source>
+      </segment>
+    </unit>
+    <unit id="142">
+      <segment id="142">
+        <source xml:space="preserve">Indonesian</source>
+      </segment>
+    </unit>
+    <unit id="143">
+      <segment id="143">
+        <source xml:space="preserve">Ido</source>
+      </segment>
+    </unit>
+    <unit id="144">
+      <segment id="144">
+        <source xml:space="preserve">Icelandic</source>
+      </segment>
+    </unit>
+    <unit id="145">
+      <segment id="145">
+        <source xml:space="preserve">Icelandic (Iceland)</source>
+      </segment>
+    </unit>
+    <unit id="146">
+      <segment id="146">
+        <source xml:space="preserve">Italian</source>
+      </segment>
+    </unit>
+    <unit id="147">
+      <segment id="147">
+        <source xml:space="preserve">Italian (Switzerland)</source>
+      </segment>
+    </unit>
+    <unit id="148">
+      <segment id="148">
+        <source xml:space="preserve">Italian (Italy)</source>
+      </segment>
+    </unit>
+    <unit id="149">
+      <segment id="149">
+        <source xml:space="preserve">Inuktitut</source>
+      </segment>
+    </unit>
+    <unit id="150">
+      <segment id="150">
+        <source xml:space="preserve">Japanese</source>
+      </segment>
+    </unit>
+    <unit id="151">
+      <segment id="151">
+        <source xml:space="preserve">Japanese (Japan)</source>
+      </segment>
+    </unit>
+    <unit id="152">
+      <segment id="152">
+        <source xml:space="preserve">Javanese</source>
+      </segment>
+    </unit>
+    <unit id="153">
+      <segment id="153">
+        <source xml:space="preserve">Georgian</source>
+      </segment>
+    </unit>
+    <unit id="154">
+      <segment id="154">
+        <source xml:space="preserve">Georgian (Georgia)</source>
+      </segment>
+    </unit>
+    <unit id="155">
+      <segment id="155">
+        <source xml:space="preserve">Kongo</source>
+      </segment>
+    </unit>
+    <unit id="156">
+      <segment id="156">
+        <source xml:space="preserve">Kikuyu</source>
+      </segment>
+    </unit>
+    <unit id="157">
+      <segment id="157">
+        <source xml:space="preserve">Kuanyama</source>
+      </segment>
+    </unit>
+    <unit id="158">
+      <segment id="158">
+        <source xml:space="preserve">Kazakh</source>
+      </segment>
+    </unit>
+    <unit id="159">
+      <segment id="159">
+        <source xml:space="preserve">Kalaallisut</source>
+      </segment>
+    </unit>
+    <unit id="160">
+      <segment id="160">
+        <source xml:space="preserve">Khmer</source>
+      </segment>
+    </unit>
+    <unit id="161">
+      <segment id="161">
+        <source xml:space="preserve">Kannada</source>
+      </segment>
+    </unit>
+    <unit id="162">
+      <segment id="162">
+        <source xml:space="preserve">Korean</source>
+      </segment>
+    </unit>
+    <unit id="163">
+      <segment id="163">
+        <source xml:space="preserve">Korean (Republic of Korea)</source>
+      </segment>
+    </unit>
+    <unit id="164">
+      <segment id="164">
+        <source xml:space="preserve">Kanuri</source>
+      </segment>
+    </unit>
+    <unit id="165">
+      <segment id="165">
+        <source xml:space="preserve">Kashmiri</source>
+      </segment>
+    </unit>
+    <unit id="166">
+      <segment id="166">
+        <source xml:space="preserve">Kurdish</source>
+      </segment>
+    </unit>
+    <unit id="167">
+      <segment id="167">
+        <source xml:space="preserve">Komi</source>
+      </segment>
+    </unit>
+    <unit id="168">
+      <segment id="168">
+        <source xml:space="preserve">Cornish</source>
+      </segment>
+    </unit>
+    <unit id="169">
+      <segment id="169">
+        <source xml:space="preserve">Kirghiz</source>
+      </segment>
+    </unit>
+    <unit id="170">
+      <segment id="170">
+        <source xml:space="preserve">Latin</source>
+      </segment>
+    </unit>
+    <unit id="171">
+      <segment id="171">
+        <source xml:space="preserve">Luxembourgish</source>
+      </segment>
+    </unit>
+    <unit id="172">
+      <segment id="172">
+        <source xml:space="preserve">Ganda</source>
+      </segment>
+    </unit>
+    <unit id="173">
+      <segment id="173">
+        <source xml:space="preserve">Limburgan</source>
+      </segment>
+    </unit>
+    <unit id="174">
+      <segment id="174">
+        <source xml:space="preserve">Lingala</source>
+      </segment>
+    </unit>
+    <unit id="175">
+      <segment id="175">
+        <source xml:space="preserve">Lao</source>
+      </segment>
+    </unit>
+    <unit id="176">
+      <segment id="176">
+        <source xml:space="preserve">Lithuanian</source>
+      </segment>
+    </unit>
+    <unit id="177">
+      <segment id="177">
+        <source xml:space="preserve">Lithuanian (Lithuania)</source>
+      </segment>
+    </unit>
+    <unit id="178">
+      <segment id="178">
+        <source xml:space="preserve">Luba-Katanga</source>
+      </segment>
+    </unit>
+    <unit id="179">
+      <segment id="179">
+        <source xml:space="preserve">Latvian</source>
+      </segment>
+    </unit>
+    <unit id="180">
+      <segment id="180">
+        <source xml:space="preserve">Latvian (Latvia)</source>
+      </segment>
+    </unit>
+    <unit id="181">
+      <segment id="181">
+        <source xml:space="preserve">Malagasy</source>
+      </segment>
+    </unit>
+    <unit id="182">
+      <segment id="182">
+        <source xml:space="preserve">Marshallese</source>
+      </segment>
+    </unit>
+    <unit id="183">
+      <segment id="183">
+        <source xml:space="preserve">Maori</source>
+      </segment>
+    </unit>
+    <unit id="184">
+      <segment id="184">
+        <source xml:space="preserve">Macedonian</source>
+      </segment>
+    </unit>
+    <unit id="185">
+      <segment id="185">
+        <source xml:space="preserve">Macedonian (North Macedonia)</source>
+      </segment>
+    </unit>
+    <unit id="186">
+      <segment id="186">
+        <source xml:space="preserve">Malayalam</source>
+      </segment>
+    </unit>
+    <unit id="187">
+      <segment id="187">
+        <source xml:space="preserve">Mongolian</source>
+      </segment>
+    </unit>
+    <unit id="188">
+      <segment id="188">
+        <source xml:space="preserve">Moldavian</source>
+      </segment>
+    </unit>
+    <unit id="189">
+      <segment id="189">
+        <source xml:space="preserve">Marathi</source>
+      </segment>
+    </unit>
+    <unit id="190">
+      <segment id="190">
+        <source xml:space="preserve">Malay</source>
+      </segment>
+    </unit>
+    <unit id="191">
+      <segment id="191">
+        <source xml:space="preserve">Malay (Malaysia)</source>
+      </segment>
+    </unit>
+    <unit id="192">
+      <segment id="192">
+        <source xml:space="preserve">Maltese</source>
+      </segment>
+    </unit>
+    <unit id="193">
+      <segment id="193">
+        <source xml:space="preserve">Burmese</source>
+      </segment>
+    </unit>
+    <unit id="194">
+      <segment id="194">
+        <source xml:space="preserve">Nauru</source>
+      </segment>
+    </unit>
+    <unit id="195">
+      <segment id="195">
+        <source xml:space="preserve">Norwegian Bokmål</source>
+      </segment>
+    </unit>
+    <unit id="196">
+      <segment id="196">
+        <source xml:space="preserve">Norwegian Bokmål (Norway)</source>
+      </segment>
+    </unit>
+    <unit id="197">
+      <segment id="197">
+        <source xml:space="preserve">North Ndebele</source>
+      </segment>
+    </unit>
+    <unit id="198">
+      <segment id="198">
+        <source xml:space="preserve">Nepali</source>
+      </segment>
+    </unit>
+    <unit id="199">
+      <segment id="199">
+        <source xml:space="preserve">Ndonga</source>
+      </segment>
+    </unit>
+    <unit id="200">
+      <segment id="200">
+        <source xml:space="preserve">Dutch</source>
+      </segment>
+    </unit>
+    <unit id="201">
+      <segment id="201">
+        <source xml:space="preserve">Dutch (Belgium)</source>
+      </segment>
+    </unit>
+    <unit id="202">
+      <segment id="202">
+        <source xml:space="preserve">Dutch (Netherlands)</source>
+      </segment>
+    </unit>
+    <unit id="203">
+      <segment id="203">
+        <source xml:space="preserve">Norwegian Nynorsk</source>
+      </segment>
+    </unit>
+    <unit id="204">
+      <segment id="204">
+        <source xml:space="preserve">Norwegian</source>
+      </segment>
+    </unit>
+    <unit id="205">
+      <segment id="205">
+        <source xml:space="preserve">Norwegian (Norway)</source>
+      </segment>
+    </unit>
+    <unit id="206">
+      <segment id="206">
+        <source xml:space="preserve">South Ndebele</source>
+      </segment>
+    </unit>
+    <unit id="207">
+      <segment id="207">
+        <source xml:space="preserve">Navajo</source>
+      </segment>
+    </unit>
+    <unit id="208">
+      <segment id="208">
+        <source xml:space="preserve">Nyanja</source>
+      </segment>
+    </unit>
+    <unit id="209">
+      <segment id="209">
+        <source xml:space="preserve">Occitan</source>
+      </segment>
+    </unit>
+    <unit id="210">
+      <segment id="210">
+        <source xml:space="preserve">Ojibwa</source>
+      </segment>
+    </unit>
+    <unit id="211">
+      <segment id="211">
+        <source xml:space="preserve">Oromo</source>
+      </segment>
+    </unit>
+    <unit id="212">
+      <segment id="212">
+        <source xml:space="preserve">Oriya</source>
+      </segment>
+    </unit>
+    <unit id="213">
+      <segment id="213">
+        <source xml:space="preserve">Ossetian</source>
+      </segment>
+    </unit>
+    <unit id="214">
+      <segment id="214">
+        <source xml:space="preserve">Panjabi</source>
+      </segment>
+    </unit>
+    <unit id="215">
+      <segment id="215">
+        <source xml:space="preserve">Pali</source>
+      </segment>
+    </unit>
+    <unit id="216">
+      <segment id="216">
+        <source xml:space="preserve">Polish</source>
+      </segment>
+    </unit>
+    <unit id="217">
+      <segment id="217">
+        <source xml:space="preserve">Polish (Poland)</source>
+      </segment>
+    </unit>
+    <unit id="218">
+      <segment id="218">
+        <source xml:space="preserve">Pushto</source>
+      </segment>
+    </unit>
+    <unit id="219">
+      <segment id="219">
+        <source xml:space="preserve">Portuguese</source>
+      </segment>
+    </unit>
+    <unit id="220">
+      <segment id="220">
+        <source xml:space="preserve">Portuguese (Brazil)</source>
+      </segment>
+    </unit>
+    <unit id="221">
+      <segment id="221">
+        <source xml:space="preserve">Portuguese (Portugal)</source>
+      </segment>
+    </unit>
+    <unit id="222">
+      <segment id="222">
+        <source xml:space="preserve">Quechua</source>
+      </segment>
+    </unit>
+    <unit id="223">
+      <segment id="223">
+        <source xml:space="preserve">Romansh</source>
+      </segment>
+    </unit>
+    <unit id="224">
+      <segment id="224">
+        <source xml:space="preserve">Rundi</source>
+      </segment>
+    </unit>
+    <unit id="225">
+      <segment id="225">
+        <source xml:space="preserve">Romanian</source>
+      </segment>
+    </unit>
+    <unit id="226">
+      <segment id="226">
+        <source xml:space="preserve">Romanian (Romania)</source>
+      </segment>
+    </unit>
+    <unit id="227">
+      <segment id="227">
+        <source xml:space="preserve">Russian</source>
+      </segment>
+    </unit>
+    <unit id="228">
+      <segment id="228">
+        <source xml:space="preserve">Russian (Russian Federation)</source>
+      </segment>
+    </unit>
+    <unit id="229">
+      <segment id="229">
+        <source xml:space="preserve">Kinyarwanda</source>
+      </segment>
+    </unit>
+    <unit id="230">
+      <segment id="230">
+        <source xml:space="preserve">Sanskrit</source>
+      </segment>
+    </unit>
+    <unit id="231">
+      <segment id="231">
+        <source xml:space="preserve">Sardinian</source>
+      </segment>
+    </unit>
+    <unit id="232">
+      <segment id="232">
+        <source xml:space="preserve">Sindhi</source>
+      </segment>
+    </unit>
+    <unit id="233">
+      <segment id="233">
+        <source xml:space="preserve">Northern Sami</source>
+      </segment>
+    </unit>
+    <unit id="234">
+      <segment id="234">
+        <source xml:space="preserve">Sango</source>
+      </segment>
+    </unit>
+    <unit id="235">
+      <segment id="235">
+        <source xml:space="preserve">Sinhala</source>
+      </segment>
+    </unit>
+    <unit id="236">
+      <segment id="236">
+        <source xml:space="preserve">Slovak</source>
+      </segment>
+    </unit>
+    <unit id="237">
+      <segment id="237">
+        <source xml:space="preserve">Slovak (Slovakia)</source>
+      </segment>
+    </unit>
+    <unit id="238">
+      <segment id="238">
+        <source xml:space="preserve">Slovenian</source>
+      </segment>
+    </unit>
+    <unit id="239">
+      <segment id="239">
+        <source xml:space="preserve">Slovenian (Slovenia)</source>
+      </segment>
+    </unit>
+    <unit id="240">
+      <segment id="240">
+        <source xml:space="preserve">Samoan</source>
+      </segment>
+    </unit>
+    <unit id="241">
+      <segment id="241">
+        <source xml:space="preserve">Shona</source>
+      </segment>
+    </unit>
+    <unit id="242">
+      <segment id="242">
+        <source xml:space="preserve">Somali</source>
+      </segment>
+    </unit>
+    <unit id="243">
+      <segment id="243">
+        <source xml:space="preserve">Albanian</source>
+      </segment>
+    </unit>
+    <unit id="244">
+      <segment id="244">
+        <source xml:space="preserve">Serbian</source>
+      </segment>
+    </unit>
+    <unit id="245">
+      <segment id="245">
+        <source xml:space="preserve">Serbian (Cyrillic)</source>
+      </segment>
+    </unit>
+    <unit id="246">
+      <segment id="246">
+        <source xml:space="preserve">Serbian (Cyrillic, Serbia)</source>
+      </segment>
+    </unit>
+    <unit id="247">
+      <segment id="247">
+        <source xml:space="preserve">Serbian (Latin)</source>
+      </segment>
+    </unit>
+    <unit id="248">
+      <segment id="248">
+        <source xml:space="preserve">Serbian (Latin, Serbia)</source>
+      </segment>
+    </unit>
+    <unit id="249">
+      <segment id="249">
+        <source xml:space="preserve">Serbian (Serbia)</source>
+      </segment>
+    </unit>
+    <unit id="250">
+      <segment id="250">
+        <source xml:space="preserve">Swati</source>
+      </segment>
+    </unit>
+    <unit id="251">
+      <segment id="251">
+        <source xml:space="preserve">Southern Sotho</source>
+      </segment>
+    </unit>
+    <unit id="252">
+      <segment id="252">
+        <source xml:space="preserve">Sundanese</source>
+      </segment>
+    </unit>
+    <unit id="253">
+      <segment id="253">
+        <source xml:space="preserve">Swedish</source>
+      </segment>
+    </unit>
+    <unit id="254">
+      <segment id="254">
+        <source xml:space="preserve">Swedish (Finland)</source>
+      </segment>
+    </unit>
+    <unit id="255">
+      <segment id="255">
+        <source xml:space="preserve">Swedish (Sweden)</source>
+      </segment>
+    </unit>
+    <unit id="256">
+      <segment id="256">
+        <source xml:space="preserve">Swahili</source>
+      </segment>
+    </unit>
+    <unit id="257">
+      <segment id="257">
+        <source xml:space="preserve">Tamil</source>
+      </segment>
+    </unit>
+    <unit id="258">
+      <segment id="258">
+        <source xml:space="preserve">Telugu</source>
+      </segment>
+    </unit>
+    <unit id="259">
+      <segment id="259">
+        <source xml:space="preserve">Tajik</source>
+      </segment>
+    </unit>
+    <unit id="260">
+      <segment id="260">
+        <source xml:space="preserve">Thai</source>
+      </segment>
+    </unit>
+    <unit id="261">
+      <segment id="261">
+        <source xml:space="preserve">Thai (Thailand)</source>
+      </segment>
+    </unit>
+    <unit id="262">
+      <segment id="262">
+        <source xml:space="preserve">Tigrinya</source>
+      </segment>
+    </unit>
+    <unit id="263">
+      <segment id="263">
+        <source xml:space="preserve">Turkmen</source>
+      </segment>
+    </unit>
+    <unit id="264">
+      <segment id="264">
+        <source xml:space="preserve">Tagalog</source>
+      </segment>
+    </unit>
+    <unit id="265">
+      <segment id="265">
+        <source xml:space="preserve">Tswana</source>
+      </segment>
+    </unit>
+    <unit id="266">
+      <segment id="266">
+        <source xml:space="preserve">Tonga</source>
+      </segment>
+    </unit>
+    <unit id="267">
+      <segment id="267">
+        <source xml:space="preserve">Turkish</source>
+      </segment>
+    </unit>
+    <unit id="268">
+      <segment id="268">
+        <source xml:space="preserve">Turkish (Türkiye | Turkey)</source>
+      </segment>
+    </unit>
+    <unit id="269">
+      <segment id="269">
+        <source xml:space="preserve">Tsonga</source>
+      </segment>
+    </unit>
+    <unit id="270">
+      <segment id="270">
+        <source xml:space="preserve">Tatar</source>
+      </segment>
+    </unit>
+    <unit id="271">
+      <segment id="271">
+        <source xml:space="preserve">Twi</source>
+      </segment>
+    </unit>
+    <unit id="272">
+      <segment id="272">
+        <source xml:space="preserve">Tahitian</source>
+      </segment>
+    </unit>
+    <unit id="273">
+      <segment id="273">
+        <source xml:space="preserve">Uighur</source>
+      </segment>
+    </unit>
+    <unit id="274">
+      <segment id="274">
+        <source xml:space="preserve">Ukrainian</source>
+      </segment>
+    </unit>
+    <unit id="275">
+      <segment id="275">
+        <source xml:space="preserve">Ukrainian (Ukraine)</source>
+      </segment>
+    </unit>
+    <unit id="276">
+      <segment id="276">
+        <source xml:space="preserve">Urdu</source>
+      </segment>
+    </unit>
+    <unit id="277">
+      <segment id="277">
+        <source xml:space="preserve">Uzbek</source>
+      </segment>
+    </unit>
+    <unit id="278">
+      <segment id="278">
+        <source xml:space="preserve">Venda</source>
+      </segment>
+    </unit>
+    <unit id="279">
+      <segment id="279">
+        <source xml:space="preserve">Vietnamese</source>
+      </segment>
+    </unit>
+    <unit id="280">
+      <segment id="280">
+        <source xml:space="preserve">Vietnamese (Viet Nam)</source>
+      </segment>
+    </unit>
+    <unit id="281">
+      <segment id="281">
+        <source xml:space="preserve">Volapük</source>
+      </segment>
+    </unit>
+    <unit id="282">
+      <segment id="282">
+        <source xml:space="preserve">Walloon</source>
+      </segment>
+    </unit>
+    <unit id="283">
+      <segment id="283">
+        <source xml:space="preserve">Wolof</source>
+      </segment>
+    </unit>
+    <unit id="284">
+      <segment id="284">
+        <source xml:space="preserve">Xhosa</source>
+      </segment>
+    </unit>
+    <unit id="285">
+      <segment id="285">
+        <source xml:space="preserve">Yiddish</source>
+      </segment>
+    </unit>
+    <unit id="286">
+      <segment id="286">
+        <source xml:space="preserve">Yoruba</source>
+      </segment>
+    </unit>
+    <unit id="287">
+      <segment id="287">
+        <source xml:space="preserve">Zhuang</source>
+      </segment>
+    </unit>
+    <unit id="288">
+      <segment id="288">
+        <source xml:space="preserve">Chinese</source>
+      </segment>
+    </unit>
+    <unit id="289">
+      <segment id="289">
+        <source xml:space="preserve">Chinese (China)</source>
+      </segment>
+    </unit>
+    <unit id="290">
+      <segment id="290">
+        <source xml:space="preserve">Chinese (Hong Kong)</source>
+      </segment>
+    </unit>
+    <unit id="291">
+      <segment id="291">
+        <source xml:space="preserve">Chinese (Han [Simplified variant])</source>
+      </segment>
+    </unit>
+    <unit id="292">
+      <segment id="292">
+        <source xml:space="preserve">Chinese (Han [Simplified variant], China)</source>
+      </segment>
+    </unit>
+    <unit id="293">
+      <segment id="293">
+        <source xml:space="preserve">Chinese (Han [Simplified variant], Hong Kong)</source>
+      </segment>
+    </unit>
+    <unit id="294">
+      <segment id="294">
+        <source xml:space="preserve">Chinese (Han [Simplified variant], Macao)</source>
+      </segment>
+    </unit>
+    <unit id="295">
+      <segment id="295">
+        <source xml:space="preserve">Chinese (Han [Simplified variant], Singapore)</source>
+      </segment>
+    </unit>
+    <unit id="296">
+      <segment id="296">
+        <source xml:space="preserve">Chinese (Han [Traditional variant])</source>
+      </segment>
+    </unit>
+    <unit id="297">
+      <segment id="297">
+        <source xml:space="preserve">Chinese (Han [Traditional variant], Hong Kong)</source>
+      </segment>
+    </unit>
+    <unit id="298">
+      <segment id="298">
+        <source xml:space="preserve">Chinese (Han [Traditional variant], Macao)</source>
+      </segment>
+    </unit>
+    <unit id="299">
+      <segment id="299">
+        <source xml:space="preserve">Chinese (Han [Traditional variant], Taiwan, Province of China)</source>
+      </segment>
+    </unit>
+    <unit id="300">
+      <segment id="300">
+        <source xml:space="preserve">Chinese (Singapore)</source>
+      </segment>
+    </unit>
+    <unit id="301">
+      <segment id="301">
+        <source xml:space="preserve">Chinese (Taiwan, Province of China)</source>
+      </segment>
+    </unit>
+    <unit id="302">
+      <segment id="302">
+        <source xml:space="preserve">Zulu</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>
