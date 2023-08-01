@@ -45,7 +45,11 @@ public class LanguageUtils {
 			bidiCodes = new TreeSet<>();
 			SAXBuilder builder = new SAXBuilder();
 			Locale locale = Locale.getDefault();
-			String resource = "extendedLanguageList_" + locale.getLanguage() + ".xml";
+			String language = locale.getLanguage();
+			String resource = "extendedLanguageList_" + language + ".xml";
+			if (LanguageUtils.class.getResourceAsStream(resource) == null) {
+				resource = "extendedLanguageList_" + language.substring(0, 2) + ".xml";
+			}
 			if (LanguageUtils.class.getResourceAsStream(resource) == null) {
 				resource = "extendedLanguageList.xml";
 			}
@@ -72,7 +76,11 @@ public class LanguageUtils {
 			languages = new Vector<>();
 			SAXBuilder builder = new SAXBuilder();
 			Locale locale = Locale.getDefault();
-			String resource = "languageList_" + locale.getLanguage() + ".xml";
+			String language = locale.getLanguage();
+			String resource = "languageList_" + language + ".xml";
+			if (LanguageUtils.class.getResourceAsStream(resource) == null) {
+				resource = "languageList_" + language.substring(0, 2) + ".xml";
+			}
 			if (LanguageUtils.class.getResourceAsStream(resource) == null) {
 				resource = "languageList.xml";
 			}
