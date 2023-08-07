@@ -124,6 +124,7 @@
 
 	<!--    DocBook    -->
 
+	<nextCatalog catalog="docbook5.2/catalog.xml" />
 	<nextCatalog catalog="docbook5.0/catalog.xml" />
 	<nextCatalog catalog="docbook4.5/catalog.xml" />
 	<nextCatalog catalog="docbook4.4/catalog.xml" />
