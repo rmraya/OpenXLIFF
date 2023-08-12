@@ -101,8 +101,10 @@ public class Xliff2json {
         escaped = !file.getPI("escaped").isEmpty();
         exportHTML = !file.getPI("exportHTML").isEmpty();
         entities = escaped ? Json2Xliff.loadEntities(catalog) : new ArrayList<>();
-        entities.add(0, new String[] { "&amp;", "&" });
-        entities.add(new String[] { "&lt;", "<" });
+        if (!entities.isEmpty()) {
+            entities.add(0, new String[] { "&amp;", "&" });
+            entities.add(new String[] { "&lt;", "<" });
+        }
 
         List<PI> encodings = file.getPI("encoding");
         if (encodings.isEmpty()) {
