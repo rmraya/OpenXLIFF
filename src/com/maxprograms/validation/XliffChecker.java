@@ -72,7 +72,7 @@ public class XliffChecker {
 
 		String[] fixedArgs = Utils.fixPath(args);
 
-		String file = "";
+		String xliff = "";
 		String catalog = "";
 		for (int i = 0; i < fixedArgs.length; i++) {
 			String arg = fixedArgs[i];
@@ -80,8 +80,8 @@ public class XliffChecker {
 				help();
 				return;
 			}
-			if (arg.equals("-file") && (i + 1) < fixedArgs.length) {
-				file = fixedArgs[i + 1];
+			if (arg.equals("-xliff") && (i + 1) < fixedArgs.length) {
+				xliff = fixedArgs[i + 1];
 			}
 			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
 				catalog = fixedArgs[i + 1];
@@ -91,9 +91,13 @@ public class XliffChecker {
 			help();
 			return;
 		}
-		if (file.isEmpty()) {
+		if (xliff.isEmpty()) {
 			logger.log(Level.ERROR, Messages.getString("XliffChecker.1"));
 			return;
+		}
+		File xliffFile = new File(xliff);
+		if (!xliffFile.isAbsolute()) {
+			xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
 		}
 		if (catalog.isEmpty()) {
 			String home = System.getenv("OpenXLIFF_HOME");
@@ -112,9 +116,12 @@ public class XliffChecker {
 			logger.log(Level.ERROR, Messages.getString("XliffChecker.3"));
 			return;
 		}
+		if (!catalogFile.isAbsolute()) {
+			catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+		}
 		try {
 			XliffChecker instance = new XliffChecker();
-			if (!instance.validate(file, catalog)) {
+			if (!instance.validate(xliff, catalog)) {
 				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.4"));
 				logger.log(Level.ERROR, mf.format(new String[] { instance.getReason() }));
 				return;

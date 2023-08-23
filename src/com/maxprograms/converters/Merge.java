@@ -116,12 +116,21 @@ public class Merge {
 			logger.log(Level.ERROR, Messages.getString("Merge.02"));
 			return;
 		}
+		File xliffFile = new File(xliff);
+		if (!xliffFile.isAbsolute()) {
+			xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
+		}
 		if (target.isEmpty()) {
 			try {
 				target = getTargetFile(xliff);
 			} catch (IOException | SAXException | ParserConfigurationException e) {
 				logger.log(Level.ERROR, Messages.getString("Merge.03"), e);
 				return;
+			}
+		} else {
+			File targetFile = new File(target);
+			if (!targetFile.isAbsolute()) {
+				target = targetFile.getAbsoluteFile().getAbsolutePath();
 			}
 		}
 		if (target.isEmpty()) {
@@ -146,7 +155,9 @@ public class Merge {
 			logger.log(Level.ERROR, Messages.getString("Merge.06"));
 			return;
 		}
-
+		if (!catalogFile.isAbsolute()) {
+			catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+		}
 		List<String> result = merge(xliff, target, catalog, unapproved);
 		if (exportTMX && Constants.SUCCESS.equals(result.get(0))) {
 			String tmx = "";

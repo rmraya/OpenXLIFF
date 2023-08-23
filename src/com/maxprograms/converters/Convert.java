@@ -170,6 +170,9 @@ public class Convert {
 			logger.log(Level.ERROR, Messages.getString("Convert.04"));
 			return;
 		}
+		if (!sourceFile.isAbsolute()) {
+			source = sourceFile.getAbsoluteFile().getAbsolutePath();
+		}
 		if (type.isEmpty()) {
 			String detected = FileFormats.detectFormat(source);
 			if (detected != null) {
@@ -233,6 +236,9 @@ public class Convert {
 			logger.log(Level.ERROR, mf.format(new String[]{srxFile.getAbsolutePath()}));
 			return;
 		}
+		if (!srxFile.isAbsolute()) {
+			srx = srxFile.getAbsoluteFile().getAbsolutePath();
+		}
 		if (xmlfilter.isEmpty()) {
 			String home = System.getenv("OpenXLIFF_HOME");
 			if (home == null) {
@@ -258,11 +264,14 @@ public class Convert {
 			logger.log(Level.ERROR, Messages.getString("Convert.17"));
 			return;
 		}
+		if (!catalogFile.isAbsolute()) {
+			catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+		}
 		if (skl.isEmpty()) {
-			skl = sourceFile.getAbsolutePath() + ".skl";
+			skl = sourceFile.getAbsoluteFile().getAbsolutePath() + ".skl";
 		}
 		if (xliff.isEmpty()) {
-			xliff = sourceFile.getAbsolutePath() + ".xlf";
+			xliff = sourceFile.getAbsoluteFile().getAbsolutePath() + ".xlf";
 		}
 		if (xliff20 && !paragraph && config.isEmpty()) {
 			mustResegment = true;

@@ -80,7 +80,13 @@ public class CopySources {
             logger.log(Level.ERROR, Messages.getString("CopySources.2"));
             return;
         }
-
+        if (!catalogFile.isAbsolute()) {
+            catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+        }
+        File xliffFile = new File(xliff);
+        if (!xliffFile.isAbsolute()) {
+            xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
+        }
         try {
             copySources(xliff, catalog);
         } catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {

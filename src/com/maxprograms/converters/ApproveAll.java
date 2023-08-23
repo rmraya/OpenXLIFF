@@ -77,7 +77,13 @@ public class ApproveAll {
             logger.log(Level.ERROR, Messages.getString("ApproveAll.2"));
             return;
         }
-
+        if (!catalogFile.isAbsolute()) {
+            catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+        }
+        File xliffFile = new File(xliff);
+        if (!xliffFile.isAbsolute()) {
+            xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
+        }
         try {
             approveAll(xliff, catalog);
         } catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {

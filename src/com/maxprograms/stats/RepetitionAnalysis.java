@@ -88,6 +88,13 @@ public class RepetitionAnalysis {
 			logger.log(Level.ERROR, Messages.getString("RepetitionAnalysis.2"));
 			return;
 		}
+		if (!catalogFile.isAbsolute()) {
+			catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+		}
+		File xliffFile = new File(file);
+		if (!xliffFile.isAbsolute()) {
+			file = xliffFile.getAbsoluteFile().getAbsolutePath();
+		}
 		try {
 			RepetitionAnalysis instance = new RepetitionAnalysis();
 			instance.analyse(file, catalog);

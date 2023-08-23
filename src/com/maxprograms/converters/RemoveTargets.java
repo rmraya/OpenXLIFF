@@ -75,7 +75,13 @@ public class RemoveTargets {
             logger.log(Level.ERROR, Messages.getString("RemoveTargets.2"));
             return;
         }
-
+        if (!catalogFile.isAbsolute()) {
+            catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+        }   
+        File xliffFile = new File(xliff);
+        if (!xliffFile.isAbsolute()) {
+            xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
+        }
         try {
             removeTargets(xliff, catalog);
         } catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {

@@ -80,7 +80,13 @@ public class PseudoTranslation {
             logger.log(Level.ERROR, Messages.getString("PseudoTranslation.2"));
             return;
         }
-
+        if (!catalogFile.isAbsolute()) {
+            catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
+        }
+        File xliffFile = new File(xliff);
+        if (!xliffFile.isAbsolute()) {
+            xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
+        }
         try {
             pseudoTranslate(xliff, catalog);
         } catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {

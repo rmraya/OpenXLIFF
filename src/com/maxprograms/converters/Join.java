@@ -73,13 +73,21 @@ public class Join {
 						logger.log(Level.ERROR, mf.format(new String[] { file }));
 						System.exit(1);
 					}
-					list.add(array[h]);
+					if (!f.isAbsolute()) {
+						file = f.getAbsoluteFile().getAbsolutePath();
+					}
+					list.add(file);
 				}
 			}
 			if (arg.equals("-target") && (i + 1) < arguments.length) {
 				target = arguments[i + 1];
 			}
 		}
+
+        File targetFile = new File(target);
+        if (!targetFile.isAbsolute()) {
+            target = targetFile.getAbsoluteFile().getAbsolutePath();
+        }
 		try {
 			join(list, target);
 		} catch (IOException | SAXException | ParserConfigurationException ex) {

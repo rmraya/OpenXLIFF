@@ -1,6 +1,6 @@
 #!/bin/bash
-CURRENT=$PWD
+export CURRENT=$PWD
 cd `dirname "$0"`
-OpenXLIFF_HOME=$PWD
-bin/java --module-path lib -m openxliff/com.maxprograms.stats.RepetitionAnalysis $@
+export OpenXLIFF_HOME=$PWD
 cd $CURRENT
+$OpenXLIFF_HOME/bin/java --module-path $OpenXLIFF_HOME/lib -m openxliff/com.maxprograms.stats.RepetitionAnalysis $@
