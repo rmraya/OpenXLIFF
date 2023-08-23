@@ -53,6 +53,7 @@
         <copy file="copysources.bat" todir="dist" />
         <copy file="removetargets.bat" todir="dist" />
         <copy file="approveall.bat" todir="dist" />
+        <copy file="exporttmx.bat" todir="dist" />
     </target>
     <target name="copyShells" unless="isWindows">
         <description>Copy .sh to /dist</description>
@@ -65,6 +66,7 @@
         <copy file="copysources.sh" todir="dist" />
         <copy file="removetargets.sh" todir="dist" />
         <copy file="approveall.sh" todir="dist" />
+        <copy file="exporttmx.sh" todir="dist" />
         <chmod dir="dist" perm="ugo+rx" includes="**/*.sh" />
     </target>
     <target name="dist" depends="link,copyBats,copyShells">

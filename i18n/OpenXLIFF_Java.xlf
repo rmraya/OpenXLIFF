@@ -437,9 +437,10 @@ JSUKTWVyZ2UuMTI9JSUlNzklJSUKTWVyZ2UuMTM9JSUlODAlJSUKTWVyZ2UuMTQ9JSUlODElJSUK
 UHNldWRvVHJhbnNsYXRpb24uaGVscD0lJSU4MiUlJQpQc2V1ZG9UcmFuc2xhdGlvbi4xPSUlJTgz
 JSUlClBzZXVkb1RyYW5zbGF0aW9uLjI9JSUlODQlJSUKUHNldWRvVHJhbnNsYXRpb24uMz0lJSU4
 NSUlJQpQc2V1ZG9UcmFuc2xhdGlvbi40PSUlJTg2JSUlClJlbW92ZVRhcmdldHMuaGVscD0lJSU4
-NyUlJQpSZW1vdmVUYXJnZXRzLjE9JSUlODglJSUKUmVtb3ZlVGFyZ2V0cy4yPSUlJTg5JSUlClVu
-ZXhpc3RlbnRTZWdtZW50RXhjZXB0aW9uLjE9JSUlOTAlJSUKVXRpbHMuMT0lJSU5MSUlJQpVdGls
-cy4yPSUlJTkyJSUlCg==</skeleton>
+NyUlJQpSZW1vdmVUYXJnZXRzLjE9JSUlODglJSUKUmVtb3ZlVGFyZ2V0cy4yPSUlJTg5JSUlClRt
+eEV4cG9ydGVyLjA9JSUlOTAlJSUKVG14RXhwb3J0ZXIuMT0lJSU5MSUlJQpUbXhFeHBvcnRlci4y
+PSUlJTkyJSUlClRteEV4cG9ydGVyLjM9JSUlOTMlJSUKVW5leGlzdGVudFNlZ21lbnRFeGNlcHRp
+b24uMT0lJSU5NCUlJQpVdGlscy4xPSUlJTk1JSUlClV0aWxzLjI9JSUlOTYlJSUK</skeleton>
     <mda:metadata>
       <mda:metaGroup category="format">
         <mda:meta type="datatype">javapropertyresourcebundle</mda:meta>
@@ -1492,30 +1493,83 @@ Where:
     <unit id="90">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">UnexistentSegmentException.1</mda:meta>
+          <mda:meta type="resname">TmxExporter.0</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="initial" id="90">
-        <source xml:space="preserve">Requested segment does not exist in skeleton file</source>
+        <source xml:space="preserve">'catalog' folder not found</source>
       </segment>
     </unit>
     <unit id="91">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Utils.1</mda:meta>
+          <mda:meta type="resname">TmxExporter.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="initial" id="91">
-        <source xml:space="preserve">Invalid path</source>
+        <source xml:space="preserve">Catalog file does not exist</source>
       </segment>
     </unit>
     <unit id="92">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Utils.2</mda:meta>
+          <mda:meta type="resname">TmxExporter.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="initial" id="92">
+        <source xml:space="preserve">Missing '-xliff' parameter</source>
+      </segment>
+    </unit>
+    <unit id="93">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">TmxExporter.3</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="initial" id="93">
+        <source xml:space="preserve">
+
+Usage:
+
+{0} [-help] -xliff xliffFile -tmx tmxFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -tmx:       (optional) TMX file to generate
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      </segment>
+    </unit>
+    <unit id="94">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">UnexistentSegmentException.1</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="initial" id="94">
+        <source xml:space="preserve">Requested segment does not exist in skeleton file</source>
+      </segment>
+    </unit>
+    <unit id="95">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Utils.1</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="initial" id="95">
+        <source xml:space="preserve">Invalid path</source>
+      </segment>
+    </unit>
+    <unit id="96">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Utils.2</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="initial" id="96">
         <source xml:space="preserve">Path is not absolute for {0}</source>
       </segment>
     </unit>
@@ -2826,7 +2880,7 @@ JTQlJSUK</skeleton>
       </segment>
     </unit>
   </file>
-<file original="com/maxprograms/converters/ts/messages.properties" id="21">
+<file original="com/maxprograms/converters/ts/ts.properties" id="21">
     <skeleton>VHMyWGxpZmYuMT0lJSUwJSUlClhsaWZmMlRzLjE9JSUlMSUlJQo=</skeleton>
     <mda:metadata>
       <mda:metaGroup category="format">
@@ -5185,7 +5239,7 @@ OCUlJQo=</skeleton>
 
 Usage:
 
-{0} [-help] -file xliffFile [-catalog catalogFile]
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
 
 Where:
 
@@ -5203,7 +5257,7 @@ Where:
         </mda:metaGroup>
       </mda:metadata>
       <segment state="initial" id="139">
-        <source xml:space="preserve">Missing '-file' parameter</source>
+        <source xml:space="preserve">Missing '-xliff' parameter</source>
       </segment>
     </unit>
     <unit id="140">
