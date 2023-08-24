@@ -427,7 +427,7 @@ Where:
 
 ## Export Approved Segments as TMX
 
-You can export all aprroved segments from an XLIFF file as TMX using class `com.maxprograms.converters.TmxExporter` from your Java code or using the provided scripts.
+You can export all aproved segments from an XLIFF file as TMX using class `com.maxprograms.converters.TmxExporter` from your Java code or using the provided scripts.
 
 Running `.\exporttmx.bat` or `./exporttmx.sh` without parameters displays help for exporting approved segments from an XLIFF file.
 
