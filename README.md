@@ -25,6 +25,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Copy Source to Target](https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**
 - **[Approve All Segments](https://github.com/rmraya/OpenXLIFF#approve-all-segments)**
 - **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
+- **[Export Approved Segments as TMX](https://github.com/rmraya/OpenXLIFF#export-approved-segments-as-tmx)**
 
 ## Filters Configuration
 
@@ -423,3 +424,24 @@ Where:
    -xliff:     XLIFF file to process
    -catalog:   (optional) XML catalog to use for processing
 ```
+
+## Export Approved Segments as TMX
+
+You can export all aprroved segments from an XLIFF file as TMX using class `com.maxprograms.converters.TmxExporter` from your Java code or using the provided scripts.
+
+Running `.\exporttmx.bat` or `./exporttmx.sh` without parameters displays help for exporting approved segments from an XLIFF file.
+
+```text
+Usage:
+
+exporttmx.sh [-help] -xliff xliffFile -tmx tmxFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -tmx:       (optional) TMX file to generate
+    -catalog:   (optional) XML catalog to use for processing
+```
+
+If the optional `-tmx` parameter is not provided, the TMX file will be generated in the same folder as the XLIFF file and its name will be the same as the XLIFF file plus `.tmx`.
