@@ -434,7 +434,7 @@ Running `.\exporttmx.bat` or `./exporttmx.sh` without parameters displays help f
 ```text
 Usage:
 
-exporttmx.sh [-help] -xliff xliffFile -tmx tmxFile [-catalog catalogFile]
+exporttmx.sh [-help] -xliff xliffFile [-tmx tmxFile] [-catalog catalogFile]
 
 Where:
 
