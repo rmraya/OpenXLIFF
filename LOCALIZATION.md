@@ -12,10 +12,10 @@ Localizing OpenXLIFF Filters requires processing 2 types of files:
 Use a command like this to generate XLIFF:
 
 ```bash
-/path-to-Javapm/createxliff.sh -src /path-to-OpenXLIFF/src -xliff yourXliffFile.xlf -srcLang en -tgtLang fr -enc UTF-8
+/path-to-Javapm/createxliff.sh -src /path-to-OpenXLIFF/src -xliff yourXliffFile.xlf -srcLang en -tgtLang fr -enc UTF-8 -reuse
 ```
 
-OpenXLIFF Filters .properties are encoded in UTF-8; translated versions must be generated using UTF-8 character set.
+OpenXLIFF Filters .properties are encoded in UTF-8; translated versions must be generated using `UTF-8` character set.
 
 ## Localization of language files
 
