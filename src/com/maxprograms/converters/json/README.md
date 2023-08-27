@@ -6,7 +6,7 @@ Configuration files for JSON filter are defined in a JSON file that contains two
 - `ignorable`: array of strings listing ignorable keys
 - `parseEntities`: boolean value indicating whether HTML entitites should be converted to Unicode characters. Default: `false`
 - `trimTags`: send initial/trailing tags to skeleton when possible. Default: `true`
-- `exportHTML`: treat target as containg HTML on merge. Default: `true`
+- `exportHTML`: treat target as containg HTML on merge. Default: `false`
 
 Configuration files must be written using UTF-8 character set without a byte order mark (BOM).
 

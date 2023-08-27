@@ -76,7 +76,7 @@ public class Json2Xliff {
         segments = new ArrayList<>();
         ids = new HashSet<>();
         trimTags = true;
-        boolean exportHTML = true;
+        boolean exportHTML = false;
         entities = new ArrayList<>();
 
         String inputFile = params.get("source");
