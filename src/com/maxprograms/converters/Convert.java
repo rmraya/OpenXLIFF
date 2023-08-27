@@ -296,6 +296,10 @@ public class Convert {
 			params.put("ditaval", ditaval);
 		}
 		if (type.equals(FileFormats.getShortName(FileFormats.JSON)) && !config.isEmpty()) {
+			File configFile = new File(config);
+			if (!configFile.isAbsolute()) {
+				config = configFile.getAbsoluteFile().getAbsolutePath();
+			}
 			params.put("config", config);
 		}
 		if (embed) {

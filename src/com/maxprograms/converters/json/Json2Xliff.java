@@ -421,6 +421,9 @@ public class Json2Xliff {
                 if (object instanceof JSONObject jsobj) {
                     parseJson(jsobj, config);
                 } else if (object instanceof String string) {
+                    if (!entities.isEmpty()) {
+                        string = replaceEntities(string);
+                    }
                     json.put(key, parseText(string));
                 } else if (object instanceof JSONArray array) {
                     parseArray(array, config);

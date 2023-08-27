@@ -214,12 +214,18 @@ public class Xliff2json {
             String[] entry = entities.get(i);
             String entity = entry[0];
             String character = entry[1];
+            if ("&".equals(character)) {
+                entity = "+++amp+++";
+            }
             int index = result.indexOf(character);
             while (index != -1) {
                 String start = result.substring(0, index);
                 String end = result.substring(index + character.length());
                 result = start + entity + end;
                 index = result.indexOf(character);
+            }
+            if ("&".equals(character)) {
+                result = result.replace("+++amp+++", "&amp;");
             }
         }
         return result;
