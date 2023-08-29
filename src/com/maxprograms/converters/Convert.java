@@ -91,6 +91,7 @@ public class Convert {
 		boolean paragraph = false;
 		boolean ignoretc = false;
 		boolean xliff20 = false;
+		boolean xliff21 = false;
 		boolean mustResegment = false;
 
 		for (int i = 0; i < arguments.length; i++) {
@@ -155,6 +156,9 @@ public class Convert {
 			}
 			if (arg.equals("-2.0")) {
 				xliff20 = true;
+			}
+			if (arg.equals("-2.1")) {
+				xliff21 = true;
 			}
 		}
 		if (arguments.length < 4) {
@@ -233,7 +237,7 @@ public class Convert {
 		File srxFile = new File(srx);
 		if (!srxFile.exists()) {
 			MessageFormat mf = new MessageFormat(Messages.getString("Convert.15"));
-			logger.log(Level.ERROR, mf.format(new String[]{srxFile.getAbsolutePath()}));
+			logger.log(Level.ERROR, mf.format(new String[] { srxFile.getAbsolutePath() }));
 			return;
 		}
 		if (!srxFile.isAbsolute()) {
@@ -273,7 +277,12 @@ public class Convert {
 		if (xliff.isEmpty()) {
 			xliff = sourceFile.getAbsoluteFile().getAbsolutePath() + ".xlf";
 		}
-		if (xliff20 && !paragraph && config.isEmpty()) {
+		
+		if (xliff20 && xliff21) {
+			logger.log(Level.ERROR, Messages.getString("Convert.21"));
+			return;
+		}
+		if ((xliff20 || xliff21) && !paragraph && config.isEmpty()) {
 			mustResegment = true;
 			paragraph = true;
 		}
@@ -311,7 +320,9 @@ public class Convert {
 		if (xliff20) {
 			params.put("xliff20", "yes");
 		}
-
+		if (xliff21) {
+			params.put("xliff21", "yes");
+		}
 		List<String> result = run(params);
 
 		if (!Constants.SUCCESS.equals(result.get(0))) {
@@ -436,8 +447,11 @@ public class Convert {
 			if ("yes".equals(params.get("embed")) && Constants.SUCCESS.equals(result.get(0))) {
 				result = addSkeleton(params.get("xliff"), params.get("catalog"));
 			}
-			if ("yes".equals(params.get("xliff20")) && Constants.SUCCESS.equals(result.get(0))) {
-				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"));
+			Boolean xliff20 = "yes".equals(params.get("xliff20"));
+			Boolean xliff21 = "yes".equals(params.get("xliff21"));
+			if ((xliff20 || xliff21) && Constants.SUCCESS.equals(result.get(0))) {
+				String version = xliff20 ? "2.0" : "2.1";
+				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
 				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
 					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
 							new Catalog(params.get("catalog")));

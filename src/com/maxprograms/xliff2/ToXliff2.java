@@ -56,15 +56,11 @@ public class ToXliff2 {
 		// use run or main methods instead
 	}
 
-	public static void main(String[] args) {
-		run(args[0], args[1], args[2]);
+	public static List<String> run(File xliffFile, String catalog, String version) {
+		return run(xliffFile.getAbsolutePath(), xliffFile.getAbsolutePath(), catalog, version);
 	}
 
-	public static List<String> run(File xliffFile, String catalog) {
-		return run(xliffFile.getAbsolutePath(), xliffFile.getAbsolutePath(), catalog);
-	}
-
-	public static List<String> run(String sourceFile, String outputFile, String catalog) {
+	public static List<String> run(String sourceFile, String outputFile, String catalog, String version) {
 		List<String> result = new ArrayList<>();
 		fileId = 1;
 		try {
@@ -80,6 +76,7 @@ public class ToXliff2 {
 			Document xliff2 = new Document(null, "xliff", null, null);
 			root2 = xliff2.getRootElement();
 			recurse(root, root2);
+			root2.setAttribute("version", version);
 			Indenter.indent(root2, 2);
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);
@@ -99,7 +96,6 @@ public class ToXliff2 {
 
 	private static void recurse(Element source, Element target) throws SAXException, IOException {
 		if (source.getName().equals("xliff")) {
-			target.setAttribute("version", "2.0");
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.0");
 			target.setAttribute("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
 			target.setAttribute("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");

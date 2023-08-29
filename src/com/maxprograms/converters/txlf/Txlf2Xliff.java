@@ -105,6 +105,7 @@ public class Txlf2Xliff {
             file.addContent(body);
             for (int i = 0; i < units.size(); i++) {
                 body.addContent(units.get(i));
+                body.addContent("\n");
             }
             try (FileOutputStream out = new FileOutputStream(xliffFile)) {
                 Indenter.indent(newRoot, 0);

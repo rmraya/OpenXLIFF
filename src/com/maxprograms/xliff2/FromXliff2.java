@@ -51,10 +51,6 @@ public class FromXliff2 {
 		// use run or main methods instead
 	}
 
-	public static void main(String[] args) {
-		run(args[0], args[1], args[2]);
-	}
-
 	public static List<String> run(String sourceFile, String outputFile, String catalog) {
 		List<String> result = new ArrayList<>();
 		try {
