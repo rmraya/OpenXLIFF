@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
@@ -34,6 +36,8 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.SAXBuilder;
 
 public class FileFormats {
+
+	private static Logger logger = System.getLogger(FileFormats.class.getName());
 
 	private FileFormats() {
 		// do not instantiate this class
@@ -71,6 +75,38 @@ public class FileFormats {
 
 	public static boolean isBilingual(String type) {
 		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, TXLF, WPML, XLIFF).contains(type);
+	}
+
+	public static void main(String[] args) {
+		String[] arguments = Utils.fixPath(args);
+		String file = "";
+		for (int i = 0; i < arguments.length; i++) {
+			String arg = arguments[i];			
+			if (arg.equals("-file") && (i + 1) < arguments.length) {
+				file = arguments[i + 1];
+			}
+		}
+
+		if (file.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("FileFormats.3"));
+			return;
+		}
+		File sourceFile = new File(file);
+		if (!sourceFile.exists()) {
+			logger.log(Level.ERROR, Messages.getString("FileFormats.4"));
+			return;
+		}
+		if (!sourceFile.isAbsolute()) {
+			file = sourceFile.getAbsoluteFile().getAbsolutePath();
+		}
+		String format = detectFormat(file);
+		JSONObject result = new JSONObject();
+		if (format != null) {
+			result.put("format", getShortName(format));
+		} else {
+			result.put("format", "Unknown");
+		}
+		System.out.println(result.toString());
 	}
 
 	public static String detectFormat(String fileName) {

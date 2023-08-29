@@ -22,6 +22,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -29,6 +30,7 @@ import java.util.TreeMap;
 import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.DocumentType;
@@ -42,6 +44,52 @@ public class EncodingResolver {
 	}
 
 	private static Logger logger = System.getLogger(EncodingResolver.class.getName());
+
+	public static void main(String[] args) {
+		String[] arguments = Utils.fixPath(args);
+		String file = "";
+		String type = "";
+		for (int i = 0; i < arguments.length; i++) {
+			String arg = arguments[i];			
+			if (arg.equals("-file") && (i + 1) < arguments.length) {
+				file = arguments[i + 1];
+			}
+			if (arg.equals("-type") && (i + 1) < arguments.length) {
+				type = arguments[i + 1];
+			}
+		}
+		if (file.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("EncodingResolver.8"));
+			return;
+		}
+		File sourceFile = new File(file);
+		if (!sourceFile.exists()) {
+			logger.log(Level.ERROR, Messages.getString("EncodingResolver.9"));
+			return;
+		}
+		if (!sourceFile.isAbsolute()) {
+			file = sourceFile.getAbsoluteFile().getAbsolutePath();
+		}
+		if (type.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("EncodingResolver.10"));
+			return;
+		}
+		String longType = FileFormats.getFullName(type);
+		if (longType == null) {
+			MessageFormat mf = new MessageFormat(Messages.getString("EncodingResolver.11"));
+			logger.log(Level.ERROR, mf.format(new String[] {type}));
+			return;
+		}
+		type = longType;
+		Charset encoding = getEncoding(file, type);
+		JSONObject result = new JSONObject();
+		if (encoding != null) {
+			result.put("encoding", encoding.name());
+		} else {
+			result.put("encoding", "Unknown");
+		}
+		System.out.println(result.toString());
+	}
 
 	public static Charset getEncoding(String fileName, String fileType) {
 		if (fileType == null || fileName == null) {
