@@ -87,14 +87,15 @@ public class Sdl2Xliff {
 			writeStr("<?encoding " + doc.getEncoding() + "?>\n");
 
 			writeStr("<header>\n");
-			writeStr("<skl>\n");
-			writeStr("<external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
-			writeStr("</skl>\n");
-			writeStr("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+			writeStr("  <skl>\n");
+			writeStr("    <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+			writeStr("  </skl>\n");
+			writeStr("  <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 					+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 			writeStr("</header>\n");
 			writeStr("<body>\n");
 
+			acceptTrackedChanges(doc.getRootElement());
 			recurse(doc.getRootElement());
 
 			writeStr("</body>\n");
@@ -144,20 +145,20 @@ public class Sdl2Xliff {
 						Iterator<Element> it = mrks.iterator();
 						while (it.hasNext()) {
 							Element mrk = it.next();
-							writeStr("<trans-unit id=\"" + root.getAttributeValue("id") + ':'
+							writeStr("  <trans-unit id=\"" + root.getAttributeValue("id") + ':'
 									+ mrk.getAttributeValue("mid") + "\" xml:space=\"preserve\">\n");
 							// write new source
-							writeStr("        <source>");
+							writeStr("    <source>");
 							recurseSource(mrk);
 							writeStr("</source>\n");
 							if (targets.containsKey(mrk.getAttributeValue("mid"))) {
 								// write new target
 								Element tmrk = targets.get(mrk.getAttributeValue("mid"));
-								writeStr("        <target>");
+								writeStr("    <target>");
 								recurseTarget(tmrk);
 								writeStr("</target>\n");
 							}
-							writeStr("      </trans-unit>\n");
+							writeStr("  </trans-unit>\n");
 						}
 					}
 				}
@@ -275,5 +276,40 @@ public class Sdl2Xliff {
 
 	private static void writeStr(String string) throws IOException {
 		out.write(string.getBytes(StandardCharsets.UTF_8));
+	}
+
+	private static void acceptTrackedChanges(Element e) {
+		List<Element> children = e.getChildren("mrk");
+		if (!children.isEmpty()) {
+			List<XMLNode> content = e.getContent();
+			List<XMLNode> newContent = new ArrayList<>();
+			Iterator<XMLNode> it = content.iterator();
+			while (it.hasNext()) {
+				XMLNode n = it.next();
+				if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+					Element child = (Element) n;
+					if (child.getName().equals("mrk")) {
+						if (child.getAttributeValue("mtype").equals("x-sdl-added")) {
+							acceptTrackedChanges(child);
+							newContent.addAll(child.getContent());
+						} else if (child.getAttributeValue("mtype").equals("x-sdl-deleted")) {
+							// do nothing
+						} else {
+							newContent.add(child);
+						}
+					} else {
+						newContent.add(child);
+					}
+				} else {
+					newContent.add(n);
+				}
+			}
+			e.setContent(newContent);
+		}
+		children = e.getChildren();
+		Iterator<Element> it = children.iterator();
+		while (it.hasNext()) {
+			acceptTrackedChanges(it.next());
+		}
 	}
 }
