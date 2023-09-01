@@ -447,8 +447,8 @@ public class Convert {
 			if ("yes".equals(params.get("embed")) && Constants.SUCCESS.equals(result.get(0))) {
 				result = addSkeleton(params.get("xliff"), params.get("catalog"));
 			}
-			Boolean xliff20 = "yes".equals(params.get("xliff20"));
-			Boolean xliff21 = "yes".equals(params.get("xliff21"));
+			boolean xliff20 = "yes".equals(params.get("xliff20"));
+			boolean xliff21 = "yes".equals(params.get("xliff21"));
 			if ((xliff20 || xliff21) && Constants.SUCCESS.equals(result.get(0))) {
 				String version = xliff20 ? "2.0" : "2.1";
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
