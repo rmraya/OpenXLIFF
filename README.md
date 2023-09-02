@@ -2,7 +2,7 @@
 
 <img src="https://maxprograms.com/images/openxliff_trim.png" style="float:left; padding: 0 10px 0 10px " />  
 
-An open source set of Java filters for creating, merging and validating XLIFF 1.2 and 2.0 files.
+An open source set of Java filters for creating, merging and validating XLIFF 1.2, 2.0 and 2.1 files.
 
 With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup and are compatible with most CAT (Computer Asisted Translation) tools.
 
