@@ -173,6 +173,7 @@ public class Json2Xliff {
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+            e.printStackTrace();
             Logger logger = System.getLogger(Json2Xliff.class.getName());
             logger.log(Level.ERROR, e);
             result.add(Constants.ERROR);
@@ -289,20 +290,22 @@ public class Json2Xliff {
         Set<String> parsedKeys = new HashSet<>();
         for (int i = 0; i < translatableKeys.size(); i++) {
             String sourceKey = translatableKeys.get(i);
-            if (json.has(sourceKey)) {
+            if (json.has(sourceKey) && json.get(sourceKey) instanceof String && !json.getString(sourceKey).isEmpty()) {
                 JSONObject configuration = config.getConfiguration(sourceKey);
                 if (configuration == null) {
                     MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.3"));
                     throw new IOException(mf.format(new String[] { sourceKey }));
                 }
-                String sourceText = json.getString(sourceKey);
+                String sourceText = json.get(sourceKey) instanceof String ? json.getString(sourceKey) : "";
                 if (!entities.isEmpty()) {
                     sourceText = replaceEntities(sourceText);
                 }
                 String targetKey = configuration.has(JsonConfig.TARGETKEY)
                         ? configuration.getString(JsonConfig.TARGETKEY)
                         : "";
-                String targetText = json.has(targetKey) ? json.getString(targetKey) : "";
+                String targetText = json.has(targetKey) && json.get(targetKey) instanceof String
+                        ? json.getString(targetKey)
+                        : "";
                 if (!entities.isEmpty()) {
                     targetText = replaceEntities(targetText);
                 }
@@ -319,6 +322,17 @@ public class Json2Xliff {
                 }
                 if (!idString.isEmpty()) {
                     validateId(idString);
+                }
+                boolean approved = false;
+                if (configuration.has(JsonConfig.APPROVEDKEY)) {
+                    Object obj = json.get(configuration.getString(JsonConfig.APPROVEDKEY));
+                    if (obj instanceof Boolean b) {
+                        approved = b;
+                    }
+                    if (obj instanceof String string) {
+                        approved = "yes".equalsIgnoreCase(string);
+                    }
+                    parsedKeys.add(configuration.getString(JsonConfig.APPROVEDKEY));
                 }
                 String resnameKey = configuration.has(JsonConfig.RESNAMEKEY)
                         ? configuration.getString(JsonConfig.RESNAMEKEY)
@@ -378,6 +392,7 @@ public class Json2Xliff {
                     if (transUnit.getChild("source").getChildren().isEmpty()) {
                         transUnit.setAttribute("xml:space", "preserve");
                     }
+                    boolean hasTarget = false;
                     if (tgtLang.isEmpty() || targetText.isEmpty()) {
                         sb.append(sourceHolder.getStart());
                         sb.append("%%%");
@@ -390,12 +405,16 @@ public class Json2Xliff {
                         Element target = matchTags(source, targetHolder.getElement());
                         transUnit.addContent("\n    ");
                         transUnit.addContent(target);
+                        hasTarget = true;
                         sb.append(targetHolder.getStart());
                         sb.append("%%%");
                         sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
                         sb.append("%%%");
                         sb.append(targetHolder.getEnd());
                         json.put(targetKey, sb.toString());
+                    }
+                    if (approved && hasTarget) {
+                        transUnit.setAttribute("approved", "yes");
                     }
                     if (!notes.isEmpty() && (replicate || h == 0)) {
                         // add notes to all segments if "replicate"
@@ -409,10 +428,21 @@ public class Json2Xliff {
                         }
                     }
                     transUnit.addContent("\n  ");
-                    segments.add(transUnit);
+                    if (transUnit.getChild("source").getText().isBlank()) {
+                        String id = "%%%" + transUnit.getAttributeValue("id") + "%%%";
+                        Element target = transUnit.getChild("target");
+                        if (target != null) {
+                            json.put(targetKey, json.getString(targetKey).replace(id, target.getText()));
+                        } else {
+                            json.put(sourceKey, json.getString(sourceKey).replace(id, transUnit.getChild("source").getText()));
+                        }
+                    } else {
+                        segments.add(transUnit);
+                    }
                 }
             }
         }
+        // parse keys not handled by configuration
         Iterator<String> it = json.keys();
         while (it.hasNext()) {
             String key = it.next();

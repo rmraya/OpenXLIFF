@@ -60,7 +60,7 @@ public class RepetitionAnalysis {
 				help();
 				return;
 			}
-			if (arg.equals("-file") && (i + 1) < fixedArgs.length) {
+			if (arg.equals("-xliff") && (i + 1) < fixedArgs.length) {
 				file = fixedArgs[i + 1];
 			}
 			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
