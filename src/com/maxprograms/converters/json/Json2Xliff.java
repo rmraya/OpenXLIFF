@@ -416,6 +416,11 @@ public class Json2Xliff {
                     if (approved && hasTarget) {
                         transUnit.setAttribute("approved", "yes");
                     }
+                    boolean hasCrlf = hasTarget ? transUnit.getChild("target").toString().indexOf('\r') != -1
+                            : source.toString().indexOf('\r') != -1;
+                    if (hasCrlf) {
+                        transUnit.setAttribute("ts", "crlf");
+                    }
                     if (!notes.isEmpty() && (replicate || h == 0)) {
                         // add notes to all segments if "replicate"
                         // otherwise, only to first segment
@@ -434,7 +439,8 @@ public class Json2Xliff {
                         if (target != null) {
                             json.put(targetKey, json.getString(targetKey).replace(id, target.getText()));
                         } else {
-                            json.put(sourceKey, json.getString(sourceKey).replace(id, transUnit.getChild("source").getText()));
+                            json.put(sourceKey,
+                                    json.getString(sourceKey).replace(id, transUnit.getChild("source").getText()));
                         }
                     } else {
                         segments.add(transUnit);
