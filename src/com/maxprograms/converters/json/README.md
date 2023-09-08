@@ -31,10 +31,10 @@ Configuration files must be written using UTF-8 character set without a byte ord
   - There is just one tag and it is at the beginning
   - There is just one tag and it is at the end
   - There are only two tags, one at the beginning and one at the end
-- When `approvedKey` is present, the generated generated segment is marked as approved if:
+- When `approvedKey` is present, the generated segment is marked as approved if:
   - The segment contains a `<target>` element
   - The value of `approvedKey` object is a boolean `true`
-  - The value of `approvedKey` object is a the string `yes`, `Yes` or `YES` (case insensitive)
+  - The value of `approvedKey` object is the string `yes` (case insensitive, `Yes` or `YES` are also valid)
 
 ### Example
 
