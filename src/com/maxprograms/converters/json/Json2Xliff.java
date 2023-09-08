@@ -416,8 +416,8 @@ public class Json2Xliff {
                     if (approved && hasTarget) {
                         transUnit.setAttribute("approved", "yes");
                     }
-                    boolean hasCrlf = hasTarget ? transUnit.getChild("target").toString().indexOf('\r') != -1
-                            : source.toString().indexOf('\r') != -1;
+                    boolean hasCrlf = hasTarget ? transUnit.getChild("target").toString().indexOf("\r\n") != -1
+                            : source.toString().indexOf("\r\n") != -1;
                     if (hasCrlf) {
                         transUnit.setAttribute("ts", "crlf");
                     }

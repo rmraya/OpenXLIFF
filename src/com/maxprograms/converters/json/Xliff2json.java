@@ -191,6 +191,7 @@ public class Xliff2json {
             if (n.getNodeType() == XMLNode.TEXT_NODE) {
                 String text = ((TextNode) n).getText();
                 if (restoreCrlf) {
+                    text = text.replace("\r", "");
                     text = text.replace("\n", "\r\n");
                 }
                 if ("ph".equals(element.getName())) {
