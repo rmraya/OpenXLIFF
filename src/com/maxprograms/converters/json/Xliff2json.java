@@ -146,14 +146,15 @@ public class Xliff2json {
             if (segment != null) {
                 Element target = segment.getChild("target");
                 Element source = segment.getChild("source");
+                boolean restoreCrlf = "crlf".equals(segment.getAttributeValue("ts"));
                 if (target != null) {
                     if ("yes".equals(segment.getAttributeValue("approved"))) {
-                        line = line.replace("%%%" + code + "%%%", extractText(target));
+                        line = line.replace("%%%" + code + "%%%", extractText(target, restoreCrlf));
                     } else {
-                        line = line.replace("%%%" + code + "%%%", extractText(source));
+                        line = line.replace("%%%" + code + "%%%", extractText(source, restoreCrlf));
                     }
                 } else {
-                    line = line.replace("%%%" + code + "%%%", extractText(source));
+                    line = line.replace("%%%" + code + "%%%", extractText(source, restoreCrlf));
                 }
             } else {
                 MessageFormat mf = new MessageFormat(Messages.getString("Xliff2json.3"));
@@ -177,7 +178,7 @@ public class Xliff2json {
         }
     }
 
-    private static String extractText(Element element) {
+    private static String extractText(Element element, boolean restoreCrlf) {
         StringBuilder result = new StringBuilder();
         List<XMLNode> content = element.getContent();
         Iterator<XMLNode> i = content.iterator();
@@ -185,13 +186,16 @@ public class Xliff2json {
             XMLNode n = i.next();
             if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
                 Element e = (Element) n;
-                result.append(extractText(e));
+                result.append(extractText(e, restoreCrlf));
             }
             if (n.getNodeType() == XMLNode.TEXT_NODE) {
+                String text = ((TextNode) n).getText();
+                if (restoreCrlf) {
+                    text = text.replace("\n", "\r\n");
+                }
                 if ("ph".equals(element.getName())) {
-                    result.append(((TextNode) n).getText());
+                    result.append(text);
                 } else {
-                    String text = ((TextNode) n).getText();
                     if (escaped) {
                         result.append(replaceEntities(text));
                     } else if (exportHTML) {

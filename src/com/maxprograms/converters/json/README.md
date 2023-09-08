@@ -18,6 +18,7 @@ Configuration files must be written using UTF-8 character set without a byte ord
 - `resnameKey`: (optional) key of the value to use in the `resname` attribute in the generated `<trans-unit>` element
 - `noteKey`: (optional) key for values to be extracted as segment notes
 - `replicateNotes`: (optional) boolean indicating whether to include notes in all segments when there is more than one
+- `approvedKey`: (optional) key for values containing approval status for the segment.
 
 ### Notes
 
@@ -30,6 +31,10 @@ Configuration files must be written using UTF-8 character set without a byte ord
   - There is just one tag and it is at the beginning
   - There is just one tag and it is at the end
   - There are only two tags, one at the beginning and one at the end
+- When `approvedKey` is present, the generated segment is marked as approved if:
+  - The segment contains a `<target>` element
+  - The value of `approvedKey` object is a boolean `true`
+  - The value of `approvedKey` object is the string `yes` (case insensitive, `Yes` or `YES` are also valid)
 
 ### Example
 
@@ -46,7 +51,8 @@ Configuration files must be written using UTF-8 character set without a byte ord
             "targetKey": "target_text",
             "resnameKey": "item_label",
             "noteKey": "comments",
-            "replicateNotes": true
+            "replicateNotes": true,
+            "approvedKey": "approved"
         }
     ],
     "ignorable": [
@@ -63,7 +69,7 @@ Configuration files must be written using UTF-8 character set without a byte ord
 
  1. The JSON filter configuration parser reads the `translatable` array and makes a list of possible `sourceKey` values. A list of keys to ignore is built from the `ignorable` array.
  2. The filter reads the JSON file and iterates over all available objects and their descendants
- 3. If an object that has a key in the `sourceKey` list is found, a new segment is created and its value is used as source text. If the object has other keys defined in the configuration, they are used as target, id, resname attribute or note as indicated.
+ 3. If an object that has a key in the `sourceKey` list is found, a new segment is created and its value is used as source text. If the object has other keys defined in the configuration, they are used as target, id, resname attribute or note as indicated. Attribute `approved` is set to `yes` when `approvedKey` is present and conditions are met.
  4. If an object contains a key that matches `noteKey`, a list of text strings is created from its content and all descendents. Each found string is added as a `<note>` element in the active segment.
  5. All other remaining key/value pairs in the object are checked. If a value contains text, it is extracted as a new segment wihout target or special attributes. To prevent creation of unwanted segments, add the corresponding keys to the `ignorable` list.
   

@@ -31,6 +31,7 @@ public class JsonConfig {
     public static final String RESNAMEKEY = "resnameKey";
     public static final String NOTEKEY = "noteKey";
     public static final String REPLICATE = "replicateNotes";
+    public static final String APPROVEDKEY = "approvedKey";
 
     private Map<String, JSONObject> translatableKeys;
     private List<String> ignorableKeys;
