@@ -49,6 +49,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.15.0 | Added new options to JSON filter configuration | September 13th, 2023
 3.14.0 | Added option to generate XLIFF 2.1 | September 1st, 2023
 3.13.0 | Added export as TMX scripts; allowed relative paths from command line | August 27th, 2023
 3.12.0 | Improved JSON support and localization | August 16th, 2023
