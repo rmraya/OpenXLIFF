@@ -173,7 +173,6 @@ public class Json2Xliff {
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-            e.printStackTrace();
             Logger logger = System.getLogger(Json2Xliff.class.getName());
             logger.log(Level.ERROR, e);
             result.add(Constants.ERROR);
