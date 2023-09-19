@@ -1,0 +1,2805 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file original="com/maxprograms/xliff2/xliff2.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">RnJvbVhsaWZmMi4xPSUlJTAlJSUKRnJvbVhsaWZmMi4yPSUlJTElJSUKUmVzZWdtZW50ZXIuMT0l
+JSUyJSUlClJlc2VnbWVudGVyLjI9JSUlMyUlJQpUb1hsaWZmMi4xPSUlJTQlJSUKVG9YbGlmZjIu
+Mj0lJSU1JSUlClRvWGxpZmYyLjM9JSUlNiUlJQpUb1hsaWZmMi40PSUlJTclJSUKCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="FromXliff2.1" approved="yes" id="0" xml:space="preserve">
+      <source>Wrong XLIFF version</source>
+      <target>Versión de XLIFF incorrecta</target>
+      </trans-unit>
+      <trans-unit resname="FromXliff2.2" approved="yes" id="1" xml:space="preserve">
+      <source>Error processing XLIFF 2.0</source>
+      <target>Error al procesar XLIFF 2.0</target>
+      </trans-unit>
+      <trans-unit resname="Resegmenter.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error re-segmenting XLIFF 2.0</source>
+      <target>Error al volver a segmentar XLIFF 2.0</target>
+      </trans-unit>
+      <trans-unit resname="Resegmenter.2" approved="yes" id="3" xml:space="preserve">
+      <source>Unexpected element found: {0}</source>
+      <target>Elemento inesperado encontrado: {0}</target>
+      </trans-unit>
+      <trans-unit resname="ToXliff2.1" approved="yes" id="4" xml:space="preserve">
+      <source>Wrong XLIFF version</source>
+      <target>Versión de XLIFF incorrecta</target>
+      </trans-unit>
+      <trans-unit resname="ToXliff2.2" approved="yes" id="5" xml:space="preserve">
+      <source>Error generating XLIFF 2.0</source>
+      <target>Error al generar XLIFF 2.0</target>
+      </trans-unit>
+      <trans-unit resname="ToXliff2.3" approved="yes" id="6" xml:space="preserve">
+      <source>&lt;sub&gt; elements are not supported</source>
+      <target>Los elementos &lt;sub&gt; no son admitidos</target>
+      </trans-unit>
+      <trans-unit resname="ToXliff2.4" approved="yes" id="7" xml:space="preserve">
+      <source>Invalid &lt;mrk&gt; element: {0}</source>
+      <target>Elemento &lt;mrk&gt; no válido: {0}</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/mt/mt.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">RGVlcExUcmFuc2xhdG9yLjI9JSUlMCUlJQpEZWVwTFRyYW5zbGF0b3IuMz0lJSUxJSUlCkRlZXBM
+VHJhbnNsYXRvci40PSUlJTIlJSUKRGVlcExUcmFuc2xhdG9yLjU9JSUlMyUlJQpEZWVwTFRyYW5z
+bGF0b3IuNj0lJSU0JSUlCkRlZXBMVHJhbnNsYXRvci43PSUlJTUlJSUKRGVlcExUcmFuc2xhdG9y
+Ljg9JSUlNiUlJQpEZWVwTFRyYW5zbGF0b3IuOT0lJSU3JSUlCkRlZXBMVHJhbnNsYXRvci4xMD0l
+JSU4JSUlCkNoYXRHcHRUcmFuc2xhdG9yLjE9JSUlOSUlJQpHb29nbGVUcmFuc2xhdG9yLjI9JSUl
+MTAlJSUKR29vZ2xlVHJhbnNsYXRvci4zPSUlJTExJSUlCk1UcmFuc2xhdG9yLjE9JSUlMTIlJSUK
+TVRyYW5zbGF0b3IuMj0lJSUxMyUlJQpNeU1lbW9yeVRyYW5zbGF0b3IuMj0lJSUxNCUlJQpNeU1l
+bW9yeVRyYW5zbGF0b3IuMz0lJSUxNSUlJQpZYW5kZXhUcmFuc2xhdG9yLjI9JSUlMTYlJSUKWWFu
+ZGV4VHJhbnNsYXRvci4zPSUlJTE3JSUlCllhbmRleFRyYW5zbGF0b3IuND0lJSUxOCUlJQpZYW5k
+ZXhUcmFuc2xhdG9yLjU9JSUlMTklJSUKWWFuZGV4VHJhbnNsYXRvci42PSUlJTIwJSUlCllhbmRl
+eFRyYW5zbGF0b3IuNz0lJSUyMSUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="DeepLTranslator.2" approved="yes" id="0" xml:space="preserve">
+      <source>Null response received</source>
+      <target>Respuesta nula recibida</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.3" approved="yes" id="1" xml:space="preserve">
+      <source>Bad request. Please check error message and your parameters.</source>
+      <target>Solicitud incorrecta. Verifique el mensaje de error y sus parámetros.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.4" approved="yes" id="2" xml:space="preserve">
+      <source>Authorization failed. Please supply a valid auth_key parameter.</source>
+      <target>Error de autorización. Proporcione un parámetro de auth_key válido.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.5" approved="yes" id="3" xml:space="preserve">
+      <source>The requested resource could not be found.</source>
+      <target>No se pudo encontrar el recurso solicitado.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.6" approved="yes" id="4" xml:space="preserve">
+      <source>The request size exceeds the limit.</source>
+      <target>El tamaño de la solicitud supera el límite.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.7" approved="yes" id="5" xml:space="preserve">
+      <source>Too many requests. Please wait and resend your request.</source>
+      <target>Demasiadas solicitudes. Espere y vuelva a enviar su solicitud.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.8" approved="yes" id="6" xml:space="preserve">
+      <source>Quota exceeded. The character limit has been reached.</source>
+      <target>Cuota excedida. Se ha alcanzado el límite de caracteres.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.9" approved="yes" id="7" xml:space="preserve">
+      <source>Resource currently unavailable. Try again later.</source>
+      <target>Recurso actualmente no disponible. Vuelva a intentarlo más tarde.</target>
+      </trans-unit>
+      <trans-unit resname="DeepLTranslator.10" approved="yes" id="8" xml:space="preserve">
+      <source>Server status code: {0}</source>
+      <target>Código de estado del servidor: {0}</target>
+      </trans-unit>
+      <trans-unit resname="ChatGptTranslator.1" approved="yes" id="9" xml:space="preserve">
+      <source>Server status code: {0}</source>
+      <target>Código de estado del servidor: {0}</target>
+      </trans-unit>
+      <trans-unit resname="GoogleTranslator.2" approved="yes" id="10" xml:space="preserve">
+      <source>Null response received</source>
+      <target>Respuesta nula recibida</target>
+      </trans-unit>
+      <trans-unit resname="GoogleTranslator.3" approved="yes" id="11" xml:space="preserve">
+      <source>Server status code: {0}</source>
+      <target>Código de estado del servidor: {0}</target>
+      </trans-unit>
+      <trans-unit resname="MTranslator.1" approved="yes" id="12" xml:space="preserve">
+      <source>Empty or null translation received from {0}</source>
+      <target>Traducción vacía o nula recibida de {0}</target>
+      </trans-unit>
+      <trans-unit resname="MTranslator.2" approved="yes" id="13" xml:space="preserve">
+      <source>Unsupported element {0}</source>
+      <target>Elemento no admitido {0}</target>
+      </trans-unit>
+      <trans-unit resname="MyMemoryTranslator.2" approved="yes" id="14" xml:space="preserve">
+      <source>Null response received</source>
+      <target>Respuesta nula recibida</target>
+      </trans-unit>
+      <trans-unit resname="MyMemoryTranslator.3" approved="yes" id="15" xml:space="preserve">
+      <source>Server status code: {0}</source>
+      <target>Código de estado del servidor: {0}</target>
+      </trans-unit>
+      <trans-unit resname="YandexTranslator.2" approved="yes" id="16" xml:space="preserve">
+      <source>Text size exceeds the maximum</source>
+      <target>El tamaño del texto excede el máximo</target>
+      </trans-unit>
+      <trans-unit resname="YandexTranslator.3" approved="yes" id="17" xml:space="preserve">
+      <source>The text could not be translated</source>
+      <target>El texto no se pudo traducir.</target>
+      </trans-unit>
+      <trans-unit resname="YandexTranslator.4" approved="yes" id="18" xml:space="preserve">
+      <source>The specified translation direction is not supported</source>
+      <target>No se admite la dirección de traducción especificada</target>
+      </trans-unit>
+      <trans-unit resname="YandexTranslator.5" approved="yes" id="19" xml:space="preserve">
+      <source>Status code: {0}</source>
+      <target>Código de estado: {0}</target>
+      </trans-unit>
+      <trans-unit resname="YandexTranslator.6" approved="yes" id="20" xml:space="preserve">
+      <source>Null response received</source>
+      <target>Respuesta nula recibida</target>
+      </trans-unit>
+      <trans-unit resname="YandexTranslator.7" approved="yes" id="21" xml:space="preserve">
+      <source>Server status code: {0}</source>
+      <target>Código de estado del servidor: {0}</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/sdlxliff/sdlxliff.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">U2RsMlhsaWZmLjE9JSUlMCUlJQpTZGwyWGxpZmYuMj0lJSUxJSUlClhsaWZmMlNkbC4xPSUlJTIl
+JSUKWGxpZmYyU2RsLjI9JSUlMyUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Sdl2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting SDLXLIFF file</source>
+      <target>Error al convertir el archivo SDLXLIFF</target>
+      </trans-unit>
+      <trans-unit resname="Sdl2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Segmentation problem found</source>
+      <target>Se ha encontrado un problema de segmentación</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Sdl.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging SDLXLIFF file</source>
+      <target>Error al combinar el archivo SDLXLIFF</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Sdl.2" approved="yes" id="3" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/converters.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">QXBwcm92ZUFsbC5oZWxwPSUlJTAlJSUKQXBwcm92ZUFsbC4xPSUlJTElJSUKQXBwcm92ZUFsbC4y
+PSUlJTIlJSUKQ29udmVydC5oZWxwPSUlJTMlJSUKQ29udmVydC4wMj0lJSU0JSUlCkNvbnZlcnQu
+MDM9JSUlNSUlJQpDb252ZXJ0LjA0PSUlJTYlJSUKQ29udmVydC4wNT0lJSU3JSUlCkNvbnZlcnQu
+MDY9JSUlOCUlJQpDb252ZXJ0LjA3PSUlJTklJSUKQ29udmVydC4wOD0lJSUxMCUlJQpDb252ZXJ0
+LjA5PSUlJTExJSUlCkNvbnZlcnQuMTA9JSUlMTIlJSUKQ29udmVydC4xMT0lJSUxMyUlJQpDb252
+ZXJ0LjEyPSUlJTE0JSUlCkNvbnZlcnQuMTQ9JSUlMTUlJSUKQ29udmVydC4xNT0lJSUxNiUlJQpD
+b252ZXJ0LjE2PSUlJTE3JSUlCkNvbnZlcnQuMTc9JSUlMTglJSUKQ29udmVydC4xOD0lJSUxOSUl
+JQpDb252ZXJ0LjE5PSUlJTIwJSUlCkNvbnZlcnQuMjA9JSUlMjElJSUKQ29udmVydC4yMT0lJSUy
+MiUlJQpDb3B5U291cmNlcy5oZWxwPSUlJTIzJSUlCkNvcHlTb3VyY2VzLjE9JSUlMjQlJSUKQ29w
+eVNvdXJjZXMuMj0lJSUyNSUlJQpDb3B5U291cmNlcy4zPSUlJTI2JSUlCkNvcHlTb3VyY2VzLjQ9
+JSUlMjclJSUKRW5jb2RpbmdSZXNvbHZlci4xPSUlJTI4JSUlCkVuY29kaW5nUmVzb2x2ZXIuMj0l
+JSUyOSUlJQpFbmNvZGluZ1Jlc29sdmVyLjM9JSUlMzAlJSUKRW5jb2RpbmdSZXNvbHZlci40PSUl
+JTMxJSUlCkVuY29kaW5nUmVzb2x2ZXIuNT0lJSUzMiUlJQpFbmNvZGluZ1Jlc29sdmVyLjY9JSUl
+MzMlJSUKRW5jb2RpbmdSZXNvbHZlci43PSUlJTM0JSUlCkVuY29kaW5nUmVzb2x2ZXIuOD0lJSUz
+NSUlJQpFbmNvZGluZ1Jlc29sdmVyLjk9JSUlMzYlJSUKRW5jb2RpbmdSZXNvbHZlci4xMD0lJSUz
+NyUlJQpFbmNvZGluZ1Jlc29sdmVyLjExPSUlJTM4JSUlCkZpbGVGb3JtYXRzLjE9JSUlMzklJSUK
+RmlsZUZvcm1hdHMuMj0lJSU0MCUlJQpGaWxlRm9ybWF0cy4zPSUlJTQxJSUlCkZpbGVGb3JtYXRz
+LjQ9JSUlNDIlJSUKRmlsZUZvcm1hdHMuSU5YPSUlJTQzJSUlCkZpbGVGb3JtYXRzLklDTUw9JSUl
+NDQlJSUKRmlsZUZvcm1hdHMuSURNTD0lJSU0NSUlJQpGaWxlRm9ybWF0cy5ESVRBPSUlJTQ2JSUl
+CkZpbGVGb3JtYXRzLkhUTUw9JSUlNDclJSUKRmlsZUZvcm1hdHMuSlM9JSUlNDglJSUKRmlsZUZv
+cm1hdHMuSlNPTj0lJSU0OSUlJQpGaWxlRm9ybWF0cy5KQVZBPSUlJTUwJSUlCkZpbGVGb3JtYXRz
+Lk1JRj0lJSU1MSUlJQpGaWxlRm9ybWF0cy5PRkY9JSUlNTIlJSUKRmlsZUZvcm1hdHMuT089JSUl
+NTMlJSUKRmlsZUZvcm1hdHMuVEVYVD0lJSU1NCUlJQpGaWxlRm9ybWF0cy5QSFBBPSUlJTU1JSUl
+CkZpbGVGb3JtYXRzLlBPPSUlJTU2JSUlCkZpbGVGb3JtYXRzLlJDPSUlJTU3JSUlCkZpbGVGb3Jt
+YXRzLlJFU1g9JSUlNTglJSUKRmlsZUZvcm1hdHMuU0RMUFBYPSUlJTU5JSUlCkZpbGVGb3JtYXRz
+LlNETFhMSUZGPSUlJTYwJSUlCkZpbGVGb3JtYXRzLlNSVD0lJSU2MSUlJQpGaWxlRm9ybWF0cy5U
+Uz0lJSU2MiUlJQpGaWxlRm9ybWF0cy5UWExGPSUlJTYzJSUlCkZpbGVGb3JtYXRzLlRYTUw9JSUl
+NjQlJSUKRmlsZUZvcm1hdHMuV1BNTD0lJSU2NSUlJQpGaWxlRm9ybWF0cy5YTElGRj0lJSU2NiUl
+JQpGaWxlRm9ybWF0cy5YTUw9JSUlNjclJSUKRmlsZUZvcm1hdHMuWE1MRz0lJSU2OCUlJQpKb2lu
+LmhlbHA9JSUlNjklJSUKSm9pbi4xPSUlJTcwJSUlCkpvaW4uMj0lJSU3MSUlJQpKb2luLjM9JSUl
+NzIlJSUKSm9pbi40PSUlJTczJSUlCk1lcmdlLmhlbHA9JSUlNzQlJSUKTWVyZ2UuMDE9JSUlNzUl
+JSUKTWVyZ2UuMDI9JSUlNzYlJSUKTWVyZ2UuMDM9JSUlNzclJSUKTWVyZ2UuMDQ9JSUlNzglJSUK
+TWVyZ2UuMDU9JSUlNzklJSUKTWVyZ2UuMDY9JSUlODAlJSUKTWVyZ2UuMDc9JSUlODElJSUKTWVy
+Z2UuMDg9JSUlODIlJSUKTWVyZ2UuMDk9JSUlODMlJSUKTWVyZ2UuMTA9JSUlODQlJSUKTWVyZ2Uu
+MTE9JSUlODUlJSUKTWVyZ2UuMTI9JSUlODYlJSUKTWVyZ2UuMTM9JSUlODclJSUKTWVyZ2UuMTQ9
+JSUlODglJSUKUHNldWRvVHJhbnNsYXRpb24uaGVscD0lJSU4OSUlJQpQc2V1ZG9UcmFuc2xhdGlv
+bi4xPSUlJTkwJSUlClBzZXVkb1RyYW5zbGF0aW9uLjI9JSUlOTElJSUKUHNldWRvVHJhbnNsYXRp
+b24uMz0lJSU5MiUlJQpQc2V1ZG9UcmFuc2xhdGlvbi40PSUlJTkzJSUlClJlbW92ZVRhcmdldHMu
+aGVscD0lJSU5NCUlJQpSZW1vdmVUYXJnZXRzLjE9JSUlOTUlJSUKUmVtb3ZlVGFyZ2V0cy4yPSUl
+JTk2JSUlClRteEV4cG9ydGVyLjA9JSUlOTclJSUKVG14RXhwb3J0ZXIuMT0lJSU5OCUlJQpUbXhF
+eHBvcnRlci4yPSUlJTk5JSUlClRteEV4cG9ydGVyLjM9JSUlMTAwJSUlClVuZXhpc3RlbnRTZWdt
+ZW50RXhjZXB0aW9uLjE9JSUlMTAxJSUlClV0aWxzLjE9JSUlMTAyJSUlClV0aWxzLjI9JSUlMTAz
+JSUlCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="ApproveAll.help" approved="yes" id="0" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="ApproveAll.1" approved="yes" id="1" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="ApproveAll.2" approved="yes" id="2" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="Convert.help" approved="yes" id="3" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] [-version] -file sourceFile -srcLang sourceLang 
+        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
+        [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
+        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
+        [-xmlfilter folder] [-2.0] [-2.1] [-ignoretc][-charsets]
+
+Where:
+
+   -help:      (optional) display this help information and exit
+   -version:   (optional) display version &amp; build information and exit
+   -file:      source file to convert
+   -srcLang:   source language code
+   -tgtLang:   (optional) target language code
+   -xliff:     (optional) XLIFF file to generate
+   -skl:       (optional) skeleton file to generate
+   -type:      (optional) document type
+   -enc:       (optional) character set code for the source file
+   -srx:       (optional) SRX file to use for segmentation
+   -catalog:   (optional) XML catalog to use for processing
+   -ditaval:   (optional) conditional processing file to use when converting DITA maps
+   -config:    (optional) configuration file to use when converting JSON documents
+   -embed:     (optional) store skeleton inside the XLIFF file
+   -paragraph: (optional) use paragraph segmentation
+   -xmlfilter: (optional) folder containing configuration files for the XML filter
+   -ignoretc:  (optional) ignore tracked changes from Oxygen XML Editor in XML files
+   -2.0:       (optional) generate XLIFF 2.0
+   -2.1:       (optional) generate XLIFF 2.1
+   -charsets:  (optional) display a list of available character sets and exit
+
+Document Types
+
+   INX = Adobe InDesign Interchange
+   ICML = Adobe InCopy ICML
+   IDML = Adobe InDesign IDML
+   DITA = DITA Map
+   HTML = HTML Page
+   JS = JavaScript
+   JSON = JSON
+   JAVA = Java Properties
+   MIF = MIF (Maker Interchange Format)
+   OFF = Microsoft Office 2007 Document
+   OO = OpenOffice Document
+   PHPA = PHP Array
+   PO = PO (Portable Objects)
+   RC = RC (Windows C/C++ Resources)
+   RESX = ResX (Windows .NET Resources)
+   SDLPPX = Trados Studio Package
+   SDLXLIFF = SDLXLIFF Document
+   SRT = SRT Subtitle
+   TEXT = Plain Text
+   TS = TS (Qt Linguist translation source)
+   TXLF = Wordfast/GlobalLink XLIFF
+   TXML = TXML Document
+   WPML = WPML XLIFF
+   XLIFF = XLIFF Document
+   XML = XML Document
+   XMLG = XML (Generic)
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] [-version] -file archivo -srcLang idiomaOrigen 
+        [-tgtLang idiomaDestino] [-skl esqueleto] [-xliff archivoXliff] 
+        [-type tipoArchivo] [-enc codificación] [-srx archivoSrx] [-catalog catalogoXml] 
+        [-divatal ditaval] [-config configuración] [-embed] [-paragraph] 
+        [-xmlfilter filtros] [-2.0] [-2.1] [-ignoretc] [-charsets]
+
+Dónde:
+
+   -help:      (opcional) mostrar esta información de ayuda y salir
+   -versión:   (opcional) mostrar información de versión y salir
+   -file:      archivo fuente para convertir
+   -srcLang:   código de idioma origen del idioma
+   -tgtLang:   código de idioma de destino (opcional)
+   -xliff:     (opcional) archivo XLIFF para generar
+   -skl:       (opcional) archivo esqueleto a generar
+   -type:      (opcional) tipo de documento
+   -enc:       código de juego de caracteres (opcional) para el archivo fuente
+   -srx:       (opcional) archivo SRX para usar para la segmentación
+   -catalog:   (opcional) Catálogo XML para el procesamiento
+   -ditaval:   archivo de procesamiento condicional (opcional) para usar al convertir mapas DITA
+   -config:    archivo de configuración (opcional) para usar al convertir documentos JSON
+   -embed:     (opcional) almacenar esqueleto dentro del archivo XLIFF
+   -paragraph: (opcional) use segmentación de párrafos
+   -xmlfilter: carpeta (opcional) que contiene archivos de configuración para el filtro XML
+   -ignoretc:  (opcional) ignorar los cambios controlados de Oxygen XML Editor en archivos XML
+   -2.0:       (opcional) generar XLIFF 2.0
+   -2.1:       (opcional) generar XLIFF 2.1
+   -charsets:  (opcional) mostrar una lista de juegos de caracteres disponibles y salir
+
+Tipos de documentos
+
+   INX = Adobe InDesign Interchange
+   ICML = Adobe InCopy ICML
+   IDML = Adobe InDesign IDML
+   DITA = Mapa DITA
+   HTML = Página HTML
+   JS = JavaScript
+   JSON = JSON
+   JAVA = Propiedades de Java
+   MIF = MIF (Maker Interchange Format)
+   OFF = Documento de Microsoft Office 2007
+   OO = Documento de OpenOffice
+   PHPA = PHP Array
+   PO = PO (Portable Objects)
+   RC = RC (recursos de Windows C/C++)
+   RESX = ResX (recursos de Windows .NET)
+   SDLPPX = Paquete Trados Studio
+   SDLXLIFF = Documento SDLXLIFF
+   SRT = Subtítulo SRT
+   TEXTO = Texto sin formato
+   TS = TS (archivo de traducción de Qt Linguist)
+   TXLF = Wordfast/GlobalLink XLIFF
+   TXML = Documento TXML
+   WPML = WPML XLIFF
+   XLIFF = Documento XLIFF
+   XML = Documento XML
+   XMLG = XML (genérico)
+
+
+
+</target>
+      </trans-unit>
+      <trans-unit resname="Convert.02" approved="yes" id="4" xml:space="preserve">
+      <source>Version: {0} Build: {1}</source>
+      <target>Versión: {0} Compilación: {1}</target>
+      </trans-unit>
+      <trans-unit resname="Convert.03" approved="yes" id="5" xml:space="preserve">
+      <source>Missing '-file' parameter</source>
+      <target>Falta el parámetro '-file'</target>
+      </trans-unit>
+      <trans-unit resname="Convert.04" approved="yes" id="6" xml:space="preserve">
+      <source>Source file does not exist</source>
+      <target>El archivo fuente no existe</target>
+      </trans-unit>
+      <trans-unit resname="Convert.05" approved="yes" id="7" xml:space="preserve">
+      <source>Auto-detected type: {0}</source>
+      <target>Tipo detectado automáticamente: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Convert.06" approved="yes" id="8" xml:space="preserve">
+      <source>Unable to auto-detect file format. Use '-type' parameter.</source>
+      <target>No se puede detectar automáticamente el formato de archivo. Utilice el parámetro '-type'.</target>
+      </trans-unit>
+      <trans-unit resname="Convert.07" approved="yes" id="9" xml:space="preserve">
+      <source>Unknown file format</source>
+      <target>Formato de archivo desconocido</target>
+      </trans-unit>
+      <trans-unit resname="Convert.08" approved="yes" id="10" xml:space="preserve">
+      <source>Auto-detected encoding: {0}</source>
+      <target>Codificación detectada automáticamente: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Convert.09" approved="yes" id="11" xml:space="preserve">
+      <source>Unable to auto-detect character set. Use '-enc' parameter.</source>
+      <target>No se puede detectar automáticamente el juego de caracteres. Utilice el parámetro '-enc'.</target>
+      </trans-unit>
+      <trans-unit resname="Convert.10" approved="yes" id="12" xml:space="preserve">
+      <source>Unsupported encoding</source>
+      <target>Codificación no admitida</target>
+      </trans-unit>
+      <trans-unit resname="Convert.11" approved="yes" id="13" xml:space="preserve">
+      <source>Missing '-srcLang' parameter</source>
+      <target>Falta el parámetro '-srcLang'</target>
+      </trans-unit>
+      <trans-unit resname="Convert.12" approved="yes" id="14" xml:space="preserve">
+      <source>''{0}'' is not a valid language code</source>
+      <target>''{0}'' no es un código de idioma válido</target>
+      </trans-unit>
+      <trans-unit resname="Convert.14" approved="yes" id="15" xml:space="preserve">
+      <source>Error validating languages</source>
+      <target>Error al validar idiomas</target>
+      </trans-unit>
+      <trans-unit resname="Convert.15" approved="yes" id="16" xml:space="preserve">
+      <source>SRX file ''{0}'' does not exist</source>
+      <target>El archivo SRX ''{0}'' no existe</target>
+      </trans-unit>
+      <trans-unit resname="Convert.16" approved="yes" id="17" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="Convert.17" approved="yes" id="18" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="Convert.18" approved="yes" id="19" xml:space="preserve">
+      <source>Conversion error: {0}</source>
+      <target>Error de conversión: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Convert.19" approved="yes" id="20" xml:space="preserve">
+      <source>Error adding skeleton</source>
+      <target>Error al agregar esqueleto</target>
+      </trans-unit>
+      <trans-unit resname="Convert.20" approved="yes" id="21" xml:space="preserve">
+      <source>Unknown file format</source>
+      <target>Formato de archivo desconocido</target>
+      </trans-unit>
+      <trans-unit resname="Convert.21" approved="yes" id="22" xml:space="preserve">
+      <source>Select either -2.0 or -2.1</source>
+      <target>Seleccione -2.0 o -2.1</target>
+      </trans-unit>
+      <trans-unit resname="CopySources.help" approved="yes" id="23" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="CopySources.1" approved="yes" id="24" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="CopySources.2" approved="yes" id="25" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="CopySources.3" approved="yes" id="26" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="CopySources.4" approved="yes" id="27" xml:space="preserve">
+      <source>Missing target language declaration</source>
+      <target>Falta la declaración del idioma destino</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.1" approved="yes" id="28" xml:space="preserve">
+      <source>Error detecting XML encoding</source>
+      <target>Error al detectar la codificación de XML</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.2" approved="yes" id="29" xml:space="preserve">
+      <source>Error detecting RC encoding</source>
+      <target>Error al detectar la codificación de RC</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.3" approved="yes" id="30" xml:space="preserve">
+      <source>Error detecting HTML encoding</source>
+      <target>Error al detectar la codificación de HTML</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.4" approved="yes" id="31" xml:space="preserve">
+      <source>Error detecting SRT encoding</source>
+      <target>Error al detectar la codificación de SRT</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.5" approved="yes" id="32" xml:space="preserve">
+      <source>Error detecting PHPA encoding</source>
+      <target>Error al detectar la codificación de PHPA</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.6" approved="yes" id="33" xml:space="preserve">
+      <source>Error detecting JSON encoding</source>
+      <target>Error al detectar la codificación de JSON</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.7" approved="yes" id="34" xml:space="preserve">
+      <source>Premature end of file</source>
+      <target>Fin prematuro del archivo</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.8" approved="yes" id="35" xml:space="preserve">
+      <source>Missing '-file' parameter</source>
+      <target>Falta el parámetro '-file'</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.9" approved="yes" id="36" xml:space="preserve">
+      <source>Source file does not exist</source>
+      <target>El archivo fuente no existe</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.10" approved="yes" id="37" xml:space="preserve">
+      <source>Missing '-type' parameter</source>
+      <target>Falta el parámetro '-type'</target>
+      </trans-unit>
+      <trans-unit resname="EncodingResolver.11" approved="yes" id="38" xml:space="preserve">
+      <source>Unkown '-type' parameter: {0}</source>
+      <target>Parámetro '-type' desconocido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.1" approved="yes" id="39" xml:space="preserve">
+      <source>Premature end of file</source>
+      <target>Fin prematuro del archivo</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.2" approved="yes" id="40" xml:space="preserve">
+      <source>Selected file is not JSON</source>
+      <target>El archivo seleccionado no es JSON</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.3" approved="yes" id="41" xml:space="preserve">
+      <source>Missing '-file' parameter</source>
+      <target>Falta el parámetro '-file'</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.4" approved="yes" id="42" xml:space="preserve">
+      <source>Source file does not exist</source>
+      <target>El archivo fuente no existe</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.INX" approved="no" id="43" xml:space="preserve">
+      <source>Adobe InDesign Interchange</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.ICML" approved="no" id="44" xml:space="preserve">
+      <source>Adobe InCopy ICML</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.IDML" approved="no" id="45" xml:space="preserve">
+      <source>Adobe InDesign IDML</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.DITA" approved="yes" id="46" xml:space="preserve">
+      <source>DITA Map</source>
+      <target>Mapa DITA</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.HTML" approved="yes" id="47" xml:space="preserve">
+      <source>HTML Page</source>
+      <target>Página HTML</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.JS" approved="no" id="48" xml:space="preserve">
+      <source>JavaScript</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.JSON" approved="no" id="49" xml:space="preserve">
+      <source>JSON</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.JAVA" approved="yes" id="50" xml:space="preserve">
+      <source>Java Properties</source>
+      <target>Propiedades de Java</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.MIF" approved="no" id="51" xml:space="preserve">
+      <source>MIF (Maker Interchange Format)</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.OFF" approved="yes" id="52" xml:space="preserve">
+      <source>Microsoft Office 2007 Document</source>
+      <target>Documento de Microsoft Office 2007</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.OO" approved="yes" id="53" xml:space="preserve">
+      <source>OpenOffice Document</source>
+      <target>Documento de OpenOffice</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.TEXT" approved="yes" id="54" xml:space="preserve">
+      <source>Plain Text</source>
+      <target>Texto sin Formato</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.PHPA" approved="no" id="55" xml:space="preserve">
+      <source>PHP Array</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.PO" approved="no" id="56" xml:space="preserve">
+      <source>PO (Portable Objects)</source>
+   </trans-unit>
+      <trans-unit resname="FileFormats.RC" approved="yes" id="57" xml:space="preserve">
+      <source>RC (Windows C/C++ Resources)</source>
+      <target>RC (Recursos de Windows C/C++)</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.RESX" approved="yes" id="58" xml:space="preserve">
+      <source>ResX (Windows .NET Resources)</source>
+      <target>ResX (Recursos de Windows .NET)</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.SDLPPX" approved="yes" id="59" xml:space="preserve">
+      <source>Trados Studio Package</source>
+      <target>Paquete de Trados Studio</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.SDLXLIFF" approved="yes" id="60" xml:space="preserve">
+      <source>SDLXLIFF Document</source>
+      <target>Documento SDLXLIFF</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.SRT" approved="yes" id="61" xml:space="preserve">
+      <source>SRT Subtitle</source>
+      <target>Subtítulo SRT</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.TS" approved="yes" id="62" xml:space="preserve">
+      <source>TS (Qt Linguist Translation Source)</source>
+      <target>TS (Fuente de Traducción de Qt Linguist)</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.TXLF" approved="yes" id="63" xml:space="preserve">
+      <source>Wordfast/GlobalLink XLIFF</source>
+      <target>Documento XLIFF de Wordfast/GlobalLink</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.TXML" approved="yes" id="64" xml:space="preserve">
+      <source>TXML Document</source>
+      <target>Documento TXML</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.WPML" approved="yes" id="65" xml:space="preserve">
+      <source>WPML XLIFF</source>
+      <target>Documento XLIFF de WPML</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.XLIFF" approved="yes" id="66" xml:space="preserve">
+      <source>XLIFF Document</source>
+      <target>Documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.XML" approved="yes" id="67" xml:space="preserve">
+      <source>XML Document</source>
+      <target>Documento XML</target>
+      </trans-unit>
+      <trans-unit resname="FileFormats.XMLG" approved="yes" id="68" xml:space="preserve">
+      <source>XML (Generic)</source>
+      <target>Documento XML (Genérico)</target>
+      </trans-unit>
+      <trans-unit resname="Join.help" approved="yes" id="69" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -target targetFile -files file1,file2,file3...
+
+Where:
+
+    -help:     (optional) Display this help information and exit
+    -target:   combined output XLIFF file
+    -files:    list of XLIFF files to join, separated by ','
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -target xliffCombinado -files archivo1,archivo2,archivo33...
+
+Dónde:
+
+    -help:   (opcional) Mostrar esta información de ayuda y salir
+    -target: archivo XLIFF de salida combinada
+    -files:  lista de archivos XLIFF a unir, separados por ','
+
+</target>
+      </trans-unit>
+      <trans-unit resname="Join.1" approved="yes" id="70" xml:space="preserve">
+      <source>File ''{0}'' does not exist</source>
+      <target>El archivo ''{0}'' no existe</target>
+      </trans-unit>
+      <trans-unit resname="Join.2" approved="yes" id="71" xml:space="preserve">
+      <source>XLIFF files from different versions</source>
+      <target>Archivos XLIFF de diferentes versiones</target>
+      </trans-unit>
+      <trans-unit resname="Join.3" approved="yes" id="72" xml:space="preserve">
+      <source>XLIFF files with different source language</source>
+      <target>Archivos XLIFF con diferente idioma de origen</target>
+      </trans-unit>
+      <trans-unit resname="Join.4" approved="yes" id="73" xml:space="preserve">
+      <source>XLIFF files with different target language</source>
+      <target>Archivos XLIFF con diferente idioma de destino</target>
+      </trans-unit>
+      <trans-unit resname="Merge.help" approved="yes" id="74" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
+
+Where:
+
+    -help:       (optional) display this help information and exit
+    -version:    (optional) display version &amp; build information and exit
+    -xliff:      XLIFF file to merge
+    -target:     (optional) translated file or folder where to store translated files
+    -catalog:    (optional) XML catalog to use for processing
+    -unapproved: (optional) accept translations from unapproved segments
+    -export:     (optional) generate TMX file from approved segments
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] [-version] -xliff archivoXliff -target traducción [-catalog catalogoXml] [-unapproved] [-export]
+
+Dónde:
+
+    -help:       (opcional) mostrar esta información de ayuda y salir
+    -versión:    (opcional) mostrar información de versión y salir
+    -xliff:      archivo XLIFF para combinar
+    -target:     (opcional) archivo traducido o carpeta donde almacenar los archivos traducidos
+    -catalog:    (opcional) Catálogo XML para el procesamiento
+    -unapproved: (opcional) aceptar traducciones de segmentos no aprobados
+    -export:     (opcional) generar archivo TMX a partir de segmentos aprobados
+
+</target>
+      </trans-unit>
+      <trans-unit resname="Merge.01" approved="yes" id="75" xml:space="preserve">
+      <source>Version: {0} Build: {1}</source>
+      <target>Versión: {0} Compilación: {1}</target>
+      </trans-unit>
+      <trans-unit resname="Merge.02" approved="yes" id="76" xml:space="preserve">
+      <source>Missing '-xliff' parameter</source>
+      <target>Falta el parámetro '-xliff'</target>
+      </trans-unit>
+      <trans-unit resname="Merge.03" approved="yes" id="77" xml:space="preserve">
+      <source>Error getting target file</source>
+      <target>Error al obtener el archivo de destino</target>
+      </trans-unit>
+      <trans-unit resname="Merge.04" approved="yes" id="78" xml:space="preserve">
+      <source>Missing '-target' parameter</source>
+      <target>Falta el parámetro '-target'</target>
+      </trans-unit>
+      <trans-unit resname="Merge.05" approved="yes" id="79" xml:space="preserve">
+      <source>Catalog folder ''{0}'' not found</source>
+      <target>No se encontró la carpeta de catálogo ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Merge.06" approved="yes" id="80" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="Merge.07" approved="yes" id="81" xml:space="preserve">
+      <source>Merge error: {0}</source>
+      <target>Error de combinación: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Merge.08" approved="yes" id="82" xml:space="preserve">
+      <source>''{0}'' is not a directory</source>
+      <target>''{0}'' no es un directorio</target>
+      </trans-unit>
+      <trans-unit resname="Merge.09" approved="yes" id="83" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="Merge.10" approved="yes" id="84" xml:space="preserve">
+      <source>Unsupported XLIFF file</source>
+      <target>Archivo XLIFF no compatible</target>
+      </trans-unit>
+      <trans-unit resname="Merge.11" approved="yes" id="85" xml:space="preserve">
+      <source>Error merging XLIFF</source>
+      <target>Error al combinar XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="Merge.12" approved="yes" id="86" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="Merge.13" approved="yes" id="87" xml:space="preserve">
+      <source>Selected file is not a valid XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF válido</target>
+      </trans-unit>
+      <trans-unit resname="Merge.14" approved="yes" id="88" xml:space="preserve">
+      <source>Missing target language declaration</source>
+      <target>Falta la declaración del idioma destino</target>
+      </trans-unit>
+      <trans-unit resname="PseudoTranslation.help" approved="yes" id="89" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to pseudo-translate
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para pseudo-traducir
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="PseudoTranslation.1" approved="yes" id="90" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="PseudoTranslation.2" approved="yes" id="91" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="PseudoTranslation.3" approved="yes" id="92" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="PseudoTranslation.4" approved="yes" id="93" xml:space="preserve">
+      <source>Missing target language declaration</source>
+      <target>Falta la declaración del idioma destino</target>
+      </trans-unit>
+      <trans-unit resname="RemoveTargets.help" approved="yes" id="94" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="RemoveTargets.1" approved="yes" id="95" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="RemoveTargets.2" approved="yes" id="96" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="TmxExporter.0" approved="yes" id="97" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="TmxExporter.1" approved="yes" id="98" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="TmxExporter.2" approved="yes" id="99" xml:space="preserve">
+      <source>Missing '-xliff' parameter</source>
+      <target>Falta el parámetro '-xliff'</target>
+      </trans-unit>
+      <trans-unit resname="TmxExporter.3" approved="yes" id="100" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-tmx tmxFile] [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -tmx:       (optional) TMX file to generate
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-tmx archivoTmx] [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -tmx:     (opcional) archivo TMX a generar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="UnexistentSegmentException.1" approved="yes" id="101" xml:space="preserve">
+      <source>Requested segment does not exist in skeleton file</source>
+      <target>El segmento solicitado no existe en el archivo esqueleto</target>
+      </trans-unit>
+      <trans-unit resname="Utils.1" approved="yes" id="102" xml:space="preserve">
+      <source>Invalid path</source>
+      <target>Ruta no válida</target>
+      </trans-unit>
+      <trans-unit resname="Utils.2" approved="yes" id="103" xml:space="preserve">
+      <source>Path is not absolute for {0}</source>
+      <target>La ruta no es absoluta para {0}</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/plaintext/plaintext.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">VGV4dDJYbGlmZi4xPSUlJTAlJSUKWGxpZmYyVGV4dC4xPSUlJTElJSUKWGxpZmYyVGV4dC4yPSUl
+JTIlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Text2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting Plain Text file</source>
+      <target>Error al convertir el archivo de texto sin formato</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Text.1" approved="yes" id="1" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Text.2" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging Plain Text file</source>
+      <target>Error al combinar el archivo de texto sin formato</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/office/office.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">T2ZmaWNlMlhsaWZmLjE9JSUlMCUlJQpPZmZpY2UyWGxpZmYuMj0lJSUxJSUlCk9mZmljZTJYbGlm
+Zi4zPSUlJTIlJSUKWGxpZmYyT2ZmaWNlLjE9JSUlMyUlJQpYbGlmZjJPZmZpY2UuMj0lJSU0JSUl
+Cg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Office2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Selected file is not a Microsoft Office 2007 document</source>
+      <target>El archivo seleccionado no es un documento de Microsoft Office 2007</target>
+      </trans-unit>
+      <trans-unit resname="Office2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Wrong document type</source>
+      <target>Tipo de documento incorrecto</target>
+      </trans-unit>
+      <trans-unit resname="Office2Xliff.3" approved="yes" id="2" xml:space="preserve">
+      <source>Error converting Office file</source>
+      <target>Error al convertir el archivo Office</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Office.1" approved="yes" id="3" xml:space="preserve">
+      <source>Skeleton not found for file ''{0}''</source>
+      <target>Esqueleto no encontrado para el archivo ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Office.2" approved="yes" id="4" xml:space="preserve">
+      <source>Error converting Office file</source>
+      <target>Error al convertir el archivo Office</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/resx/resx.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">UmVzeDJYbGlmZi4xPSUlJTAlJSUKWGxpZmYyUmVzeC4xPSUlJTElJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Resx2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting ResX file</source>
+      <target>Error al convertir el archivo ResX</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Resx.1" approved="yes" id="1" xml:space="preserve">
+      <source>Error merging ResX file</source>
+      <target>Error al combinar el archivo ResX</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/javaproperties/javaproperties.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">UHJvcGVydGllczJYbGlmZi4xPSUlJTAlJSUKWGxpZmYyUHJvcGVydGllcy4xPSUlJTElJSUKWGxp
+ZmYyUHJvcGVydGllcy4yPSUlJTIlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Properties2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting .properties file</source>
+      <target>Error al convertir el archivo .properties</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Properties.1" approved="yes" id="1" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Properties.2" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging .properties file</source>
+      <target>Error al combinar el archivo .properties</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/srt/srt.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">U3J0MlhsaWZmLjA9JSUlMCUlJQpYbGlmZjJTcnQuMD0lJSUxJSUlClhsaWZmMlNydC4xPSUlJTIl
+JSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Srt2Xliff.0" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting SRT file</source>
+      <target>Error al convertir el archivo SRT</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Srt.0" approved="yes" id="1" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Srt.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging SRT file</source>
+      <target>Error al combinar el archivo SRT</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/html/html.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">SHRtbDJYbGlmZi4xPSUlJTAlJSUKSHRtbDJYbGlmZi4yPSUlJTElJSUKSHRtbDJYbGlmZi4zPSUl
+JTIlJSUKWGxpZmYySHRtbC4xPSUlJTMlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Html2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error reading from input file</source>
+      <target>Error al leer el archivo de entrada</target>
+      </trans-unit>
+      <trans-unit resname="Html2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Error converting HTML file</source>
+      <target>Error al convertir el archivo HTML</target>
+      </trans-unit>
+      <trans-unit resname="Html2Xliff.3" approved="yes" id="2" xml:space="preserve">
+      <source>Invalid HTML markup found</source>
+      <target>Se ha encontrado un marcado HTML no válido</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Html.1" approved="yes" id="3" xml:space="preserve">
+      <source>Error merging HTML file</source>
+      <target>Error al combinar el archivo HTML</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/php/php.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">UGhwMlhsaWZmLjE9JSUlMCUlJQpQaHAyWGxpZmYuMj0lJSUxJSUlClhsaWZmMlBocC4xPSUlJTIl
+JSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Php2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Initial array delimiter not found</source>
+      <target>No se encontró el delimitador inicial de PHP Array</target>
+      </trans-unit>
+      <trans-unit resname="Php2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Error converting PHP Array file</source>
+      <target>Error al convertir el archivo PHP Array</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Php.1" approved="yes" id="2" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/xml/xml.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">WGxpZmYyWG1sLjE9JSUlMCUlJQpYbGlmZjJYbWwuMj0lJSUxJSUlClhsaWZmMlhtbC4zPSUlJTIl
+JSUKWGxpZmYyWG1sLjQ9JSUlMyUlJQpYbGlmZjJYbWwuNT0lJSU0JSUlClhtbDJYbGlmZi4wPSUl
+JTUlJSUKWG1sMlhsaWZmLjE9JSUlNiUlJQpYbWwyWGxpZmYuMTA9JSUlNyUlJQpYbWwyWGxpZmYu
+MTE9JSUlOCUlJQpYbWwyWGxpZmYuMTI9JSUlOSUlJQpYbWwyWGxpZmYuMj0lJSUxMCUlJQpYbWwy
+WGxpZmYuND0lJSUxMSUlJQpYbWwyWGxpZmYuNT0lJSUxMiUlJQpYbWwyWGxpZmYuNj0lJSUxMyUl
+JQpYbWwyWGxpZmYuNz0lJSUxNCUlJQpYbWwyWGxpZmYuOD0lJSUxNSUlJQpYbWwyWGxpZmYuOT0l
+JSUxNiUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Xliff2Xml.1" approved="yes" id="0" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Xml.2" approved="yes" id="1" xml:space="preserve">
+      <source>Error removing 'removeTranslate' from ''{0}'' </source>
+      <target>Error al quitar 'removeTranslate' de ''{0}'' </target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Xml.3" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging XML file</source>
+      <target>Error al combinar el archivo XML</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Xml.4" approved="yes" id="3" xml:space="preserve">
+      <source>Error updating images for ''{0}''</source>
+      <target>Error al actualizar imágenes para ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Xml.5" approved="yes" id="4" xml:space="preserve">
+      <source>Broken &lt;mrk&gt; element</source>
+      <target>Elemento &lt;mrk&gt; dañado</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.0" approved="yes" id="5" xml:space="preserve">
+      <source>Configuration file ''{0}'' not found. 
+
+Write a new configuration file for the XML Converter or set file type to 'XML (Generic)'.</source>
+      <target>No se encontró el archivo de configuración ''{0}''. 
+
+Escriba un nuevo archivo de configuración para el convertidor XML o seleccione el tipo de archivo 'XML (Genérico)'.</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.1" approved="yes" id="6" xml:space="preserve">
+      <source>Error reading from input file</source>
+      <target>Error al leer el archivo de entrada</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.10" approved="yes" id="7" xml:space="preserve">
+      <source>Parsed undeclared attribute node</source>
+      <target>Se procesó un nodo de atributo no declarado</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.11" approved="yes" id="8" xml:space="preserve">
+      <source>Unknown element: ''{0}''</source>
+      <target>Elemento desconocido: ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.12" approved="yes" id="9" xml:space="preserve">
+      <source>Premature end of file</source>
+      <target>Fin prematuro del archivo</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.2" approved="yes" id="10" xml:space="preserve">
+      <source>File ''{0}'' does not contain text</source>
+      <target>El archivo ''{0}'' no contiene texto</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.4" approved="yes" id="11" xml:space="preserve">
+      <source>Error converting XML file</source>
+      <target>Error al convertir el archivo XML</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.5" approved="yes" id="12" xml:space="preserve">
+      <source>Base DITA class ''{0}'' not found in config_dita.xml</source>
+      <target>Clase DITA base ''{0}'' no encontrada en config_dita.xml</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.6" approved="yes" id="13" xml:space="preserve">
+      <source>Broken segment: {0}</source>
+      <target>Segmento dañado: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.7" approved="yes" id="14" xml:space="preserve">
+      <source>Broken tagged text</source>
+      <target>Texto con etiquetas dañado</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.8" approved="yes" id="15" xml:space="preserve">
+      <source>Broken &lt;mrk&gt; element</source>
+      <target>Elemento &lt;mrk&gt; dañado</target>
+      </trans-unit>
+      <trans-unit resname="Xml2Xliff.9" approved="yes" id="16" xml:space="preserve">
+      <source>Broken segment: {0}</source>
+      <target>Segmento dañado: {0}</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/ditamap/ditamap.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">RGl0YU1hcDJYbGlmZi4wMT0lJSUwJSUlCkRpdGFNYXAyWGxpZmYuMDI9JSUlMSUlJQpEaXRhTWFw
+MlhsaWZmLjAzPSUlJTIlJSUKRGl0YU1hcDJYbGlmZi4wND0lJSUzJSUlCkRpdGFNYXAyWGxpZmYu
+MDU9JSUlNCUlJQpEaXRhTWFwMlhsaWZmLjA2PSUlJTUlJSUKRGl0YU1hcDJYbGlmZi4wNz0lJSU2
+JSUlCkRpdGFNYXAyWGxpZmYuMDg9JSUlNyUlJQpEaXRhUGFyc2VyLjAxPSUlJTglJSUKRGl0YVBh
+cnNlci4wMj0lJSU5JSUlCkRpdGFQYXJzZXIuMDM9JSUlMTAlJSUKRGl0YVBhcnNlci4wND0lJSUx
+MSUlJQpEaXRhUGFyc2VyLjA1PSUlJTEyJSUlCkRpdGFQYXJzZXIuMDY9JSUlMTMlJSUKRGl0YVBh
+cnNlci4wNz0lJSUxNCUlJQpEaXRhUGFyc2VyLjA4PSUlJTE1JSUlCkRpdGFQYXJzZXIuMDk9JSUl
+MTYlJSUKRGl0YVBhcnNlci4xMD0lJSUxNyUlJQpEaXRhUGFyc2VyLjExPSUlJTE4JSUlCkRpdGFQ
+YXJzZXIuMTI9JSUlMTklJSUKRGl0YVBhcnNlci4xMz0lJSUyMCUlJQpEaXRhUGFyc2VyLjE0PSUl
+JTIxJSUlCkRpdGFQYXJzZXIuMTU9JSUlMjIlJSUKU2NvcGVCdWlsZGVyLjE9JSUlMjMlJSUKU2Nv
+cGVCdWlsZGVyLjI9JSUlMjQlJSUKWGxpZmYyRGl0YU1hcC4xPSUlJTI1JSUlCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="DitaMap2Xliff.01" approved="yes" id="0" xml:space="preserve">
+      <source>Harvesting Keys</source>
+      <target>Recolectando claves</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.02" approved="yes" id="1" xml:space="preserve">
+      <source>Processing Files</source>
+      <target>Procesando archivos</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.03" approved="yes" id="2" xml:space="preserve">
+      <source>Error converting ''{0}'' to XLIFF</source>
+      <target>Error al convertir ''{0}'' a XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.04" approved="yes" id="3" xml:space="preserve">
+      <source>Adding skipped files</source>
+      <target>Añadiendo archivos omitidos</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.05" approved="yes" id="4" xml:space="preserve">
+      <source>Error converting DITA Map</source>
+      <target>Error al convertir el mapa DITA</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.06" approved="yes" id="5" xml:space="preserve">
+      <source>Key not defined for @conkeyref: ''{0}''</source>
+      <target>Clave no definida para @conkeyref: ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.07" approved="yes" id="6" xml:space="preserve">
+      <source>Invalid @conkeyref: ''{0}'' - Element with id=''{1}'' not found in ''{2}''</source>
+      <target>@conkeyref no válido: ''{0}'' - Elemento con id=''{1}'' no encontrado en ''{2}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaMap2Xliff.08" approved="yes" id="7" xml:space="preserve">
+      <source>Invalid @conkeyref: ''{0}'' - Bad format.</source>
+      <target>@conkeyref no válido: ''{0}'' - Formato incorrecto.</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.01" approved="yes" id="8" xml:space="preserve">
+      <source>Building key scopes</source>
+      <target>Construyendo ámbitos de claves</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.02" approved="yes" id="9" xml:space="preserve">
+      <source>Ignored Untranslatable File: {0}</source>
+      <target>Archivo intraducible ignorado: {0}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.03" approved="yes" id="10" xml:space="preserve">
+      <source>Referenced file {0} doesn''t exist</source>
+      <target>El archivo de referencia {0} no existe</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.04" approved="yes" id="11" xml:space="preserve">
+      <source>Error ''{0}'' in file: ''{1}''</source>
+      <target>Error ''{0}'' en el archivo: ''{1}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.05" approved="yes" id="12" xml:space="preserve">
+      <source>Error recursing {0}</source>
+      <target>Error al visitar {0}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.06" approved="yes" id="13" xml:space="preserve">
+      <source>Invalid @conref at {0}</source>
+      <target>@conref no válido en {0}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.07" approved="yes" id="14" xml:space="preserve">
+      <source>Loop detected processing @conref ''{0}'' in file ''{1}''</source>
+      <target>Bucle detectado procesando @conref ''{0}'' en el archivo ''{1}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.08" approved="yes" id="15" xml:space="preserve">
+      <source>@conref not found:  ''{0}'' in file {1}</source>
+      <target>@conref no encontrado: ''{0}'' en el archivo {1}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.09" approved="yes" id="16" xml:space="preserve">
+      <source>Broken @conref ''{0}'' in file {1}</source>
+      <target>@conref dañado ''{0}'' en el archivo {1}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.10" approved="yes" id="17" xml:space="preserve">
+      <source>Broken @conref ''{0}'' in file {1}</source>
+      <target>@conref dañado ''{0}'' en el archivo {1}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.11" approved="yes" id="18" xml:space="preserve">
+      <source>Key not defined for @conkeyref: ''{0}''</source>
+      <target>Clave no definida para @conkeyref: ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.12" approved="yes" id="19" xml:space="preserve">
+      <source>Key not defined for @conkeyref: ''{0}''</source>
+      <target>Clave no definida para @conkeyref: ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.13" approved="yes" id="20" xml:space="preserve">
+      <source>Broken @conkeyref ''{0}'' in file {1}</source>
+      <target>@conkeyref dañado ''{0}'' en el archivo {1}</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.14" approved="yes" id="21" xml:space="preserve">
+      <source>Loop detected processing @keyref ''{0}'' in file ''{1}''</source>
+      <target>Bucle detectado procesando @keyref ''{0}'' en el archivo ''{1}''</target>
+      </trans-unit>
+      <trans-unit resname="DitaParser.15" approved="yes" id="22" xml:space="preserve">
+      <source>Undefined key for @keyref ''{0}'' in file {1}</source>
+      <target>Clave no definida para @keyref ''{0}'' en el archivo {1}</target>
+      </trans-unit>
+      <trans-unit resname="ScopeBuilder.1" approved="yes" id="23" xml:space="preserve">
+      <source>Duplicate key definition: {0} -&gt; {1}</source>
+      <target>Definición de clave duplicada: {0} -&gt; {1}</target>
+      </trans-unit>
+      <trans-unit resname="ScopeBuilder.2" approved="yes" id="24" xml:space="preserve">
+      <source>Duplicate key definition: {0}</source>
+      <target>Definición de clave duplicada: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2DitaMap.1" approved="yes" id="25" xml:space="preserve">
+      <source>Error merging DITA Map</source>
+      <target>Error al combinar el mapa DITA</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/wpml/wpml.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">V3BtbDJYbGlmZi4xPSUlJTAlJSUKWGxpZmYyV3BtbC4xPSUlJTElJSUKWGxpZmYyV3BtbC4yPSUl
+JTIlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Wpml2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting WPML file</source>
+      <target>Error al convertir el archivo WPML</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Wpml.1" approved="yes" id="1" xml:space="preserve">
+      <source>Error merging WPML file</source>
+      <target>Error al combinar el archivo WPML</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Wpml.2" approved="yes" id="2" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/json/json.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">SnNvbjJYbGlmZi4xPSUlJTAlJSUKSnNvbjJYbGlmZi4yPSUlJTElJSUKSnNvbjJYbGlmZi4zPSUl
+JTIlJSUKSnNvbjJYbGlmZi40PSUlJTMlJSUKSnNvbjJYbGlmZi41PSUlJTQlJSUKSnNvbjJYbGlm
+Zi42PSUlJTUlJSUKSnNvbkNvbmZpZy4xPSUlJTYlJSUKWGxpZmYyanNvbi4xPSUlJTclJSUKWGxp
+ZmYyanNvbi4yPSUlJTglJSUKWGxpZmYyanNvbi4zPSUlJTklJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Json2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Nothing to translate</source>
+      <target>Nada que traducir</target>
+      </trans-unit>
+      <trans-unit resname="Json2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Selected file is not supported</source>
+      <target>El archivo seleccionado no es compatible</target>
+      </trans-unit>
+      <trans-unit resname="Json2Xliff.3" approved="yes" id="2" xml:space="preserve">
+      <source>Wrong configuration for source key ''{0}''</source>
+      <target>Configuración incorrecta para la clave de origen ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Json2Xliff.4" approved="yes" id="3" xml:space="preserve">
+      <source>Duplicated 'id' found: ''{0}''</source>
+      <target>Se encontró un 'id' duplicado: ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Json2Xliff.5" approved="yes" id="4" xml:space="preserve">
+      <source>Invalid initial character for 'id': ''{0}''</source>
+      <target>Carácter inicial no válido para 'id': ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Json2Xliff.6" approved="yes" id="5" xml:space="preserve">
+      <source>Invalid character for 'id': ''{0}''</source>
+      <target>Carácter no válido para 'id': ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="JsonConfig.1" approved="yes" id="6" xml:space="preserve">
+      <source>Missing 'sourceKey' in configuration object</source>
+      <target>Falta 'sourceKey' en el objeto de configuración</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2json.1" approved="yes" id="7" xml:space="preserve">
+      <source>Error merging file</source>
+      <target>Error al combinar archivo</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2json.2" approved="yes" id="8" xml:space="preserve">
+      <source>Missing encoding</source>
+      <target>Falta codificación</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2json.3" approved="yes" id="9" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/po/po.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">UG8yWGxpZmYuMD0lJSUwJSUlClhsaWZmMlBvLjE9JSUlMSUlJQpYbGlmZjJQby4yPSUlJTIlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Po2Xliff.0" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting PO file</source>
+      <target>Error al convertir el archivo PO</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Po.1" approved="yes" id="1" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Po.2" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging PO file</source>
+      <target>Error al combinar el archivo PO</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/txlf/txlf.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">VHhsZjJYbGlmZi4xPSUlJTAlJSUKVHhsZjJYbGlmZi4yPSUlJTElJSUKWGxpZmYyVHhsZi4xPSUl
+JTIlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Txlf2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Nothing extracted</source>
+      <target>Nada extraído</target>
+      </trans-unit>
+      <trans-unit resname="Txlf2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Error converting TXLF file</source>
+      <target>Error al convertir el archivo TXLF</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Txlf.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging TXLF file</source>
+      <target>Error al combinar el archivo TXLF</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/xliff/xliff.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">VG9PcGVuWGxpZmYuMT0lJSUwJSUlClRvT3BlblhsaWZmLjI9JSUlMSUlJQpGcm9tT3BlblhsaWZm
+LjE9JSUlMiUlJQpGcm9tT3BlblhsaWZmLjI9JSUlMyUlJQpYbGlmZlV0aWxzLjE9JSUlNCUlJQpY
+bGlmZlV0aWxzLjI9JSUlNSUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="ToOpenXliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Nothing extracted</source>
+      <target>Nada extraído</target>
+      </trans-unit>
+      <trans-unit resname="ToOpenXliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Error converting XLIFF file</source>
+      <target>Error al convertir el archivo XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="FromOpenXliff.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging XLIFF file</source>
+      <target>Error al combinar el archivo XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="FromOpenXliff.2" approved="yes" id="3" xml:space="preserve">
+      <source>Wrong XLIFF version</source>
+      <target>Versión de XLIFF incorrecta</target>
+      </trans-unit>
+      <trans-unit resname="XliffUtils.1" approved="yes" id="4" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="XliffUtils.2" approved="yes" id="5" xml:space="preserve">
+      <source>Unsupported version of XLIFF</source>
+      <target>Versión no compatible de XLIFF</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/javascript/javascript.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">SnNjcmlwdDJ4bGlmZi4xPSUlJTAlJSUKSnNjcmlwdDJ4bGlmZi4yPSUlJTElJSUKSnNjcmlwdDJ4
+bGlmZi4zPSUlJTIlJSUKWGxpZmYyanNjcmlwdC4xPSUlJTMlJSUKWGxpZmYyanNjcmlwdC4yPSUl
+JTQlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Jscript2xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Unexpected end of file</source>
+      <target>Inesperado final de archivo</target>
+      </trans-unit>
+      <trans-unit resname="Jscript2xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Found a string that is not properly closed</source>
+      <target>Se encontró un fragmento de texto que no está correctamente cerrado</target>
+      </trans-unit>
+      <trans-unit resname="Jscript2xliff.3" approved="yes" id="2" xml:space="preserve">
+      <source>Error converting JavaScript file</source>
+      <target>Error al convertir el archivo JavaScript</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2jscript.1" approved="yes" id="3" xml:space="preserve">
+      <source>Missing &lt;target&gt; in segment ''{0}''</source>
+      <target>Falta &lt;target&gt; en el segmento ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2jscript.2" approved="yes" id="4" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/msoffice/msoffice.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">TVNPZmZpY2UyWGxpZmYuMD0lJSUwJSUlCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="MSOffice2Xliff.0" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting MS Office file</source>
+      <target>Error al convertir el archivo MS Office</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/rc/rc.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">UmMyWGxpZmYuMT0lJSUwJSUlClhsaWZmMlJjLjE9JSUlMSUlJQpYbGlmZjJSYy4yPSUlJTIlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Rc2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting RC file</source>
+      <target>Error al convertir el archivo RC</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Rc.1" approved="yes" id="1" xml:space="preserve">
+      <source>Error merging RC file</source>
+      <target>Error al combinar el archivo RC</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Rc.2" approved="yes" id="2" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/ts/ts.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">VHMyWGxpZmYuMT0lJSUwJSUlClhsaWZmMlRzLjE9JSUlMSUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Ts2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting TS file</source>
+      <target>Error al convertir el archivo TS</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Ts.1" approved="yes" id="1" xml:space="preserve">
+      <source>Error merging TS file</source>
+      <target>Error al combinar el archivo TS</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/txml/txml.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">VHhtbDJYbGlmZi4xPSUlJTAlJSUKVHhtbDJYbGlmZi4yPSUlJTElJSUKWGxpZmYyVHhtbC4xPSUl
+JTIlJSUKWGxpZmYyVHhtbC4yPSUlJTMlJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Txml2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting TXML file</source>
+      <target>Error al convertir el archivo TXML</target>
+      </trans-unit>
+      <trans-unit resname="Txml2Xliff.2" approved="yes" id="1" xml:space="preserve">
+      <source>Unknown error</source>
+      <target>Error desconocido</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Txml.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging TXML file</source>
+      <target>Error al combinar el archivo TXML</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Txml.2" approved="yes" id="3" xml:space="preserve">
+      <source>Unknown error</source>
+      <target>Error desconocido</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/sdlppx/sdlppx.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">U2RscHB4MlhsaWZmLjA9JSUlMCUlJQpTZGxwcHgyWGxpZmYuMT0lJSUxJSUlClNkbHBweDJYbGlm
+Zi4yPSUlJTIlJSUKU2RscHB4MlhsaWZmLjM9JSUlMyUlJQpTZGxwcHgyWGxpZmYuND0lJSU0JSUl
+ClhsaWZmMlNkbHJweC4wPSUlJTUlJSUKWGxpZmYyU2RscnB4LjE9JSUlNiUlJQpYbGlmZjJTZGxy
+cHguMj0lJSU3JSUlClhsaWZmMlNkbHJweC4zPSUlJTglJSUK</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Sdlppx2Xliff.0" approved="yes" id="0" xml:space="preserve">
+      <source>Incorrect target language. Valid options:</source>
+      <target>Idioma de destino incorrecto. Opciones válidas:</target>
+      </trans-unit>
+      <trans-unit resname="Sdlppx2Xliff.1" approved="yes" id="1" xml:space="preserve">
+      <source>Incorrect source language. Valid options:</source>
+      <target>Idioma de origen incorrecto. Opciones válidas:</target>
+      </trans-unit>
+      <trans-unit resname="Sdlppx2Xliff.2" approved="yes" id="2" xml:space="preserve">
+      <source>Error converting SDL package</source>
+      <target>Error al convertir el paquete de SDL</target>
+      </trans-unit>
+      <trans-unit resname="Sdlppx2Xliff.3" approved="yes" id="3" xml:space="preserve">
+      <source>Project file not found in package</source>
+      <target>Archivo de proyecto no encontrado en el paquete</target>
+      </trans-unit>
+      <trans-unit resname="Sdlppx2Xliff.4" approved="yes" id="4" xml:space="preserve">
+      <source>Selected file is a return package</source>
+      <target>El archivo seleccionado es un paquete de devolución</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Sdlrpx.0" approved="yes" id="5" xml:space="preserve">
+      <source>Missing &lt;header&gt;</source>
+      <target>Falta &lt;header&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Sdlrpx.1" approved="yes" id="6" xml:space="preserve">
+      <source>Missing &lt;prop-group&gt;</source>
+      <target>Falta &lt;prop-group&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Sdlrpx.2" approved="yes" id="7" xml:space="preserve">
+      <source>Missing sdlxliff file name</source>
+      <target>Falta el nombre de archivo sdlxliff</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Sdlrpx.3" approved="yes" id="8" xml:space="preserve">
+      <source>Error merging SDLXLIFF file</source>
+      <target>Error al combinar el archivo SDLXLIFF</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/mif/mif.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">TWlmMlhsaWZmLjE9JSUlMCUlJQpYbGlmZjJNaWYuMT0lJSUxJSUlClhsaWZmMk1pZi4yPSUlJTIl
+JSUKWGxpZmYyTWlmLjM9JSUlMyUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Mif2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting MIF file</source>
+      <target>Error al convertir el archivo MIF</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Mif.1" approved="yes" id="1" xml:space="preserve">
+      <source>Missing &lt;target&gt; in segment ''{0}''</source>
+      <target>Falta &lt;target&gt; en el segmento ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Mif.2" approved="yes" id="2" xml:space="preserve">
+      <source>Segment ''{0}'' not found</source>
+      <target>Segmento ''{0}'' no encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Mif.3" approved="yes" id="3" xml:space="preserve">
+      <source>Error merging MIF file</source>
+      <target>Error al combinar el archivo MIF</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/converters/idml/idml.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">SWRtbDJYbGlmZi4xPSUlJTAlJSUKU3RvcnkyWGxpZmYuMT0lJSUxJSUlClhsaWZmMklkbWwuMT0l
+JSUyJSUlCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Idml2Xliff.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error converting IDML file</source>
+      <target>Error al convertir el archivo IDML</target>
+      </trans-unit>
+      <trans-unit resname="Story2Xliff.1" approved="yes" id="1" xml:space="preserve">
+      <source>Error converting Story</source>
+      <target>Error al convertir Story</target>
+      </trans-unit>
+      <trans-unit resname="Xliff2Idml.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error merging IDML file</source>
+      <target>Error al combinar el archivo IDML</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/segmenter/segmenter.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">U2VnbWVudGVyLjE9JSUlMCUlJQpTZWdtZW50ZXIuMj0lJSUxJSUlCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Segmenter.1" approved="yes" id="0" xml:space="preserve">
+      <source>Selected file is not an SRX document</source>
+      <target>El archivo seleccionado no es un documento SRX</target>
+      </trans-unit>
+      <trans-unit resname="Segmenter.2" approved="yes" id="1" xml:space="preserve">
+      <source>Incorrect SRX version</source>
+      <target>Versión incorrecta de SRX</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/stats/stats.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">UmVwZXRpdGlvbkFuYWx5c2lzLmhlbHA9JSUlMCUlJQpSZXBldGl0aW9uQW5hbHlzaXMuMT0lJSUx
+JSUlClJlcGV0aXRpb25BbmFseXNpcy4yPSUlJTIlJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjM9JSUl
+MyUlJQpSZXBldGl0aW9uQW5hbHlzaXMuND0lJSU0JSUlClJlcGV0aXRpb25BbmFseXNpcy41PSUl
+JTUlJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjY9JSUlNiUlJQpSZXBldGl0aW9uQW5hbHlzaXMuNz0l
+JSU3JSUlClJlcGV0aXRpb25BbmFseXNpcy44PSUlJTglJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjk9
+JSUlOSUlJQpSZXBldGl0aW9uQW5hbHlzaXMuMTA9JSUlMTAlJSUKUmVwZXRpdGlvbkFuYWx5c2lz
+LjExPSUlJTExJSUlClJlcGV0aXRpb25BbmFseXNpcy4xMj0lJSUxMiUlJQpSZXBldGl0aW9uQW5h
+bHlzaXMuMTM9JSUlMTMlJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjE0PSUlJTE0JSUlClJlcGV0aXRp
+b25BbmFseXNpcy4xNj0lJSUxNSUlJQpSZXBldGl0aW9uQW5hbHlzaXMuMTk9JSUlMTYlJSUKUmVw
+ZXRpdGlvbkFuYWx5c2lzLjIwPSUlJTE3JSUlClJlcGV0aXRpb25BbmFseXNpcy4yMT0lJSUxOCUl
+JQpSZXBldGl0aW9uQW5hbHlzaXMuMjI9JSUlMTklJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjIzPSUl
+JTIwJSUlClJlcGV0aXRpb25BbmFseXNpcy4yND0lJSUyMSUlJQpSZXBldGl0aW9uQW5hbHlzaXMu
+MjU9JSUlMjIlJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjI2PSUlJTIzJSUlClJlcGV0aXRpb25BbmFs
+eXNpcy4yOT0lJSUyNCUlJQpSZXBldGl0aW9uQW5hbHlzaXMuMzA9JSUlMjUlJSUKUmVwZXRpdGlv
+bkFuYWx5c2lzLjMyPSUlJTI2JSUlClJlcGV0aXRpb25BbmFseXNpcy4zMz0lJSUyNyUlJQpSZXBl
+dGl0aW9uQW5hbHlzaXMuMzQ9JSUlMjglJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjM1PSUlJTI5JSUl
+ClJlcGV0aXRpb25BbmFseXNpcy4zOD0lJSUzMCUlJQpSZXBldGl0aW9uQW5hbHlzaXMuMzk9JSUl
+MzElJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjQwPSUlJTMyJSUlClJlcGV0aXRpb25BbmFseXNpcy40
+MT0lJSUzMyUlJQpSZXBldGl0aW9uQW5hbHlzaXMuNTU9JSUlMzQlJSUKUmVwZXRpdGlvbkFuYWx5
+c2lzLjUwPSUlJTM1JSUlClJlcGV0aXRpb25BbmFseXNpcy41MT0lJSUzNiUlJQpSZXBldGl0aW9u
+QW5hbHlzaXMuNTI9JSUlMzclJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjUzPSUlJTM4JSUlClJlcGV0
+aXRpb25BbmFseXNpcy41ND0lJSUzOSUlJQpSZXBldGl0aW9uQW5hbHlzaXMuNTU9JSUlNDAlJSUK
+UmVwZXRpdGlvbkFuYWx5c2lzLjU2PSUlJTQxJSUlClJlcGV0aXRpb25BbmFseXNpcy41Nz0lJSU0
+MiUlJQpSZXBldGl0aW9uQW5hbHlzaXMuNTg9JSUlNDMlJSUKUmVwZXRpdGlvbkFuYWx5c2lzLjYw
+PSUlJTQ0JSUlClJlcGV0aXRpb25BbmFseXNpcy42MT0lJSU0NSUlJQpSZXBldGl0aW9uQW5hbHlz
+aXMuNjI9JSUlNDYlJSUKU3ZnU3RhdHMuMT0lJSU0NyUlJQpTdmdTdGF0cy4yPSUlJTQ4JSUlCg==</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="RepetitionAnalysis.help" approved="yes" id="0" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to analyze
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF a analizar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.1" approved="yes" id="1" xml:space="preserve">
+      <source>Missing '-xliff' parameter</source>
+      <target>Falta el parámetro '-xliff'</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.2" approved="yes" id="2" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.3" approved="yes" id="3" xml:space="preserve">
+      <source>Error analyzing file</source>
+      <target>Error al analizar el archivo</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.4" approved="yes" id="4" xml:space="preserve">
+      <source>Translation Status Analysis: {0}</source>
+      <target>Estado de la traducción: {0}</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.5" approved="yes" id="5" xml:space="preserve">
+      <source>File: {0}</source>
+      <target>Archivo: {0}</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.6" approved="yes" id="6" xml:space="preserve">
+      <source>Repetition Analysis</source>
+      <target>Análisis de repetición</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.7" approved="yes" id="7" xml:space="preserve">
+      <source>Segments Based Analysis</source>
+      <target>Análisis basado en segmentos</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.8" approved="yes" id="8" xml:space="preserve">
+      <source>Document</source>
+      <target>Documento</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.9" approved="yes" id="9" xml:space="preserve">
+      <source>New</source>
+      <target>Nuevo</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.10" approved="no" id="10" xml:space="preserve">
+      <source>ICE</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.11" approved="yes" id="11" xml:space="preserve">
+      <source>Matches</source>
+      <target>Coincidencias</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.12" approved="yes" id="12" xml:space="preserve">
+      <source>Int.Rep.</source>
+      <target>Rep.Int.</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.13" approved="yes" id="13" xml:space="preserve">
+      <source>Ext.Rep.</source>
+      <target>Rep.Ext.</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.14" approved="yes" id="14" xml:space="preserve">
+      <source>SUM</source>
+      <target>SUMA</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.16" approved="yes" id="15" xml:space="preserve">
+      <source>Words Based Analysis</source>
+      <target>Análisis basado en palabras</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.19" approved="no" id="16" xml:space="preserve">
+      <source>ICE</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.20" approved="yes" id="17" xml:space="preserve">
+      <source>Not Translatable</source>
+      <target>No Traducible</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.21" approved="no" id="18" xml:space="preserve">
+      <source>100%</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.22" approved="yes" id="19" xml:space="preserve">
+      <source>Repeated</source>
+      <target>Repetido</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.23" approved="no" id="20" xml:space="preserve">
+      <source>95-99%</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.24" approved="no" id="21" xml:space="preserve">
+      <source>85-94%</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.25" approved="no" id="22" xml:space="preserve">
+      <source>75-84%</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.26" approved="no" id="23" xml:space="preserve">
+      <source>50-74%</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.29" approved="yes" id="24" xml:space="preserve">
+      <source>Translation Status Analysis</source>
+      <target>Estado de la traducción</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.30" approved="yes" id="25" xml:space="preserve">
+      <source>Segments</source>
+      <target>Segmentos</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.32" approved="yes" id="26" xml:space="preserve">
+      <source>Not Translated</source>
+      <target>No Traducido</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.33" approved="yes" id="27" xml:space="preserve">
+      <source>Translated</source>
+      <target>Traducido</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.34" approved="yes" id="28" xml:space="preserve">
+      <source>Approved</source>
+      <target>Aprobado</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.35" approved="yes" id="29" xml:space="preserve">
+      <source>Not Approved</source>
+      <target>No Aprobado</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.38" approved="yes" id="30" xml:space="preserve">
+      <source>Translated Segments</source>
+      <target>Segmentos Traducidos</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.39" approved="yes" id="31" xml:space="preserve">
+      <source>Approved Segments</source>
+      <target>Segmentos Aprobados</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.40" approved="yes" id="32" xml:space="preserve">
+      <source>TM Matches Quality</source>
+      <target>Calidad de las Coincidencias</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.41" approved="yes" id="33" xml:space="preserve">
+      <source>Words</source>
+      <target>Palabras</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.55" approved="yes" id="34" xml:space="preserve">
+      <source>Translation Status History</source>
+      <target>Historial de estado de traducción</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.50" approved="yes" id="35" xml:space="preserve">
+      <source>Comments:</source>
+      <target>Comentarios:</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.51" approved="yes" id="36" xml:space="preserve">
+      <source>Int.Rep.</source>
+      <target>Rep.Int.</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.52" approved="yes" id="37" xml:space="preserve">
+      <source>Internal Repetition = Segment repetitions within one document</source>
+      <target>Repetición interna = Repeticiones de segmento dentro de un documento</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.53" approved="yes" id="38" xml:space="preserve">
+      <source>Ext.Rep.</source>
+      <target>Rep.Ext.</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.54" approved="yes" id="39" xml:space="preserve">
+      <source>External Repetition = Segment repetitions between all documents</source>
+      <target>Repetición externa = Repeticiones de segmento entre todos los documentos</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.55" approved="yes" id="40" xml:space="preserve">
+      <source>Translation Status History</source>
+      <target>Historial de estado de traducción</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.56" approved="yes" id="41" xml:space="preserve">
+      <source>File: {0}</source>
+      <target>Archivo: {0}</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.57" approved="yes" id="42" xml:space="preserve">
+      <source>Description</source>
+      <target>Descripción</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.58" approved="yes" id="43" xml:space="preserve">
+      <source>Date</source>
+      <target>Fecha</target>
+      </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.60" approved="no" id="44" xml:space="preserve">
+      <source>ICE</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.61" approved="no" id="45" xml:space="preserve">
+      <source>100%</source>
+   </trans-unit>
+      <trans-unit resname="RepetitionAnalysis.62" approved="yes" id="46" xml:space="preserve">
+      <source>Repeated</source>
+      <target>Repetido</target>
+      </trans-unit>
+      <trans-unit resname="SvgStats.1" approved="yes" id="47" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="SvgStats.2" approved="yes" id="48" xml:space="preserve">
+      <source>Empty XLIFF</source>
+      <target>XLIFF vacío</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="com/maxprograms/validation/validation.properties" source-language="en" target-language="es" datatype="javapropertyresourcebundle" tool-id="OpenXLIFF">
+    <header>
+      <skl>
+        <internal-file form="base64">WGxpZmYxMC4xPSUlJTAlJSUKWGxpZmYxMS4xPSUlJTElJSUKWGxpZmYxMi4xPSUlJTIlJSUKWGxp
+ZmYyMC4wMT0lJSUzJSUlClhsaWZmMjAuMDI9JSUlNCUlJQpYbGlmZjIwLjAzPSUlJTUlJSUKWGxp
+ZmYyMC4wND0lJSU2JSUlClhsaWZmMjAuMDU9JSUlNyUlJQpYbGlmZjIwLjA2PSUlJTglJSUKWGxp
+ZmYyMC4wNz0lJSU5JSUlClhsaWZmMjAuMDg9JSUlMTAlJSUKWGxpZmYyMC4wOT0lJSUxMSUlJQpY
+bGlmZjIwLjEwPSUlJTEyJSUlClhsaWZmMjAuMTAwPSUlJTEzJSUlClhsaWZmMjAuMTAxPSUlJTE0
+JSUlClhsaWZmMjAuMTAyPSUlJTE1JSUlClhsaWZmMjAuMTAzPSUlJTE2JSUlClhsaWZmMjAuMTA0
+PSUlJTE3JSUlClhsaWZmMjAuMTA1PSUlJTE4JSUlClhsaWZmMjAuMTA2PSUlJTE5JSUlClhsaWZm
+MjAuMTA4PSUlJTIwJSUlClhsaWZmMjAuMTA5PSUlJTIxJSUlClhsaWZmMjAuMTE9JSUlMjIlJSUK
+WGxpZmYyMC4xMTA9JSUlMjMlJSUKWGxpZmYyMC4xMTE9JSUlMjQlJSUKWGxpZmYyMC4xMTI9JSUl
+MjUlJSUKWGxpZmYyMC4xMTM9JSUlMjYlJSUKWGxpZmYyMC4xMTQ9JSUlMjclJSUKWGxpZmYyMC4x
+MTU9JSUlMjglJSUKWGxpZmYyMC4xMTY9JSUlMjklJSUKWGxpZmYyMC4xMTc9JSUlMzAlJSUKWGxp
+ZmYyMC4xMTg9JSUlMzElJSUKWGxpZmYyMC4xMTk9JSUlMzIlJSUKWGxpZmYyMC4xMj0lJSUzMyUl
+JQpYbGlmZjIwLjEyMD0lJSUzNCUlJQpYbGlmZjIwLjEyMT0lJSUzNSUlJQpYbGlmZjIwLjEyMj0l
+JSUzNiUlJQpYbGlmZjIwLjEyMz0lJSUzNyUlJQpYbGlmZjIwLjEyND0lJSUzOCUlJQpYbGlmZjIw
+LjEyNT0lJSUzOSUlJQpYbGlmZjIwLjEyNj0lJSU0MCUlJQpYbGlmZjIwLjEyNz0lJSU0MSUlJQpY
+bGlmZjIwLjEyOD0lJSU0MiUlJQpYbGlmZjIwLjEyOT0lJSU0MyUlJQpYbGlmZjIwLjEzPSUlJTQ0
+JSUlClhsaWZmMjAuMTMwPSUlJTQ1JSUlClhsaWZmMjAuMTMxPSUlJTQ2JSUlClhsaWZmMjAuMTMy
+PSUlJTQ3JSUlClhsaWZmMjAuMTMzPSUlJTQ4JSUlClhsaWZmMjAuMTM0PSUlJTQ5JSUlClhsaWZm
+MjAuMTM1PSUlJTUwJSUlClhsaWZmMjAuMTM2PSUlJTUxJSUlClhsaWZmMjAuMTM3PSUlJTUyJSUl
+ClhsaWZmMjAuMTQ9JSUlNTMlJSUKWGxpZmYyMC4xNT0lJSU1NCUlJQpYbGlmZjIwLjE2PSUlJTU1
+JSUlClhsaWZmMjAuMTc9JSUlNTYlJSUKWGxpZmYyMC4xOD0lJSU1NyUlJQpYbGlmZjIwLjE5PSUl
+JTU4JSUlClhsaWZmMjAuMjA9JSUlNTklJSUKWGxpZmYyMC4yMT0lJSU2MCUlJQpYbGlmZjIwLjIy
+PSUlJTYxJSUlClhsaWZmMjAuMjM9JSUlNjIlJSUKWGxpZmYyMC4yND0lJSU2MyUlJQpYbGlmZjIw
+LjI1PSUlJTY0JSUlClhsaWZmMjAuMjY9JSUlNjUlJSUKWGxpZmYyMC4yNz0lJSU2NiUlJQpYbGlm
+ZjIwLjI4PSUlJTY3JSUlClhsaWZmMjAuMjk9JSUlNjglJSUKWGxpZmYyMC4zMD0lJSU2OSUlJQpY
+bGlmZjIwLjMxPSUlJTcwJSUlClhsaWZmMjAuMzI9JSUlNzElJSUKWGxpZmYyMC4zMz0lJSU3MiUl
+JQpYbGlmZjIwLjM0PSUlJTczJSUlClhsaWZmMjAuMzU9JSUlNzQlJSUKWGxpZmYyMC4zNj0lJSU3
+NSUlJQpYbGlmZjIwLjM3PSUlJTc2JSUlClhsaWZmMjAuMzg9JSUlNzclJSUKWGxpZmYyMC4zOT0l
+JSU3OCUlJQpYbGlmZjIwLjQwPSUlJTc5JSUlClhsaWZmMjAuNDI9JSUlODAlJSUKWGxpZmYyMC40
+Mz0lJSU4MSUlJQpYbGlmZjIwLjQ0PSUlJTgyJSUlClhsaWZmMjAuNDU9JSUlODMlJSUKWGxpZmYy
+MC40Nj0lJSU4NCUlJQpYbGlmZjIwLjQ3PSUlJTg1JSUlClhsaWZmMjAuNDg9JSUlODYlJSUKWGxp
+ZmYyMC40OT0lJSU4NyUlJQpYbGlmZjIwLjUwPSUlJTg4JSUlClhsaWZmMjAuNTE9JSUlODklJSUK
+WGxpZmYyMC41Mj0lJSU5MCUlJQpYbGlmZjIwLjUzPSUlJTkxJSUlClhsaWZmMjAuNTQ9JSUlOTIl
+JSUKWGxpZmYyMC41NT0lJSU5MyUlJQpYbGlmZjIwLjU2PSUlJTk0JSUlClhsaWZmMjAuNTc9JSUl
+OTUlJSUKWGxpZmYyMC41OD0lJSU5NiUlJQpYbGlmZjIwLjU5PSUlJTk3JSUlClhsaWZmMjAuNjA9
+JSUlOTglJSUKWGxpZmYyMC42MT0lJSU5OSUlJQpYbGlmZjIwLjYyPSUlJTEwMCUlJQpYbGlmZjIw
+LjYzPSUlJTEwMSUlJQpYbGlmZjIwLjY0PSUlJTEwMiUlJQpYbGlmZjIwLjY1PSUlJTEwMyUlJQpY
+bGlmZjIwLjY2PSUlJTEwNCUlJQpYbGlmZjIwLjY3PSUlJTEwNSUlJQpYbGlmZjIwLjY4PSUlJTEw
+NiUlJQpYbGlmZjIwLjY5PSUlJTEwNyUlJQpYbGlmZjIwLjcwPSUlJTEwOCUlJQpYbGlmZjIwLjcx
+PSUlJTEwOSUlJQpYbGlmZjIwLjcyPSUlJTExMCUlJQpYbGlmZjIwLjczPSUlJTExMSUlJQpYbGlm
+ZjIwLjc0PSUlJTExMiUlJQpYbGlmZjIwLjc1PSUlJTExMyUlJQpYbGlmZjIwLjc2PSUlJTExNCUl
+JQpYbGlmZjIwLjc3PSUlJTExNSUlJQpYbGlmZjIwLjc4PSUlJTExNiUlJQpYbGlmZjIwLjc5PSUl
+JTExNyUlJQpYbGlmZjIwLjgwPSUlJTExOCUlJQpYbGlmZjIwLjgxPSUlJTExOSUlJQpYbGlmZjIw
+LjgyPSUlJTEyMCUlJQpYbGlmZjIwLjgzPSUlJTEyMSUlJQpYbGlmZjIwLjg0PSUlJTEyMiUlJQpY
+bGlmZjIwLjg1PSUlJTEyMyUlJQpYbGlmZjIwLjg2PSUlJTEyNCUlJQpYbGlmZjIwLjg3PSUlJTEy
+NSUlJQpYbGlmZjIwLjg4PSUlJTEyNiUlJQpYbGlmZjIwLjg5PSUlJTEyNyUlJQpYbGlmZjIwLjkw
+PSUlJTEyOCUlJQpYbGlmZjIwLjkxPSUlJTEyOSUlJQpYbGlmZjIwLjkyPSUlJTEzMCUlJQpYbGlm
+ZjIwLjkzPSUlJTEzMSUlJQpYbGlmZjIwLjk0PSUlJTEzMiUlJQpYbGlmZjIwLjk1PSUlJTEzMyUl
+JQpYbGlmZjIwLjk2PSUlJTEzNCUlJQpYbGlmZjIwLjk3PSUlJTEzNSUlJQpYbGlmZjIwLjk4PSUl
+JTEzNiUlJQpYbGlmZjIwLjk5PSUlJTEzNyUlJQpYbGlmZkNoZWNrZXIuaGVscD0lJSUxMzglJSUK
+WGxpZmZDaGVja2VyLjE9JSUlMTM5JSUlClhsaWZmQ2hlY2tlci4xMD0lJSUxNDAlJSUKWGxpZmZD
+aGVja2VyLjExPSUlJTE0MSUlJQpYbGlmZkNoZWNrZXIuMTI9JSUlMTQyJSUlClhsaWZmQ2hlY2tl
+ci4xMz0lJSUxNDMlJSUKWGxpZmZDaGVja2VyLjE0PSUlJTE0NCUlJQpYbGlmZkNoZWNrZXIuMTU9
+JSUlMTQ1JSUlClhsaWZmQ2hlY2tlci4xNj0lJSUxNDYlJSUKWGxpZmZDaGVja2VyLjE3PSUlJTE0
+NyUlJQpYbGlmZkNoZWNrZXIuMTg9JSUlMTQ4JSUlClhsaWZmQ2hlY2tlci4xOT0lJSUxNDklJSUK
+WGxpZmZDaGVja2VyLjI9JSUlMTUwJSUlClhsaWZmQ2hlY2tlci4yMD0lJSUxNTElJSUKWGxpZmZD
+aGVja2VyLjIxPSUlJTE1MiUlJQpYbGlmZkNoZWNrZXIuMjI9JSUlMTUzJSUlClhsaWZmQ2hlY2tl
+ci4yMz0lJSUxNTQlJSUKWGxpZmZDaGVja2VyLjI0PSUlJTE1NSUlJQpYbGlmZkNoZWNrZXIuMjU9
+JSUlMTU2JSUlClhsaWZmQ2hlY2tlci4yNj0lJSUxNTclJSUKWGxpZmZDaGVja2VyLjI3PSUlJTE1
+OCUlJQpYbGlmZkNoZWNrZXIuMjg9JSUlMTU5JSUlClhsaWZmQ2hlY2tlci4yOT0lJSUxNjAlJSUK
+WGxpZmZDaGVja2VyLjM9JSUlMTYxJSUlClhsaWZmQ2hlY2tlci4zMD0lJSUxNjIlJSUKWGxpZmZD
+aGVja2VyLjMxPSUlJTE2MyUlJQpYbGlmZkNoZWNrZXIuMzI9JSUlMTY0JSUlClhsaWZmQ2hlY2tl
+ci4zMz0lJSUxNjUlJSUKWGxpZmZDaGVja2VyLjM0PSUlJTE2NiUlJQpYbGlmZkNoZWNrZXIuMzU9
+JSUlMTY3JSUlClhsaWZmQ2hlY2tlci4zNj0lJSUxNjglJSUKWGxpZmZDaGVja2VyLjM3PSUlJTE2
+OSUlJQpYbGlmZkNoZWNrZXIuMzg9JSUlMTcwJSUlClhsaWZmQ2hlY2tlci4zOT0lJSUxNzElJSUK
+WGxpZmZDaGVja2VyLjQ9JSUlMTcyJSUlClhsaWZmQ2hlY2tlci40MD0lJSUxNzMlJSUKWGxpZmZD
+aGVja2VyLjU9JSUlMTc0JSUlClhsaWZmQ2hlY2tlci42PSUlJTE3NSUlJQpYbGlmZkNoZWNrZXIu
+Nz0lJSUxNzYlJSUKWGxpZmZDaGVja2VyLjg9JSUlMTc3JSUlClhsaWZmQ2hlY2tlci45PSUlJTE3
+OCUlJQo=</internal-file>
+      </skl>
+      <tool tool-version="3.13.0 20230829_0823" tool-id="OpenXLIFF" tool-name="OpenXLIFF Filters"/>
+    </header>
+    <?encoding UTF-8?>
+    <body>
+      <trans-unit resname="Xliff10.1" approved="yes" id="0" xml:space="preserve">
+      <source>Error adding DTD declaration</source>
+      <target>Error al agregar la declaración de DTD</target>
+      </trans-unit>
+      <trans-unit resname="Xliff11.1" approved="yes" id="1" xml:space="preserve">
+      <source>Error adding namespace declaration</source>
+      <target>Error al agregar la declaración del espacio de nombres</target>
+      </trans-unit>
+      <trans-unit resname="Xliff12.1" approved="yes" id="2" xml:space="preserve">
+      <source>Error adding transitional namespace declaration</source>
+      <target>Error al agregar la declaración del espacio de nombres de transición</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.01" approved="yes" id="3" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;mtc:match&gt;</source>
+      <target>'id' duplicado en &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.02" approved="yes" id="4" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;mda:metaGroup&gt;</source>
+      <target>'id' duplicado en &lt;mda:metaGroup&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.03" approved="yes" id="5" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;gls:glossEntry&gt;</source>
+      <target>'id' duplicado en &lt;gls:glossEntry&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.04" approved="yes" id="6" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;gls:translation&gt;</source>
+      <target>'id' duplicado en &lt;gls:translation&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.05" approved="yes" id="7" xml:space="preserve">
+      <source>Invalid source language ''{0}''</source>
+      <target>Idioma de origen no válido ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.06" approved="yes" id="8" xml:space="preserve">
+      <source>Invalid target language ''{0}''</source>
+      <target>Idioma de destino no válido ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.07" approved="yes" id="9" xml:space="preserve">
+      <source>Invalid Format Style attribute: ''{0}''</source>
+      <target>Atributo de estilo de formato no válido: ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.08" approved="yes" id="10" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;file&gt;</source>
+      <target>'id' duplicado en &lt;file&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.09" approved="yes" id="11" xml:space="preserve">
+      <source>Missing 'href' in skeleton</source>
+      <target>Falta 'href' en el esqueleto</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.10" approved="yes" id="12" xml:space="preserve">
+      <source>Non-empty skeleton with 'href' found</source>
+      <target>Esqueleto no vacío con 'href' encontrado</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.100" approved="yes" id="13" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.101" approved="yes" id="14" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.102" approved="yes" id="15" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.103" approved="yes" id="16" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.104" approved="yes" id="17" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.105" approved="yes" id="18" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'dataRefStart' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'dataRefStart' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.106" approved="yes" id="19" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'dataRefEnd' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'dataRefEnd' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.108" approved="yes" id="20" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'subFlowsStart' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'subFlowsStart' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.109" approved="yes" id="21" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'subFlowsEnd' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'subFlowsEnd' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.11" approved="yes" id="22" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;note&gt;</source>
+      <target>'id' duplicado en &lt;note&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.110" approved="yes" id="23" xml:space="preserve">
+      <source>&lt;pc&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;pc&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.111" approved="yes" id="24" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.112" approved="yes" id="25" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.113" approved="yes" id="26" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.114" approved="yes" id="27" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.115" approved="yes" id="28" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.116" approved="yes" id="29" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'dataRef' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.117" approved="yes" id="30" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.118" approved="yes" id="31" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.119" approved="yes" id="32" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'isolated' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'isolated' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.12" approved="yes" id="33" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;group&gt;</source>
+      <target>'id' duplicado en &lt;group&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.120" approved="yes" id="34" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.121" approved="yes" id="35" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.122" approved="yes" id="36" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.123" approved="yes" id="37" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.124" approved="yes" id="38" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.125" approved="yes" id="39" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'dataRef' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.126" approved="yes" id="40" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.127" approved="yes" id="41" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.128" approved="yes" id="42" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'isolated' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'isolated' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.129" approved="yes" id="43" xml:space="preserve">
+      <source>&lt;sc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.13" approved="yes" id="44" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;unit&gt;</source>
+      <target>'id' duplicado en &lt;unit&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.130" approved="yes" id="45" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.131" approved="yes" id="46" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.132" approved="yes" id="47" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.133" approved="yes" id="48" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.134" approved="yes" id="49" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'startRef' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'startRef' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.135" approved="yes" id="50" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.136" approved="yes" id="51" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.137" approved="yes" id="52" xml:space="preserve">
+      <source>&lt;ec&gt; element with different value of 'isolated' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ec&gt; con diferente valor de 'isolated' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.14" approved="yes" id="53" xml:space="preserve">
+      <source>&lt;unit&gt; without &lt;segment&gt; child</source>
+      <target>&lt;unit&gt; sin elemento &lt;segment&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.15" approved="yes" id="54" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;ignorable&gt;</source>
+      <target>'id' duplicado en &lt;ignorable&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.16" approved="yes" id="55" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;segment&gt;</source>
+      <target>'id' duplicado en &lt;segment&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.17" approved="yes" id="56" xml:space="preserve">
+      <source>&lt;segment&gt; element without &lt;target&gt; has state set to ''{0}''</source>
+      <target>Element &lt;segment&gt; sin &lt;target&gt; tiene estado establecido en ''{0}''</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.18" approved="yes" id="57" xml:space="preserve">
+      <source>&lt;segment&gt; has 'subState' attribute without corresponding 'state'</source>
+      <target>Elemento &lt;segment&gt; tiene el atributo 'subState' sin el correspondiente 'state'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.19" approved="yes" id="58" xml:space="preserve">
+      <source>Invalid 'subState' attribute value: {0}</source>
+      <target>Valor de atributo 'subState' no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.20" approved="yes" id="59" xml:space="preserve">
+      <source>Different 'xml:lang' in &lt;source&gt;</source>
+      <target>Diferente 'xml:lang' en &lt;source&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.21" approved="yes" id="60" xml:space="preserve">
+      <source>Missing 'trgLang' in &lt;xliff&gt;</source>
+      <target>Falta 'trgLang' en &lt;xliff&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.22" approved="yes" id="61" xml:space="preserve">
+      <source>Different 'xml:lang' in &lt;target&gt;</source>
+      <target>Diferente 'xml:lang' en &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.23" approved="yes" id="62" xml:space="preserve">
+      <source>Different 'xml:lang' in &lt;target&gt; from &lt;mtc:match&gt;</source>
+      <target>Diferente 'xml:lang' en &lt;target&gt; de &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.24" approved="yes" id="63" xml:space="preserve">
+      <source>order=''{0}'' in &lt;target&gt; is greater than the number of &lt;segment&gt; elements ({1})</source>
+      <target>order=''{0}'' in &lt;target&gt; es mayor que el número de elementos &lt;segment&gt; ({1})</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.25" approved="yes" id="64" xml:space="preserve">
+      <source>Duplicated order=''{0}'' in &lt;target&gt;</source>
+      <target>order=''{0}'' duplicado en &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.26" approved="yes" id="65" xml:space="preserve">
+      <source>&lt;data&gt; with wrong value in @xml:space</source>
+      <target>&lt;data&gt; con un valor incorrecto en @xml:space</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.27" approved="yes" id="66" xml:space="preserve">
+      <source>Duplicated 'id' for &lt;data&gt; in &lt;mtc:match&gt;</source>
+      <target>'id' duplicado para &lt;data&gt; en &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.28" approved="yes" id="67" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;data&gt;</source>
+      <target>'id' duplicado en &lt;data&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.29" approved="yes" id="68" xml:space="preserve">
+      <source>Valid XML character represented as &lt;cp&gt; hex: {0}</source>
+      <target>Carácter XML válido representado como &lt;cp&gt; hexadecimal: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.30" approved="yes" id="69" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;ph/&gt;</source>
+      <target>'id' duplicado en &lt;ph/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.31" approved="yes" id="70" xml:space="preserve">
+      <source>&lt;ph&gt; element with both 'copyOf' and 'dataRef'</source>
+      <target>Elemento &lt;ph&gt; con 'copyOf' y 'dataRef'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.32" approved="yes" id="71" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by &lt;ph&gt; in &lt;mtc:match&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se refiere &lt;ph&gt; en &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.33" approved="yes" id="72" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by &lt;ph&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se refiere &lt;ph&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.34" approved="yes" id="73" xml:space="preserve">
+      <source>Invalid 'type' attribute in &lt;ph&gt;</source>
+      <target>Atributo 'type' no válido en &lt;ph&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.35" approved="yes" id="74" xml:space="preserve">
+      <source>Missing 'type' attribute in &lt;ph&gt; that has 'subType'</source>
+      <target>Falta el atributo 'type'  en &lt;ph&gt; que tiene 'subType'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.36" approved="yes" id="75" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: {0}</source>
+      <target>Valor de atributo 'subType' no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.37" approved="yes" id="76" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: ''{0}'' in &lt;ph&gt;</source>
+      <target>Valor de atributo 'subType' no válido: ''{0}'' en &lt;ph&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.38" approved="yes" id="77" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='ui' in &lt;ph&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='ui' en &lt;ph&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.39" approved="yes" id="78" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='fmt' in &lt;ph&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='fmt' en &lt;ph&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.40" approved="yes" id="79" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;pc/&gt;</source>
+      <target>'id' duplicado en &lt;pc/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.42" approved="yes" id="80" xml:space="preserve">
+      <source>&lt;pc&gt; element with both 'copyOf' and 'dataRefStart'</source>
+      <target>Elemento &lt;pc&gt; con 'copyOf' y 'dataRefStart'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.43" approved="yes" id="81" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by 'dataRefStart' &lt;pc&gt; in &lt;mtc:match&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se referiere 'dataRefStart' de &lt;pc&gt; en &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.44" approved="yes" id="82" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by 'dataRefStart' &lt;pc&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se referiere 'dataRefStart' de &lt;pc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.45" approved="yes" id="83" xml:space="preserve">
+      <source>&lt;pc&gt; element with both 'copyOf' and 'dataRefEnd'</source>
+      <target>Elemento &lt;pc&gt; con 'copyOf' y 'dataRefEnd'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.46" approved="yes" id="84" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by 'dataRefEnd' in &lt;pc&gt; in &lt;mtc:match&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se referiere 'dataRefEnd' de &lt;pc&gt; en &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.47" approved="yes" id="85" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by 'dataRefEnd' in &lt;pc&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se referiere 'dataRefEnd' de &lt;pc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.48" approved="yes" id="86" xml:space="preserve">
+      <source>Invalid 'type' attribute in &lt;pc&gt;</source>
+      <target>Atributo 'type' no válido en &lt;pc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.49" approved="yes" id="87" xml:space="preserve">
+      <source>Missing 'type' attribute in &lt;pc&gt; that has 'subType'</source>
+      <target>Falta el atributo 'type'  en &lt;pc&gt; que tiene 'subType'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.50" approved="yes" id="88" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: {0}</source>
+      <target>Valor de atributo 'subType' no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.51" approved="yes" id="89" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: ''{0}'' in &lt;pc&gt;</source>
+      <target>Valor de atributo 'subType' no válido: ''{0}'' en &lt;pc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.52" approved="yes" id="90" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='ui' in &lt;pc&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='ui' en &lt;pc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.53" approved="yes" id="91" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='fmt' in &lt;pc&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='fmt' en &lt;pc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.54" approved="yes" id="92" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;sc/&gt;</source>
+      <target>'id' duplicado en &lt;sc/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.55" approved="yes" id="93" xml:space="preserve">
+      <source>&lt;sc&gt; element with both 'copyOf' and 'dataRef'</source>
+      <target>Elemento &lt;sc&gt; con 'copyOf' y 'dataRef'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.56" approved="yes" id="94" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by &lt;sc&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se refiere &lt;sc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.57" approved="yes" id="95" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by &lt;sc&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se refiere &lt;sc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.58" approved="yes" id="96" xml:space="preserve">
+      <source>Invalid 'type' attribute in &lt;sc&gt;</source>
+      <target>Atributo 'type' no válido en &lt;sc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.59" approved="yes" id="97" xml:space="preserve">
+      <source>Missing 'type' attribute in &lt;sc&gt; that has 'subType'</source>
+      <target>Falta el atributo 'type'  en &lt;sc&gt; que tiene 'subType'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.60" approved="yes" id="98" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: {0}</source>
+      <target>Valor de atributo 'subType' no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.61" approved="yes" id="99" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: ''{0}'' in &lt;sc&gt;</source>
+      <target>Valor de atributo 'subType' no válido: ''{0}'' en &lt;sc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.62" approved="yes" id="100" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='ui' in &lt;sc&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='ui' en &lt;sc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.63" approved="yes" id="101" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='fmt' in &lt;sc&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='fmt' en &lt;sc&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.64" approved="yes" id="102" xml:space="preserve">
+      <source>Missing 'id' attribute in &lt;ec/&gt;</source>
+      <target>Falta el atributo 'id' en &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.65" approved="yes" id="103" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;ec/&gt;</source>
+      <target>'id' duplicado en &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.66" approved="no" id="104" xml:space="preserve">
+      <source>Non isolated &lt;ec/&gt; has 'dir' attribute</source>
+   </trans-unit>
+      <trans-unit resname="Xliff20.67" approved="yes" id="105" xml:space="preserve">
+      <source>Missing 'startRef' attribute in &lt;ec/&gt;</source>
+      <target>Falta el atributo 'startRef' en &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.68" approved="yes" id="106" xml:space="preserve">
+      <source>Missing &lt;sc/&gt; element with id=''{0}'' referenced by &lt;ec/&gt;</source>
+      <target>Falta el elemento &lt;sc/&gt; con id=''{0}'' referenciado por &lt;ec&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.69" approved="yes" id="107" xml:space="preserve">
+      <source>Different 'canCopy' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
+      <target>Diferente atributo 'canCopy' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.70" approved="yes" id="108" xml:space="preserve">
+      <source>Different 'canDelete' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
+      <target>Diferente atributo 'canDelete' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.71" approved="yes" id="109" xml:space="preserve">
+      <source>Different 'canOverlap' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
+      <target>Diferente atributo 'canOverlap' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.72" approved="yes" id="110" xml:space="preserve">
+      <source>Different 'canReorder' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</source>
+      <target>Diferente atributo 'canReorder' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.73" approved="yes" id="111" xml:space="preserve">
+      <source>&lt;ec&gt; element with both 'copyOf' and 'dataRef'</source>
+      <target>Elemento &lt;ec&gt; con 'copyOf' y 'dataRef'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.74" approved="yes" id="112" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by &lt;ec&gt; in &lt;mtc:match&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se refiere &lt;ec&gt; en &lt;mtc:match&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.75" approved="yes" id="113" xml:space="preserve">
+      <source>Missing &lt;data&gt; element referenced by &lt;ec&gt;</source>
+      <target>Falta el elemento &lt;data&gt; al que se refiere &lt;ec&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.76" approved="yes" id="114" xml:space="preserve">
+      <source>Invalid 'type' attribute in &lt;ec&gt;</source>
+      <target>Atributo 'type' no válido en &lt;ec&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.77" approved="yes" id="115" xml:space="preserve">
+      <source>Missing 'type' attribute in &lt;ec&gt; that has 'subType'</source>
+      <target>Falta el atributo 'type'  en &lt;ec&gt; que tiene 'subType'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.78" approved="yes" id="116" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: {0}</source>
+      <target>Valor de atributo 'subType' no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.79" approved="yes" id="117" xml:space="preserve">
+      <source>Invalid 'subType' attribute value: ''{0}'' in &lt;ec&gt;</source>
+      <target>Valor de atributo 'subType' no válido: ''{0}'' en &lt;ec&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.80" approved="yes" id="118" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='ui' in &lt;ec&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='ui' en &lt;ec&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.81" approved="yes" id="119" xml:space="preserve">
+      <source>Invalid 'subType' attribute value for type='fmt' in &lt;ec&gt;</source>
+      <target>Valor de atributo 'subType' no válido para type='fmt' en &lt;ec&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.82" approved="yes" id="120" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;mrk/&gt;</source>
+      <target>'id' duplicado en &lt;mrk/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.83" approved="yes" id="121" xml:space="preserve">
+      <source>Missing 'ref' in comment annotation</source>
+      <target>Falta el atributo 'ref' en anotación de comentario</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.84" approved="yes" id="122" xml:space="preserve">
+      <source>Invalid fragment identifier ''{0}'' in comment annotation</source>
+      <target>Identificador de fragmento ''{0}'' no válido en anotación de comentario</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.85" approved="yes" id="123" xml:space="preserve">
+      <source>Missing &lt;note&gt; referenced in comment annotation</source>
+      <target>Falta el elemento &lt;note&gt; referenciado en anotación de comentario</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.86" approved="yes" id="124" xml:space="preserve">
+      <source>Comment annotation contains both 'value' and 'ref'</source>
+      <target>Anotación de comentario contiene tanto 'value' como 'ref'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.87" approved="yes" id="125" xml:space="preserve">
+      <source>Duplicated 'id' in &lt;sm/&gt;</source>
+      <target>'id' duplicado en &lt;sm/&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.88" approved="yes" id="126" xml:space="preserve">
+      <source>Missing &lt;sm&gt; with id=''{0}'' referenced by &lt;em&gt;</source>
+      <target>Falta el elemento &lt;sm&gt; con id=''{0}'' referenciado por &lt;em&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.89" approved="yes" id="127" xml:space="preserve">
+      <source>Attribute ''{0}:subFs' without corresponding ''{1}:fs'</source>
+      <target>Atributo ''{0}:subFs' sin el correspondiente ''{1}:fs'</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.90" approved="yes" id="128" xml:space="preserve">
+      <source>&lt;sc&gt; element without matching &lt;ec&gt; in &lt;source&gt;</source>
+      <target>Elemento &lt;sc&gt; sin correspondiente &lt;ec&gt; en &lt;source&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.91" approved="yes" id="129" xml:space="preserve">
+      <source>&lt;sc&gt; element without matching &lt;ec&gt; in &lt;target&gt;</source>
+      <target>Elemento &lt;sc&gt; sin correspondiente &lt;ec&gt; en &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.92" approved="yes" id="130" xml:space="preserve">
+      <source>Inline element with 'canDelete' set to 'no' is missing in &lt;target&gt;</source>
+      <target>Falta elemento en línea con 'canDelete' establecido en 'no' en &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.93" approved="yes" id="131" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ph&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.94" approved="yes" id="132" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ph&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.95" approved="yes" id="133" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ph&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.96" approved="yes" id="134" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;p&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.97" approved="yes" id="135" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ph&gt; con diferente valor de 'dataRef' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.98" approved="yes" id="136" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ph&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="Xliff20.99" approved="yes" id="137" xml:space="preserve">
+      <source>&lt;ph&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</source>
+      <target>Elemento &lt;ph&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.help" approved="yes" id="138" xml:space="preserve">
+      <source>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -file:      XLIFF file to validate
+    -catalog:   (optional) XML catalog to use for processing
+
+</source>
+      <target>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF a validar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.1" approved="yes" id="139" xml:space="preserve">
+      <source>Missing '-xliff' parameter</source>
+      <target>Falta el parámetro '-xliff'</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.10" approved="yes" id="140" xml:space="preserve">
+      <source>Invalid XLIFF version</source>
+      <target>Versión de XLIFF no válida</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.11" approved="yes" id="141" xml:space="preserve">
+      <source>Invalid attribute in &lt;{0}&gt;: {1}</source>
+      <target>Atributo no válido en &lt;{0}&gt;: {1}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.12" approved="yes" id="142" xml:space="preserve">
+      <source>Invalid date: {0}</source>
+      <target>Fecha no válida: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.13" approved="yes" id="143" xml:space="preserve">
+      <source>Invalid URI: {0}</source>
+      <target>URI no válida: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.14" approved="yes" id="144" xml:space="preserve">
+      <source>Invalid URI: {0}</source>
+      <target>URI no válida: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.15" approved="yes" id="145" xml:space="preserve">
+      <source>Invalid language: {0}</source>
+      <target>Idioma no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.16" approved="yes" id="146" xml:space="preserve">
+      <source>Invalid source language: {0}</source>
+      <target>Idioma de origen no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.17" approved="yes" id="147" xml:space="preserve">
+      <source>Invalid target language: {0}</source>
+      <target>Idioma de destino no válido: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.18" approved="yes" id="148" xml:space="preserve">
+      <source>Duplicated "name" in &lt;phase&gt;: {0}</source>
+      <target>'name' duplicado en &lt;phase&gt;: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.19" approved="yes" id="149" xml:space="preserve">
+      <source>Duplicated "tool-id" in &lt;tool&gt;: {0}</source>
+      <target>'tool-id' duplicado en &lt;tool&gt;: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.2" approved="yes" id="150" xml:space="preserve">
+      <source>'catalog' folder not found</source>
+      <target>No se encontró la carpeta 'catalog'</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.20" approved="yes" id="151" xml:space="preserve">
+      <source>Incorrect segment referenced in &lt;alt-trans&gt; element</source>
+      <target>Segmento incorrecto referenciado en elemento &lt;alt-trans&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.21" approved="yes" id="152" xml:space="preserve">
+      <source>Undeclared &lt;tool&gt; referenced in &lt;alt-trans&gt; element</source>
+      <target>Elemento &lt;tool&gt; sin declarar referenciado en &lt;alt-trans&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.22" approved="yes" id="153" xml:space="preserve">
+      <source>Undeclared &lt;phase&gt; referenced in &lt;alt-trans&gt; element</source>
+      <target>Elemento &lt;phase&gt; sin declarar referenciado en &lt;alt-trans&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.23" approved="yes" id="154" xml:space="preserve">
+      <source>Found &lt;source&gt; with wrong language code: {0}</source>
+      <target>Se encontró &lt;source&gt; con un código de idioma incorrecto: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.24" approved="yes" id="155" xml:space="preserve">
+      <source>Found &lt;target&gt; with wrong language code: {0}</source>
+      <target>Se encontró &lt;target&gt; con un código de idioma incorrecto: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.25" approved="yes" id="156" xml:space="preserve">
+      <source>Duplicated "id" in &lt;trans-unit&gt;: {0}</source>
+      <target>'id' duplicado en &lt;trans-unit&gt;: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.26" approved="yes" id="157" xml:space="preserve">
+      <source>Duplicated "mid" in &lt;mrk&gt;: {0}</source>
+      <target>'mid' duplicado en &lt;mrk&gt;: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.27" approved="yes" id="158" xml:space="preserve">
+      <source>Incorrect segment referenced in &lt;target&gt; element</source>
+      <target>Segmento incorrecto referenciado en elemento &lt;target&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.28" approved="yes" id="159" xml:space="preserve">
+      <source>Duplicated "id" in &lt;group&gt;: {0}</source>
+      <target>'id' duplicado en &lt;group&gt;: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.29" approved="yes" id="160" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
+      <target>Se encontró un elemento &lt;it&gt; duplicado</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.3" approved="yes" id="161" xml:space="preserve">
+      <source>Catalog file does not exist</source>
+      <target>El archivo de catálogo no existe</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.30" approved="yes" id="162" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
+      <target>Se encontró un elemento &lt;it&gt; duplicado</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.31" approved="yes" id="163" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
+      <target>Se encontró un elemento &lt;it&gt; duplicado</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.32" approved="yes" id="164" xml:space="preserve">
+      <source>Found duplicated &lt;it&gt; element</source>
+      <target>Se encontró un elemento &lt;it&gt; duplicado</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.33" approved="yes" id="165" xml:space="preserve">
+      <source>Found &lt;bx&gt; without "rid" or "id" attributes</source>
+      <target>Se encontró elemento &lt;bx&gt; sin attributos "rid" o "id"</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.34" approved="yes" id="166" xml:space="preserve">
+      <source>Found &lt;ex&gt; without "rid" or "id" attributes</source>
+      <target>Se encontró elemento &lt;ex&gt; sin attributos "rid" o "id"</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.35" approved="yes" id="167" xml:space="preserve">
+      <source>Found &lt;bpt&gt; without "rid" or "id" attributes</source>
+      <target>Se encontró elemento &lt;bpt&gt; sin attributos "rid" o "id"</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.36" approved="yes" id="168" xml:space="preserve">
+      <source>Found &lt;ept&gt; without "rid" or "id" attributes</source>
+      <target>Se encontró elemento &lt;ept&gt; sin attributos "rid" o "id"</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.37" approved="yes" id="169" xml:space="preserve">
+      <source>Unmatched &lt;ex&gt;/&lt;bx&gt; in &lt;{0}&gt;</source>
+      <target>&lt;ex&gt;/&lt;bx&gt; sin aparear en &lt;{0}&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.38" approved="yes" id="170" xml:space="preserve">
+      <source>Unmatched &lt;bpt&gt;/&lt;ept&gt; in &lt;{0}&gt;</source>
+      <target>&lt;bpt&gt;/&lt;ept&gt; sin aparear en &lt;{0}&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.39" approved="yes" id="171" xml:space="preserve">
+      <source>Unmatched &lt;it&gt; in &lt;file&gt;</source>
+      <target>&lt;it&gt; sin aparear en &lt;file&gt;</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.4" approved="yes" id="172" xml:space="preserve">
+      <source>Invalid XLIFF. Reason: {0}</source>
+      <target>XLIFF no válido. Motivo: {0}</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.40" approved="yes" id="173" xml:space="preserve">
+      <source>Incorrect segment referenced in "xid" attribute</source>
+      <target>Segmento incorrecto referenciado en atributo "xid"</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.5" approved="yes" id="174" xml:space="preserve">
+      <source>File is valid XLIFF {0}</source>
+      <target>El archivo es XLIFF {0} válido</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.6" approved="yes" id="175" xml:space="preserve">
+      <source>Error creating validator</source>
+      <target>Error al crear validador</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.7" approved="yes" id="176" xml:space="preserve">
+      <source>Selected file is not an XLIFF document</source>
+      <target>El archivo seleccionado no es un documento XLIFF</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.8" approved="yes" id="177" xml:space="preserve">
+      <source>Missing version attribute</source>
+      <target>Falta el atributo de versión</target>
+      </trans-unit>
+      <trans-unit resname="XliffChecker.9" approved="yes" id="178" xml:space="preserve">
+      <source>XLIFF {0} not supported yet</source>
+      <target>XLIFF {0} aún no es compatible</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

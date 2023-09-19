@@ -1,0 +1,4147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx PUBLIC "-//LISA OSCAR:1998//DTD for Translation Memory eXchange//EN" "tmx14.dtd" >
+<tmx version="1.4">
+<header 
+      creationtool="OpenXLIFF" 
+      creationtoolversion="3.13.0" 
+      srclang="en" 
+      adminlang="en"  
+      datatype="xml" 
+      o-tmf="XLIFF" 
+      segtype="block"
+>
+</header>
+<body>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Wrong XLIFF version</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión de XLIFF incorrecta</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error processing XLIFF 2.0</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al procesar XLIFF 2.0</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error re-segmenting XLIFF 2.0</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al volver a segmentar XLIFF 2.0</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unexpected element found: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento inesperado encontrado: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Wrong XLIFF version</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión de XLIFF incorrecta</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error generating XLIFF 2.0</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al generar XLIFF 2.0</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sub&gt; elements are not supported</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Los elementos &lt;sub&gt; no son admitidos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1317094983-0-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid &lt;mrk&gt; element: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;mrk&gt; no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Null response received</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Respuesta nula recibida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Bad request. Please check error message and your parameters.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Solicitud incorrecta. Verifique el mensaje de error y sus parámetros.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Authorization failed. Please supply a valid auth_key parameter.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error de autorización. Proporcione un parámetro de auth_key válido.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>The requested resource could not be found.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se pudo encontrar el recurso solicitado.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>The request size exceeds the limit.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El tamaño de la solicitud supera el límite.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Too many requests. Please wait and resend your request.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Demasiadas solicitudes. Espere y vuelva a enviar su solicitud.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Quota exceeded. The character limit has been reached.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Cuota excedida. Se ha alcanzado el límite de caracteres.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Resource currently unavailable. Try again later.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Recurso actualmente no disponible. Vuelva a intentarlo más tarde.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Server status code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Código de estado del servidor: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Server status code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Código de estado del servidor: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1567" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Null response received</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Respuesta nula recibida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1568" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Server status code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Código de estado del servidor: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1569" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Empty or null translation received from {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Traducción vacía o nula recibida de {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1570" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unsupported element {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento no admitido {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1571" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Null response received</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Respuesta nula recibida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1572" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Server status code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Código de estado del servidor: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1573" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Text size exceeds the maximum</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El tamaño del texto excede el máximo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1574" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>The text could not be translated</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El texto no se pudo traducir.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1575" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>The specified translation direction is not supported</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se admite la dirección de traducción especificada</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1576" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Status code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Código de estado: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1598" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Null response received</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Respuesta nula recibida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="728542329-1-1599" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Server status code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Código de estado del servidor: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="296289649-2-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting SDLXLIFF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo SDLXLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="296289649-2-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segmentation problem found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se ha encontrado un problema de segmentación</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="296289649-2-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging SDLXLIFF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo SDLXLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="296289649-2-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] [-version] -file sourceFile -srcLang sourceLang 
+        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
+        [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
+        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
+        [-xmlfilter folder] [-2.0] [-2.1] [-ignoretc][-charsets]
+
+Where:
+
+   -help:      (optional) display this help information and exit
+   -version:   (optional) display version &amp; build information and exit
+   -file:      source file to convert
+   -srcLang:   source language code
+   -tgtLang:   (optional) target language code
+   -xliff:     (optional) XLIFF file to generate
+   -skl:       (optional) skeleton file to generate
+   -type:      (optional) document type
+   -enc:       (optional) character set code for the source file
+   -srx:       (optional) SRX file to use for segmentation
+   -catalog:   (optional) XML catalog to use for processing
+   -ditaval:   (optional) conditional processing file to use when converting DITA maps
+   -config:    (optional) configuration file to use when converting JSON documents
+   -embed:     (optional) store skeleton inside the XLIFF file
+   -paragraph: (optional) use paragraph segmentation
+   -xmlfilter: (optional) folder containing configuration files for the XML filter
+   -ignoretc:  (optional) ignore tracked changes from Oxygen XML Editor in XML files
+   -2.0:       (optional) generate XLIFF 2.0
+   -2.1:       (optional) generate XLIFF 2.1
+   -charsets:  (optional) display a list of available character sets and exit
+
+Document Types
+
+   INX = Adobe InDesign Interchange
+   ICML = Adobe InCopy ICML
+   IDML = Adobe InDesign IDML
+   DITA = DITA Map
+   HTML = HTML Page
+   JS = JavaScript
+   JSON = JSON
+   JAVA = Java Properties
+   MIF = MIF (Maker Interchange Format)
+   OFF = Microsoft Office 2007 Document
+   OO = OpenOffice Document
+   PHPA = PHP Array
+   PO = PO (Portable Objects)
+   RC = RC (Windows C/C++ Resources)
+   RESX = ResX (Windows .NET Resources)
+   SDLPPX = Trados Studio Package
+   SDLXLIFF = SDLXLIFF Document
+   SRT = SRT Subtitle
+   TEXT = Plain Text
+   TS = TS (Qt Linguist translation source)
+   TXLF = Wordfast/GlobalLink XLIFF
+   TXML = TXML Document
+   WPML = WPML XLIFF
+   XLIFF = XLIFF Document
+   XML = XML Document
+   XMLG = XML (Generic)
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] [-version] -file archivo -srcLang idiomaOrigen 
+        [-tgtLang idiomaDestino] [-skl esqueleto] [-xliff archivoXliff] 
+        [-type tipoArchivo] [-enc codificación] [-srx archivoSrx] [-catalog catalogoXml] 
+        [-divatal ditaval] [-config configuración] [-embed] [-paragraph] 
+        [-xmlfilter filtros] [-2.0] [-2.1] [-ignoretc] [-charsets]
+
+Dónde:
+
+   -help:      (opcional) mostrar esta información de ayuda y salir
+   -versión:   (opcional) mostrar información de versión y salir
+   -file:      archivo fuente para convertir
+   -srcLang:   código de idioma origen del idioma
+   -tgtLang:   código de idioma de destino (opcional)
+   -xliff:     (opcional) archivo XLIFF para generar
+   -skl:       (opcional) archivo esqueleto a generar
+   -type:      (opcional) tipo de documento
+   -enc:       código de juego de caracteres (opcional) para el archivo fuente
+   -srx:       (opcional) archivo SRX para usar para la segmentación
+   -catalog:   (opcional) Catálogo XML para el procesamiento
+   -ditaval:   archivo de procesamiento condicional (opcional) para usar al convertir mapas DITA
+   -config:    archivo de configuración (opcional) para usar al convertir documentos JSON
+   -embed:     (opcional) almacenar esqueleto dentro del archivo XLIFF
+   -paragraph: (opcional) use segmentación de párrafos
+   -xmlfilter: carpeta (opcional) que contiene archivos de configuración para el filtro XML
+   -ignoretc:  (opcional) ignorar los cambios controlados de Oxygen XML Editor en archivos XML
+   -2.0:       (opcional) generar XLIFF 2.0
+   -2.1:       (opcional) generar XLIFF 2.1
+   -charsets:  (opcional) mostrar una lista de juegos de caracteres disponibles y salir
+
+Tipos de documentos
+
+   INX = Adobe InDesign Interchange
+   ICML = Adobe InCopy ICML
+   IDML = Adobe InDesign IDML
+   DITA = Mapa DITA
+   HTML = Página HTML
+   JS = JavaScript
+   JSON = JSON
+   JAVA = Propiedades de Java
+   MIF = MIF (Maker Interchange Format)
+   OFF = Documento de Microsoft Office 2007
+   OO = Documento de OpenOffice
+   PHPA = PHP Array
+   PO = PO (Portable Objects)
+   RC = RC (recursos de Windows C/C++)
+   RESX = ResX (recursos de Windows .NET)
+   SDLPPX = Paquete Trados Studio
+   SDLXLIFF = Documento SDLXLIFF
+   SRT = Subtítulo SRT
+   TEXTO = Texto sin formato
+   TS = TS (archivo de traducción de Qt Linguist)
+   TXLF = Wordfast/GlobalLink XLIFF
+   TXML = Documento TXML
+   WPML = WPML XLIFF
+   XLIFF = Documento XLIFF
+   XML = Documento XML
+   XMLG = XML (genérico)
+
+
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Version: {0} Build: {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión: {0} Compilación: {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-file' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-file'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Source file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo fuente no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Auto-detected type: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Tipo detectado automáticamente: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unable to auto-detect file format. Use '-type' parameter.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se puede detectar automáticamente el formato de archivo. Utilice el parámetro '-type'.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unknown file format</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Formato de archivo desconocido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1567" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Auto-detected encoding: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Codificación detectada automáticamente: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1568" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unable to auto-detect character set. Use '-enc' parameter.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se puede detectar automáticamente el juego de caracteres. Utilice el parámetro '-enc'.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1569" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unsupported encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Codificación no admitida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1570" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-srcLang' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-srcLang'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1571" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>''{0}'' is not a valid language code</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>''{0}'' no es un código de idioma válido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1572" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error validating languages</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al validar idiomas</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1573" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>SRX file ''{0}'' does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo SRX ''{0}'' no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1574" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1575" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1576" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Conversion error: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error de conversión: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1598" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error adding skeleton</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al agregar esqueleto</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1599" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unknown file format</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Formato de archivo desconocido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1600" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Select either -2.0 or -2.1</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Seleccione -2.0 o -2.1</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1601" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1602" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1603" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1604" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1605" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing target language declaration</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta la declaración del idioma destino</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1606" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error detecting XML encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al detectar la codificación de XML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1607" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error detecting RC encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al detectar la codificación de RC</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1629" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error detecting HTML encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al detectar la codificación de HTML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1630" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error detecting SRT encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al detectar la codificación de SRT</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1631" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error detecting PHPA encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al detectar la codificación de PHPA</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1632" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error detecting JSON encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al detectar la codificación de JSON</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1633" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Premature end of file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Fin prematuro del archivo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1634" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-file' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-file'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1635" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Source file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo fuente no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1636" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-type' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-type'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1637" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unkown '-type' parameter: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Parámetro '-type' desconocido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1638" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Premature end of file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Fin prematuro del archivo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1660" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not JSON</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es JSON</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1661" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-file' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-file'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1662" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Source file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo fuente no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1666" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>DITA Map</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Mapa DITA</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1667" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>HTML Page</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Página HTML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1691" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Java Properties</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Propiedades de Java</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1693" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Microsoft Office 2007 Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento de Microsoft Office 2007</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1694" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>OpenOffice Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento de OpenOffice</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1695" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Plain Text</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Texto sin Formato</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1698" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>RC (Windows C/C++ Resources)</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>RC (Recursos de Windows C/C++)</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1699" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>ResX (Windows .NET Resources)</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>ResX (Recursos de Windows .NET)</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1700" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Trados Studio Package</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Paquete de Trados Studio</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1722" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>SDLXLIFF Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento SDLXLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1723" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>SRT Subtitle</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Subtítulo SRT</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1724" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>TS (Qt Linguist Translation Source)</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>TS (Fuente de Traducción de Qt Linguist)</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1725" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Wordfast/GlobalLink XLIFF</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento XLIFF de Wordfast/GlobalLink</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1726" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>TXML Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento TXML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1727" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>WPML XLIFF</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento XLIFF de WPML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1728" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XLIFF Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1729" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XML Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento XML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1730" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XML (Generic)</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento XML (Genérico)</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1731" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -target targetFile -files file1,file2,file3...
+
+Where:
+
+    -help:     (optional) Display this help information and exit
+    -target:   combined output XLIFF file
+    -files:    list of XLIFF files to join, separated by ','
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -target xliffCombinado -files archivo1,archivo2,archivo33...
+
+Dónde:
+
+    -help:   (opcional) Mostrar esta información de ayuda y salir
+    -target: archivo XLIFF de salida combinada
+    -files:  lista de archivos XLIFF a unir, separados por ','
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1753" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>File ''{0}'' does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo ''{0}'' no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1754" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XLIFF files from different versions</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivos XLIFF de diferentes versiones</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1755" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XLIFF files with different source language</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivos XLIFF con diferente idioma de origen</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1756" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XLIFF files with different target language</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivos XLIFF con diferente idioma de destino</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1757" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
+
+Where:
+
+    -help:       (optional) display this help information and exit
+    -version:    (optional) display version &amp; build information and exit
+    -xliff:      XLIFF file to merge
+    -target:     (optional) translated file or folder where to store translated files
+    -catalog:    (optional) XML catalog to use for processing
+    -unapproved: (optional) accept translations from unapproved segments
+    -export:     (optional) generate TMX file from approved segments
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] [-version] -xliff archivoXliff -target traducción [-catalog catalogoXml] [-unapproved] [-export]
+
+Dónde:
+
+    -help:       (opcional) mostrar esta información de ayuda y salir
+    -versión:    (opcional) mostrar información de versión y salir
+    -xliff:      archivo XLIFF para combinar
+    -target:     (opcional) archivo traducido o carpeta donde almacenar los archivos traducidos
+    -catalog:    (opcional) Catálogo XML para el procesamiento
+    -unapproved: (opcional) aceptar traducciones de segmentos no aprobados
+    -export:     (opcional) generar archivo TMX a partir de segmentos aprobados
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1758" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Version: {0} Build: {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión: {0} Compilación: {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1759" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-xliff' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-xliff'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1760" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error getting target file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al obtener el archivo de destino</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1761" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-target' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-target'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1762" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog folder ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta de catálogo ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1784" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1785" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Merge error: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error de combinación: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1786" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>''{0}'' is not a directory</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>''{0}'' no es un directorio</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1787" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1788" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unsupported XLIFF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivo XLIFF no compatible</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1789" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging XLIFF</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1790" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1791" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not a valid XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF válido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1792" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing target language declaration</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta la declaración del idioma destino</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1793" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to pseudo-translate
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para pseudo-traducir
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1815" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1816" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1817" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1818" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing target language declaration</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta la declaración del idioma destino</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1819" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1820" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1821" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1822" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1823" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-1824" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-xliff' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-xliff'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-48625" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-tmx tmxFile] [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to process
+    -tmx:       (optional) TMX file to generate
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-tmx archivoTmx] [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF para procesar
+    -tmx:     (opcional) archivo TMX a generar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-48626" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Requested segment does not exist in skeleton file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El segmento solicitado no existe en el archivo esqueleto</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-48627" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid path</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Ruta no válida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1421998855-3-48628" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Path is not absolute for {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>La ruta no es absoluta para {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1814382751-4-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting Plain Text file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo de texto sin formato</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1814382751-4-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1814382751-4-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging Plain Text file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo de texto sin formato</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="460395377-5-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not a Microsoft Office 2007 document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento de Microsoft Office 2007</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="460395377-5-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Wrong document type</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Tipo de documento incorrecto</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="460395377-5-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting Office file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo Office</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="460395377-5-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Skeleton not found for file ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Esqueleto no encontrado para el archivo ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="460395377-5-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting Office file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo Office</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-470541135-6-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting ResX file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo ResX</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-470541135-6-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging ResX file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo ResX</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-382732463-7-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting .properties file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo .properties</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-382732463-7-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-382732463-7-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging .properties file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo .properties</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-34514339-8-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting SRT file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo SRT</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-34514339-8-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-34514339-8-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging SRT file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo SRT</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1161511057-9-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error reading from input file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al leer el archivo de entrada</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1161511057-9-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting HTML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo HTML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1161511057-9-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid HTML markup found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se ha encontrado un marcado HTML no válido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1161511057-9-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging HTML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo HTML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1812768099-10-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Initial array delimiter not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró el delimitador inicial de PHP Array</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1812768099-10-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting PHP Array file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo PHP Array</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1812768099-10-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error removing 'removeTranslate' from ''{0}'' </seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al quitar 'removeTranslate' de ''{0}'' </seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging XML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo XML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error updating images for ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al actualizar imágenes para ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken &lt;mrk&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;mrk&gt; dañado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Configuration file ''{0}'' not found. 
+
+Write a new configuration file for the XML Converter or set file type to 'XML (Generic)'.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró el archivo de configuración ''{0}''. 
+
+Escriba un nuevo archivo de configuración para el convertidor XML o seleccione el tipo de archivo 'XML (Genérico)'.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error reading from input file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al leer el archivo de entrada</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Parsed undeclared attribute node</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se procesó un nodo de atributo no declarado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unknown element: ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento desconocido: ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Premature end of file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Fin prematuro del archivo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1567" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>File ''{0}'' does not contain text</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo ''{0}'' no contiene texto</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1568" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting XML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo XML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1569" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Base DITA class ''{0}'' not found in config_dita.xml</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Clase DITA base ''{0}'' no encontrada en config_dita.xml</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1570" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken segment: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento dañado: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1571" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken tagged text</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Texto con etiquetas dañado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1572" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken &lt;mrk&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;mrk&gt; dañado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1508993375-11-1573" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken segment: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento dañado: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Harvesting Keys</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Recolectando claves</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Processing Files</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Procesando archivos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting ''{0}'' to XLIFF</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir ''{0}'' a XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Adding skipped files</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Añadiendo archivos omitidos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting DITA Map</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el mapa DITA</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Key not defined for @conkeyref: ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Clave no definida para @conkeyref: ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid @conkeyref: ''{0}'' - Element with id=''{1}'' not found in ''{2}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conkeyref no válido: ''{0}'' - Elemento con id=''{1}'' no encontrado en ''{2}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid @conkeyref: ''{0}'' - Bad format.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conkeyref no válido: ''{0}'' - Formato incorrecto.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Building key scopes</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Construyendo ámbitos de claves</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Ignored Untranslatable File: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivo intraducible ignorado: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1567" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Referenced file {0} doesn''t exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de referencia {0} no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1568" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error ''{0}'' in file: ''{1}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error ''{0}'' en el archivo: ''{1}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1569" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error recursing {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al visitar {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1570" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid @conref at {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conref no válido en {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1571" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Loop detected processing @conref ''{0}'' in file ''{1}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Bucle detectado procesando @conref ''{0}'' en el archivo ''{1}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1572" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>@conref not found:  ''{0}'' in file {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conref no encontrado: ''{0}'' en el archivo {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1573" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken @conref ''{0}'' in file {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conref dañado ''{0}'' en el archivo {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1574" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken @conref ''{0}'' in file {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conref dañado ''{0}'' en el archivo {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1575" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Key not defined for @conkeyref: ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Clave no definida para @conkeyref: ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1576" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Key not defined for @conkeyref: ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Clave no definida para @conkeyref: ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1598" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Broken @conkeyref ''{0}'' in file {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>@conkeyref dañado ''{0}'' en el archivo {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1599" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Loop detected processing @keyref ''{0}'' in file ''{1}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Bucle detectado procesando @keyref ''{0}'' en el archivo ''{1}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1600" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Undefined key for @keyref ''{0}'' in file {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Clave no definida para @keyref ''{0}'' en el archivo {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1601" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicate key definition: {0} -&gt; {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Definición de clave duplicada: {0} -&gt; {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1602" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicate key definition: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Definición de clave duplicada: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1842441159-12-1603" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging DITA Map</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el mapa DITA</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-974055247-13-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting WPML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo WPML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-974055247-13-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging WPML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo WPML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-974055247-13-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Nothing to translate</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Nada que traducir</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not supported</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es compatible</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Wrong configuration for source key ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Configuración incorrecta para la clave de origen ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' found: ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró un 'id' duplicado: ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid initial character for 'id': ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Carácter inicial no válido para 'id': ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid character for 'id': ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Carácter no válido para 'id': ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'sourceKey' in configuration object</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta 'sourceKey' en el objeto de configuración</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar archivo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing encoding</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta codificación</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-354236751-14-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="208015377-15-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting PO file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo PO</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="208015377-15-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="208015377-15-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging PO file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo PO</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-603384719-16-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Nothing extracted</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Nada extraído</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-603384719-16-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting TXLF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo TXLF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-603384719-16-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging TXLF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo TXLF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-383120163-17-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Nothing extracted</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Nada extraído</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-383120163-17-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting XLIFF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-383120163-17-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging XLIFF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-383120163-17-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Wrong XLIFF version</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión de XLIFF incorrecta</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-383120163-17-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-383120163-17-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unsupported version of XLIFF</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión no compatible de XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="561914705-18-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unexpected end of file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Inesperado final de archivo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="561914705-18-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found a string that is not properly closed</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró un fragmento de texto que no está correctamente cerrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="561914705-18-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting JavaScript file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo JavaScript</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="561914705-18-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;target&gt; in segment ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta &lt;target&gt; en el segmento ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="561914705-18-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-2015820175-19-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting MS Office file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo MS Office</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-37815599-20-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting RC file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo RC</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-37815599-20-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging RC file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo RC</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-37815599-20-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1124876305-21-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting TS file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo TS</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1124876305-21-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging TS file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo TS</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1394830225-22-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting TXML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo TXML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1394830225-22-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unknown error</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error desconocido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1394830225-22-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging TXML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo TXML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1394830225-22-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unknown error</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error desconocido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Incorrect target language. Valid options:</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma de destino incorrecto. Opciones válidas:</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Incorrect source language. Valid options:</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma de origen incorrecto. Opciones válidas:</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting SDL package</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el paquete de SDL</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Project file not found in package</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivo de proyecto no encontrado en el paquete</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is a return package</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado es un paquete de devolución</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;header&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta &lt;header&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;prop-group&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta &lt;prop-group&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing sdlxliff file name</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el nombre de archivo sdlxliff</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1382734767-23-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging SDLXLIFF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo SDLXLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1841436921-24-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting MIF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo MIF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1841436921-24-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;target&gt; in segment ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta &lt;target&gt; en el segmento ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1841436921-24-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segment ''{0}'' not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento ''{0}'' no encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-1841436921-24-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging MIF file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo MIF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-519753231-25-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting IDML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir el archivo IDML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-519753231-25-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error converting Story</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al convertir Story</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="-519753231-25-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error merging IDML file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al combinar el archivo IDML</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="255892059-26-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an SRX document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento SRX</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="255892059-26-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Incorrect SRX version</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión incorrecta de SRX</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -xliff:     XLIFF file to analyze
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF a analizar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-xliff' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-xliff'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error analyzing file</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al analizar el archivo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Translation Status Analysis: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Estado de la traducción: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>File: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivo: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Repetition Analysis</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Análisis de repetición</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segments Based Analysis</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Análisis basado en segmentos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Documento</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>New</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Nuevo</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1568" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Matches</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Coincidencias</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1569" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Int.Rep.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Rep.Int.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1570" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Ext.Rep.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Rep.Ext.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1571" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>SUM</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>SUMA</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1572" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Words Based Analysis</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Análisis basado en palabras</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1574" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Not Translatable</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No Traducible</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1576" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Repeated</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Repetido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1602" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Translation Status Analysis</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Estado de la traducción</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1603" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Segments</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmentos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1604" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Not Translated</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No Traducido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1605" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Translated</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Traducido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1606" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Approved</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Aprobado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1607" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Not Approved</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No Aprobado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1629" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Translated Segments</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmentos Traducidos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1630" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Approved Segments</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmentos Aprobados</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1631" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>TM Matches Quality</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Calidad de las Coincidencias</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1632" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Words</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Palabras</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1633" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Translation Status History</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Historial de estado de traducción</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1634" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Comments:</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Comentarios:</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1635" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Int.Rep.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Rep.Int.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1636" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Internal Repetition = Segment repetitions within one document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Repetición interna = Repeticiones de segmento dentro de un documento</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1637" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Ext.Rep.</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Rep.Ext.</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1638" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>External Repetition = Segment repetitions between all documents</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Repetición externa = Repeticiones de segmento entre todos los documentos</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1660" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Translation Status History</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Historial de estado de traducción</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1661" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>File: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Archivo: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1662" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Description</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Descripción</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1663" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Date</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Fecha</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1666" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Repeated</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Repetido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1667" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1679741977-27-1668" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Empty XLIFF</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>XLIFF vacío</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error adding DTD declaration</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al agregar la declaración de DTD</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-49" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error adding namespace declaration</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al agregar la declaración del espacio de nombres</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-50" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error adding transitional namespace declaration</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al agregar la declaración del espacio de nombres de transición</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-51" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-52" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;mda:metaGroup&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;mda:metaGroup&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-53" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;gls:glossEntry&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;gls:glossEntry&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-54" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;gls:translation&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;gls:translation&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-55" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid source language ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma de origen no válido ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-56" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid target language ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma de destino no válido ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-57" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid Format Style attribute: ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo de estilo de formato no válido: ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1567" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;file&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;file&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1568" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'href' in skeleton</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta 'href' en el esqueleto</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1569" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Non-empty skeleton with 'href' found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Esqueleto no vacío con 'href' encontrado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1570" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1571" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1572" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1573" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1574" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1575" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'dataRefStart' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'dataRefStart' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1576" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'dataRefEnd' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'dataRefEnd' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1598" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'subFlowsStart' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'subFlowsStart' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1599" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'subFlowsEnd' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'subFlowsEnd' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1600" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;note&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;note&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1601" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1602" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1603" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1604" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1605" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1606" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1607" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'dataRef' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1629" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1630" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1631" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'isolated' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'isolated' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1632" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;group&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;group&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1633" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1634" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1635" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1636" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1637" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1638" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'dataRef' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1660" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1661" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1662" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'isolated' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'isolated' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1663" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1664" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;unit&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;unit&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1665" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1666" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'canOverlap' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'canOverlap' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1667" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1668" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1669" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'startRef' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'startRef' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1691" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1692" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1693" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with different value of 'isolated' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con diferente valor de 'isolated' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1694" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;unit&gt; without &lt;segment&gt; child</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>&lt;unit&gt; sin elemento &lt;segment&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1695" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;ignorable&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;ignorable&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1696" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;segment&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;segment&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1697" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;segment&gt; element without &lt;target&gt; has state set to ''{0}''</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Element &lt;segment&gt; sin &lt;target&gt; tiene estado establecido en ''{0}''</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1698" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;segment&gt; has 'subState' attribute without corresponding 'state'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;segment&gt; tiene el atributo 'subState' sin el correspondiente 'state'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1699" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subState' attribute value: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subState' no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1700" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'xml:lang' in &lt;source&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente 'xml:lang' en &lt;source&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1722" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'trgLang' in &lt;xliff&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta 'trgLang' en &lt;xliff&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1723" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'xml:lang' in &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente 'xml:lang' en &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1724" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'xml:lang' in &lt;target&gt; from &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente 'xml:lang' en &lt;target&gt; de &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1725" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>order=''{0}'' in &lt;target&gt; is greater than the number of &lt;segment&gt; elements ({1})</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>order=''{0}'' in &lt;target&gt; es mayor que el número de elementos &lt;segment&gt; ({1})</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1726" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated order=''{0}'' in &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>order=''{0}'' duplicado en &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1727" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;data&gt; with wrong value in @xml:space</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>&lt;data&gt; con un valor incorrecto en @xml:space</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1728" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' for &lt;data&gt; in &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado para &lt;data&gt; en &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1729" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;data&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;data&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1730" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Valid XML character represented as &lt;cp&gt; hex: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Carácter XML válido representado como &lt;cp&gt; hexadecimal: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1731" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;ph/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;ph/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1753" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with both 'copyOf' and 'dataRef'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con 'copyOf' y 'dataRef'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1754" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by &lt;ph&gt; in &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se refiere &lt;ph&gt; en &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1755" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by &lt;ph&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se refiere &lt;ph&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1756" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'type' attribute in &lt;ph&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo 'type' no válido en &lt;ph&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1757" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'type' attribute in &lt;ph&gt; that has 'subType'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'type'  en &lt;ph&gt; que tiene 'subType'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1758" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1759" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: ''{0}'' in &lt;ph&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: ''{0}'' en &lt;ph&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1760" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='ui' in &lt;ph&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='ui' en &lt;ph&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1761" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='fmt' in &lt;ph&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='fmt' en &lt;ph&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1762" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;pc/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;pc/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1784" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with both 'copyOf' and 'dataRefStart'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con 'copyOf' y 'dataRefStart'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1785" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by 'dataRefStart' &lt;pc&gt; in &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se referiere 'dataRefStart' de &lt;pc&gt; en &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1786" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by 'dataRefStart' &lt;pc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se referiere 'dataRefStart' de &lt;pc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1787" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;pc&gt; element with both 'copyOf' and 'dataRefEnd'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;pc&gt; con 'copyOf' y 'dataRefEnd'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1788" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by 'dataRefEnd' in &lt;pc&gt; in &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se referiere 'dataRefEnd' de &lt;pc&gt; en &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1789" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by 'dataRefEnd' in &lt;pc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se referiere 'dataRefEnd' de &lt;pc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1790" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'type' attribute in &lt;pc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo 'type' no válido en &lt;pc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1791" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'type' attribute in &lt;pc&gt; that has 'subType'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'type'  en &lt;pc&gt; que tiene 'subType'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1792" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1793" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: ''{0}'' in &lt;pc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: ''{0}'' en &lt;pc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1815" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='ui' in &lt;pc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='ui' en &lt;pc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1816" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='fmt' in &lt;pc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='fmt' en &lt;pc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1817" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;sc/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;sc/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1818" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element with both 'copyOf' and 'dataRef'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; con 'copyOf' y 'dataRef'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1819" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by &lt;sc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se refiere &lt;sc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1820" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by &lt;sc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se refiere &lt;sc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1821" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'type' attribute in &lt;sc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo 'type' no válido en &lt;sc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1822" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'type' attribute in &lt;sc&gt; that has 'subType'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'type'  en &lt;sc&gt; que tiene 'subType'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1823" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-1824" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: ''{0}'' in &lt;sc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: ''{0}'' en &lt;sc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48625" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='ui' in &lt;sc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='ui' en &lt;sc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48626" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='fmt' in &lt;sc&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='fmt' en &lt;sc&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48627" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'id' attribute in &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'id' en &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48628" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48630" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'startRef' attribute in &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'startRef' en &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48631" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;sc/&gt; element with id=''{0}'' referenced by &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;sc/&gt; con id=''{0}'' referenciado por &lt;ec&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48632" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'canCopy' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente atributo 'canCopy' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48633" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'canDelete' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente atributo 'canDelete' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48634" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'canOverlap' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente atributo 'canOverlap' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48656" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Different 'canReorder' attribute in &lt;sc/&gt; with id=''{0}'' and matching &lt;ec/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Diferente atributo 'canReorder' en &lt;sc/&gt; con id = ''{0}'' y correspondiente &lt;ec/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48657" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ec&gt; element with both 'copyOf' and 'dataRef'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ec&gt; con 'copyOf' y 'dataRef'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48658" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by &lt;ec&gt; in &lt;mtc:match&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se refiere &lt;ec&gt; en &lt;mtc:match&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48659" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;data&gt; element referenced by &lt;ec&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;data&gt; al que se refiere &lt;ec&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48660" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'type' attribute in &lt;ec&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo 'type' no válido en &lt;ec&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48661" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'type' attribute in &lt;ec&gt; that has 'subType'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'type'  en &lt;ec&gt; que tiene 'subType'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48662" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48663" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value: ''{0}'' in &lt;ec&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido: ''{0}'' en &lt;ec&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48664" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='ui' in &lt;ec&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='ui' en &lt;ec&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48665" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid 'subType' attribute value for type='fmt' in &lt;ec&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Valor de atributo 'subType' no válido para type='fmt' en &lt;ec&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48687" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;mrk/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;mrk/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48688" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing 'ref' in comment annotation</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo 'ref' en anotación de comentario</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48689" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid fragment identifier ''{0}'' in comment annotation</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Identificador de fragmento ''{0}'' no válido en anotación de comentario</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48690" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;note&gt; referenced in comment annotation</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;note&gt; referenciado en anotación de comentario</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48691" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Comment annotation contains both 'value' and 'ref'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Anotación de comentario contiene tanto 'value' como 'ref'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48692" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated 'id' in &lt;sm/&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;sm/&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48693" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing &lt;sm&gt; with id=''{0}'' referenced by &lt;em&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el elemento &lt;sm&gt; con id=''{0}'' referenciado por &lt;em&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48694" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Attribute ''{0}:subFs' without corresponding ''{1}:fs'</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo ''{0}:subFs' sin el correspondiente ''{1}:fs'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48695" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element without matching &lt;ec&gt; in &lt;source&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; sin correspondiente &lt;ec&gt; en &lt;source&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48696" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;sc&gt; element without matching &lt;ec&gt; in &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;sc&gt; sin correspondiente &lt;ec&gt; en &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48718" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Inline element with 'canDelete' set to 'no' is missing in &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta elemento en línea con 'canDelete' establecido en 'no' en &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48719" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'canCopy' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con diferente valor de 'canCopy' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48720" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'canDelete' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con diferente valor de 'canDelete' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48721" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'canReorder' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con diferente valor de 'canReorder' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48722" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'copyOf' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;p&gt; con diferente valor de 'copyOf' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48723" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'dataRef' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con diferente valor de 'dataRef' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48724" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'subFlows' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con diferente valor de 'subFlows' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48725" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>&lt;ph&gt; element with different value of 'type' in &lt;source&gt; and &lt;target&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;ph&gt; con diferente valor de 'type' en &lt;source&gt; y &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48726" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>
+
+Usage:
+
+{0} [-help] -xliff xliffFile [-catalog catalogFile]
+
+Where:
+
+    -help:      (optional) Display this help information and exit
+    -file:      XLIFF file to validate
+    -catalog:   (optional) XML catalog to use for processing
+
+</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>
+
+Uso:
+
+{0} [-help] -xliff archivoXliff [-catalog catalogoXml]
+
+Dónde:
+
+    -help:    (opcional) Mostrar esta información de ayuda y salir
+    -xliff:   archivo XLIFF a validar
+    -catalog: (opcional) Catálogo XML para el procesamiento
+
+</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48727" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing '-xliff' parameter</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el parámetro '-xliff'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48749" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid XLIFF version</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Versión de XLIFF no válida</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48750" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid attribute in &lt;{0}&gt;: {1}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Atributo no válido en &lt;{0}&gt;: {1}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48751" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid date: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Fecha no válida: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48752" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid URI: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>URI no válida: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48753" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid URI: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>URI no válida: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48754" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid language: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48755" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid source language: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma de origen no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48756" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid target language: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Idioma de destino no válido: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48757" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated "name" in &lt;phase&gt;: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'name' duplicado en &lt;phase&gt;: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48758" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated "tool-id" in &lt;tool&gt;: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'tool-id' duplicado en &lt;tool&gt;: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48780" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>'catalog' folder not found</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>No se encontró la carpeta 'catalog'</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48781" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Incorrect segment referenced in &lt;alt-trans&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento incorrecto referenciado en elemento &lt;alt-trans&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48782" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Undeclared &lt;tool&gt; referenced in &lt;alt-trans&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;tool&gt; sin declarar referenciado en &lt;alt-trans&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48783" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Undeclared &lt;phase&gt; referenced in &lt;alt-trans&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Elemento &lt;phase&gt; sin declarar referenciado en &lt;alt-trans&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48784" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found &lt;source&gt; with wrong language code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró &lt;source&gt; con un código de idioma incorrecto: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48785" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found &lt;target&gt; with wrong language code: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró &lt;target&gt; con un código de idioma incorrecto: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48786" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated "id" in &lt;trans-unit&gt;: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;trans-unit&gt;: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48787" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated "mid" in &lt;mrk&gt;: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'mid' duplicado en &lt;mrk&gt;: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48788" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Incorrect segment referenced in &lt;target&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento incorrecto referenciado en elemento &lt;target&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48789" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Duplicated "id" in &lt;group&gt;: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>'id' duplicado en &lt;group&gt;: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48811" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found duplicated &lt;it&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró un elemento &lt;it&gt; duplicado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48812" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Catalog file does not exist</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo de catálogo no existe</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48813" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found duplicated &lt;it&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró un elemento &lt;it&gt; duplicado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48814" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found duplicated &lt;it&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró un elemento &lt;it&gt; duplicado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48815" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found duplicated &lt;it&gt; element</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró un elemento &lt;it&gt; duplicado</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48816" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found &lt;bx&gt; without "rid" or "id" attributes</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró elemento &lt;bx&gt; sin attributos "rid" o "id"</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48817" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found &lt;ex&gt; without "rid" or "id" attributes</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró elemento &lt;ex&gt; sin attributos "rid" o "id"</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48818" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found &lt;bpt&gt; without "rid" or "id" attributes</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró elemento &lt;bpt&gt; sin attributos "rid" o "id"</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48819" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Found &lt;ept&gt; without "rid" or "id" attributes</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Se encontró elemento &lt;ept&gt; sin attributos "rid" o "id"</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48820" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unmatched &lt;ex&gt;/&lt;bx&gt; in &lt;{0}&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>&lt;ex&gt;/&lt;bx&gt; sin aparear en &lt;{0}&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48842" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unmatched &lt;bpt&gt;/&lt;ept&gt; in &lt;{0}&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>&lt;bpt&gt;/&lt;ept&gt; sin aparear en &lt;{0}&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48843" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Unmatched &lt;it&gt; in &lt;file&gt;</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>&lt;it&gt; sin aparear en &lt;file&gt;</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48844" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Invalid XLIFF. Reason: {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>XLIFF no válido. Motivo: {0}</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48845" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Incorrect segment referenced in "xid" attribute</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Segmento incorrecto referenciado en atributo "xid"</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48846" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>File is valid XLIFF {0}</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo es XLIFF {0} válido</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48847" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Error creating validator</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Error al crear validador</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48848" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Selected file is not an XLIFF document</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>El archivo seleccionado no es un documento XLIFF</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48849" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>Missing version attribute</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>Falta el atributo de versión</seg>
+</tuv>
+</tu>
+<tu creationtool="OpenXLIFF Filters" creationtoolversion="3.13.0" tuid="1047834937-28-48850" creationdate="20230919T181623Z">
+<tuv xml:lang="en" creationdate="20230919T181623Z">
+<seg>XLIFF {0} not supported yet</seg>
+</tuv>
+<tuv xml:lang="es" creationdate="20230919T181623Z">
+<seg>XLIFF {0} aún no es compatible</seg>
+</tuv>
+</tu>
+</body>
+</tmx>
