@@ -62,6 +62,11 @@ public class ToXliff2 {
 
 	public static List<String> run(String sourceFile, String outputFile, String catalog, String version) {
 		List<String> result = new ArrayList<>();
+		if (!Arrays.asList("2.0", "2.1", "2.2").contains(version)) {
+			result.add(Constants.ERROR);
+			result.add(Messages.getString("ToXliff2.1"));
+			return result;
+		}
 		fileId = 1;
 		try {
 			SAXBuilder builder = new SAXBuilder();
