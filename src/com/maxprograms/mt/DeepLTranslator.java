@@ -111,7 +111,7 @@ public class DeepLTranslator implements MTEngine {
 		int status = con.getResponseCode();
 		if (status == 200) {
 			StringBuffer content = new StringBuffer();
-			try (InputStreamReader inputStream = new InputStreamReader(con.getInputStream())) {
+			try (InputStreamReader inputStream = new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8)) {
 				try (BufferedReader in = new BufferedReader(inputStream)) {
 					String inputLine;
 					while ((inputLine = in.readLine()) != null) {
@@ -186,7 +186,7 @@ public class DeepLTranslator implements MTEngine {
 		int status = con.getResponseCode();
 		if (status == 200) {
 			StringBuffer content = new StringBuffer();
-			try (InputStreamReader inputStream = new InputStreamReader(con.getInputStream())) {
+			try (InputStreamReader inputStream = new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8)) {
 				try (BufferedReader in = new BufferedReader(inputStream)) {
 					String inputLine;
 					while ((inputLine = in.readLine()) != null) {

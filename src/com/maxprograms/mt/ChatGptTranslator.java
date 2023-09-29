@@ -120,7 +120,7 @@ public class ChatGptTranslator implements MTEngine {
         int status = con.getResponseCode();
         if (status == 200) {
             StringBuffer content = new StringBuffer();
-            try (InputStreamReader inptStream = new InputStreamReader(con.getInputStream())) {
+            try (InputStreamReader inptStream = new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8)) {
                 try (BufferedReader in = new BufferedReader(inptStream)) {
                     String inputLine;
                     while ((inputLine = in.readLine()) != null) {
