@@ -32,11 +32,11 @@ import com.maxprograms.languages.Language;
 import com.maxprograms.languages.LanguageUtils;
 
 public class ChatGptTranslator implements MTEngine {
-
-    public static final String DAVINCI = "text-davinci-003";
-    public static final String CURIE = "text-curie-001";
-    public static final String BABBAGE = "text-babbage-001";
-    public static final String ADA = "text-ada-001";
+    
+    // Davinci, Babbage & Curie models were deprecated and replaced by turbo-instruct.
+    // GPT-4 will be added later, when OpenAI opens it. The option for passing a model 
+    // in the contructor is kept for future use.
+    public static final String TURBO_INSTRUCT = "gpt-3.5-turbo-instruct";
 
     private String apiKey;
     private String model;
@@ -133,10 +133,7 @@ public class ChatGptTranslator implements MTEngine {
             }
             JSONObject result = new JSONObject(content.toString());
             JSONArray array = result.getJSONArray("choices");
-            String translation = array.getJSONObject(0).getString("text");
-            if (translation.startsWith("\n\n")) {
-                translation = translation.substring(2);
-            }
+            String translation = array.getJSONObject(0).getString("text").strip();
             while (translation.startsWith("\"") && translation.endsWith("\"")) {
                 translation = translation.substring(1, translation.length() - 1);
             }
