@@ -16,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
@@ -91,7 +93,7 @@ public class ChatGptTranslator implements MTEngine {
     }
 
     @Override
-    public String translate(String source) throws IOException, InterruptedException {
+    public String translate(String source) throws IOException, InterruptedException, URISyntaxException {
         MessageFormat mf = new MessageFormat(
                 "Translate the text enclosed on triple quotes from \"{0}\" to \"{1}\": \"\"\"{2}\"\"\"");
         JSONObject json = new JSONObject();
@@ -105,7 +107,7 @@ public class ChatGptTranslator implements MTEngine {
         String data = json.toString();
         byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
 
-        URL url = new URL("https://api.openai.com/v1/completions");
+        URL url = new URI("https://api.openai.com/v1/completions").toURL();
         HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");

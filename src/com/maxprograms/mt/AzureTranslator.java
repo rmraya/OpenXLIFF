@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -54,15 +56,15 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getSourceLanguages() throws IOException, SAXException, ParserConfigurationException {
+    public List<Language> getSourceLanguages() throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
         if (languages == null) {
             getLanguages();
         }
         return languages;
     }
 
-    private void getLanguages() throws IOException, SAXException, ParserConfigurationException {
-        URL url = new URL("https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation");
+    private void getLanguages() throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
+        URL url = new URI("https://api.cognitive.microsofttranslator.com/languages?api-version=3.0&scope=translation").toURL();
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         byte[] bytes = new byte[10240];
@@ -82,7 +84,7 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
-    public List<Language> getTargetLanguages() throws IOException, SAXException, ParserConfigurationException {
+    public List<Language> getTargetLanguages() throws IOException, SAXException, ParserConfigurationException, URISyntaxException {
         if (languages == null) {
             getLanguages();
         }
@@ -100,8 +102,8 @@ public class AzureTranslator implements MTEngine {
     }
 
     @Override
-    public String translate(String source) throws IOException {
-        URL url = new URL(BASEURL + "&from=" + srcLang + "&to=" + tgtLang + "&textType=plain");
+    public String translate(String source) throws IOException, URISyntaxException {
+        URL url = new URI(BASEURL + "&from=" + srcLang + "&to=" + tgtLang + "&textType=plain").toURL();
 
         JSONArray array = new JSONArray();
         JSONObject object = new JSONObject();

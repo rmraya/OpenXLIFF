@@ -65,7 +65,7 @@ public class Language implements Comparable<Language>, Serializable {
 			if (Language.class.getResourceAsStream(resource) == null) {
 				collator = Collator.getInstance(locale);
 			} else {
-				collator = Collator.getInstance(new Locale("en"));
+				collator = Collator.getInstance( Locale.forLanguageTag("en"));
 			}			
 		}
 		return collator.compare(description, arg0.getDescription());

@@ -13,6 +13,7 @@
 package com.maxprograms.mt;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
@@ -56,7 +57,7 @@ public class MTranslator {
         return !engines.isEmpty();
     }
 
-    public List<JSONObject> translate(String text) throws IOException, InterruptedException {
+    public List<JSONObject> translate(String text) throws IOException, InterruptedException, URISyntaxException {
         List<JSONObject> result = new Vector<>();
         if (text.isBlank()) {
             return result;
@@ -81,7 +82,7 @@ public class MTranslator {
         return result;
     }
 
-    public void translate(Element segment) throws IOException, InterruptedException {
+    public void translate(Element segment) throws IOException, InterruptedException, URISyntaxException {
         if (engines.isEmpty()) {
             return;
         }

@@ -13,6 +13,7 @@
 package com.maxprograms.mt;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,9 +28,9 @@ public interface MTEngine {
 
     public String getShortName();
 
-    public List<Language> getSourceLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException;
+    public List<Language> getSourceLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException, URISyntaxException;
 
-    public List<Language> getTargetLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException;
+    public List<Language> getTargetLanguages() throws IOException, InterruptedException, SAXException, ParserConfigurationException, URISyntaxException;
 
     public void setSourceLanguage(String lang);
 
@@ -39,5 +40,5 @@ public interface MTEngine {
 
     public String getTargetLanguage();
 
-    public String translate(String source) throws IOException, InterruptedException;
+    public String translate(String source) throws IOException, InterruptedException, URISyntaxException;
 }

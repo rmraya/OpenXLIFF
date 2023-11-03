@@ -16,6 +16,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -65,7 +67,7 @@ public class DeepLTranslator implements MTEngine {
 
 	@Override
 	public List<Language> getSourceLanguages()
-			throws IOException, JSONException, SAXException, ParserConfigurationException {
+			throws IOException, JSONException, SAXException, ParserConfigurationException, URISyntaxException {
 		if (srcLanguages == null) {
 			srcLanguages = getLanguages("source");
 		}
@@ -74,7 +76,7 @@ public class DeepLTranslator implements MTEngine {
 
 	@Override
 	public List<Language> getTargetLanguages()
-			throws IOException, JSONException, SAXException, ParserConfigurationException {
+			throws IOException, JSONException, SAXException, ParserConfigurationException, URISyntaxException {
 		if (tgtLanguages == null) {
 			tgtLanguages = getLanguages("target");
 		}
@@ -92,11 +94,11 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	@Override
-	public String translate(String source) throws IOException, InterruptedException, JSONException {
+	public String translate(String source) throws IOException, InterruptedException, JSONException, URISyntaxException {
 		String data = "&text=" + URLEncoder.encode(source, StandardCharsets.UTF_8) + "&source_lang=" +
 				srcLang.toUpperCase() + "&target_lang=" + tgtLang.toUpperCase();
 		byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
-		URL url = new URL(translateUrl);
+		URL url = new URI(translateUrl).toURL();
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 		con.setRequestMethod("POST");
 		con.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);
@@ -176,9 +178,9 @@ public class DeepLTranslator implements MTEngine {
 	}
 
 	private List<Language> getLanguages(String type)
-			throws IOException, JSONException, SAXException, ParserConfigurationException {
+			throws IOException, JSONException, SAXException, ParserConfigurationException, URISyntaxException {
 		List<Language> result = new ArrayList<>();
-		URL url = new URL(languageUrl + type);
+		URL url = new URI(languageUrl + type).toURL();
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
 		con.setRequestProperty("Authorization", "DeepL-Auth-Key " + apiKey);

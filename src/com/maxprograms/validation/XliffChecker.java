@@ -16,8 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,6 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Utils;
 import com.maxprograms.languages.RegistryParser;
 import com.maxprograms.xml.Attribute;
@@ -35,8 +37,6 @@ import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
-
-import org.xml.sax.SAXException;
 
 public class XliffChecker {
 
@@ -1106,7 +1106,7 @@ public class XliffChecker {
 
 	private static boolean checkURL(String string) {
 		try {
-			new URL(string);
+			new URI(string).toURL();
 			return true;
 		} catch (Exception e1) {
 			try {
