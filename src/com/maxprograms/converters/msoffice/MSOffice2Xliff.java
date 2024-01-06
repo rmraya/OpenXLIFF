@@ -626,7 +626,7 @@ public class MSOffice2Xliff {
 	}
 
 	private static void recursePhrase(Element e) throws IOException, SAXException, ParserConfigurationException {
-		if ("mc:AlternateContent".equals(e.getName())) { //
+		if ("mc:AlternateContent".equals(e.getName()) && !hasTextElement(e)) {
 			text = text + "<ph>" + getImageText(e) + "</ph>";
 			return;
 		}

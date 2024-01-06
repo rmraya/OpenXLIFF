@@ -6,8 +6,6 @@ An open source set of Java filters for creating, merging and validating XLIFF 1.
 
 With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup and are compatible with most CAT (Computer Asisted Translation) tools.
 
-**XLIFFChecker**, an open source XLIFF validation tool, is now part of OpenXLIFF Filters. Its code has been ported to Java 11 and enhanced with support for XLIFF 2.0.
-
 - **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
 - **[Binary Downloads](https://www.maxprograms.com/products/openxliff.html)**
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
@@ -49,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.17.0 | Improved extraction from Word text boxes; switched to Java 21 | January 6th, 2024
 3.16.0 | Added catalog for XLIFF 2.2; adjusted ChatGPT models | October 29th, 2023
 3.15.0 | Added new options to JSON filter configuration | September 13th, 2023
 3.14.0 | Added option to generate XLIFF 2.1 | September 1st, 2023
@@ -170,13 +169,13 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
 
 ## Requirements
 
-- JDK 17 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
-- Apache Ant 1.10.12 or newer
+- JDK 21 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
+- Apache Ant 1.10.13 or newer
 
 ## Building
 
 - Checkout this repository.
-- Point your JAVA_HOME variable to JDK 17
+- Point your JAVA_HOME variable to JDK 21
 - Run `ant` to generate a binary distribution in `./dist`
 
 ### Steps for building
