@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project basedir="." default="dist" name="OpenXLIFF">
-    <property name="target" value="17" />
-    <property name="source" value="17" />
+    <property name="target" value="21" />
+    <property name="source" value="21" />
     <property name="build.compiler" value="javac10+" />
     <path id="OpenXLIFF.classpath">
         <pathelement location="lib/dtd.jar" />
         <pathelement location="lib/json.jar" />
         <pathelement location="lib/jsoup.jar" />
-        <pathelement location="lib/mapdb.jar" />
     	<pathelement location="lib/xmljava.jar" />
     </path>
     <condition property="isWindows">

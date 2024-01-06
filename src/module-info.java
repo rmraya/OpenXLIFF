@@ -39,11 +39,8 @@ module openxliff {
 	exports com.maxprograms.validation;
 	exports com.maxprograms.mt;
 
-	opens com.maxprograms.languages to mapdb;
-
 	requires dtd;
 	requires jsoup;
-	requires mapdb;
 	requires java.base;
 	requires java.net.http;
 	requires transitive json;
