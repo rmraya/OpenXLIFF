@@ -11,14 +11,17 @@
  *******************************************************************************/
 package com.maxprograms.converters.ditamap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentSkipListSet;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Scope {
 
@@ -27,15 +30,39 @@ public class Scope {
 	private Map<String, Key> keys;
 
 	public Scope(String name) {
-		names = new TreeSet<>();
+		names = new ConcurrentSkipListSet<>();
 		String[] parts = name.split("\\s");
 		names.addAll(Arrays.asList(parts));
-		children = new ArrayList<>();
+		children = new Vector<>();
 		keys = new Hashtable<>();
 	}
 
-	public void addScope(Scope scope) {
-		children.add(scope);
+	public String toString() {
+		JSONObject json = new JSONObject();
+		json.put("names", names);
+		JSONArray childrenScopes = new JSONArray();
+		Iterator<Scope> it = children.iterator();
+		while (it.hasNext()) {
+			Scope child = it.next();
+			JSONObject childJson = new JSONObject(child.toString());
+			childrenScopes.put(childJson);
+		}
+		json.put("children", childrenScopes);
+		json.put("keys", keys);
+		return json.toString(2);
+	}
+
+	public Scope scopeForName(String name) {
+		Iterator<Scope> it = children.iterator();
+		while (it.hasNext()) {
+			Scope child = it.next();
+			if (child.is(name)) {
+				return child;
+			}
+		}
+		Scope newScope = new Scope(name);
+		children.add(newScope);
+		return newScope;
 	}
 
 	public boolean addKey(Key key) {

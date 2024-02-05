@@ -11,6 +11,8 @@
  *******************************************************************************/
 package com.maxprograms.converters.ditamap;
 
+import org.json.JSONObject;
+
 import com.maxprograms.xml.Element;
 
 public class Key implements Comparable<Key> {
@@ -26,6 +28,15 @@ public class Key implements Comparable<Key> {
 		this.name = name;
 		this.keyref = keyref;
 		this.defined = defined;
+	}
+
+	public String toString() {
+		JSONObject json = new JSONObject();
+		json.put("name", name);
+		json.put("href", href);
+		json.put("keyref", keyref);
+		json.put("defined", defined);
+		return json.toString(2);
 	}
 
 	public Key(String name, String href, Element topicmeta, String defined, boolean translate) {

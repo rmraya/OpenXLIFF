@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.18.0 | Fixed scope builder for DITA filter; removed Machine Translation engines | February 5th, 2024
 3.17.0 | Improved extraction from Word text boxes; switched to Java 21 | January 6th, 2024
 3.16.0 | Added catalog for XLIFF 2.2; adjusted ChatGPT models | October 29th, 2023
 3.15.0 | Added new options to JSON filter configuration | September 13th, 2023

@@ -94,8 +94,7 @@ public class ScopeBuilder {
 		Scope oldScope = null;
 		if (!scope.isEmpty()) {
 			oldScope = currentScope;
-			Scope c = new Scope(scope);
-			currentScope.addScope(c);
+			Scope c = currentScope.scopeForName(scope);
 			currentScope = c;
 		}
 
