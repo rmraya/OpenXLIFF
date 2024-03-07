@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Maxprograms.
+ * Copyright (c) 2022 - 2024 Maxprograms.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 1.0 which accompanies this distribution,
@@ -32,7 +32,6 @@ module openxliff {
 	exports com.maxprograms.converters.plaintext;
 	exports com.maxprograms.converters.wpml;
 	exports com.maxprograms.converters.xliff;
-	exports com.maxprograms.languages;
 	exports com.maxprograms.segmenter;
 	exports com.maxprograms.stats;
 	exports com.maxprograms.xliff2;
@@ -44,5 +43,6 @@ module openxliff {
 	requires java.net.http;
 	requires transitive json;
 	requires transitive java.xml;
+	requires javabcp47;
 	requires transitive xmljava;
 }
