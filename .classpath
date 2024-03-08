@@ -26,7 +26,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/javabcp47.jar">
+	<classpathentry kind="lib" path="lib/bcp47j.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
