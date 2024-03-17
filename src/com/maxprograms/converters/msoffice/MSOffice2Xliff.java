@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.regex.Matcher;
@@ -465,96 +464,60 @@ public class MSOffice2Xliff {
 		}
 		removeProperties(e, "w:lang");
 		removeProperties(e, "w:noProof");
-		mergeRegions(e);
+		e.clone(mergeRegions(e));
 	}
 
-	private static void mergeRegions(Element paragraph) {
-		int curr = 0;
-		while (curr < paragraph.getChildren().size()) {
-			List<Element> children = paragraph.getChildren();
-			Element currRegion = children.get(curr);
-			if (!currRegion.getName().equals("w:r")) {
-				curr++;
-				continue;
-			}
-			if (currRegion.getChild("w:t") == null) {
-				curr++;
-				continue;
-			}
-			int next = curr + 1;
-			boolean merge = true;
-			while (next < paragraph.getChildren().size() && merge) {
-				Element nextRegion = paragraph.getChildren().get(next);
-				if (!nextRegion.getName().equals("w:r")) {
-					merge = false;
+	private static Element mergeRegions(Element paragraph) {
+		Element result = new Element(paragraph.getName());
+		result.setAttributes(paragraph.getAttributes());
+		List<Element> children = paragraph.getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			if (i + 1 < children.size()) {
+				Element a = children.get(i);
+				if (!"w:r".equals(a.getName())) {
 					continue;
 				}
-				if (nextRegion.getChild("w:t") == null) {
-					merge = false;
+				Element b = children.get(i + 1);
+				if (!"w:r".equals(b.getName())) {
 					continue;
 				}
-				Map<String, Element> currProps = buildProps(currRegion);
-				Map<String, Element> nextProps = buildProps(nextRegion);
-				if (currProps.size() != nextProps.size()) {
-					merge = false;
+				Element aT = a.getChild("w:t");
+				if (aT == null) {
+					continue;
+				}
+				Element bT = b.getChild("w:t");
+				if (bT == null) {
+					continue;
+				}
+				Element br = b.getChild("w:br");
+				if (br != null) {
+					continue;
+				}
+				Map<String, Element> aProps = buildProps(a);
+				Map<String, Element> bProps = buildProps(b);
+				if (!aProps.equals(bProps)) {
+					continue;
+				}
+				aT.setAttribute("xml:space", "preserve");
+				if (b.getChild("w:tab") == null) {
+					aT.addContent(bT.getContent());
 				} else {
-					Set<String> keys = currProps.keySet();
-					Iterator<String> it = keys.iterator();
-					while (it.hasNext()) {
-						String key = it.next();
-						if (!nextProps.containsKey(key)) {
-							merge = false;
-							break;
+					List<Element> bContent = b.getChildren();
+					for (Element e : bContent) {
+						if ("w:tab".equals(e.getName())) {
+							aT.addContent("\t");
 						}
-						if (!currProps.get(key).equals(nextProps.get(key))) {
-							merge = false;
-							break;
+						if ("w:t".equals(e.getName())) {
+							aT.addContent(bT.getContent());
 						}
-					}
-					if (merge) {
-						currRegion.getChild("w:t").setAttribute("xml:space", "preserve");
-						List<Element> content = nextRegion.getChildren();
-						for (int i = 0; i < content.size(); i++) {
-							Element e = content.get(i);
-							if ("w:tab".equals(e.getName()) || "w:t".equals(e.getName())) {
-								currRegion.addContent(e);
-							}
-						}
-						paragraph.removeChild(nextRegion);
 					}
 				}
+				children.remove(i + 1);
+				i--;
 			}
-			curr++;
 		}
-
-		List<Element> regions = paragraph.getChildren("w:r");
-		for (int i = 0; i < regions.size(); i++) {
-			Element region = regions.get(i);
-			List<XMLNode> newContent = new ArrayList<>();
-			List<XMLNode> oldContent = region.getContent();
-			Iterator<XMLNode> it = oldContent.iterator();
-			Element last = null;
-			while (it.hasNext()) {
-				XMLNode node = it.next();
-				if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
-					Element e = (Element) node;
-					if (last == null) {
-						last = e;
-						newContent.add(node);
-					} else {
-						if (last.getName().equals(e.getName())) {
-							last.addContent(e.getContent());
-						} else {
-							newContent.add(e);
-							last = e;
-						}
-					}
-				} else {
-					newContent.add(node);
-				}
-			}
-			region.setContent(newContent);
-		}
+		result.setChildren(children);
+		return result;
 	}
 
 	private static Map<String, Element> buildProps(Element region) {
