@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.20.0 | Improved region merging for Word documents | March 17th, 2024
 3.19.0 | Moved Language Tags handling to [BCP47J](https://github.com/rmraya/BCP47J) | March 7th, 2024
 3.18.0 | Fixed scope builder for DITA filter; removed Machine Translation engines | February 5th, 2024
 3.17.0 | Improved extraction from Word text boxes; switched to Java 21 | January 6th, 2024
