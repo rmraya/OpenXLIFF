@@ -24,6 +24,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
@@ -401,7 +402,7 @@ public class EncodingResolver {
 	}
 
 	public static String[] getPageCodes() {
-		TreeMap<String, Charset> charsets = new TreeMap<>(Charset.availableCharsets());
+		Map<String, Charset> charsets = new TreeMap<>(Charset.availableCharsets());
 		Set<String> keys = charsets.keySet();
 		String[] codes = new String[keys.size()];
 
