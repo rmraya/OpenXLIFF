@@ -31,10 +31,10 @@ public class ElementBuilder {
         // private for security
     }
 
-    public static ElementHolder buildElement(String name, String string, boolean trimTags) {
+    public static ElementHolder buildElement(String name, String string, boolean trimTags, boolean mergeTags) {
         Element element = new Element(name);
         element.setText(string);
-        fixHtmlTags(element);
+        fixHtmlTags(element, mergeTags);
         String start = "";
         String end = "";
         if (!element.getChildren().isEmpty()) {
@@ -71,9 +71,9 @@ public class ElementBuilder {
         return new ElementHolder(element, start, end);
     }
 
-    private static void fixHtmlTags(Element src) {
+    private static void fixHtmlTags(Element src, boolean mergeTags) {
         if (pattern == null) {
-            pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
+            pattern = Pattern.compile("<[A-Za-z0-9]+([\\s]+[A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
         }
         if (endPattern == null) {
             endPattern = Pattern.compile("</[A-Za-z0-9]+>");
@@ -170,7 +170,7 @@ public class ElementBuilder {
             }
             src.setContent(newContent);
         }
-        if (src.getChildren().size() > 1) {
+        if (mergeTags && src.getChildren().size() > 1) {
             mergeTags(src);
         }
     }

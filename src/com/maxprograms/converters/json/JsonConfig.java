@@ -38,6 +38,8 @@ public class JsonConfig {
     private List<String> sourceKeys;
     private boolean parseEntities;
     private boolean trimTags;
+    private boolean mergeTags;
+    private boolean rawSegmentation;
     private boolean exportHTML;
 
     private JsonConfig() {
@@ -46,6 +48,8 @@ public class JsonConfig {
         sourceKeys = new Vector<>();
         parseEntities = false;
         trimTags = true;
+        mergeTags = true;
+        rawSegmentation = false;
         exportHTML = true;
     }
 
@@ -85,6 +89,12 @@ public class JsonConfig {
         if (configObject.has("trimTags")) {
             config.trimTags = configObject.getBoolean("trimTags");
         }
+        if (configObject.has("mergeTags")) {
+            config.mergeTags = configObject.getBoolean("mergeTags");
+        }
+        if (configObject.has("rawSegmentation")) {
+            config.rawSegmentation = configObject.getBoolean("rawSegmentation");
+        }
         if (configObject.has("exportHTML")) {
             config.exportHTML = configObject.getBoolean("exportHTML");
         }
@@ -109,6 +119,14 @@ public class JsonConfig {
 
     public boolean getTrimTags() {
         return trimTags;
+    }
+
+    public boolean getMergeTags() {
+        return mergeTags;
+    }
+
+    public boolean getRawSegmentation() {
+        return rawSegmentation;
     }
 
     public boolean getExportHTML() {

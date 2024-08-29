@@ -58,6 +58,7 @@ public class Segmenter {
 		if (!root.getAttributeValue("version").equals("2.0")) {
 			throw new IOException(Messages.getString("Segmenter.2"));
 		}
+		tags = new HashMap<>();
 		cascade = isCascading();
 		buildRulesList(srcLanguage);
 	}
@@ -71,11 +72,19 @@ public class Segmenter {
 		buildRulesList(srcLanguage);
 	}
 
+	public String[] segmentRawString(String string) {
+		return segment(string, false);
+	}
+
 	public String[] segment(String string) {
+		return segment(string, true);
+	}
+
+	private String[] segment(String string, boolean prepare) {
 		if (string == null || string.isEmpty()) {
 			return new String[] {};
 		}
-		String pureText = prepareString(string);
+		String pureText = prepare ? prepareString(string) : string;
 		List<String> parts = new ArrayList<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
 			String left = hideTags(pureText.substring(0, pos));

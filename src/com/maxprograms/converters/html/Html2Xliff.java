@@ -129,7 +129,7 @@ public class Html2Xliff {
 				output.close();
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException | StringIndexOutOfBoundsException e) {
 			Logger logger = System.getLogger(Html2Xliff.class.getName());
 			logger.log(Level.ERROR, Messages.getString("Html2Xliff.2"), e);
 			result.add(Constants.ERROR);
@@ -812,7 +812,7 @@ public class Html2Xliff {
 			}
 			if (token.startsWith("\"") || token.startsWith("'")) {
 				String quote = token.substring(0, 1);
-				if (token.endsWith(quote)) {
+				if (token.endsWith(quote) && token.length() > 1) {
 					// value is one word
 					atts.put(key, new Attribute(key, token.substring(1, token.length() - 1)));
 				} else {

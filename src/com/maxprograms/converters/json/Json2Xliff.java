@@ -63,6 +63,8 @@ public class Json2Xliff {
     private static int bomLength = 0;
     private static List<String[]> entities;
     private static boolean trimTags;
+    private static boolean mergeTags;
+    private static boolean rawSegmentation;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -76,6 +78,8 @@ public class Json2Xliff {
         segments = new ArrayList<>();
         ids = new HashSet<>();
         trimTags = true;
+        mergeTags = true;
+        rawSegmentation = false;
         boolean exportHTML = false;
         entities = new ArrayList<>();
 
@@ -107,6 +111,8 @@ public class Json2Xliff {
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
                 trimTags = config.getTrimTags();
+                mergeTags = config.getMergeTags();
+                rawSegmentation = config.getRawSegmentation();
                 exportHTML = config.getExportHTML();
                 if (config.getParseEntities()) {
                     entities = loadEntities(catalog);
@@ -361,11 +367,13 @@ public class Json2Xliff {
 
                 String[] sourceSegments = new String[] { sourceText };
                 if (segmenter != null) {
-                    sourceSegments = segmenter.segment(sourceText);
+                    sourceSegments = rawSegmentation ? segmenter.segmentRawString(sourceText)
+                            : segmenter.segment(sourceText);
                 }
                 String[] targetSegments = new String[] {};
                 if (!tgtLang.isEmpty() && !targetText.isEmpty() && targetSegmenter != null) {
-                    targetSegments = targetSegmenter.segment(targetText);
+                    targetSegments = rawSegmentation ? segmenter.segmentRawString(targetText)
+                            : targetSegmenter.segment(targetText);
                     if (targetSegments.length != sourceSegments.length) {
                         sourceSegments = new String[] { sourceText };
                         targetSegments = new String[] { targetText };
@@ -385,7 +393,8 @@ public class Json2Xliff {
                     }
                     ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
-                    ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h], trimTags);
+                    ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h], trimTags,
+                            mergeTags);
                     Element source = sortTags(sourceHolder.getElement());
                     transUnit.addContent(source);
                     if (transUnit.getChild("source").getChildren().isEmpty()) {
@@ -400,7 +409,8 @@ public class Json2Xliff {
                         sb.append(sourceHolder.getEnd());
                         json.put(sourceKey, sb.toString());
                     } else {
-                        ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h], trimTags);
+                        ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h], trimTags,
+                                mergeTags);
                         Element target = matchTags(source, targetHolder.getElement());
                         transUnit.addContent("\n    ");
                         transUnit.addContent(target);
@@ -583,7 +593,7 @@ public class Json2Xliff {
 
     private static String parseText(String string) {
         if (!paragraphSegmentation) {
-            String[] segs = segmenter.segment(string);
+            String[] segs = rawSegmentation ? segmenter.segmentRawString(string) : segmenter.segment(string);
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < segs.length; i++) {
                 result.append(addSegment(segs[i]));
@@ -597,7 +607,7 @@ public class Json2Xliff {
         Element segment = new Element("trans-unit");
         segment.setAttribute("id", "" + id);
         segment.addContent("\n    ");
-        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags);
+        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags, mergeTags);
         segment.addContent(holder.getElement());
         segment.addContent("\n  ");
         if (holder.getElement().getChildren().isEmpty()) {
