@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.21.0 | Fixed attributes parsing in HTML and improved JSON filter | August 29th, 2024
 3.20.0 | Improved region merging for Word documents | March 17th, 2024
 3.19.0 | Moved Language Tags handling to [BCP47J](https://github.com/rmraya/BCP47J) | March 7th, 2024
 3.18.0 | Fixed scope builder for DITA filter; removed Machine Translation engines | February 5th, 2024
