@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -31,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Base64.Encoder;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -109,7 +109,29 @@ public class DitaMap2Xliff {
 			if (ditaval != null) {
 				parseDitaVal(ditaval, catalog);
 			}
-
+			skipped = new ArrayList<>();
+			skipped.addAll(parser.getSkipped());
+			List<String> svgFiles = new ArrayList<>();
+			if ("yes".equals(params.get("ignoresvg"))) {
+				if (dataLogger != null) {
+					if (dataLogger.isCancelled()) {
+						result.add("1");
+						result.add(Constants.CANCELLED);
+						return result;
+					}
+					dataLogger.setStage(Messages.getString("DitaMap2Xliff.09"));
+				}
+				SAXBuilder builder = new SAXBuilder();
+				builder.setEntityResolver(catalog);
+				for (int i = 0; i < filesMap.size(); i++) {
+					Document doc = builder.build(filesMap.get(i));
+					Element root = doc.getRootElement();
+					if ("svg".equals(root.getName())) {
+						svgFiles.add(filesMap.get(i));
+					}
+				}
+				filesMap.removeAll(svgFiles);
+			}
 			if (dataLogger != null) {
 				if (dataLogger.isCancelled()) {
 					result.add("1");
@@ -118,8 +140,6 @@ public class DitaMap2Xliff {
 				}
 				dataLogger.setStage(Messages.getString("DitaMap2Xliff.02"));
 			}
-			skipped = new ArrayList<>();
-			skipped.addAll(parser.getSkipped());
 			for (int i = 0; i < filesMap.size(); i++) {
 				String file = filesMap.get(i);
 				if (dataLogger != null) {
@@ -492,13 +512,13 @@ public class DitaMap2Xliff {
 					}
 				} else {
 					MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.07"));
-					String issue = mf.format(new String[]{conkeyref, id, file});
+					String issue = mf.format(new String[] { conkeyref, id, file });
 					logger.log(Level.WARNING, issue);
 					issues.add(issue);
 				}
 			} else {
 				MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.08"));
-				String issue = mf.format(new String[]{conkeyref});
+				String issue = mf.format(new String[] { conkeyref });
 				logger.log(Level.WARNING, issue);
 				issues.add(issue);
 			}

@@ -1,11 +1,6 @@
 # OpenXLIFF Filters Localization
 
-Localizing OpenXLIFF Filters requires processing 2 types of files:
-
-1. Java `.properties` files
-2. Language files in XML format
-
-## Localization of Java .properties
+Localizing OpenXLIFF Filters requires processing Java `.properties` files.
 
 [JavaPM](https://www.maxprograms.com/products/javapm.html) is used to generate XLIFF from `/src` folder.
 
@@ -17,21 +12,19 @@ Use a command like this to generate XLIFF:
 
 OpenXLIFF Filters .properties are encoded in UTF-8; translated versions must be generated using `UTF-8` character set.
 
-## Localization of language files
-
-Two XML files contains the list of languages used by OpenXLIFF Filters. These files are located in `/src/com/maxprograms/languages/` folder.
-
-The XML files that need translations are:
-
-- languageList.xml
-- extendedLanguageList.xml
-
-Use `convert.bat` or `convert.sh` to generate XLIFF from these files:
+After translating the XLIFF file, use the `mergexliff` command from `JavaPM` like this to merge the translated XLIFF back into the Java `.properties` files and store them in the corresponding subfolders of `/src`:
 
 ```bash
-dist/convert.sh -embed -type XMLG -srcLang en -file /path-to-OpenXLIFF/src/com/maxprograms/languages/languageList.xml -xliff /path-to-OpenXLIFF/i18n/languageList.xml.xlf 
-
-dist/convert.sh -embed -type XMLG -srcLang en -file /path-to-OpenXLIFF/src/com/maxprograms/languages/extendedLanguageList.xml-xliff /path-to-OpenXLIFF/i18n/extendedLanguageList.xml.xlf
+/path-to-Javapm/mergexliff.sh -src /path-to-OpenXLIFF/src -xliff yourTranslatedXliff.xlf -unaproved -export
 ```
 
-You can find sample XLIFF 2.0 files for .properties and languages in `/i18n` folder.
+You can find the XLIFF an TMX files for Spanish in `/i18n` folder.
+
+## Dependencies
+
+OpenXLIFF Filters depends on these related projects:
+
+- [BCP47J](https://github.com/rmraya/BCP47J) for language tags
+- [XMLJava](https://github.com/rmraya/XMLJava) for XML parsing
+
+You may need to localize these projects as well.

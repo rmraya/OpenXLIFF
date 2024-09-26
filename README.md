@@ -47,6 +47,7 @@ XML and JSON filters are configurable
 
 Version | Comment | Release Date
 :------:|---------|:-----------:
+3.22.0 | Added option to ignore translatable SVG files when parsing DITA | September 26th, 2024
 3.21.0 | Fixed attributes parsing in HTML and improved JSON filter | August 29th, 2024
 3.20.0 | Improved region merging for Word documents | March 17th, 2024
 3.19.0 | Moved Language Tags handling to [BCP47J](https://github.com/rmraya/BCP47J) | March 7th, 2024

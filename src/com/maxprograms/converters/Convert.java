@@ -90,6 +90,7 @@ public class Convert {
 		boolean embed = false;
 		boolean paragraph = false;
 		boolean ignoretc = false;
+		boolean ignoresvg = false;
 		boolean xliff20 = false;
 		boolean xliff21 = false;
 		boolean mustResegment = false;
@@ -150,6 +151,9 @@ public class Convert {
 			}
 			if (arg.equals("-ignoretc")) {
 				ignoretc = true;
+			}
+			if (arg.equals("-ignoresvg")) {
+				ignoresvg = true;
 			}
 			if (arg.equals("-xmlfilter") && (i + 1) < arguments.length) {
 				xmlfilter = arguments[i + 1];
@@ -295,6 +299,7 @@ public class Convert {
 		params.put("srcEncoding", enc);
 		params.put("paragraph", paragraph ? "yes" : "no");
 		params.put("ignoretc", ignoretc ? "yes" : "no");
+		params.put("ignoresvg", ignoresvg ? "yes" : "no");
 		params.put("srxFile", srx);
 		params.put("srcLang", srcLang);
 		params.put("xmlfilter", xmlfilter);

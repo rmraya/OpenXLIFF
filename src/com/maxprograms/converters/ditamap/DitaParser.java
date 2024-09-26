@@ -622,23 +622,20 @@ public class DitaParser {
 						builder.setEntityResolver(catalog);
 						builder.setErrorHandler(new SilentErrorHandler());
 						Element svg = builder.build(f).getRootElement();
-						if ("svg".equals(svg.getName()) && hasText(svg)) {
-							filesMap.add(path);
+						if ("svg".equals(svg.getName())) {
+							if (hasText(svg)) {
+								filesMap.add(path);
+							} else {
+								// untranslatable svg, add it to images list
+								if (!imagePath.isEmpty()) {
+									addToImages(imagePath, href, parentFile);
+								}
+							}
 						}
 					}
 				} catch (Exception ex) {
 					if (!imagePath.isEmpty()) {
-						JSONObject json = new JSONObject();
-						json.put("imagePath", imagePath);
-						json.put("href", href);
-						if (!images.containsKey(parentFile)) {
-							images.put(parentFile, new ArrayList<>());
-						}
-						List<String> list = images.get(parentFile);
-						String string = json.toString();
-						if (!list.contains(string)) {
-							list.add(string);
-						}
+						addToImages(imagePath, href, parentFile);
 					}
 				}
 			}
@@ -648,6 +645,20 @@ public class DitaParser {
 		while (it.hasNext()) {
 			Element child = it.next();
 			recurse(child, parentFile);
+		}
+	}
+
+	private void addToImages(String imagePath, String href, String parentFile) {
+		JSONObject json = new JSONObject();
+		json.put("imagePath", imagePath);
+		json.put("href", href);
+		if (!images.containsKey(parentFile)) {
+			images.put(parentFile, new ArrayList<>());
+		}
+		List<String> list = images.get(parentFile);
+		String string = json.toString();
+		if (!list.contains(string)) {
+			list.add(string);
 		}
 	}
 
