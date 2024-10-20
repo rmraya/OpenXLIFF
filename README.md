@@ -202,16 +202,16 @@ If you use binaries from the command line, running `.\convert.bat` or `./convert
 ```text
 Usage:
 
-   convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang
-        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] [-type fileType]
-        [-enc encoding] [-srx srxFile] [-catalog catalogFile] [-divatal ditaval]
-        [-config configFile] [-embed] [-paragraph] [-xmlfilter folder][-2.0]
-        [-ignoretc][-charsets]
+convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang 
+        [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
+        [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
+        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
+        [-xmlfilter folder] [-2.0] [-2.1] [-ignoretc] [-ignoresvg] [-charsets]
 
 Where:
 
-   -help:      (optional) Display this help information and exit
-   -version:   (optional) Display version & build information and exit
+   -help:      (optional) display this help information and exit
+   -version:   (optional) display version & build information and exit
    -file:      source file to convert
    -srcLang:   source language code
    -tgtLang:   (optional) target language code
@@ -227,7 +227,9 @@ Where:
    -paragraph: (optional) use paragraph segmentation
    -xmlfilter: (optional) folder containing configuration files for the XML filter
    -ignoretc:  (optional) ignore tracked changes from Oxygen XML Editor in XML files
+   -ignoresvg: (optional) ignore translatable SVG files when parsing DITA maps
    -2.0:       (optional) generate XLIFF 2.0
+   -2.1:       (optional) generate XLIFF 2.1
    -charsets:  (optional) display a list of available character sets and exit
 
 Document Types
