@@ -282,8 +282,8 @@ public class EncodingResolver {
 			}
 		}
 		byte[] lt = "<".getBytes();
-		byte[] feff = { -1, -2 }; // UTF-16BE
-		byte[] fffe = { -2, -1 }; // UTF-16LE
+		byte[] feff = { -1, -2 }; // UTF-16LE
+		byte[] fffe = { -2, -1 }; // UTF-16BE
 		byte[] efbbbf = { -17, -69, -65 }; // UTF-8
 		if (array[0] != lt[0]) {
 			// there is a BOM, now check the order
