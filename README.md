@@ -38,7 +38,6 @@ XML and JSON filters are configurable
 - **[Swordfish](https://github.com/rmraya/Swordfish)** uses OpenXLIFF Filters to extract translatable text from supported formats.
 - **[RemoteTM](https://github.com/rmraya/RemoteTM)** uses OpenXLIFF Filters to handle all TMX processing.
 - **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF Filters for extracting the text to align from supported monolingual documents.
-- **[TMXEditor](https://github.com/rmraya/TMXEditor)** relies on OpenXLIFF Filters XML support for processing TMX files.
 - **[XLIFF Validation](https://github.com/rmraya/XLIFFValidation)** web-based XLIFF Validation Service.
 - **[Fluenta](https://github.com/rmraya/Fluenta)** a Translation Manager that uses OpenXLIFF Filters to generate XLIFF from DITA projects.
 - **[JavaPM](https://github.com/rmraya/JavaPM)** a set of scripts for localizing Java `.properties` files using XLIFF.
