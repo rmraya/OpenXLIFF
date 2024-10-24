@@ -43,6 +43,13 @@ XML and JSON filters are configurable
 - **[Fluenta](https://github.com/rmraya/Fluenta)** a Translation Manager that uses OpenXLIFF Filters to generate XLIFF from DITA projects.
 - **[JavaPM](https://github.com/rmraya/JavaPM)** a set of scripts for localizing Java `.properties` files using XLIFF.
 
+## Supported Versions
+
+| Version   | Supported          |
+| --------- | ------------------ |
+| Latest    | :white_check_mark: |
+| Any other | :x:                |
+
 ## Releases
 
 Version | Comment | Release Date
