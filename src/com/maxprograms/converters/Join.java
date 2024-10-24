@@ -84,10 +84,10 @@ public class Join {
 			}
 		}
 
-        File targetFile = new File(target);
-        if (!targetFile.isAbsolute()) {
-            target = targetFile.getAbsoluteFile().getAbsolutePath();
-        }
+		File targetFile = new File(target);
+		if (!targetFile.isAbsolute()) {
+			target = targetFile.getAbsoluteFile().getAbsolutePath();
+		}
 		try {
 			join(list, target);
 		} catch (IOException | SAXException | ParserConfigurationException ex) {
@@ -97,7 +97,8 @@ public class Join {
 
 	private static void help() {
 		MessageFormat mf = new MessageFormat(Messages.getString("Join.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "join.bat" : "join.sh" });
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "join.cmd" : "join.sh" });
 		System.out.println(help);
 	}
 

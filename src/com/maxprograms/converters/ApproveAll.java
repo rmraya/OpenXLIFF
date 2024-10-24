@@ -93,7 +93,8 @@ public class ApproveAll {
 
     private static void help() {
         MessageFormat mf = new MessageFormat(Messages.getString("ApproveAll.help"));
-        String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "approveall.bat" : "approveall.sh" });
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        String help = mf.format(new String[] { isWindows ? "approveall.cmd" : "approveall.sh" });
         System.out.println(help);
     }
 

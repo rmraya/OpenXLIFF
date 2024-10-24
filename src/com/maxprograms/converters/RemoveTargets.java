@@ -60,9 +60,9 @@ public class RemoveTargets {
         }
         if (catalog.isEmpty()) {
             String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
+            if (home == null) {
+                home = System.getProperty("user.dir");
+            }
             File catalogFolder = new File(new File(home), "catalog");
             if (!catalogFolder.exists()) {
                 logger.log(Level.ERROR, Messages.getString("RemoveTargets.1"));
@@ -77,7 +77,7 @@ public class RemoveTargets {
         }
         if (!catalogFile.isAbsolute()) {
             catalog = catalogFile.getAbsoluteFile().getAbsolutePath();
-        }   
+        }
         File xliffFile = new File(xliff);
         if (!xliffFile.isAbsolute()) {
             xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
@@ -130,9 +130,10 @@ public class RemoveTargets {
     }
 
     private static void help() {
-		MessageFormat mf = new MessageFormat(Messages.getString("RemoveTargets.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "removetargets.bat" : "removetargets.sh" });
-		System.out.println(help);
+        MessageFormat mf = new MessageFormat(Messages.getString("RemoveTargets.help"));
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        String help = mf.format(new String[] { isWindows ? "removetargets.cmd" : "removetargets.sh" });
+        System.out.println(help);
     }
 
 }

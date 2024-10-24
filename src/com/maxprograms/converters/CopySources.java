@@ -95,9 +95,10 @@ public class CopySources {
     }
 
     private static void help() {
-		MessageFormat mf = new MessageFormat(Messages.getString("CopySources.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "copysources.bat" : "copysources.sh" });
-		System.out.println(help);
+        MessageFormat mf = new MessageFormat(Messages.getString("CopySources.help"));
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        String help = mf.format(new String[] { isWindows ? "copysources.cmd" : "copysources.sh" });
+        System.out.println(help);
     }
 
     public static void copySources(String xliff, String catalog)

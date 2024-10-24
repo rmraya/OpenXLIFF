@@ -105,7 +105,8 @@ public class RepetitionAnalysis {
 
 	private static void help() {
 		MessageFormat mf = new MessageFormat(Messages.getString("RepetitionAnalysis.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "analysis.bat" : "analysis.sh" });
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows? "analysis.cmd" : "analysis.sh" });
 		System.out.println(help);
 	}
 

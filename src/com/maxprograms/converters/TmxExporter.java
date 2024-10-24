@@ -121,15 +121,14 @@ public class TmxExporter {
 		if (tmx.isEmpty()) {
 			tmx = xliff + ".tmx";
 		}
-		
+
 		export(xliff, tmx, catalog);
 	}
 
 	private static void help() {
-		MessageFormat mf = new MessageFormat(
-				Messages.getString("TmxExporter.3"));
-		String help = mf.format(
-				new String[] { "\\".equals(File.pathSeparator) ? "exporttmx.bat" : "exporttmx.sh" });
+		MessageFormat mf = new MessageFormat(Messages.getString("TmxExporter.3"));
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "exporttmx.cmd" : "exporttmx.sh" });
 		System.out.println(help);
 	}
 

@@ -135,7 +135,8 @@ public class XliffChecker {
 
 	private static void help() {
 		MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "xliffchecker.bat" : "xliffchecker.sh" });
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "xliffchecker.cmd" : "xliffchecker.sh" });
 		System.out.println(help);
 	}
 

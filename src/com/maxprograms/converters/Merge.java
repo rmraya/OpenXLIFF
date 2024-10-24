@@ -145,7 +145,7 @@ public class Merge {
 			File catalogFolder = new File(new File(home), "catalog");
 			if (!catalogFolder.exists()) {
 				MessageFormat mf = new MessageFormat(Messages.getString("Merge.05"));
-				logger.log(Level.ERROR, mf.format(new String[]{catalogFolder.getAbsolutePath()}));
+				logger.log(Level.ERROR, mf.format(new String[] { catalogFolder.getAbsolutePath() }));
 				return;
 			}
 			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
@@ -170,7 +170,7 @@ public class Merge {
 		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
 			MessageFormat mf = new MessageFormat(Messages.getString("Merge.07"));
-			logger.log(Level.ERROR, mf.format(new String[]{result.get(1)}));
+			logger.log(Level.ERROR, mf.format(new String[] { result.get(1) }));
 		}
 	}
 
@@ -265,7 +265,8 @@ public class Merge {
 
 	private static void help() {
 		MessageFormat mf = new MessageFormat(Messages.getString("Merge.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "merge.bat" : "merge.sh" });
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "merge.cmd" : "merge.sh" });
 		System.out.println(help);
 	}
 

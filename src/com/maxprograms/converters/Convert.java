@@ -281,7 +281,7 @@ public class Convert {
 		if (xliff.isEmpty()) {
 			xliff = sourceFile.getAbsoluteFile().getAbsolutePath() + ".xlf";
 		}
-		
+
 		if (xliff20 && xliff21) {
 			logger.log(Level.ERROR, Messages.getString("Convert.21"));
 			return;
@@ -337,7 +337,8 @@ public class Convert {
 
 	private static void help() {
 		MessageFormat mf = new MessageFormat(Messages.getString("Convert.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "convert.bat" : "convert.sh" });
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "convert.cmd" : "convert.sh" });
 		System.out.println(help);
 	}
 

@@ -65,9 +65,9 @@ public class PseudoTranslation {
         }
         if (catalog.isEmpty()) {
             String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
+            if (home == null) {
+                home = System.getProperty("user.dir");
+            }
             File catalogFolder = new File(new File(home), "catalog");
             if (!catalogFolder.exists()) {
                 logger.log(Level.ERROR, Messages.getString("PseudoTranslation.1"));
@@ -95,9 +95,10 @@ public class PseudoTranslation {
     }
 
     private static void help() {
-		MessageFormat mf = new MessageFormat(Messages.getString("PseudoTranslation.help"));
-		String help = mf.format(new String[] { "\\".equals(File.pathSeparator) ? "pseudotranslate.bat" : "pseudotranslate.sh" });
-		System.out.println(help);
+        MessageFormat mf = new MessageFormat(Messages.getString("PseudoTranslation.help"));
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        String help = mf.format(new String[] { isWindows ? "pseudotranslate.cmd" : "pseudotranslate.sh" });
+        System.out.println(help);
     }
 
     public static void pseudoTranslate(String xliff, String catalog)
