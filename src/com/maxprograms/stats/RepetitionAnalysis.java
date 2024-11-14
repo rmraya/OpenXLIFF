@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
+import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -106,7 +107,7 @@ public class RepetitionAnalysis {
 	private static void help() {
 		MessageFormat mf = new MessageFormat(Messages.getString("RepetitionAnalysis.help"));
 		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
-		String help = mf.format(new String[] { isWindows? "analysis.cmd" : "analysis.sh" });
+		String help = mf.format(new String[] { isWindows ? "analysis.cmd" : "analysis.sh" });
 		System.out.println(help);
 	}
 
@@ -156,6 +157,8 @@ public class RepetitionAnalysis {
 				src.setAttribute("type", type);
 				src.setAttribute("approved", approved);
 				src.setAttribute("translated", translated);
+				src.setAttribute("translatableChars", "" + count[2]);
+				src.setAttribute("protectedChars", "" + count[3]);
 				sources.add(src);
 			} else {
 				createList(el);
@@ -633,6 +636,81 @@ public class RepetitionAnalysis {
 							+ (allnumapproved + allnotapproved + alluntranslatable) + "</b></td></tr>\n");
 			writeString(out, "</table>\n");
 
+
+			//
+			// Translation status by characters
+			//
+
+			writeString(out, "<h3>" + Messages.getString("RepetitionAnalysis.42") + "</h3>\n");
+
+			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
+			writeString(out,
+					"<tr><th>#</th><th>" + Messages.getString("RepetitionAnalysis.8") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.32") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.33")
+							+ "</th><th>" + Messages.getString("RepetitionAnalysis.20") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.34") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.35")
+							+ "</th><th>" + Messages.getString("RepetitionAnalysis.14") + "</th></tr>\n");
+
+			allnumapproved = 0;
+			allnumtranslated = 0;
+			alluntranslatable = 0;
+			allnotapproved = 0;
+			allnottranslated = 0;
+
+			for (int i = 0; i < files.size(); i++) {
+				List<Element> content = segments.get(files.get(i));
+				it = content.iterator();
+				int numapproved = 0;
+				int numtranslated = 0;
+				int untranslatable = 0;
+				int notapproved = 0;
+				int nottranslated = 0;
+
+				while (it.hasNext()) {
+					Element e = it.next();
+					String approved = e.getAttributeValue("approved");
+					String translated = e.getAttributeValue("translated");
+					int chars = Integer.parseInt(e.getAttributeValue("translatableChars"));
+					if (approved.equals("yes")) {
+						numapproved += chars;
+					} else {
+						notapproved += chars;
+					}
+					if (translated.equals("yes")) {
+						numtranslated += chars;
+					} else {
+						nottranslated += chars;
+					}
+					untranslatable += Integer.parseInt(e.getAttributeValue("protectedChars"));
+				}
+				allnumapproved = allnumapproved + numapproved;
+				allnumtranslated = allnumtranslated + numtranslated;
+				allnotapproved = allnotapproved + notapproved;
+				allnottranslated = allnottranslated + nottranslated;
+				alluntranslatable = alluntranslatable + untranslatable;
+
+				writeString(out, "<tr><td class=\"center\">" + (i + 1) + "</td>" + "<td class=\"left\">" + files.get(i)
+						+ "</td><td class=\"right\">" + nottranslated + "</td><td class=\"right\">" + numtranslated
+						+ "</td><td class=\"right\">" + untranslatable + "</td><td class=\"right\">" + numapproved
+						+ "</td><td class=\"right\">" + notapproved + "</td><td class=\"right\">"
+						+ (notapproved + numapproved + untranslatable) + "</td></tr>\n");
+			}
+
+			writeString(out,
+					"<tr><td bgcolor=\"#ededed\" style=\"border-right:1px #adbfbe solid;border-bottom:1px #adbfbe solid;\">&nbsp;</td><td align=\"center\" bgcolor=\"#ededed\"><b>"
+							+ Messages.getString("RepetitionAnalysis.14") + "</b>");
+			writeString(out,
+					"</td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnottranslated
+							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnumtranslated
+							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>" + alluntranslatable
+							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnumapproved
+							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>" + allnotapproved
+							+ "</b></td><td bgcolor=\"#ededed\" align=\"right\"><b>"
+							+ (allnumapproved + allnotapproved + alluntranslatable) + "</b></td></tr>\n");
+			writeString(out, "</table>\n");
+
 			writeString(out, "<p><b><u>" + Messages.getString("RepetitionAnalysis.50") + "</u></b><br />");
 			writeString(out, "<b>" + Messages.getString("RepetitionAnalysis.51") + "</b> "
 					+ Messages.getString("RepetitionAnalysis.52") + "<br />");
@@ -715,9 +793,11 @@ public class RepetitionAnalysis {
 			return new int[] { 0, 0 };
 		}
 		Element source = e.getChild("source");
-		int res1 = wordCount(pureText(source, e.getAttributeValue("xml:space", "default"), "translatable"), srcLang);
-		int res2 = wordCount(pureText(source, e.getAttributeValue("xml:space", "default"), "protected"), srcLang);
-		return new int[] { res1, res2 };
+		String translatBleText = pureText(source, e.getAttributeValue("xml:space", "default"), "translatable");
+		int res1 = wordCount(translatBleText, srcLang);
+		String protectedText = pureText(source, e.getAttributeValue("xml:space", "default"), "protected");
+		int res2 = wordCount(protectedText, srcLang);
+		return new int[] { res1, res2, translatBleText.length(), protectedText.length() };
 	}
 
 	private static void writeString(FileOutputStream out, String text) throws IOException {
@@ -725,7 +805,7 @@ public class RepetitionAnalysis {
 	}
 
 	public static int wordCount(String str, String lang) {
-		if (lang.toLowerCase().startsWith("zh")) {
+		if (LanguageUtils.isCJK(lang)) {
 			return chineseCount(str);
 		}
 		return europeanCount(str);
