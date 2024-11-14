@@ -41,6 +41,7 @@ public class JsonConfig {
     private boolean mergeTags;
     private boolean rawSegmentation;
     private boolean exportHTML;
+    private List<String> htmlIgnore;
 
     private JsonConfig() {
         translatableKeys = new HashMap<>();
@@ -51,6 +52,7 @@ public class JsonConfig {
         mergeTags = true;
         rawSegmentation = false;
         exportHTML = true;
+        htmlIgnore = new Vector<>();
     }
 
     public static JsonConfig parseFile(String configFile) throws IOException, JSONException {
@@ -98,6 +100,12 @@ public class JsonConfig {
         if (configObject.has("exportHTML")) {
             config.exportHTML = configObject.getBoolean("exportHTML");
         }
+        if (configObject.has("htmlIgnore")) {
+            JSONArray array = configObject.getJSONArray("htmlIgnore");
+            for (int i = 0; i < array.length(); i++) {
+                config.htmlIgnore.add(array.getString(i));
+            }
+        }
         return config;
     }
 
@@ -131,5 +139,9 @@ public class JsonConfig {
 
     public boolean getExportHTML() {
         return exportHTML;
+    }
+
+    public List<String> getHtmlIgnore() {
+        return htmlIgnore;
     }
 }

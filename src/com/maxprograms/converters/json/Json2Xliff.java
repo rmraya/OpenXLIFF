@@ -65,6 +65,7 @@ public class Json2Xliff {
     private static boolean trimTags;
     private static boolean mergeTags;
     private static boolean rawSegmentation;
+    private static List<String> htmlIgnore;
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -82,6 +83,7 @@ public class Json2Xliff {
         rawSegmentation = false;
         boolean exportHTML = false;
         entities = new ArrayList<>();
+        htmlIgnore = new ArrayList<>();
 
         String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
@@ -114,6 +116,7 @@ public class Json2Xliff {
                 mergeTags = config.getMergeTags();
                 rawSegmentation = config.getRawSegmentation();
                 exportHTML = config.getExportHTML();
+                htmlIgnore = config.getHtmlIgnore();
                 if (config.getParseEntities()) {
                     entities = loadEntities(catalog);
                     entities.add(new String[] { "&lt;", "<" });
@@ -394,7 +397,7 @@ public class Json2Xliff {
                     ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
                     ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h], trimTags,
-                            mergeTags);
+                            mergeTags, htmlIgnore);
                     Element source = sortTags(sourceHolder.getElement());
                     transUnit.addContent(source);
                     if (transUnit.getChild("source").getChildren().isEmpty()) {
@@ -410,7 +413,7 @@ public class Json2Xliff {
                         json.put(sourceKey, sb.toString());
                     } else {
                         ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h], trimTags,
-                                mergeTags);
+                                mergeTags, htmlIgnore);
                         Element target = matchTags(source, targetHolder.getElement());
                         transUnit.addContent("\n    ");
                         transUnit.addContent(target);
@@ -607,7 +610,7 @@ public class Json2Xliff {
         Element segment = new Element("trans-unit");
         segment.setAttribute("id", "" + id);
         segment.addContent("\n    ");
-        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags, mergeTags);
+        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags, mergeTags, htmlIgnore);
         segment.addContent(holder.getElement());
         segment.addContent("\n  ");
         if (holder.getElement().getChildren().isEmpty()) {

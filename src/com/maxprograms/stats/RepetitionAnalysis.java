@@ -159,6 +159,8 @@ public class RepetitionAnalysis {
 				src.setAttribute("translated", translated);
 				src.setAttribute("translatableChars", "" + count[2]);
 				src.setAttribute("protectedChars", "" + count[3]);
+				src.setAttribute("spaces", "" + count[4]);
+				src.setAttribute("protectedSpaces", "" + count[5]);
 				sources.add(src);
 			} else {
 				createList(el);
@@ -366,6 +368,7 @@ public class RepetitionAnalysis {
 			//
 			// Words based analysis
 			//
+
 			iceSegsTotal = 0;
 			matchesTotal = 0;
 			repeatedTotal = 0;
@@ -478,6 +481,7 @@ public class RepetitionAnalysis {
 			writeString(out, "</table>\n");
 
 			writeString(out, "<h2>" + Messages.getString("RepetitionAnalysis.29") + "</h2>\n");
+
 			//
 			// Translation status by segments
 			//
@@ -636,7 +640,6 @@ public class RepetitionAnalysis {
 							+ (allnumapproved + allnotapproved + alluntranslatable) + "</b></td></tr>\n");
 			writeString(out, "</table>\n");
 
-
 			//
 			// Translation status by characters
 			//
@@ -647,11 +650,11 @@ public class RepetitionAnalysis {
 			writeString(out,
 					"<tr><th>#</th><th>" + Messages.getString("RepetitionAnalysis.8") + "</th><th>"
 							+ Messages.getString("RepetitionAnalysis.32") + "</th><th>"
-							+ Messages.getString("RepetitionAnalysis.33")
-							+ "</th><th>" + Messages.getString("RepetitionAnalysis.20") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.33") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.20") + "</th><th>"
 							+ Messages.getString("RepetitionAnalysis.34") + "</th><th>"
-							+ Messages.getString("RepetitionAnalysis.35")
-							+ "</th><th>" + Messages.getString("RepetitionAnalysis.14") + "</th></tr>\n");
+							+ Messages.getString("RepetitionAnalysis.35") + "</th><th>"
+							+ Messages.getString("RepetitionAnalysis.14") + "</th></tr>\n");
 
 			allnumapproved = 0;
 			allnumtranslated = 0;
@@ -672,7 +675,8 @@ public class RepetitionAnalysis {
 					Element e = it.next();
 					String approved = e.getAttributeValue("approved");
 					String translated = e.getAttributeValue("translated");
-					int chars = Integer.parseInt(e.getAttributeValue("translatableChars"));
+					int chars = Integer.parseInt(e.getAttributeValue("translatableChars"))
+							- Integer.parseInt(e.getAttributeValue("spaces"));
 					if (approved.equals("yes")) {
 						numapproved += chars;
 					} else {
@@ -683,7 +687,8 @@ public class RepetitionAnalysis {
 					} else {
 						nottranslated += chars;
 					}
-					untranslatable += Integer.parseInt(e.getAttributeValue("protectedChars"));
+					untranslatable += (Integer.parseInt(e.getAttributeValue("protectedChars"))
+							- Integer.parseInt(e.getAttributeValue("protectedSpaces")));
 				}
 				allnumapproved = allnumapproved + numapproved;
 				allnumtranslated = allnumtranslated + numtranslated;
@@ -793,11 +798,22 @@ public class RepetitionAnalysis {
 			return new int[] { 0, 0 };
 		}
 		Element source = e.getChild("source");
-		String translatBleText = pureText(source, e.getAttributeValue("xml:space", "default"), "translatable");
-		int res1 = wordCount(translatBleText, srcLang);
+		String translatableText = pureText(source, e.getAttributeValue("xml:space", "default"), "translatable");
+		int res1 = wordCount(translatableText, srcLang);
 		String protectedText = pureText(source, e.getAttributeValue("xml:space", "default"), "protected");
 		int res2 = wordCount(protectedText, srcLang);
-		return new int[] { res1, res2, translatBleText.length(), protectedText.length() };
+		return new int[] { res1, res2, translatableText.length(), protectedText.length(), countSpaces(translatableText),
+				countSpaces(protectedText) };
+	}
+
+	private int countSpaces(String text) {
+		int count = 0;
+		for (int i = 0; i < text.length(); i++) {
+			if (Character.isWhitespace(text.charAt(i))) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	private static void writeString(FileOutputStream out, String text) throws IOException {

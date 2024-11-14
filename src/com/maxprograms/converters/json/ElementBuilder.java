@@ -31,10 +31,11 @@ public class ElementBuilder {
         // private for security
     }
 
-    public static ElementHolder buildElement(String name, String string, boolean trimTags, boolean mergeTags) {
+    public static ElementHolder buildElement(String name, String string, boolean trimTags, boolean mergeTags,
+            List<String> htmlIgnore) {
         Element element = new Element(name);
         element.setText(string);
-        fixHtmlTags(element, mergeTags);
+        fixHtmlTags(element, mergeTags, htmlIgnore);
         String start = "";
         String end = "";
         if (!element.getChildren().isEmpty()) {
@@ -71,7 +72,7 @@ public class ElementBuilder {
         return new ElementHolder(element, start, end);
     }
 
-    private static void fixHtmlTags(Element src, boolean mergeTags) {
+    private static void fixHtmlTags(Element src, boolean mergeTags, List<String> htmlIgnore) {
         if (pattern == null) {
             pattern = Pattern.compile("<[A-Za-z0-9]+([\\s]+[A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
         }
@@ -103,11 +104,24 @@ public class ElementBuilder {
                                 newContent.add(new TextNode(s));
                             }
                             String tag = text.substring(start, end);
-                            Element ph = new Element("ph");
-                            ph.setAttribute("id", "" + count++);
-                            ph.setText(tag);
-                            newContent.add(ph);
-
+                            StringBuilder sb = new StringBuilder();
+                            for (int i = 1; i < tag.length(); i++) {
+                                char c = tag.charAt(i);
+                                if (Character.isLetterOrDigit(c)) {
+                                    sb.append(c);
+                                } else {
+                                    break;
+                                }
+                            }
+                            String tagName = sb.toString();
+                            if (htmlIgnore.contains(tagName)) {
+                                newContent.add(new TextNode(tag));
+                            } else {
+                                Element ph = new Element("ph");
+                                ph.setAttribute("id", "" + count++);
+                                ph.setText(tag);
+                                newContent.add(ph);
+                            }
                             text = text.substring(end);
                             matcher = pattern.matcher(text);
                         }
