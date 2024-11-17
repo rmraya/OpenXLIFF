@@ -11,9 +11,12 @@
  *******************************************************************************/
 package com.maxprograms.stats;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
@@ -174,7 +177,7 @@ public class RepetitionAnalysis {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(new Catalog(catalog));
 		Iterator<Element> it = null;
-		String shortName = new File(fileName).getName();
+		String shortName = Utils.cleanString(new File(fileName).getName());
 		Document doc = builder.build(fileName);
 		Element root = doc.getRootElement();
 
@@ -247,6 +250,23 @@ public class RepetitionAnalysis {
 		int matches75Total = 0;
 		int matches50Total = 0;
 
+		String css = "";
+		try (InputStream is = RepetitionAnalysis.class.getResourceAsStream("styles.css")) {
+			StringBuffer sb = new StringBuffer();
+			try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+				try (BufferedReader br = new BufferedReader(reader)) {
+					String line;
+					while ((line = br.readLine()) != null) {
+						if (!sb.isEmpty()) {
+							sb.append("\n");
+						}
+						sb.append(line);
+					}
+				}
+			}
+			css = sb.toString();
+		}
+
 		try (FileOutputStream out = new FileOutputStream(fileName + ".log.html")) {
 			writeString(out, "<!DOCTYPE html>\n");
 			writeString(out, "<html>\n");
@@ -254,38 +274,7 @@ public class RepetitionAnalysis {
 			writeString(out, "  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n");
 			writeString(out, "  <title>" + Messages.getString("RepetitionAnalysis.6") + "</title>\n");
 			writeString(out, "  <style type=\"text/css\">\n");
-			writeString(out, "   table.wordCount {\n");
-			writeString(out, "       border-left:1px solid grey;\n");
-			writeString(out, "   }\n");
-			writeString(out, "   table {\n");
-			writeString(out, "       border: 1px solid #aaaaaa;\n");
-			writeString(out, "       border-collapse: collapse;\n");
-			writeString(out, "   }\n");
-			writeString(out, "   td {\n");
-			writeString(out, "       border: 1px solid #aaaaaa;\n");
-			writeString(out, "   }\n");
-			writeString(out, "   .wordCount th {\n");
-			writeString(out, "       background:#003854;\n");
-			writeString(out, "       border: 1px solid #eeeeee;\n");
-			writeString(out, "       color:white;\n");
-			writeString(out, "       text-align:center;\n");
-			writeString(out, "       padding:3px\n");
-			writeString(out, "   }\n");
-			writeString(out, "   .wordCount td.left {\n");
-			writeString(out, "       text-align:left;\n");
-			writeString(out, "       padding:2px;\n");
-			writeString(out, "   }\n");
-			writeString(out, "   .wordCount td.center {\n");
-			writeString(out, "       text-align:center;\n");
-			writeString(out, "       padding:2px;\n");
-			writeString(out, "   }\n");
-			writeString(out, "   .wordCount td.right {\n");
-			writeString(out, "       text-align:right;\n");
-			writeString(out, "       padding:2px;\n");
-			writeString(out, "   }\n");
-			writeString(out, "   h2, h3 {\n");
-			writeString(out, "       font-family: Arial,Helvetica,sans-serif;\n");
-			writeString(out, "   }\n");
+			writeString(out, css);
 			writeString(out, "  </style>\n");
 			writeString(out, "</head>\n");
 			writeString(out, "<body>\n");
@@ -295,7 +284,7 @@ public class RepetitionAnalysis {
 			//
 			mf = new MessageFormat(title);
 			Object[] args = { shortName };
-			writeString(out, "<h2>" + mf.format(args) + "</h2>\n");
+			writeString(out, "<h1>" + mf.format(args) + "</h1>\n");
 			writeString(out, "<h2>" + Messages.getString("RepetitionAnalysis.7") + "</h2>\n");
 			writeString(out, "<table class=\"wordCount\" width=\"100%\">\n");
 
