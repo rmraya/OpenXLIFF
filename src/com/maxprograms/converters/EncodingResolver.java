@@ -24,6 +24,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -31,6 +32,7 @@ import java.util.TreeMap;
 import java.lang.System.Logger.Level;
 import java.lang.System.Logger;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,14 +52,26 @@ public class EncodingResolver {
 		String[] arguments = Utils.fixPath(args);
 		String file = "";
 		String type = "";
+		boolean list = false;
 		for (int i = 0; i < arguments.length; i++) {
-			String arg = arguments[i];			
+			String arg = arguments[i];
 			if (arg.equals("-file") && (i + 1) < arguments.length) {
 				file = arguments[i + 1];
 			}
 			if (arg.equals("-type") && (i + 1) < arguments.length) {
 				type = arguments[i + 1];
 			}
+			if (arg.equals("-lang") && (i + 1) < arguments.length) {
+				Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
+			}
+			if (arg.equals("-list")) {
+				list = true;
+			}
+		}
+		if (list) {
+			JSONArray result = getCharsets();
+			System.out.println(result.toString());
+			return;
 		}
 		if (file.isEmpty()) {
 			logger.log(Level.ERROR, Messages.getString("EncodingResolver.8"));
@@ -78,7 +92,7 @@ public class EncodingResolver {
 		String longType = FileFormats.getFullName(type);
 		if (longType == null) {
 			MessageFormat mf = new MessageFormat(Messages.getString("EncodingResolver.11"));
-			logger.log(Level.ERROR, mf.format(new String[] {type}));
+			logger.log(Level.ERROR, mf.format(new String[] { type }));
 			return;
 		}
 		type = longType;
@@ -413,5 +427,21 @@ public class EncodingResolver {
 			codes[j++] = cset.displayName();
 		}
 		return codes;
+	}
+
+	public static JSONArray getCharsets() {
+		Map<String, Charset> charsets = new TreeMap<>(Charset.availableCharsets());
+		Set<String> keys = charsets.keySet();
+		JSONArray array = new JSONArray();
+
+		Iterator<String> i = keys.iterator();
+		while (i.hasNext()) {
+			Charset cset = charsets.get(i.next());
+			JSONObject obj = new JSONObject();
+			obj.put("code", cset.displayName());
+			obj.put("description", cset.name());
+			array.put(obj);
+		}
+		return array;
 	}
 }

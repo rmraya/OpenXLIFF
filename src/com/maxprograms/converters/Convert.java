@@ -226,7 +226,7 @@ public class Convert {
 				MessageFormat mf = new MessageFormat(Messages.getString("Convert.12"));
 				logger.log(Level.WARNING, mf.format(new String[] { tgtLang }));
 			}
-		} catch (IOException e) {
+		} catch (IOException | SAXException | ParserConfigurationException e) {
 			logger.log(Level.ERROR, Messages.getString("Convert.14"), e);
 			return;
 		}

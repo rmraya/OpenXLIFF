@@ -32,13 +32,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.maxprograms.languages.RegistryParser;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.xml.XMLUtils;
 
 public class Utils {
 
 	protected static final Logger logger = System.getLogger(Utils.class.getName());
-	private static RegistryParser registry;
 
 	private Utils() {
 		// do not instantiate this class
@@ -135,11 +138,8 @@ public class Utils {
 		return encoder.encodeToString(Arrays.copyOf(buffer, length));
 	}
 
-	public static boolean isValidLanguage(String lang) throws IOException {
-		if (registry == null) {
-			registry = new RegistryParser();
-		}
-		return !registry.getTagDescription(lang).isEmpty();
+	public static boolean isValidLanguage(String lang) throws IOException, SAXException, ParserConfigurationException {
+		return LanguageUtils.getLanguage(lang) != null;
 	}
 
 	public static String[] fixPath(String[] args) {

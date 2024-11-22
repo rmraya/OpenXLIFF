@@ -22,6 +22,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -80,13 +81,30 @@ public class FileFormats {
 	public static void main(String[] args) {
 		String[] arguments = Utils.fixPath(args);
 		String file = "";
+		boolean list = false;
 		for (int i = 0; i < arguments.length; i++) {
-			String arg = arguments[i];			
+			String arg = arguments[i];
 			if (arg.equals("-file") && (i + 1) < arguments.length) {
 				file = arguments[i + 1];
 			}
+			if (arg.equals("-lang") && (i + 1) < arguments.length) {
+				Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
+			}
+			if (arg.equals("-list")) {
+				list = true;
+			}
 		}
-
+		if (list) {
+			JSONArray result = new JSONArray();
+			for (String format : formats) {
+				JSONObject obj = new JSONObject();
+				obj.put("type", format);
+				obj.put("description", getLocalizedName(format));
+				result.put(obj);
+			}
+			System.out.println(result.toString());
+			return;
+		}
 		if (file.isEmpty()) {
 			logger.log(Level.ERROR, Messages.getString("FileFormats.3"));
 			return;
