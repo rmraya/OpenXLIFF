@@ -53,6 +53,8 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
+|3.25.0 | Handled locked status in SDLXLIFF files | November 24th, 2024|
+|3.24.0 | Added character count and improved JSON filter | November 14th, 2024|
 |3.23.0 | Migrated `.bat` scripts to `.cmd` | October 24th, 2024|
 |3.22.0 | Added option to ignore translatable SVG files when parsing DITA | September 26th, 2024|
 |3.21.0 | Fixed attributes parsing in HTML and improved JSON filter | August 29th, 2024|
