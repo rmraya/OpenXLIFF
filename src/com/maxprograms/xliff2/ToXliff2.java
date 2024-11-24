@@ -316,7 +316,7 @@ public class ToXliff2 {
 				Attribute a = at.next();
 				if (a.getName().indexOf(':') != -1 && !a.getName().startsWith("xml:")) {
 					unit.setAttribute(a);
-				} else if (preserveAttributes.contains(a.getName())) {
+				} else if (preserveAttributes.contains(a.getName()) && !("ts".equals(a.getName()) && "locked".equals(a.getValue()))) {
 					otherAttributes.add(a);
 				}
 			}
@@ -429,7 +429,9 @@ public class ToXliff2 {
 			if (hasTarget) {
 				segment.addContent(tgt2);
 			}
-
+			if ("locked".equals(source.getAttributeValue("ts"))) {
+				segment.setAttribute("subState", "openxliff:locked");
+			}
 			List<Element> matches = source.getChildren("alt-trans");
 			if (!matches.isEmpty()) {
 				root2.setAttribute("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");

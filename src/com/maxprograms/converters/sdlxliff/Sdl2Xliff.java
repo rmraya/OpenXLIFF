@@ -129,6 +129,34 @@ public class Sdl2Xliff {
 			}
 			Element segSource = root.getChild("seg-source");
 			Element target = root.getChild("target");
+
+			Map<String, Boolean> lockedMap = new HashMap<>();
+			Map<String, String> statusMap = new HashMap<>();
+
+			Element segDefs = root.getChild("sdl:seg-defs");
+			if (segDefs != null) {
+				List<Element> children = segDefs.getChildren("sdl:seg");
+				Iterator<Element> it = children.iterator();
+				while (it.hasNext()) {
+					Element sdlSeg = it.next();
+					String id = sdlSeg.getAttributeValue("id");
+					if ("true".equals(sdlSeg.getAttributeValue("locked", "false"))) {
+						lockedMap.put(id, true);
+					}
+					if ("Draft".equals(sdlSeg.getAttributeValue("conf"))) {
+						statusMap.put(id, "new");
+					}
+					if ("Translated".equals(sdlSeg.getAttributeValue("conf"))) {
+						statusMap.put(id, "translated");
+					}
+					if ("RejectedTranslation".equals(sdlSeg.getAttributeValue("conf"))) {
+						statusMap.put(id, "needs-review-translation");
+					}
+					if ("ApprovedSignOff".equals(sdlSeg.getAttributeValue("conf"))) {
+						statusMap.put(id, "signed-off");
+					}
+				}
+			}
 			if (segSource != null) {
 				if (containsText(segSource)) {
 					Map<String, Element> targets = new HashMap<>();
@@ -145,16 +173,25 @@ public class Sdl2Xliff {
 						Iterator<Element> it = mrks.iterator();
 						while (it.hasNext()) {
 							Element mrk = it.next();
+							String id = mrk.getAttributeValue("mid");
+							String lockedString = "";
+							if (lockedMap.containsKey(id)) {
+								lockedString = "\" ts=\"locked";
+							}
 							writeStr("  <trans-unit id=\"" + root.getAttributeValue("id") + ':'
-									+ mrk.getAttributeValue("mid") + "\" xml:space=\"preserve\">\n");
+									+ mrk.getAttributeValue("mid") + lockedString + "\" xml:space=\"preserve\">\n");
 							// write new source
 							writeStr("    <source>");
 							recurseSource(mrk);
 							writeStr("</source>\n");
 							if (targets.containsKey(mrk.getAttributeValue("mid"))) {
 								// write new target
+								String stateString = "";
+								if (statusMap.containsKey(id)) {
+									stateString = " state=\"" + statusMap.get(id) + "\"";
+								}
 								Element tmrk = targets.get(mrk.getAttributeValue("mid"));
-								writeStr("    <target>");
+								writeStr("    <target " + stateString + ">");
 								recurseTarget(tmrk);
 								writeStr("</target>\n");
 							}

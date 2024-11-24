@@ -308,7 +308,7 @@ public class Xliff2Xml {
 					} else {
 						String text = ((TextNode) n).getText();
 						if (isIdml && text.indexOf('\n') != -1) {
-							text = text.replaceAll("\\n", "");
+							text = text.replace("\n", "");
 						}
 						result = result + addEntities(text);
 					}

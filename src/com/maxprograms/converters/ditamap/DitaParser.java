@@ -652,9 +652,7 @@ public class DitaParser {
 		JSONObject json = new JSONObject();
 		json.put("imagePath", imagePath);
 		json.put("href", href);
-		if (!images.containsKey(parentFile)) {
-			images.put(parentFile, new ArrayList<>());
-		}
+		images.computeIfAbsent(parentFile, s -> new ArrayList<String>());
 		List<String> list = images.get(parentFile);
 		String string = json.toString();
 		if (!list.contains(string)) {
