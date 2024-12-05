@@ -103,6 +103,7 @@ public class Xml2Xliff {
 	private static Document ditaCache;
 
 	private static boolean ignoreTC = false;
+	private static boolean arbortextDita = false;
 
 	private Xml2Xliff() {
 		// do not instantiate this class
@@ -290,8 +291,15 @@ public class Xml2Xliff {
 		if (ditaBased && rootElement.equals("svg")) {
 			ditaBased = false;
 		}
+		List<Attribute> attributes = root.getAttributes();
+		for (Attribute att : attributes) {
+			if (att.getValue().indexOf("arbortext:dita") != -1) {
+				arbortextDita = true;
+				break;
+			}
+		}
 
-		if (ditaBased) {
+		if (ditaBased || arbortextDita) {
 			File base = new File(folder, "config_dita.xml");
 			if (ditaCache == null) {
 				ditaCache = builder.build(base);
@@ -477,6 +485,9 @@ public class Xml2Xliff {
 		writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 		writeString("</header>\n");
+		if (arbortextDita) {
+			writeString("<?arbortext-dita ?>\n");
+		}
 		writeString("<?encoding " + srcEncoding + "?>\n");
 		writeString("<body>\n");
 	}
@@ -1314,6 +1325,19 @@ public class Xml2Xliff {
 			case XMLNode.PROCESSING_INSTRUCTION_NODE:
 				PI pi = (PI) n;
 				if (ignoreTC && pi.getTarget().startsWith("oxy_")) {
+					break;
+				}
+				if (arbortextDita && pi.getTarget().startsWith("Pub") && pi.getData().indexOf("text=\"") != -1) {
+					segments.add(text);
+					String data = pi.getData();
+					int start = data.indexOf("text=\"") + 6;
+					int end = data.indexOf("\"", start);
+					String translate = data.substring(start, end);
+					segments.add("" + '\u007F' + '\u007F' + "<?" + pi.getTarget() + " " + data.substring(0, start));
+					segments.add(translate);
+					segments.add("" + '\u007F' + '\u007F' + data.substring(end) + "?>");
+					text = "";
+					translatable = "";
 					break;
 				}
 				if (inDesign && !translatable.trim().isEmpty()) {

@@ -63,6 +63,8 @@ public class Xliff2Xml {
 	private static boolean inAttribute;
 	private static boolean inCData;
 	private static boolean ditaBased = false;
+	private static boolean arbortextDita = false;
+	private static String tgtLang;
 	private static boolean isIdml;
 	private static List<PI> skipped;
 	private static List<PI> images;
@@ -186,6 +188,9 @@ public class Xliff2Xml {
 			if (inDesign) {
 				removeSeparators(outputFile);
 			}
+			if (arbortextDita) {
+				changeLanguage(outputFile);
+			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			logger.log(Level.ERROR, Messages.getString("Xliff2Xml.3"), e);
@@ -258,6 +263,19 @@ public class Xliff2Xml {
 		Document doc = builder.build(outputFile);
 		Element root = doc.getRootElement();
 		recurse(root);
+		XMLOutputter outputter = new XMLOutputter();
+		outputter.preserveSpace(true);
+		try (FileOutputStream out = new FileOutputStream(outputFile)) {
+			outputter.output(doc, out);
+		}
+	}
+
+	private static void changeLanguage(String outputFile) throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		Document doc = builder.build(outputFile);
+		Element root = doc.getRootElement();
+		root.setAttribute("xml:lang", tgtLang);
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.preserveSpace(true);
 		try (FileOutputStream out = new FileOutputStream(outputFile)) {
@@ -547,7 +565,7 @@ public class Xliff2Xml {
 			}
 			segments.put(unit.getAttributeValue("id"), unit);
 		}
-
+		tgtLang = file.getAttributeValue("target-language");
 		entities = new HashMap<>();
 
 		Element header = file.getChild("header");
@@ -574,6 +592,10 @@ public class Xliff2Xml {
 		}
 		skipped = file.getPI("skipped");
 		images = file.getPI("images");
+		List<PI> pi = file.getPI("arbortext-dita");
+		if (!pi.isEmpty()) {
+			arbortextDita = true;
+		}
 	}
 
 	private static void checkUntranslatable(Element unit) {
