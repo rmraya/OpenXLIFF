@@ -41,6 +41,7 @@ public class ToOpenXliff {
 
     private static List<String> namespaces;
     private static int tag;
+    private static boolean preserveSpaces = false;
 
     private ToOpenXliff() {
         // do not instantiate this class
@@ -294,6 +295,9 @@ public class ToOpenXliff {
                         namespaces.add(ns);
                     }
                 }
+                if (a.getName().startsWith("x-workiva")) {
+                    preserveSpaces = true;
+                }
             }
             if (!namespaces.isEmpty()) {
                 renameAttributes(root);
@@ -343,7 +347,7 @@ public class ToOpenXliff {
                 unit.setAttribute("id", "" + units.size());
                 unit.setAttribute("approved", root.getAttributeValue("approved", "no"));
                 boolean space = root.getAttributeValue("xml:space").equals("preserve");
-                if (space) {
+                if (space || preserveSpaces) {
                     unit.setAttribute("xml:space", "preserve");
                 }
 
