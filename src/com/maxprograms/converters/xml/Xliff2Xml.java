@@ -44,6 +44,7 @@ import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
@@ -106,9 +107,14 @@ public class Xliff2Xml {
 				loadSegments();
 				InputStreamReader input = new InputStreamReader(new FileInputStream(sklFile), StandardCharsets.UTF_8);
 				try (BufferedReader buffer = new BufferedReader(input)) {
-					String line = buffer.readLine();
-					while (line != null) {
-						line = line + "\n";
+					String line = "";
+					boolean first = true;
+					while ((line = buffer.readLine()) != null) {
+						if (first) {
+							first = false;
+						} else {
+							writeString(output, "\n");
+						}
 						if (line.indexOf("%%%") != -1) {
 							//
 							// contains translatable text
@@ -119,7 +125,7 @@ public class Xliff2Xml {
 								writeString(output, start);
 								line = line.substring(index + 3);
 								String code = line.substring(0, line.indexOf("%%%"));
-								line = line.substring(line.indexOf("%%%\n") + 4);
+								line = line.substring(line.indexOf("%%%") + 3);
 								Element segment = segments.get(code);
 								if (segment != null) {
 									inAttribute = segment.getAttributeValue("restype").equals("x-attribute");
@@ -141,7 +147,6 @@ public class Xliff2Xml {
 									result.add(mf.format(new Object[] { code }));
 									return result;
 								}
-
 								index = line.indexOf("%%%");
 								if (index == -1) {
 									writeString(output, line);
@@ -153,7 +158,6 @@ public class Xliff2Xml {
 							//
 							writeString(output, line);
 						}
-						line = buffer.readLine();
 					}
 				}
 			}
@@ -276,6 +280,7 @@ public class Xliff2Xml {
 		Document doc = builder.build(outputFile);
 		Element root = doc.getRootElement();
 		root.setAttribute("xml:lang", tgtLang);
+		Indenter.indent(root, 2);
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.preserveSpace(true);
 		try (FileOutputStream out = new FileOutputStream(outputFile)) {

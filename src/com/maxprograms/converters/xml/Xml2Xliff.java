@@ -550,7 +550,7 @@ public class Xml2Xliff {
 				+ "      <source>" + tagged + "</source>\n   </trans-unit>\n";
 
 		String clean = tidy(seg);
-		String dirt = startText + "%%%" + segId++ + "%%%\n" + endText;
+		String dirt = startText + "%%%" + segId++ + "%%%" + endText;
 		writeString(clean);
 		writeSkeleton(dirt);
 		containsText = true;
