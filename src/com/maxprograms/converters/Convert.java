@@ -110,6 +110,10 @@ public class Convert {
 				listCharsets();
 				return;
 			}
+			if (arg.equals("-types")) {
+				System.out.println(Messages.getString("Convert.types"));
+				return;
+			}
 			if (arg.equals("-file") && (i + 1) < arguments.length) {
 				source = arguments[i + 1];
 			}

@@ -216,6 +216,7 @@ convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang
         [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
         [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
         [-xmlfilter folder] [-2.0] [-2.1] [-ignoretc] [-ignoresvg] [-charsets]
+        [-types]
 
 Where:
 
@@ -240,9 +241,22 @@ Where:
    -2.0:       (optional) generate XLIFF 2.0
    -2.1:       (optional) generate XLIFF 2.1
    -charsets:  (optional) display a list of available character sets and exit
+   -types:     (optional) display a list of supported document types and exit
+```
 
-Document Types
+Only two parameters are absolutely required: `-file` and `-srcLang`. The library tries to automatically detect format and encoding and exits with an error message if it can't guess them. If automatic detection doesn't work, add `-type` and `-enc` parameters.
 
+Character sets vary with the operating system. Run the conversion script with `-charsets` to get a list of character sets available in your OS.
+
+By default, XLIFF and skeleton are generated in the folder where the source document is located. Extensions used for XLIFF and Skeleton are `.xlf` and `.skl`.
+
+The `XML` type handles multiple document formats, like `XHTML`, `SVG` or `DocBook` files.
+
+Default XML catalog and SRX file are provided. You can also use custom versions if required.
+
+### Supported document types
+
+```text
    INX = Adobe InDesign Interchange
    ICML = Adobe InCopy ICML
    IDML = Adobe InDesign IDML
@@ -270,16 +284,6 @@ Document Types
    XML = XML Document
    XMLG = XML (Generic)
 ```
-
-Only two parameters are absolutely required: `-file` and `-srcLang`. The library tries to automatically detect format and encoding and exits with an error message if it can't guess them. If automatic detection doesn't work, add `-type` and `-enc` parameters.
-
-Character sets vary with the operating system. Run the conversion script with `-charsets` to get a list of character sets available in your OS.
-
-By default, XLIFF and skeleton are generated in the folder where the source document is located. Extensions used for XLIFF and Skeleton are `.xlf` and `.skl`.
-
-The `XML` type handles multiple document formats, like `XHTML`, `SVG` or `DocBook` files.
-
-Default XML catalog and SRX file are provided. You can also use custom versions if required.
 
 ## Convert XLIFF to Original Format
 
