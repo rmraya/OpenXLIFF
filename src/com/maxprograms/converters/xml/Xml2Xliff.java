@@ -295,11 +295,11 @@ public class Xml2Xliff {
 		for (Attribute att : attributes) {
 			if (att.getValue().indexOf("arbortext:dita") != -1) {
 				arbortextDita = true;
-				break;
+				File base = new File(folder, "config_dita.xml");
+				return base.getAbsolutePath();
 			}
 		}
-
-		if (ditaBased || arbortextDita) {
+		if (ditaBased) {
 			File base = new File(folder, "config_dita.xml");
 			if (ditaCache == null) {
 				ditaCache = builder.build(base);
