@@ -11,6 +11,7 @@
  *******************************************************************************/
 package com.maxprograms.converters;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -34,6 +35,8 @@ import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.languages.LanguageUtils;
@@ -174,5 +177,21 @@ public class Utils {
 			}
 		}
 		return true;
+	}
+
+	public static JSONObject readJSON(String jsonFile) throws IOException, JSONException {
+		StringBuilder sb = new StringBuilder();
+		try (FileInputStream input = new FileInputStream(new File(jsonFile))) {
+			try (BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(input))) {
+				String line = "";
+				while ((line = reader.readLine()) != null) {
+					if (!sb.isEmpty()) {
+						sb.append("\n");
+					}
+					sb.append(line);
+				}
+			}
+		}
+		return new JSONObject(sb.toString());
 	}
 }

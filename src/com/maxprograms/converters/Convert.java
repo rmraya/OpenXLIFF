@@ -33,6 +33,11 @@ import java.util.SortedMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.ditamap.DitaMap2Xliff;
 import com.maxprograms.converters.html.Html2Xliff;
 import com.maxprograms.converters.idml.Idml2Xliff;
@@ -65,8 +70,6 @@ import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
 
-import org.xml.sax.SAXException;
-
 public class Convert {
 
 	private static Logger logger = System.getLogger(Convert.class.getName());
@@ -87,6 +90,7 @@ public class Convert {
 		String ditaval = "";
 		String config = "";
 		String xmlfilter = "";
+		String jsonFile = "";
 		boolean embed = false;
 		boolean paragraph = false;
 		boolean ignoretc = false;
@@ -108,6 +112,15 @@ public class Convert {
 			}
 			if (arg.equals("-charsets")) {
 				listCharsets();
+				return;
+			}
+			if (arg.equals("-json") && (i + 1) < arguments.length) {
+				jsonFile = arguments[i + 1];
+				try {
+					convert(jsonFile);
+				} catch (IOException | JSONException e) {
+					logger.log(Level.ERROR, Messages.getString("Convert.13"), e);
+				}
 				return;
 			}
 			if (arg.equals("-types")) {
@@ -235,12 +248,7 @@ public class Convert {
 			return;
 		}
 		if (srx.isEmpty()) {
-			String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
-			File srxFolder = new File(new File(home), "srx");
-			srx = new File(srxFolder, "default.srx").getAbsolutePath();
+			srx = defaultSRX();
 		}
 		File srxFile = new File(srx);
 		if (!srxFile.exists()) {
@@ -252,24 +260,15 @@ public class Convert {
 			srx = srxFile.getAbsoluteFile().getAbsolutePath();
 		}
 		if (xmlfilter.isEmpty()) {
-			String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
-			File filtersFolder = new File(new File(home), "xmlfilter");
-			xmlfilter = filtersFolder.getAbsolutePath();
+			xmlfilter = defaultFilterFolder();
 		}
 		if (catalog.isEmpty()) {
-			String home = System.getenv("OpenXLIFF_HOME");
-			if (home == null) {
-				home = System.getProperty("user.dir");
-			}
-			File catalogFolder = new File(new File(home), "catalog");
-			if (!catalogFolder.exists()) {
-				logger.log(Level.ERROR, Messages.getString("Convert.16"));
+			try {
+				catalog = defaultCatalog();
+			} catch (IOException e) {
+				logger.log(Level.ERROR, e.getMessage());
 				return;
 			}
-			catalog = new File(catalogFolder, "catalog.xml").getAbsolutePath();
 		}
 		File catalogFile = new File(catalog);
 		if (!catalogFile.exists()) {
@@ -482,5 +481,110 @@ public class Convert {
 			Charset charset = available.get(it.next());
 			System.out.println(charset.displayName());
 		}
+	}
+
+	private static void convert(String jsonFile) throws IOException, JSONException {
+		JSONObject json = Utils.readJSON(jsonFile);
+		JSONArray files = json.getJSONArray("files");
+		for (int i = 0; i < files.length(); i++) {
+			JSONObject file = files.getJSONObject(i);
+			String source = file.getString("source");
+			String xliff = file.has("xliff") ? file.getString("xliff") : source + ".xlf";
+			String skl = file.has("skl") ? file.getString("skl") : source + ".skl";
+			String srcLang = file.getString("srcLang");
+			String tgtLang = file.has("tgtLang") ? file.getString("tgtLang") : "";
+			String catalog = file.has("catalog") ? file.getString("catalog") : defaultCatalog();
+			String srx = file.has("srx") ? file.getString("srx") : defaultSRX();
+			String type = file.has("type") ? file.getString("type") : FileFormats.detectFormat(source);
+			String enc = file.has("enc") ? file.getString("enc") : "";
+			String xmlfilter = file.has("xmlfilter") ? file.getString("xmlfilter") : defaultFilterFolder();
+			type = FileFormats.getFullName(type);
+			if (enc.isEmpty()) {
+				Charset charset = EncodingResolver.getEncoding(source, type);
+				if (charset != null) {
+					enc = charset.name();
+					MessageFormat mf = new MessageFormat(Messages.getString("Convert.08"));
+					logger.log(Level.INFO, mf.format(new String[] { enc }));
+				} else {
+					throw new IOException(Messages.getString("Convert.09"));
+				}
+			}
+
+			Map<String, String> params = new HashMap<>();
+			params.put("source", source);
+			params.put("xliff", xliff);
+			params.put("skeleton", skl);
+			params.put("format", type);
+			params.put("catalog", catalog);
+			params.put("srcEncoding", enc);
+			if (file.has("paragraph")) {
+				params.put("paragraph", "yes");
+			}
+			if (file.has("ignoretc")) {
+				params.put("ignoretc", "yes");
+			}
+			if (file.has("ignoresvg")) {
+				params.put("ignoresvg", "yes");
+			}
+			params.put("srxFile", srx);
+			params.put("srcLang", srcLang);
+			if (!tgtLang.isEmpty()) {
+				params.put("tgtLang", tgtLang);
+			}
+			if (file.has("embed")) {
+				params.put("embed", "yes");
+			}
+			if (file.has("2.0")) {
+				params.put("xliff20", "yes");
+			}
+			if (file.has("2.1")) {
+				params.put("xliff21", "yes");
+			}
+			if (file.has("ditaval")) {
+				params.put("ditaval", file.getString("ditaval"));
+			}
+			if (file.has("config")) {
+				params.put("config", file.getString("config"));
+			}
+			if (file.has("ignoresvg")) {
+				params.put("ignoresvg", "yes");
+			}
+			params.put("xmlfilter", xmlfilter);
+			run(params);
+		}
+	}
+
+	private static String defaultSRX() {
+		String home = System.getenv("OpenXLIFF_HOME");
+		if (home == null) {
+			home = System.getProperty("user.dir");
+		}
+		File srxFolder = new File(new File(home), "srx");
+		return new File(srxFolder, "default.srx").getAbsolutePath();
+	}
+
+	private static String defaultCatalog() throws IOException {
+		String home = System.getenv("OpenXLIFF_HOME");
+		if (home == null) {
+			home = System.getProperty("user.dir");
+		}
+		File catalogFolder = new File(new File(home), "catalog");
+		if (!catalogFolder.exists()) {
+			throw new IOException(Messages.getString("Convert.16"));
+		}
+		File catalogFile = new File(catalogFolder, "catalog.xml");
+		if (!catalogFile.exists()) {
+			throw new IOException(Messages.getString("Convert.17"));
+		}
+		return catalogFile.getAbsolutePath();
+	}
+
+	private static String defaultFilterFolder() {
+		String home = System.getenv("OpenXLIFF_HOME");
+		if (home == null) {
+			home = System.getProperty("user.dir");
+		}
+		File filtersFolder = new File(new File(home), "xmlfilter");
+		return filtersFolder.getAbsolutePath();
 	}
 }

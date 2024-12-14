@@ -14,6 +14,8 @@ package com.maxprograms.converters;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -25,11 +27,12 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.xml.Attribute;
@@ -51,7 +54,7 @@ public class Join {
 
 	public static void main(String[] args) {
 		String[] arguments = Utils.fixPath(args);
-		if (arguments.length < 4) {
+		if (arguments.length < 2) {
 			help();
 			return;
 		}
@@ -82,8 +85,30 @@ public class Join {
 			if (arg.equals("-target") && (i + 1) < arguments.length) {
 				target = arguments[i + 1];
 			}
+			if ("-json".equals(arg) && (i + 1) < arguments.length) {
+				String jsonFile = arguments[i + 1];
+				try {
+					JSONObject json = Utils.readJSON(jsonFile);
+					target = json.getString("target");
+					list = new ArrayList<>();
+					JSONArray filesArray = json.getJSONArray("files");
+					for (int j=0 ; j<filesArray.length() ; j++) {
+						list.add(filesArray.getString(j));
+					}
+				} catch (JSONException | IOException e) {
+					logger.log(Level.ERROR, e.getMessage(), e);
+					return;
+				}
+			}
 		}
-
+		if (target.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("Join.5"));
+			return;
+		}
+		if (list == null || list.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("Join.6"));
+			return;
+		}
 		File targetFile = new File(target);
 		if (!targetFile.isAbsolute()) {
 			target = targetFile.getAbsoluteFile().getAbsolutePath();
