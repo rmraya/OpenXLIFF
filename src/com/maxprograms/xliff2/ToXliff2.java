@@ -26,9 +26,11 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Attribute;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -37,8 +39,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 import com.maxprograms.xml.XMLUtils;
-
-import org.xml.sax.SAXException;
 
 public class ToXliff2 {
 
@@ -70,7 +70,7 @@ public class ToXliff2 {
 		fileId = 1;
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			builder.setEntityResolver(new Catalog(catalog));
+			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 			Document doc = builder.build(sourceFile);
 			Element root = doc.getRootElement();
 			if (!root.getAttributeValue("version", "1.2").equals("1.2")) {

@@ -31,17 +31,17 @@ import java.util.TimeZone;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.xliff2.FromXliff2;
 import com.maxprograms.xml.Attribute;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
-
-import org.xml.sax.SAXException;
 
 public class TmxExporter {
 
@@ -139,7 +139,7 @@ public class TmxExporter {
 			filenumbr = 0;
 
 			SAXBuilder builder = new SAXBuilder();
-			builder.setEntityResolver(new Catalog(catalog));
+			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 			Document doc = builder.build(xliff);
 			Element root = doc.getRootElement();
 			if (root.getAttributeValue("version").startsWith("2.")) {

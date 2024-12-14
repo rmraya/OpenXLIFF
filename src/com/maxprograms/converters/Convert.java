@@ -63,7 +63,7 @@ import com.maxprograms.converters.xliff.ToOpenXliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xliff2.Resegmenter;
 import com.maxprograms.xliff2.ToXliff2;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -349,7 +349,7 @@ public class Convert {
 		List<String> result = new ArrayList<>();
 		try {
 			SAXBuilder builder = new SAXBuilder();
-			builder.setEntityResolver(new Catalog(catalog));
+			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 			Document doc = builder.build(fileName);
 			Element root = doc.getRootElement();
 			List<Element> files = root.getChildren("file");
@@ -463,7 +463,7 @@ public class Convert {
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
 				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
 					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
-							new Catalog(params.get("catalog")));
+							CatalogBuilder.getCatalog(params.get("catalog")));
 				}
 			}
 		} catch (Exception e) {

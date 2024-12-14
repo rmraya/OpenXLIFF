@@ -56,7 +56,7 @@ import com.maxprograms.converters.wpml.Xliff2Wpml;
 import com.maxprograms.converters.xliff.FromOpenXliff;
 import com.maxprograms.converters.xml.Xliff2Xml;
 import com.maxprograms.xliff2.FromXliff2;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
@@ -287,7 +287,7 @@ public class Merge {
 	protected static void loadXliff(String fileName, String catalog)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 		doc = builder.build(fileName);
 		root = doc.getRootElement();
 		if (!root.getName().equals("xliff")) {

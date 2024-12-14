@@ -46,6 +46,7 @@ import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.DTDParser;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.EntityDecl;
@@ -100,7 +101,7 @@ public class Json2Xliff {
             tgtLang = "\" target-language=\"" + targetLanguage;
         }
         try {
-            Catalog catalog = new Catalog(catalogFile);
+            Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
             bomLength = EncodingResolver.getBOM(inputFile) == null ? 0 : 1;
             Object json = loadFile(inputFile, encoding);
             if (!paragraphSegmentation) {

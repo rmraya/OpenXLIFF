@@ -37,7 +37,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.xliff2.FromXliff2;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
@@ -175,7 +175,7 @@ public class RepetitionAnalysis {
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 		Iterator<Element> it = null;
 		String shortName = Utils.cleanString(new File(fileName).getName());
 		Document doc = builder.build(fileName);

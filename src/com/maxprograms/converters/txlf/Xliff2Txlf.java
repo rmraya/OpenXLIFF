@@ -34,6 +34,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xliff.FromOpenXliff;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -65,7 +66,7 @@ public class Xliff2Txlf {
         String sklFile = params.get("skeleton");
         String outputFile = params.get("backfile");
         try {
-            catalog = new Catalog(params.get("catalog"));
+            catalog = CatalogBuilder.getCatalog(params.get("catalog"));
             loadXliff(xliffFile);
             loadSkeleton(sklFile);
             Element root = skeleton.getRootElement();

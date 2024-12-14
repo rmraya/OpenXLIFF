@@ -23,11 +23,14 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.CData;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -36,8 +39,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Wpml2Xliff {
 
@@ -79,7 +80,7 @@ public class Wpml2Xliff {
         endPattern = Pattern.compile("</[A-Za-z0-9]+>");
 
         try {
-            Catalog catalog = new Catalog(catalogFile);
+            Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
             if (!paragraphSegmentation) {
                 segmenter = new Segmenter(srxRules, sourceLanguage, catalog);
             }

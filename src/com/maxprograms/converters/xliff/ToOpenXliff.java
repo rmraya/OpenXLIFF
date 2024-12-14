@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Attribute;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -58,7 +58,7 @@ public class ToOpenXliff {
         String catalog = params.get("catalog");
         try {
             SAXBuilder builder = new SAXBuilder();
-            builder.setEntityResolver(new Catalog(catalog));
+            builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
             Document doc = builder.build(inputFile);
             Element root = doc.getRootElement();
 

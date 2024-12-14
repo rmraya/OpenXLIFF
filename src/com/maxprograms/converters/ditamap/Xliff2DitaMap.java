@@ -33,7 +33,7 @@ import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.ILogger;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xliff2Xml;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -41,7 +41,6 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
 public class Xliff2DitaMap {
 
 	private static Map<String, String[]> filesTable;
@@ -62,7 +61,7 @@ public class Xliff2DitaMap {
 			String catalog = params.get("catalog");
 			SAXBuilder builder = new SAXBuilder();
 			builder.preserveCustomAttributes(true);
-			builder.setEntityResolver(new Catalog(catalog));
+			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 			Document doc = builder.build(xliffFile);
 			Element root = doc.getRootElement();
 			List<Element> files = root.getChildren("file");

@@ -32,15 +32,16 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.languages.RegistryParser;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
-
-import org.xml.sax.SAXException;
 
 public class Xliff20 {
 
@@ -97,7 +98,7 @@ public class Xliff20 {
 	public boolean validate(String file, String catalog) {
 		try {
 			StreamSource source = new StreamSource(new File(file));
-			resolver = new Catalog(catalog);
+			resolver = CatalogBuilder.getCatalog(catalog);
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Source[] schemas = new Source[] { getSource(W3_ORG_XML_NAMESPACE), getSource(XLIFF_DOCUMENT_2_0),
 					getSource(XLIFF_METADATA_2_0), getSource(XLIFF_CHANGETRACKING_2_0), getSource(XLIFF_FS_2_0),

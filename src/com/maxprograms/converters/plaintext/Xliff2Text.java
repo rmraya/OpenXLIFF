@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
@@ -61,7 +62,7 @@ public class Xliff2Text {
 		encoding = params.get("encoding");
 
 		try {
-			catalog = new Catalog(params.get("catalog"));
+			catalog = CatalogBuilder.getCatalog(params.get("catalog"));
 			String outputFile = params.get("backfile");
 			File f = new File(outputFile);
 			File p = f.getParentFile();

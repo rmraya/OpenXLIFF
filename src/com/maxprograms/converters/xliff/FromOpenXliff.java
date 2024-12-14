@@ -29,9 +29,12 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -41,8 +44,6 @@ import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 import com.maxprograms.xml.XMLUtils;
-
-import org.xml.sax.SAXException;
 
 public class FromOpenXliff {
 
@@ -65,7 +66,7 @@ public class FromOpenXliff {
         String sklFile = params.get("skeleton");
         String outputFile = params.get("backfile");
         try {
-            catalog = new Catalog(params.get("catalog"));
+            catalog = CatalogBuilder.getCatalog(params.get("catalog"));
             loadXliff(xliffFile);
             loadSkeleton(sklFile);
             Element root = skeleton.getRootElement();

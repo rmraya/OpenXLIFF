@@ -32,14 +32,14 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
-
-import org.xml.sax.SAXException;
 
 public class Xliff2Rc {
 
@@ -180,7 +180,7 @@ public class Xliff2Rc {
 	private static void loadSegments()
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 
 		Document doc = builder.build(xliffFile);
 		Element root = doc.getRootElement();

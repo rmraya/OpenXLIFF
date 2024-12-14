@@ -35,7 +35,7 @@ import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
@@ -103,7 +103,7 @@ public class Html2Xliff {
 			builder = new SAXBuilder();
 			if (!segByElement) {
 				String initSegmenter = params.get("srxFile");
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, new Catalog(catalog));
+				segmenter = new Segmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
 			}
 			try (FileInputStream input = new FileInputStream(inputFile)) {
 				skeleton = new FileOutputStream(skeletonFile);

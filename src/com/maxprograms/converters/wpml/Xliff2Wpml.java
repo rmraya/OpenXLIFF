@@ -26,17 +26,18 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.CData;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Xliff2Wpml {
 
@@ -56,7 +57,7 @@ public class Xliff2Wpml {
         String sklFile = params.get("skeleton");
         String outputFile = params.get("backfile");
         try {
-            catalog = new Catalog(params.get("catalog"));
+            catalog = CatalogBuilder.getCatalog(params.get("catalog"));
             loadXliff(xliffFile);
             loadSkeleton(sklFile);
             recurseSkeleton(skeleton.getRootElement());

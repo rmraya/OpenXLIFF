@@ -28,16 +28,17 @@ import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.UnexistentSegmentException;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Xliff2Sdl {
 
@@ -66,7 +67,7 @@ public class Xliff2Sdl {
 		}
 
 		try {
-			catalog = new Catalog(params.get("catalog"));
+			catalog = CatalogBuilder.getCatalog(params.get("catalog"));
 
 			loadSegments();
 			loadSkeleton();

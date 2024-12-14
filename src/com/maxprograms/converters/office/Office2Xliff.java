@@ -32,12 +32,14 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.msoffice.MSOffice2Xliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -46,8 +48,6 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Office2Xliff {
 
@@ -211,7 +211,7 @@ public class Office2Xliff {
 	private static void cleanTags(String file, String catalog)
 			throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 		Document doc = builder.build(file);
 		Element root = doc.getRootElement();
 		recurseCleaning(root);

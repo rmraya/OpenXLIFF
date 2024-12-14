@@ -32,6 +32,7 @@ import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Element;
 
 public class Php2Xliff {
@@ -70,7 +71,7 @@ public class Php2Xliff {
 		String initSegmenter = params.get("srxFile");
 
 		try {
-			Catalog catalog = new Catalog(params.get("catalog"));
+			Catalog catalog = CatalogBuilder.getCatalog(params.get("catalog"));
 			if (!paragraphSegmentation) {
 				segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
 			}

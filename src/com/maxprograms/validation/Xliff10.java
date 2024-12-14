@@ -23,7 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
@@ -53,7 +53,7 @@ public class Xliff10 {
 			try {
 				SAXBuilder builder = new SAXBuilder();
 				builder.setValidating(true);
-				builder.setEntityResolver(new Catalog(catalog));
+				builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 				builder.build(temp);
 			} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 				logger.log(Level.ERROR, e);

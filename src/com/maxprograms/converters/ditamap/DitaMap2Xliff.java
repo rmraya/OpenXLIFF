@@ -46,6 +46,7 @@ import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -84,7 +85,7 @@ public class DitaMap2Xliff {
 		try {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
-			Catalog catalog = new Catalog(params.get("catalog"));
+			Catalog catalog = CatalogBuilder.getCatalog(params.get("catalog"));
 			String mapFile = params.get("source");
 
 			DitaParser parser = new DitaParser();

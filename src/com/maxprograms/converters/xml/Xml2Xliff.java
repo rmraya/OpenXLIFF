@@ -43,6 +43,7 @@ import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CData;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Comment;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -150,7 +151,7 @@ public class Xml2Xliff {
 
 		try {
 			if (catalog == null || !catalogFile.equals(currentCatalog)) {
-				catalog = new Catalog(catalogFile);
+				catalog = CatalogBuilder.getCatalog(catalogFile);
 				currentCatalog = catalogFile;
 			}
 			boolean autoConfiguration = false;

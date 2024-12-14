@@ -26,16 +26,17 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Sdl2Xliff {
 
@@ -62,7 +63,7 @@ public class Sdl2Xliff {
 				tgtLang = "\" target-language=\"" + targetLanguage;
 			}
 
-			Catalog catalog = new Catalog(catalogFile);
+			Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
 			XliffModel model = new XliffModel(original, srxRules, catalog);
 			if (model.wasModified()) {
 				File f = File.createTempFile("temp", ".sdlxliff");

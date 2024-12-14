@@ -25,16 +25,16 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.xml.Xml2Xliff;
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
 
 public class Resx2Xliff {
 
@@ -131,7 +131,7 @@ public class Resx2Xliff {
 			throws ParserConfigurationException, SAXException, IOException, URISyntaxException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setValidating(false);
-		builder.setEntityResolver(new Catalog(catalog));
+		builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 		return builder.build(filename);
 	}
 

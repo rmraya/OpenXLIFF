@@ -42,6 +42,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -93,7 +94,7 @@ public class Xliff2Xml {
 			ditaBased = true;
 		}
 		try {
-			catalog = new Catalog(params.get("catalog"));
+			catalog = CatalogBuilder.getCatalog(params.get("catalog"));
 			String outputFile = params.get("backfile");
 			File f = new File(outputFile);
 			File p = f.getParentFile();

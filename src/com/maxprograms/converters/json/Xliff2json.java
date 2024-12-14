@@ -33,6 +33,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.PI;
@@ -62,7 +63,7 @@ public class Xliff2json {
         String outputFile = params.get("backfile");
 
         try {
-            Catalog catalog = new Catalog(catalogFile);
+            Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
             loadSegments(xliffFile, catalog);
             Object json = Json2Xliff.loadFile(sklFile, encoding);
             if (json instanceof JSONObject obj) {

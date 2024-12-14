@@ -26,7 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -104,7 +104,7 @@ public class PseudoTranslation {
     public static void pseudoTranslate(String xliff, String catalog)
             throws SAXException, IOException, ParserConfigurationException, URISyntaxException {
         SAXBuilder builder = new SAXBuilder();
-        builder.setEntityResolver(new Catalog(catalog));
+        builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
         Document doc = builder.build(xliff);
         Element root = doc.getRootElement();
         if (!"xliff".equals(root.getName())) {
