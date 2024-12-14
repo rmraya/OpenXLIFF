@@ -281,11 +281,25 @@ public class Xliff2Xml {
 		Document doc = builder.build(outputFile);
 		Element root = doc.getRootElement();
 		root.setAttribute("xml:lang", tgtLang);
+		updatePI(root);
 		Indenter.indent(root, 2);
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.preserveSpace(true);
 		try (FileOutputStream out = new FileOutputStream(outputFile)) {
 			outputter.output(doc, out);
+		}
+	}
+
+	private static void updatePI(Element e) {
+		List<PI> pis = e.getPI();
+		for (int i = 0; i < pis.size(); i++) {
+			PI pi = pis.get(i);
+			String data = pi.getData();
+			pi.setData(data.replace("\n", ""));
+		}
+		List<Element> children = e.getChildren();
+		for (Element child : children) {
+			updatePI(child);
 		}
 	}
 
