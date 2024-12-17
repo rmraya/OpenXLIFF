@@ -1,6 +1,6 @@
 # OpenXLIFF Filters
 
-![OpenXLIFF FIlters logo](https://www.maxprograms.com/images/openxliff_128.png)
+![OpenXLIFF FIlters logo](openxliff_128.png) 
 
 An open source set of Java filters for creating, merging and validating XLIFF 1.2, 2.0 and 2.1 files.
 
