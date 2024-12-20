@@ -98,7 +98,7 @@ public class FileFormats {
 			JSONArray result = new JSONArray();
 			for (String format : formats) {
 				JSONObject obj = new JSONObject();
-				obj.put("type", format);
+				obj.put("type", getShortName(format));
 				obj.put("description", getLocalizedName(format));
 				result.put(obj);
 			}
