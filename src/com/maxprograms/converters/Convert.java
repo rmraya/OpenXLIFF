@@ -534,11 +534,11 @@ public class Convert {
 			if (file.has("embed")) {
 				params.put("embed", "yes");
 			}
-			if (file.has("2.0")) {
-				params.put("xliff20", "yes");
+			if (file.has("is20")) {
+				params.put("xliff20", file.getBoolean("is20") ? "yes" : "no");
 			}
-			if (file.has("2.1")) {
-				params.put("xliff21", "yes");
+			if (file.has("is21")) {
+				params.put("xliff21", file.getBoolean("is21") ? "yes" : "no");
 			}
 			if (file.has("ditaval")) {
 				params.put("ditaval", file.getString("ditaval"));
