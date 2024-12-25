@@ -119,7 +119,8 @@ public class Convert {
 				try {
 					convert(jsonFile);
 				} catch (IOException | JSONException e) {
-					logger.log(Level.ERROR, Messages.getString("Convert.13"), e);
+					MessageFormat mf = new MessageFormat(Messages.getString("Convert.13"));
+					logger.log(Level.ERROR, mf.format(new String[] { e.getMessage() }));
 				}
 				return;
 			}
@@ -550,7 +551,10 @@ public class Convert {
 				params.put("ignoresvg", "yes");
 			}
 			params.put("xmlfilter", xmlfilter);
-			run(params);
+			List<String> result = run(params);
+			if (!Constants.SUCCESS.equals(result.get(0))) {
+				throw new IOException(result.get(1));
+			}
 		}
 	}
 
