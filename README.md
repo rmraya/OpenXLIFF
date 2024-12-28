@@ -53,6 +53,8 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
+|4.1.0 | Adjusted for [XLIFF Manager](https://github.com/rmraya/XLIFFManager) 8.0 | December 28th, 2024|
+|4.0.0 | Updated [XMLJava](https://github.com/rmraya/XMLJava) to version 2.0.0 | December 15th, 2024|
 |3.25.0 | Handled locked status in SDLXLIFF files | November 24th, 2024|
 |3.24.0 | Added character count and improved JSON filter | November 14th, 2024|
 |3.23.0 | Migrated `.bat` scripts to `.cmd` | October 24th, 2024|
