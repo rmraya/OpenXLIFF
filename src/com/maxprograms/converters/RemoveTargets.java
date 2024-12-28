@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -46,6 +47,9 @@ public class RemoveTargets {
             if (arg.equals("-help")) {
                 help();
                 return;
+            }
+            if (arg.equals("-lang") && (i + 1) < arguments.length) {
+                Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
             }
             if (arg.equals("-xliff") && (i + 1) < arguments.length) {
                 xliff = arguments[i + 1];

@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -69,6 +70,9 @@ public class RepetitionAnalysis {
 			}
 			if (arg.equals("-catalog") && (i + 1) < fixedArgs.length) {
 				catalog = fixedArgs[i + 1];
+			}
+			if (arg.equals("-lang") && (i + 1) < fixedArgs.length) {
+				Locale.setDefault(Locale.forLanguageTag(fixedArgs[i + 1]));
 			}
 		}
 		if (fixedArgs.length < 2) {

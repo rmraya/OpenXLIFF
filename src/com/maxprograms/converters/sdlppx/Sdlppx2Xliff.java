@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -58,6 +59,30 @@ public class Sdlppx2Xliff {
 	private Sdlppx2Xliff() {
 		// do not instantiate this class
 		// use run method instead
+	}
+
+	public static void main(String[] args) {
+		String[] params = Utils.fixPath(args);
+		String file = "";
+		for (int i = 0; i < params.length; i++) {
+			if ("-lang".equals(params[i]) && i + 1 < params.length) {
+				Locale.setDefault(Locale.forLanguageTag(params[i + 1]));
+			}
+			if ("-file".equals(params[i]) && i + 1 < params.length) {
+				file = params[i + 1];
+			}
+		}
+		if (file.isEmpty()) {
+			System.out.println(Messages.getString("Sdlppx2Xliff.5"));
+			return;
+		}
+		try {
+			JSONObject json = getPackageLanguages(file);
+			System.out.println(json.toString(2));
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			Logger logger = System.getLogger(Sdlppx2Xliff.class.getName());
+			logger.log(Level.ERROR, e);
+		}
 	}
 
 	public static List<String> run(Map<String, String> params) {

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
@@ -113,6 +114,9 @@ public class Convert {
 			if (arg.equals("-charsets")) {
 				listCharsets();
 				return;
+			}
+			if (arg.equals("-lang") && (i + 1)  < arguments.length) {
+				Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
 			}
 			if (arg.equals("-json") && (i + 1) < arguments.length) {
 				jsonFile = arguments[i + 1];

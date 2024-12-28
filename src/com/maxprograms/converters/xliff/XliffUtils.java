@@ -12,8 +12,11 @@ package com.maxprograms.converters.xliff;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -21,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
+import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -32,6 +36,30 @@ public class XliffUtils {
 
     private XliffUtils() {
         // do not instantiate this class
+    }
+
+    public static void main(String[] args) {
+        String[] params = Utils.fixPath(args);
+        String file = "";
+        for (int i = 0; i < params.length; i++) {
+            if ("-lang".equals(params[i]) && i + 1 < params.length) {
+                Locale.setDefault(Locale.forLanguageTag(params[i + 1]));
+            }
+            if ("-file".equals(params[i]) && i + 1 < params.length) {
+                file = params[i + 1];
+            }
+        }
+        if (file.isEmpty()) {
+            System.out.println(Messages.getString("XliffUtils.3"));
+            return;
+        }
+        try {
+            JSONObject json = getXliffLanguages(new File(file));
+            System.out.println(json.toString(2));
+        } catch (IOException | SAXException | ParserConfigurationException e) {
+            Logger logger = System.getLogger(XliffUtils.class.getName());
+            logger.log(Level.ERROR, e);
+        }
     }
 
     public static String getHead(Element e) {

@@ -22,6 +22,7 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,6 +81,9 @@ public class XliffChecker {
 				help();
 				return;
 			}
+            if (arg.equals("-lang") && (i + 1) < fixedArgs.length) {
+                Locale.setDefault(Locale.forLanguageTag(fixedArgs[i + 1]));
+            }
 			if (arg.equals("-xliff") && (i + 1) < fixedArgs.length) {
 				xliff = fixedArgs[i + 1];
 			}

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -79,6 +80,7 @@ public class Merge {
 		String catalog = "";
 		boolean unapproved = false;
 		boolean exportTMX = false;
+		boolean getTarget = false;
 
 		String[] arguments = Utils.fixPath(args);
 		for (int i = 0; i < arguments.length; i++) {
@@ -107,6 +109,12 @@ public class Merge {
 			if (arg.equals("-export")) {
 				exportTMX = true;
 			}
+			if (arg.equals("-getTarget")) {
+				getTarget = true;
+			}
+			if (arg.equals("-lang") && (i + 1)  < arguments.length) {
+				Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
+			}
 		}
 		if (arguments.length < 2) {
 			help();
@@ -119,6 +127,16 @@ public class Merge {
 		File xliffFile = new File(xliff);
 		if (!xliffFile.isAbsolute()) {
 			xliff = xliffFile.getAbsoluteFile().getAbsolutePath();
+		}
+		if (getTarget) {
+			try {
+				target = getTargetFile(xliff);
+				System.out.println(target);
+				return;
+			} catch (IOException | SAXException | ParserConfigurationException e) {
+				logger.log(Level.ERROR, Messages.getString("Merge.03"), e);
+				return;
+			}
 		}
 		if (target.isEmpty()) {
 			try {

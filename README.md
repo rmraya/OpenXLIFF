@@ -305,6 +305,7 @@ Where:
    -catalog:    (optional) XML catalog to use for processing
    -unapproved: (optional) accept translations from unapproved segments
    -export:     (optional) generate TMX file from approved segments
+   -getTarget:  (optional) display a potential target file name and exit
 ```
 
 ## XLIFF Validation
