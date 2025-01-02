@@ -115,7 +115,7 @@ public class Convert {
 				listCharsets();
 				return;
 			}
-			if (arg.equals("-lang") && (i + 1)  < arguments.length) {
+			if (arg.equals("-lang") && (i + 1) < arguments.length) {
 				Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
 			}
 			if (arg.equals("-json") && (i + 1) < arguments.length) {
@@ -513,6 +513,11 @@ public class Convert {
 				} else {
 					throw new IOException(Messages.getString("Convert.09"));
 				}
+			}
+
+			File sklFile = new File(skl).getParentFile();
+			if (!sklFile.exists()) {
+				sklFile.mkdirs();
 			}
 
 			Map<String, String> params = new HashMap<>();
