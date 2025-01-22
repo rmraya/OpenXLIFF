@@ -39,8 +39,6 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.EncodingResolver;
-import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.ILogger;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.xml.Xml2Xliff;
@@ -73,6 +71,8 @@ public class DitaMap2Xliff {
 	private static ILogger dataLogger;
 	private static List<String> issues;
 	private static Map<String, List<String>> images;
+
+	private static Document singleDoc;
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -112,26 +112,8 @@ public class DitaMap2Xliff {
 			}
 			skipped = new ArrayList<>();
 			skipped.addAll(parser.getSkipped());
-			List<String> svgFiles = new ArrayList<>();
 			if ("yes".equals(params.get("ignoresvg"))) {
-				if (dataLogger != null) {
-					if (dataLogger.isCancelled()) {
-						result.add("1");
-						result.add(Constants.CANCELLED);
-						return result;
-					}
-					dataLogger.setStage(Messages.getString("DitaMap2Xliff.09"));
-				}
-				SAXBuilder builder = new SAXBuilder();
-				builder.setEntityResolver(catalog);
-				for (int i = 0; i < filesMap.size(); i++) {
-					Document doc = builder.build(filesMap.get(i));
-					Element root = doc.getRootElement();
-					if ("svg".equals(root.getName())) {
-						svgFiles.add(filesMap.get(i));
-					}
-				}
-				filesMap.removeAll(svgFiles);
+				filesMap.removeAll(parser.getTranslatableSVG());
 			}
 			if (dataLogger != null) {
 				if (dataLogger.isCancelled()) {
@@ -141,6 +123,11 @@ public class DitaMap2Xliff {
 				}
 				dataLogger.setStage(Messages.getString("DitaMap2Xliff.02"));
 			}
+			// start processing single file
+			SAXBuilder builder = new SAXBuilder();
+			builder.setEntityResolver(catalog);
+			builder.preserveCustomAttributes(true);
+			builder.setErrorHandler(new SilentErrorHandler());
 			for (int i = 0; i < filesMap.size(); i++) {
 				String file = filesMap.get(i);
 				if (dataLogger != null) {
@@ -151,6 +138,7 @@ public class DitaMap2Xliff {
 					}
 					dataLogger.log(new File(file).getName());
 				}
+				singleDoc = builder.build(file);
 				String source = "";
 				try {
 					source = checkConref(file, catalog);
@@ -188,7 +176,7 @@ public class DitaMap2Xliff {
 				File xlf = File.createTempFile("dita", ".xlf", new File(skeleton).getParentFile());
 				xlf.deleteOnExit();
 
-				Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
+				Charset encoding = singleDoc.getEncoding();
 				Map<String, String> params2 = new HashMap<>();
 				params2.put("source", source);
 				params2.put("xliff", xlf.getAbsolutePath());
@@ -227,6 +215,7 @@ public class DitaMap2Xliff {
 					// original has conref
 					fixSource(xlf.getAbsolutePath(), filesMap.get(i), catalog);
 				}
+				// end processing single file
 			}
 
 			Document merged = new Document(null, "xliff", null, null);
@@ -251,7 +240,7 @@ public class DitaMap2Xliff {
 					}
 					dataLogger.setStage(Messages.getString("DitaMap2Xliff.04"));
 				}
-				SAXBuilder builder = new SAXBuilder();
+				builder = new SAXBuilder();
 				builder.setEntityResolver(catalog);
 				builder.preserveCustomAttributes(true);
 				Document doc = builder.build(xliffs.get(0));
@@ -322,26 +311,21 @@ public class DitaMap2Xliff {
 
 	private static String checkXref(String source, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException, SkipException {
-		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(catalog);
-		builder.preserveCustomAttributes(true);
-		builder.setErrorHandler(new SilentErrorHandler());
-		Document doc = builder.build(source);
-		Element root = doc.getRootElement();
+		Element root = singleDoc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
 		}
 		hasXref = false;
-		fixXref(root, source, doc, catalog);
+		fixXref(root, source, singleDoc, catalog);
 		if (hasXref) {
-			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
+			Charset encoding = singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(doc, out);
+				outputter.output(singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
@@ -414,22 +398,18 @@ public class DitaMap2Xliff {
 
 	private static String removeFiltered(String source, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException {
-		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(catalog);
-		builder.preserveCustomAttributes(true);
-		Document doc = builder.build(source);
-		Element root = doc.getRootElement();
+		Element root = singleDoc.getRootElement();
 		elementsExcluded = false;
 		recurseExcluding(root);
 		if (elementsExcluded) {
-			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
+			Charset encoding = singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(doc, out);
+				outputter.output(singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
@@ -451,22 +431,18 @@ public class DitaMap2Xliff {
 
 	private static String checkConKeyRef(String source, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException {
-		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(catalog);
-		builder.preserveCustomAttributes(true);
-		Document doc = builder.build(source);
-		Element root = doc.getRootElement();
+		Element root = singleDoc.getRootElement();
 		hasConKeyRef = false;
-		fixConKeyRef(root, source, doc, catalog);
+		fixConKeyRef(root, source, singleDoc, catalog);
 		if (hasConKeyRef) {
-			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
+			Charset encoding = singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(doc, out);
+				outputter.output(singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
@@ -718,26 +694,21 @@ public class DitaMap2Xliff {
 
 	private static String checkConref(String source, Catalog catalog)
 			throws SkipException, IOException, SAXException, ParserConfigurationException {
-		SAXBuilder builder = new SAXBuilder();
-		builder.setEntityResolver(catalog);
-		builder.preserveCustomAttributes(true);
-		builder.setErrorHandler(new SilentErrorHandler());
-		Document doc = builder.build(source);
-		Element root = doc.getRootElement();
+		Element root = singleDoc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
 		}
 		hasConref = false;
-		fixConref(root, source, doc, catalog);
+		fixConref(root, source, singleDoc, catalog);
 		if (hasConref) {
-			Charset encoding = EncodingResolver.getEncoding(source, FileFormats.XML);
+			Charset encoding = singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(doc, out);
+				outputter.output(singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}

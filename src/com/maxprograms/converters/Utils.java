@@ -168,15 +168,10 @@ public class Utils {
 	}
 
 	public static boolean lookingAt(String target, String text, int start) {
-		if (target.length() > text.length() + start) {
+		if (start < 0 || start + target.length() > text.length()) {
 			return false;
 		}
-		for (int i = 0; i < target.length(); i++) {
-			if (target.charAt(i) != text.charAt(i + start)) {
-				return false;
-			}
-		}
-		return true;
+		return text.startsWith(target, start);
 	}
 
 	public static JSONObject readJSON(String jsonFile) throws IOException, JSONException {

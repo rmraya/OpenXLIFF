@@ -113,6 +113,7 @@ public class DitaParser {
 	private Catalog catalog;
 	private List<String> skipped;
 	private Map<String, List<String>> images;
+	private Set<String> translatableSVG;
 
 	public List<String> run(Map<String, String> params, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException {
@@ -124,6 +125,7 @@ public class DitaParser {
 		recursed = new TreeSet<>();
 		pendingRecurse = new TreeSet<>();
 		ignored = new ArrayList<>();
+		translatableSVG = new TreeSet<>();
 		referenceChache = new HashMap<>();
 		skipped = new ArrayList<>();
 		images = new HashMap<>();
@@ -202,9 +204,13 @@ public class DitaParser {
 							dataLogger.log(new File(file).getName());
 						}
 						Element e = builder.build(file).getRootElement();
-						if ("svg".equals(e.getName()) && !containsText(e)) {
-							recursed.add(file);
-							continue;
+						if ("svg".equals(e.getName())) {
+							if (containsText(e)) {
+								translatableSVG.add(file);
+							} else {
+								recursed.add(file);
+								continue;
+							}
 						}
 						recurse(e, file);
 						recursed.add(file);
@@ -624,6 +630,7 @@ public class DitaParser {
 						Element svg = builder.build(f).getRootElement();
 						if ("svg".equals(svg.getName())) {
 							if (hasText(svg)) {
+								translatableSVG.add(path);
 								filesMap.add(path);
 							} else {
 								// untranslatable svg, add it to images list
@@ -1063,5 +1070,9 @@ public class DitaParser {
 
 	public Map<String, List<String>> getImages() {
 		return images;
+	}
+
+	public Set<String> getTranslatableSVG() {
+		return translatableSVG;
 	}
 }
