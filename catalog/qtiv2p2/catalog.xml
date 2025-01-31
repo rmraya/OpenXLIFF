@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri name="http://www.imsglobal.org/xsd/imsqti_metadata_v2p2" uri="imsqti_metadata_v2p2.xsd" />
+    <uri name="http://www.imsglobal.org/xsd/imsqti_result_v2p2" uri="imsqti_result_v2p2.xsd" />
+    <uri name="http://www.imsglobal.org/xsd/imsqti_usagedata_v2p2" uri="imsqti_usagedata_v2p2.xsd" />
+    <uri name="http://www.imsglobal.org/xsd/imsqti_v2p2" uri="imsqti_v2p2p2.xsd" />
+    <uri name="http://www.imsglobal.org/xsd/imsqtiv2p2_html5_v1p0" uri="imsqtiv2p2p1_html5_v1p0.xsd" />
+    <uri name="http://www.imsglobal.org/xsd/qti/qtiv2p2/imscsmd_v1p0" uri="qtiv2p2_csm_v2p2.xsd" />
+    <uri name="http://www.imsglobal.org/xsd/imscp_v1p1" uri="qtiv2p2_imscpv1p2_v1p0.xsd" />
+</catalog>

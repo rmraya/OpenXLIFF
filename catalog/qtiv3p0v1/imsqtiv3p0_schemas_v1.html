@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head></head>
+	<body>
+		<h1>Question &amp; Test Interoperability 3.0</h1>
+		<h2>Final Specification (2022-05-01) - XML Schema and Vocabulary Documents Version 1</h2>
+		<p>This is the set of Final Release XSDs developed by IMS Global to support validation of instances that conform to the IMS Question and Test Interoperability (QTI) v3.0 specification. The namespace and schema location details for the QTIv3.0 XSDs are provided in the tables below.</p>
+		<ol type="1">
+			<li><a href="#PackageXSDs">Packaging-Related XSDs</a> - the construction of the package manifest for the zipped QTI package;</li>
+			<li><a href="#QTIXSDs">QTI-Specific XSDs</a> - definition of the accessible QTI instances, results reports and usage data statistics;</li>
+			<li><a href="#MetadataXSDs">Metadata-Related XSDs</a> - the set of metadata supported in the manifest;</li>
+			<li><a href="#AfAPNPXSDs">Access for All Personal Needs &amp; Preferences  XSDs</a> - XSDs required for the validation of the QTI AfA PNP instances;</li>
+			<li><a href="#OtherXSDs">Other Required XSDs</a> - other XSDs required for the full validation;</li>
+			<li><a href="#Vocabs">VDEX-based Vocabularies</a> - the set of VDEX-based control vocabularies.</li>
+		</ol>
+		<p>The key for the following tables is:</p>
+		<ul>
+			<li>&quot;Namespace&quot; - the namespace for the XSD (must be supplied in any XML instance referring to the corresponding XSD);</li>
+			<li>&quot;XSD File Name&quot; - the filename for the XSD;</li>
+			<li>&quot;Schema Location&quot; - the schema location for the XSD (must be supplied in any XML instance referring to the corresponding XSD).</li>
+		</ul>
+		<p>The following set of XSDs are used for the validation of QTIv3.0:</p>
+		<ul>
+			<li>P1 - used to validate the &quot;imsmanifest.xml&quot; file that must be present in the zipped package;</li>
+			<li>P2 - used to validate the CP 1.2 manifest extension features used by QTI;</li>
+			<li>Q1 - used to validate a QTI instance;</li>
+			<li>Q2 - used to validate a QTI Item-only instance;</li>
+			<li>Q3 - used to validate a QTI Test-only instance;</li>
+			<li>Q4 - used to validate a QTI Section-only instance;</li>
+			<li>Q5 - used to validate a QTI Stimulus-only instance;</li>
+			<li>Q6 - used to validate a QTI Outcome Declaration-only instance;</li>
+			<li>Q7 - used to validate a QTI Response Processing-only instance;</li>
+			<li>Q8 - used to validate the reporting of QTI results;</li>
+			<li>Q9 - used to validate the usage data statistics for presented QTI items;</li>
+			<li>M1 - used to validate the learning standards annotations, at the manifest and resource level, defined using the Curriculum Standards Metadata (CSM);</li>
+			<li>M2 - used to validate the metadata, in the &quot;imsmanifest.xml&quot; file, defined using IEEE LOM;</li>
+			<li>M3 - used to validate the QTI metadata that is associated with a QTI-based resource;</li>
+			<li>M4 - used to validate alternative resource metadata based upon the Access for All Digital Resource Description (AfA DRD);</li>
+			<li>A1 - used to validate the Access for All Personal Needs &amp; Preferences instances;</li>
+			<li>X1 - used to validate the xml-specific attributes;</li>
+			<li>X2 - used to validate the XInclude features;</li>
+			<li>X3 - used to validate the MathML 3 features;</li>
+			<li>X4 - used to validate the SSMLv1.1 features;</li>
+			<li>X5 - used to validate the VDEX-based vocabularies;</li>
+			<li>V1 - glossary of terms for Usage Data Distractor Statistics;</li>
+			<li>V2 - glossary of terms for Usage Data Item Statistics.</li>
+		</ul>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<h2><a id="PackageXSDs">1. &nbsp; Packaging-Related XSDs</a></h2>
+		<table summary="The namespace and schema location details for the QTIv3.0 Packaging XSDs." title="QTI Packaging XSD Details" width="100%">
+			<thead>
+				<tr>
+					<th bgcolor="#ffd700" width="5%">ID</th>
+					<th bgcolor="#ffd700" width="25%">Namespace</th>
+					<th bgcolor="#ffd700" width="25%">XSD File Name</th>
+					<th bgcolor="#ffd700" width="50%">Schema Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">P1</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/qti/qtiv3p0/imscp_v1p1</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqtiv3p0_imscpv1p2_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_imscpv1p2_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_imscpv1p2_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">P2</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/qti/qtiv3p0/imscp_extensionv1p2</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqtiv3p0_cpextv1p2_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="http://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_cpextv1p2_v1p0.xsd">http://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_cpextv1p2_v1p0.xsd</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<h2><a name="QTIXSDs">2. &nbsp; QTI-Specific XSDs</a></h2>
+		<table summary="The namespace and schema location details for the QTI-Specific XSDs." title="QTI-Specific XSD Details" width="100%">
+			<thead>
+				<tr>
+					<th bgcolor="#ffd700" width="5%">ID</th>
+					<th bgcolor="#ffd700" width="25%">Namespace</th>
+					<th bgcolor="#ffd700" width="25%">XSD File Name</th>
+					<th bgcolor="#ffd700" width="50%">Schema Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q1</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_asiv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q2</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_itemv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_itemv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_itemv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q3</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_testv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_testv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_testv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q4</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_sectionv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_sectionv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_sectionv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q5</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_stimulusv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_stimulusv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_stimulusv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q6</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_outcomev3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_outcomev3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_outcomev3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q6</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqtiasi_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_responseprocessingv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_responseprocessingv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_responseprocessingv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q8</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqti_result_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_resultv3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_resultv3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_resultv3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">Q9</td>
+					<td bgcolor="#dcdcdc">
+						<p></br>http://www.imsglobal.org/xsd/imsqti_usagedata_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_usagedatav3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_usagedatav3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_usagedatav3p0_v1p0.xsd</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<h2><a name="MetadataXSDs">3. &nbsp; Metadata-Related XSDs</a></h2>
+		<table summary="The namespace and schema location details for the Metadata XSDs." title="Metadata XSD Details" width="100%">
+			<thead>
+				<tr>
+					<th bgcolor="#ffd700" width="5%">ID</th>
+					<th bgcolor="#ffd700" width="25%">Namespace</th>
+					<th bgcolor="#ffd700" width="25%">XSD File Name</th>
+					<th bgcolor="#ffd700" width="50%">Schema Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">M1</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/qti/qtiv3p0/imscsmd_v1p1</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqtiv3p0_csmv1p1_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_csmv1p1_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_csmv1p1_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">M2</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://ltsc.ieee.org/xsd/LOM</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsmd_loose_v1p3p2.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/md/v1p3/schema/xsd/imsmd_loose_v1p3p2.xsd">https://purl.imsglobal.org/spec/md/v1p3/schema/xsd/imsmd_loose_v1p3p2.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">M3</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsqti_metadata_v3p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_metadatav3p0_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_metadatav3p0_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_metadatav3p0_v1p0.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">M4</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/qti/qtiv3p0/imsafa3p0drd_v1p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqtiv3p0_afa3p0drd_v1p0.xsd.</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_afa3p0drd_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_afa3p0drd_v1p0.xsd</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<h2><a name="AfAPNPXSDs">4. &nbsp; Access for All Personal Needs &amp; Preferences XSDs</a></h2>
+		<table summary="The namespace and schema location details for the AfA PNP XSDs." title="Access for All Personal Needs &amp; Preferences XSD Details" width="100%">
+			<thead>
+				<tr>
+					<th bgcolor="#ffd700" width="5%">ID</th>
+					<th bgcolor="#ffd700" width="25%">Namespace</th>
+					<th bgcolor="#ffd700" width="25%">XSD File Name</th>
+					<th bgcolor="#ffd700" width="50%">Schema Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">A1</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/qt/qtiv3p0/imsafa3p0pnp_v1p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqtiv3p0_afa3p0pnp_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_afa3p0pnp_v1p0.xsd">https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqtiv3p0_afa3p0pnp_v1p0.xsd</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<h2><a name="OtherXSDs">5. &nbsp; Other-Related XSDs</a></h2>
+		<table summary="The namespace and schema location details for the other XSDs used in the QTIv3.0." title="Other XSD Details" width="100%">
+			<thead>
+				<tr>
+					<th bgcolor="#ffd700" width="5%">ID</th>
+					<th bgcolor="#ffd700" width="25%">Namespace</th>
+					<th bgcolor="#ffd700" width="25%">XSD File Name</th>
+					<th bgcolor="#ffd700" width="50%">Schema Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">X1</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.w3.org/XML/1998/namespace</p>
+					</td>
+					<td bgcolor="#dcdcdc">xml.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/w3/2001/schema/xsd/xml.xsd">https://purl.imsglobal.org/spec/w3/2001/schema/xsd/xml.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">X2</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.w3.org/2001/XInclude</p>
+					</td>
+					<td bgcolor="#dcdcdc">XInclude.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/w3/2001/schema/xsd/XInclude.xsd">https://purl.imsglobal.org/spec/w3/2001/schema/xsd/XInclude.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">X3</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.w3.org/2010/Math/MathML</p>
+					</td>
+					<td bgcolor="#dcdcdc">mathml3.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/mathml/v3p0/schema/xsd/mathml3.xsd">https://purl.imsglobal.org/spec/mathml/v3p0/schema/xsd/mathml3.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">X4</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.w3.org/2001/10/synthesis</p>
+					</td>
+					<td bgcolor="#dcdcdc">ssmlv1p1-core.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/ssml/v1p1/schema/xsd/ssmlv1p1-core.xsd">https://purl.imsglobal.org/spec/ssml/v1p1/schema/xsd/ssmlv1p1-core.xsd</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">X5</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/xsd/imsvdex_v1p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsvdex_v1p0.xsd</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/vdex/v1p0/schema/xsd/imsvdex_v1p0.xsd">https://purl.imsglobal.org/spec/vdex/v1p0/schema/xsd/imsvdex_v1p0.xsd</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<h2><a name="Vocabs">6. &nbsp; VDEX-based Vocabularies</a></h2>
+		<table summary="The namespace and schema location details for the other XSDs used in the QTIv3.0." title="Other XSD Details" width="100%">
+			<thead>
+				<tr>
+					<th bgcolor="#ffd700" width="5%">ID</th>
+					<th bgcolor="#ffd700" width="25%">Registered ID</th>
+					<th bgcolor="#ffd700" width="25%">Vocabulary File Name</th>
+					<th bgcolor="#ffd700" width="50%">Vocabulary Location</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">V1</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/qti/qtiv3p0/distractorstatisticsglossaryv1p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_usagedatav3p0_distractorstatisticsglossary_v1p0.xml</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/vocab/vdex/imsqti_usagedatav3p0_distractorstatisticsglossary_v1p0.xml">https://purl.imsglobal.org/spec/qti/v3p0/vocab/vdex/imsqti_usagedatav3p0_distractorstatisticsglossary_v1p0.xml</a></td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#dcdcdc">V2</td>
+					<td bgcolor="#dcdcdc">
+						<p>http://www.imsglobal.org/qti/qtiv3p0/itemstatisticsglossaryv1p0</p>
+					</td>
+					<td bgcolor="#dcdcdc">imsqti_usagedatav3p0_itemstatisticsglossary_v1p0.xml</td>
+					<td bgcolor="#dcdcdc"><a href="https://purl.imsglobal.org/spec/qti/v3p0/vocab/vdex/imsqti_usagedatav3p0_itemstatisticsglossary_v1p0.xml">https://purl.imsglobal.org/spec/qti/v3p0/vocab/vdex/imsqti_usagedatav3p0_itemstatisticsglossary_v1p0.xml</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<p>&nbsp;</p>
+		<div style="text-align: right; clear: both;"><a href="#top">top</a></div>
+		<hr />
+		<p>Colin Smythe <br/>IMS Chief Architect (csmythe@imsglobal.org) <br/>2nd June 2022</p>
+		<p>&nbsp;</p>
+	</body>
+</html>
