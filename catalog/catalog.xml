@@ -212,6 +212,12 @@
 	<nextCatalog catalog="dita1.0/catalog-dita.xml"/> 	
      -->
 
+	<!-- QTI -->
+
+	<nextCatalog catalog="qtiv2p1/catalog.xml" />
+	<nextCatalog catalog="qtiv2p2/catalog.xml" />
+	<nextCatalog catalog="qtiv3p0v1/catalog.xml" />
+
 	<!--    Novell's version of DocBook    -->
 
 	<public publicId="-//Novell//DTD NovDoc XML V1.0//EN" uri="novdoc/novdocx.dtd" />
