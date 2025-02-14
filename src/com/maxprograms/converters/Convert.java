@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -582,7 +582,7 @@ public class Convert {
 		return new File(srxFolder, "default.srx").getAbsolutePath();
 	}
 
-	private static String defaultCatalog() throws IOException {
+	public static String defaultCatalog() throws IOException {
 		String home = System.getenv("OpenXLIFF_HOME");
 		if (home == null) {
 			home = System.getProperty("user.dir");

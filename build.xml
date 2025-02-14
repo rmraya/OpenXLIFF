@@ -54,6 +54,7 @@
         <copy file="removetargets.cmd" todir="dist" />
         <copy file="approveall.cmd" todir="dist" />
         <copy file="exporttmx.cmd" todir="dist" />
+        <copy file="iceMatches.cmd" todir="dist" />
     </target>
     <target name="copyShells" unless="isWindows">
         <description>Copy .sh to /dist</description>
@@ -67,6 +68,7 @@
         <copy file="removetargets.sh" todir="dist" />
         <copy file="approveall.sh" todir="dist" />
         <copy file="exporttmx.sh" todir="dist" />
+        <copy file="iceMatches.sh" todir="dist" />
         <chmod dir="dist" perm="ugo+rx" includes="**/*.sh" />
     </target>
     <target name="dist" depends="link,copyBats,copyShells">
