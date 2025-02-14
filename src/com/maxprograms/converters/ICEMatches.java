@@ -88,6 +88,10 @@ public class ICEMatches {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
         File oldFile = new File(oldXliff);
+		if (!oldFile.isAbsolute()) {
+			oldXliff = oldFile.getAbsoluteFile().getAbsolutePath();
+            oldFile = new File(oldXliff);
+		}
         Document doc = builder.build(oldFile);
         Element root = doc.getRootElement();
         if (!root.getName().equals("xliff")) {
@@ -102,6 +106,10 @@ public class ICEMatches {
             oldFile = tempFile;
         }
         File newFile = new File(newXliff);
+        if (!newFile.isAbsolute()) {
+			newXliff = newFile.getAbsoluteFile().getAbsolutePath();
+            newFile = new File(newXliff);
+		}
         doc = builder.build(newFile);
         root = doc.getRootElement();
         if (!root.getName().equals("xliff")) {
@@ -116,12 +124,13 @@ public class ICEMatches {
         }
         leverage(newFile, oldFile);
         if (oldFile.getName().startsWith("old__")) {
-            oldFile.delete();
+            Files.delete(oldFile.toPath());
         }
         if (newFile.getName().startsWith("new__")) {
             ToXliff2.run(newFile, catalogFile, version);
+            Files.delete(new File(newXliff).toPath());
             Files.copy(newFile.toPath(), new File(newXliff).toPath());
-            newFile.delete();
+            Files.delete(newFile.toPath());
         }
     }
 
