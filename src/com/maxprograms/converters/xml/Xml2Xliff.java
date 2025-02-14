@@ -496,6 +496,9 @@ public class Xml2Xliff {
 		if (arbortextDita) {
 			writeString("<?arbortext-dita ?>\n");
 		}
+		if (qtiBased) {
+			writeString("<?qti-based ?>\n");
+		}
 		writeString("<?encoding " + srcEncoding + "?>\n");
 		writeString("<body>\n");
 	}

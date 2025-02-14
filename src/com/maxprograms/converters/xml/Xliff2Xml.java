@@ -66,6 +66,7 @@ public class Xliff2Xml {
 	private static boolean inCData;
 	private static boolean ditaBased = false;
 	private static boolean arbortextDita = false;
+	private static boolean qtiBased = false;
 	private static String tgtLang;
 	private static boolean isIdml;
 	private static List<PI> skipped;
@@ -196,6 +197,9 @@ public class Xliff2Xml {
 			if (arbortextDita) {
 				changeLanguage(outputFile);
 			}
+			if (qtiBased) {
+				adjustLanguage(outputFile);
+			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			logger.log(Level.ERROR, Messages.getString("Xliff2Xml.3"), e);
@@ -275,7 +279,8 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void changeLanguage(String outputFile) throws SAXException, IOException, ParserConfigurationException {
+	private static void changeLanguage(String outputFile)
+			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		Document doc = builder.build(outputFile);
@@ -287,6 +292,34 @@ public class Xliff2Xml {
 		outputter.preserveSpace(true);
 		try (FileOutputStream out = new FileOutputStream(outputFile)) {
 			outputter.output(doc, out);
+		}
+	}
+
+	private static void adjustLanguage(String outputFile)
+			throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		builder.setEntityResolver(catalog);
+		Document doc = builder.build(outputFile);
+		Element root = doc.getRootElement();
+		setLanguage(root);
+		Indenter.indent(root, 2);
+		XMLOutputter outputter = new XMLOutputter();
+		outputter.preserveSpace(true);
+		try (FileOutputStream out = new FileOutputStream(outputFile)) {
+			outputter.output(doc, out);
+		}
+	}
+
+	private static void setLanguage(Element e) {
+		if (e.hasAttribute("xml:lang")) {
+			e.setAttribute("xml:lang", tgtLang);
+		}
+		if (e.hasAttribute("lang")) {
+			e.setAttribute("lang", tgtLang);
+		}
+		List<Element> children = e.getChildren();
+		for (Element child : children) {
+			setLanguage(child);
 		}
 	}
 
@@ -616,6 +649,11 @@ public class Xliff2Xml {
 		if (!pi.isEmpty()) {
 			arbortextDita = true;
 		}
+		pi = file.getPI("qti-based");
+		if (!pi.isEmpty()) {
+			qtiBased = true;
+		}
+
 	}
 
 	private static void checkUntranslatable(Element unit) {
