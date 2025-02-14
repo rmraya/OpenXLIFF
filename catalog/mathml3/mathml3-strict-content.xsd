@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:m="http://www.w3.org/1998/Math/MathML"
+           xmlns:m="http://www.w3.org/1998/Math/MathML"
            elementFormDefault="qualified"
            targetNamespace="http://www.w3.org/1998/Math/MathML">
    <xs:group name="ContExp">

@@ -58,6 +58,8 @@ public class FileFormats {
 	public static final String TEXT = "Plain Text";
 	public static final String PHPA = "PHP Array";
 	public static final String PO = "PO (Portable Objects)";
+	public static final String QTI = "QTI (IMS Question and Test Interoperability)";
+	public static final String QTIP = "QTI Package";
 	public static final String RC = "RC (Windows C/C++ Resources)";
 	public static final String RESX = "ResX (Windows .NET Resources)";
 	public static final String SDLPPX = "Trados Studio Package";
@@ -72,7 +74,7 @@ public class FileFormats {
 	public static final String XMLG = "XML (Generic)";
 
 	protected static final String[] formats = { INX, ICML, IDML, DITA, HTML, JS, JSON, JAVA, MIF, OFF, OO, TEXT, PHPA,
-			PO, RC, RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, TXLF, WPML, XLIFF, XML, XMLG };
+			PO, QTI, QTIP, RC, RESX, SDLPPX, SDLXLIFF, SRT, TS, TXML, TXLF, WPML, XLIFF, XML, XMLG };
 
 	public static boolean isBilingual(String type) {
 		return Arrays.asList(PO, SDLPPX, SDLXLIFF, TS, TXML, TXLF, WPML, XLIFF).contains(type);
@@ -160,7 +162,9 @@ public class FileFormats {
 			if (string.startsWith("<MIFFile")) {
 				return MIF;
 			}
-
+			if (string.indexOf("http://www.imsglobal.org") != -1 || string.indexOf("<html") != -1) {
+				return QTI;
+			}
 			if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:sdl") != -1) {
 				return SDLXLIFF;
 			}
@@ -240,6 +244,8 @@ public class FileFormats {
 				boolean hasXML = false;
 				boolean idml = false;
 				boolean sdlppx = false;
+				boolean qtip = false;
+				boolean hascontentTypes = false;
 				try (ZipInputStream in = new ZipInputStream(new FileInputStream(file))) {
 					ZipEntry entry = null;
 					while ((entry = in.getNextEntry()) != null) {
@@ -253,6 +259,14 @@ public class FileFormats {
 						}
 						if (entry.getName().endsWith((".sdlproj"))) {
 							sdlppx = true;
+							break;
+						}
+						if (entry.getName().equals("imsmanifest.xml")) {
+							qtip = true;
+							break;
+						}
+						if (entry.getName().equals("[Content_Types].xml")) {
+							hascontentTypes = true;
 							break;
 						}
 						if (entry.getName().matches(".*\\.xml")) {
@@ -269,7 +283,14 @@ public class FileFormats {
 				if (sdlppx) {
 					return SDLPPX;
 				}
+				if (hascontentTypes) {
+					return OFF;
+				}
+				if (qtip) {
+					return QTIP;
+				}
 				if (hasXML) {
+					// check the format of the XML file
 					return OFF;
 				}
 			}
@@ -354,6 +375,12 @@ public class FileFormats {
 		if (type.equals(OO)) {
 			return "OO";
 		}
+		if (type.equals(QTI)) {
+			return "QTI";
+		}
+		if (type.equals(QTIP)) {
+			return "QTIP";
+		}
 		if (type.equals(TEXT)) {
 			return "TEXT";
 		}
@@ -426,6 +453,10 @@ public class FileFormats {
 			return OFF;
 		} else if (dataType.equals("OO")) {
 			return OO;
+		} else if (dataType.equals("QTI")) {
+			return QTI;
+		} else if (dataType.equals("QTIP")) {
+			return QTIP;
 		} else if (dataType.equals("TEXT") || dataType.equals("plaintext")) {
 			return TEXT;
 		} else if (dataType.equals("PHPA") || dataType.equals("x-phparray")) {

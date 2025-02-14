@@ -51,6 +51,7 @@ import com.maxprograms.converters.office.Office2Xliff;
 import com.maxprograms.converters.php.Php2Xliff;
 import com.maxprograms.converters.plaintext.Text2Xliff;
 import com.maxprograms.converters.po.Po2Xliff;
+import com.maxprograms.converters.qti.Qtip2Xliff;
 import com.maxprograms.converters.rc.Rc2Xliff;
 import com.maxprograms.converters.resx.Resx2Xliff;
 import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
@@ -427,6 +428,11 @@ public class Convert {
 				result = Php2Xliff.run(params);
 			} else if (format.equals(FileFormats.PO)) {
 				result = Po2Xliff.run(params);
+			} else if (format.equals(FileFormats.QTI)) {
+				params.put("qti", "yes");
+				result = Xml2Xliff.run(params);
+			} else if (format.equals(FileFormats.QTIP)) {
+				result = Qtip2Xliff.run(params);
 			} else if (format.equals(FileFormats.RC)) {
 				result = Rc2Xliff.run(params);
 			} else if (format.equals(FileFormats.RESX)) {

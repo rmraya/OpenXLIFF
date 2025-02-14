@@ -95,6 +95,7 @@ public class Xml2Xliff {
 	private static String startText;
 	private static String endText;
 	private static boolean ditaBased;
+	private static boolean qtiBased;
 	private static String targetLanguage;
 	private static boolean inCData;
 	private static boolean translateComments;
@@ -133,6 +134,8 @@ public class Xml2Xliff {
 		resx = isResx != null;
 		String dita = params.get("dita_based");
 		ditaBased = dita == null ? false : dita.equals("yes");
+		String qti = params.get("qti");
+		qtiBased = qti == null ? false : qti.equals("yes");
 
 		String ignoreTrackedChanges = params.get("ignoretc");
 		if (ignoreTrackedChanges != null) {
@@ -289,6 +292,10 @@ public class Xml2Xliff {
 
 		root = doc.getRootElement();
 		rootElement = root.getName();
+		if (qtiBased) {
+			File base = new File(folder, "config_qti.xml");
+			return base.getAbsolutePath();
+		}
 		if (ditaBased && rootElement.equals("svg")) {
 			ditaBased = false;
 		}

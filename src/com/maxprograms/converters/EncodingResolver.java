@@ -122,8 +122,8 @@ public class EncodingResolver {
 				|| fileType.equals(FileFormats.TXML) || fileType.equals(FileFormats.TXLF)
 				|| fileType.equals(FileFormats.RESX) || fileType.equals(FileFormats.INX)
 				|| fileType.equals(FileFormats.TS) || fileType.equals(FileFormats.DITA)
-				|| fileType.equals(FileFormats.SDLXLIFF) || fileType.equals(FileFormats.WPML)
-				|| fileType.equals(FileFormats.XLIFF)) {
+				|| fileType.equals(FileFormats.QTI) || fileType.equals(FileFormats.SDLXLIFF)
+				|| fileType.equals(FileFormats.WPML) || fileType.equals(FileFormats.XLIFF)) {
 			try {
 				return getXMLEncoding(fileName);
 			} catch (IOException e) {
