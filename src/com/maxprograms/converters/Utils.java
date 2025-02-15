@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -213,5 +214,49 @@ public class Utils {
             }
         }
         return text.toString();
+    }
+
+	public static double wrongTags(Element source1, Element source2, double tagPenalty) {
+        List<Element> tags = new Vector<>();
+        int count = 0;
+        int errors = 0;
+        List<XMLNode> content = source1.getContent();
+        Iterator<XMLNode> i = content.iterator();
+        while (i.hasNext()) {
+            XMLNode n = i.next();
+            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element e = (Element) n;
+                tags.add(e);
+                count++;
+            }
+        }
+        content = source2.getContent();
+        i = content.iterator();
+        int c2 = 0;
+        while (i.hasNext()) {
+            XMLNode n = i.next();
+            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element e = (Element) n;
+                c2++;
+                boolean found = false;
+                for (int j = 0; j < count; j++) {
+                    if (e.equals(tags.get(j))) {
+                        tags.set(j, null);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    errors++;
+                }
+            }
+        }
+        if (c2 > count) {
+            errors += c2 - count;
+        }
+        if (count > c2) {
+            errors += count - c2;
+        }
+        return errors * tagPenalty;
     }
 }

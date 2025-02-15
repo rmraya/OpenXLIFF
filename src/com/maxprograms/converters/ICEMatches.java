@@ -87,10 +87,10 @@ public class ICEMatches {
         SAXBuilder builder = new SAXBuilder();
         builder.setEntityResolver(catalog);
         File oldFile = new File(oldXliff);
-		if (!oldFile.isAbsolute()) {
-			oldXliff = oldFile.getAbsoluteFile().getAbsolutePath();
+        if (!oldFile.isAbsolute()) {
+            oldXliff = oldFile.getAbsoluteFile().getAbsolutePath();
             oldFile = new File(oldXliff);
-		}
+        }
         Document doc = builder.build(oldFile);
         Element root = doc.getRootElement();
         if (!root.getName().equals("xliff")) {
@@ -106,9 +106,9 @@ public class ICEMatches {
         }
         File newFile = new File(newXliff);
         if (!newFile.isAbsolute()) {
-			newXliff = newFile.getAbsoluteFile().getAbsolutePath();
+            newXliff = newFile.getAbsoluteFile().getAbsolutePath();
             newFile = new File(newXliff);
-		}
+        }
         doc = builder.build(newFile);
         root = doc.getRootElement();
         if (!root.getName().equals("xliff")) {
@@ -194,7 +194,7 @@ public class ICEMatches {
                     }
                     Element newSource = newUnit.getChild("source");
                     if (pureText.equals(Utils.pureText(newSource))) {
-                        double mismatches = wrongTags(current, newSource, 1.0);
+                        double mismatches = Utils.wrongTags(current, newSource, 1.0);
                         if (mismatches > 0.0) {
                             continue;
                         }
@@ -265,50 +265,6 @@ public class ICEMatches {
                 recurseSegments(it.next(), segments);
             }
         }
-    }
-
-    private static double wrongTags(Element x, Element y, double tagPenalty) {
-        List<Element> tags = new Vector<>();
-        int count = 0;
-        int errors = 0;
-        List<XMLNode> content = x.getContent();
-        Iterator<XMLNode> i = content.iterator();
-        while (i.hasNext()) {
-            XMLNode n = i.next();
-            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element e = (Element) n;
-                tags.add(e);
-                count++;
-            }
-        }
-        content = y.getContent();
-        i = content.iterator();
-        int c2 = 0;
-        while (i.hasNext()) {
-            XMLNode n = i.next();
-            if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
-                Element e = (Element) n;
-                c2++;
-                boolean found = false;
-                for (int j = 0; j < count; j++) {
-                    if (e.equals(tags.get(j))) {
-                        tags.set(j, null);
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    errors++;
-                }
-            }
-        }
-        if (c2 > count) {
-            errors += c2 - count;
-        }
-        if (count > c2) {
-            errors += count - c2;
-        }
-        return errors * tagPenalty;
     }
 
     private static void help() {
