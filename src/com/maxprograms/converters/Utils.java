@@ -40,6 +40,9 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.languages.LanguageUtils;
+import com.maxprograms.xml.Element;
+import com.maxprograms.xml.TextNode;
+import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
 
 public class Utils {
@@ -189,4 +192,26 @@ public class Utils {
 		}
 		return new JSONObject(sb.toString());
 	}
+
+
+    public static String pureText(Element seg) {
+        List<XMLNode> l = seg.getContent();
+        Iterator<XMLNode> i = l.iterator();
+        StringBuilder text = new StringBuilder();
+        while (i.hasNext()) {
+            XMLNode o = i.next();
+            if (o.getNodeType() == XMLNode.TEXT_NODE) {
+                text.append(((TextNode) o).getText());
+            } else if (o.getNodeType() == XMLNode.ELEMENT_NODE) {
+                String type = ((Element) o).getName();
+                // discard all inline elements
+                // except <mrk> and <hi>
+                if (type.equals("sub") || type.equals("hi")) {
+                    Element e = (Element) o;
+                    text.append(pureText(e));
+                }
+            }
+        }
+        return text.toString();
+    }
 }

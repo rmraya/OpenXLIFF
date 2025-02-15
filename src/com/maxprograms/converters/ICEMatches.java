@@ -33,7 +33,6 @@ import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
-import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
 
@@ -182,7 +181,7 @@ public class ICEMatches {
                     continue;
                 }
                 current = segments.get(i).getChild("source");
-                String pureText = pureText(current);
+                String pureText = Utils.pureText(current);
                 if (i + 1 < segments.size()) {
                     next = segments.get(i + 1).getChild("source");
                 } else {
@@ -194,7 +193,7 @@ public class ICEMatches {
                         continue;
                     }
                     Element newSource = newUnit.getChild("source");
-                    if (pureText.equals(pureText(newSource))) {
+                    if (pureText.equals(Utils.pureText(newSource))) {
                         double mismatches = wrongTags(current, newSource, 1.0);
                         if (mismatches > 0.0) {
                             continue;
@@ -204,7 +203,7 @@ public class ICEMatches {
                                 continue;
                             }
                             Element e = leveraged.get(j - 1).getChild("source");
-                            if (!pureText(previous).equals(pureText(e))) {
+                            if (!Utils.pureText(previous).equals(Utils.pureText(e))) {
                                 continue;
                             }
                         }
@@ -213,7 +212,7 @@ public class ICEMatches {
                                 continue;
                             }
                             Element e = leveraged.get(j + 1).getChild("source");
-                            if (!pureText(next).equals(pureText(e))) {
+                            if (!Utils.pureText(next).equals(Utils.pureText(e))) {
                                 continue;
                             }
                         }
@@ -310,27 +309,6 @@ public class ICEMatches {
             errors += count - c2;
         }
         return errors * tagPenalty;
-    }
-
-    public static String pureText(Element seg) {
-        List<XMLNode> l = seg.getContent();
-        Iterator<XMLNode> i = l.iterator();
-        StringBuilder text = new StringBuilder();
-        while (i.hasNext()) {
-            XMLNode o = i.next();
-            if (o.getNodeType() == XMLNode.TEXT_NODE) {
-                text.append(((TextNode) o).getText());
-            } else if (o.getNodeType() == XMLNode.ELEMENT_NODE) {
-                String type = ((Element) o).getName();
-                // discard all inline elements
-                // except <mrk> and <hi>
-                if (type.equals("sub") || type.equals("hi")) {
-                    Element e = (Element) o;
-                    text.append(pureText(e));
-                }
-            }
-        }
-        return text.toString();
     }
 
     private static void help() {
