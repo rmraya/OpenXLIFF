@@ -17,6 +17,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
 - **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
+- **[Recover ICE Matches]((https://github.com/rmraya/OpenXLIFF#xliff-iceMatches)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
@@ -309,6 +310,25 @@ Where:
    -unapproved: (optional) accept translations from unapproved segments
    -export:     (optional) generate TMX file from approved segments
    -getTarget:  (optional) display a potential target file name and exit
+```
+
+## Recover ICE Matches
+
+You can recover previous translations stored in an XLIFF file and apply them as ICE (In-Context Exact) Matches to another XLIFF file using class `com.maxprograms.converters.ICEMatches` in your Java code.
+
+If you use binaries from the command line, running `.\iceMatches.cmd` or `./iceMatches.sh` without parameters displays help for recovering ICE Matches.
+
+```text
+Usage:
+
+iceMatches.sh [-help] -old oldXliff -new newXliff [-catalog catalogFile]
+
+Where:
+
+    -help:    (optional) Display this help information and exit
+    -old:     XLIFF file with previous translations
+    -new:     XLIFF file that receives previous translations
+    -catalog: (optional) XML catalog to use for processing
 ```
 
 ## XLIFF Validation
