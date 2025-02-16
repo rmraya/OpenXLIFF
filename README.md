@@ -17,7 +17,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
 - **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
-- **[Recover ICE Matches]((https://github.com/rmraya/OpenXLIFF#xliff-iceMatches)**
+- **[Recover ICE Matches](https://github.com/rmraya/OpenXLIFF#recover-ice-matches)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
