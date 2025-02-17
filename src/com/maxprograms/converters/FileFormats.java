@@ -455,7 +455,7 @@ public class FileFormats {
 			return OO;
 		} else if (dataType.equals("QTI")) {
 			return QTI;
-		} else if (dataType.equals("QTIP")) {
+		} else if (dataType.equals("QTIP") || dataType.equals("x-qtipackage")) {
 			return QTIP;
 		} else if (dataType.equals("TEXT") || dataType.equals("plaintext")) {
 			return TEXT;

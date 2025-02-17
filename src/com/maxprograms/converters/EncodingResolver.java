@@ -129,7 +129,7 @@ public class EncodingResolver {
 			} catch (IOException e) {
 				logger.log(Level.ERROR, Messages.getString("EncodingResolver.1"), e);
 			}
-		} else if (fileType.equals(FileFormats.SDLPPX)) {
+		} else if (fileType.equals(FileFormats.QTIP) ||fileType.equals(FileFormats.SDLPPX) ) {
 			return StandardCharsets.UTF_8;
 		} else if (fileType.equals(FileFormats.RC)) {
 			try {
