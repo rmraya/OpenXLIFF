@@ -32,10 +32,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.Convert;
+import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Join;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
-import com.maxprograms.converters.sdlxliff.Sdl2Xliff;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -67,17 +68,14 @@ public class Qtip2Xliff {
                 ZipEntry entry = null;
                 while ((entry = in.getNextEntry()) != null) {
                     String entryName = entry.getName();
-                    String parent = "";
                     String name = entryName;
                     if (entryName.indexOf("\\") != -1) {
-                        parent = entryName.substring(0, entryName.indexOf("\\"));
-                        name = entryName.substring(entryName.indexOf("\\") + 1);
+                        name = entryName.substring(entryName.lastIndexOf("\\") + 1);
                     }
                     if (entryName.indexOf("/") != -1) {
-                        parent = entryName.substring(0, entryName.indexOf("/"));
-                        name = entryName.substring(entryName.indexOf("/") + 1);
+                        name = entryName.substring(entryName.lastIndexOf("/") + 1);
                     }
-                    if (name.toLowerCase().endsWith(".xml")) {
+                    if (name.toLowerCase().endsWith(".xml") || name.toLowerCase().endsWith(".svg")) {
                         File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".xml");
                         try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
                             byte[] buf = new byte[1024];
@@ -86,7 +84,7 @@ public class Qtip2Xliff {
                                 output.write(buf, 0, len);
                             }
                         }
-
+                        String format = FileFormats.detectFormat(tmp.getAbsolutePath());
                         Map<String, String> table = new HashMap<>();
                         table.put("source", tmp.getAbsolutePath());
                         table.put("xliff", tmp.getAbsolutePath() + ".xlf");
@@ -95,10 +93,11 @@ public class Qtip2Xliff {
                         table.put("srcEncoding", params.get("srcEncoding"));
                         table.put("paragraph", params.get("paragraph"));
                         table.put("srxFile", params.get("srxFile"));
-                        table.put("format", params.get("format"));
+                        table.put("format", format);
                         table.put("srcLang", sourceLanguage);
                         table.put("tgtLang", targetLanguage);
-                        List<String> res = Sdl2Xliff.run(table);
+                        table.put("xmlfilter", params.get("xmlfilter"));
+                        List<String> res = Convert.run(table);
                         if (Constants.SUCCESS.equals(res.get(0))) {
                             updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
                             ZipEntry content = new ZipEntry(entry.getName() + ".skl");

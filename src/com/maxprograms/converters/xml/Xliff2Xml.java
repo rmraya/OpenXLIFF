@@ -653,6 +653,12 @@ public class Xliff2Xml {
 		if (!pi.isEmpty()) {
 			qtiBased = true;
 		}
+		if (encoding == null) {
+			pi = file.getPI("encoding");
+			if (!pi.isEmpty()) {
+				encoding = pi.get(0).getData();
+			}
+		}
 
 	}
 

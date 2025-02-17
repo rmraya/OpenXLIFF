@@ -45,6 +45,7 @@ import com.maxprograms.converters.office.Xliff2Office;
 import com.maxprograms.converters.php.Xliff2Php;
 import com.maxprograms.converters.plaintext.Xliff2Text;
 import com.maxprograms.converters.po.Xliff2Po;
+import com.maxprograms.converters.qti.Xliff2Qtip;
 import com.maxprograms.converters.rc.Xliff2Rc;
 import com.maxprograms.converters.resx.Xliff2Resx;
 import com.maxprograms.converters.sdlppx.Xliff2Sdlrpx;
@@ -410,6 +411,8 @@ public class Merge {
 				result = Xliff2Po.run(params);
 			} else if (dataType.equals(FileFormats.PHPA) || dataType.equals("x-phparray")) {
 				result = Xliff2Php.run(params);
+			} else if (dataType.equals(FileFormats.QTIP) || dataType.equals("x-qtipackage")) {
+				result = Xliff2Qtip.run(params);
 			} else if (dataType.equals(FileFormats.RC) || dataType.equals("winres")) {
 				result = Xliff2Rc.run(params);
 			} else if (dataType.equals(FileFormats.RESX) || dataType.equals("resx")) {
@@ -442,6 +445,7 @@ public class Merge {
 				Files.delete(Paths.get(temporary.toURI()));
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.log(Level.ERROR, Messages.getString("Merge.11"), e);
 			result = new ArrayList<>();
 			result.add(Constants.ERROR);
