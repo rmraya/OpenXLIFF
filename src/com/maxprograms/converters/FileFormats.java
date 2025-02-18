@@ -241,7 +241,6 @@ public class FileFormats {
 			if (string.startsWith("PK")) {
 				// might be a zipped file
 				boolean openOffice = false;
-				boolean hasXML = false;
 				boolean idml = false;
 				boolean sdlppx = false;
 				boolean qtip = false;
@@ -269,9 +268,6 @@ public class FileFormats {
 							hascontentTypes = true;
 							break;
 						}
-						if (entry.getName().matches(".*\\.xml")) {
-							hasXML = true;
-						}
 					}
 				}
 				if (idml) {
@@ -288,10 +284,6 @@ public class FileFormats {
 				}
 				if (qtip) {
 					return QTIP;
-				}
-				if (hasXML) {
-					// check the format of the XML file
-					return OFF;
 				}
 			}
 			if (string.indexOf("#include") != -1 || string.indexOf("#define") != -1 || string.indexOf("DIALOG") != -1
