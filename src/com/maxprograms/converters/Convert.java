@@ -569,6 +569,9 @@ public class Convert {
 			if (file.has("is21")) {
 				params.put("xliff21", file.getBoolean("is21") ? "yes" : "no");
 			}
+			if (file.has("is22")) {
+				params.put("xliff22", file.getBoolean("is22") ? "yes" : "no");
+			}
 			if (file.has("ditaval")) {
 				params.put("ditaval", file.getString("ditaval"));
 			}
