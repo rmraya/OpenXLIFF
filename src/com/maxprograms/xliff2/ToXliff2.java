@@ -82,6 +82,9 @@ public class ToXliff2 {
 			root2 = xliff2.getRootElement();
 			recurse(root, root2);
 			root2.setAttribute("version", version);
+			if (version.equals("2.2")) {
+				root2.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.2");
+			}
 			Indenter.indent(root2, 2);
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);

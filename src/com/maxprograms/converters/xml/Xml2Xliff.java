@@ -243,7 +243,7 @@ public class Xml2Xliff {
 				result.add(Constants.ERROR);
 				MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.2"));
 				result.add(mf.format(new String[] { inputFile }));
-				if (ditaBased || rootElement.equals("svg")) {
+				if (ditaBased || qtiBased || rootElement.equals("svg")) {
 					result.add("EMPTY");
 				} else {
 					logger.log(Level.WARNING, mf.format(new String[] { inputFile }));
