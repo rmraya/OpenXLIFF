@@ -445,7 +445,6 @@ public class Merge {
 				Files.delete(Paths.get(temporary.toURI()));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.log(Level.ERROR, Messages.getString("Merge.11"), e);
 			result = new ArrayList<>();
 			result.add(Constants.ERROR);

@@ -169,7 +169,7 @@ public class Jscript2xliff {
 	}
 
 	private static void extractStrings(String line) throws IOException {
-		while (line.length() > 0) {
+		while (!line.isEmpty()) {
 			line = checkForQuote(line, '\"');
 			line = checkForQuote(line, '\'');
 			if (line.indexOf('\"') == -1 && line.indexOf('\'') == -1) {

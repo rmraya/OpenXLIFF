@@ -46,9 +46,6 @@ public class Xliff2Qtip {
 
     private static ZipOutputStream out;
 
-    private static String srcLang;
-    private static String tgtLang;
-
     private Xliff2Qtip() {
         // do not instantiate this class
         // use run method instead
@@ -56,8 +53,6 @@ public class Xliff2Qtip {
 
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
-        srcLang = "";
-        tgtLang = "";
         Map<String, String> filesMap = new HashMap<>();
 
         String sklFile = params.get("skeleton");
@@ -104,12 +99,6 @@ public class Xliff2Qtip {
                 }
                 if (sdlxliffFile.isEmpty()) {
                     throw new SAXException(Messages.getString("Xliff2Qtip.2"));
-                }
-                if (tgtLang.isEmpty()) {
-                    tgtLang = file.getAttributeValue("target-language");
-                }
-                if (srcLang.isEmpty()) {
-                    srcLang = file.getAttributeValue("source-language");
                 }
                 Document d = new Document(null, "xliff", null, null);
                 Element r = d.getRootElement();

@@ -352,7 +352,7 @@ public class Mif2Xliff {
 			String key = "\\x" + Integer.toHexString(value);
 			if (charmap.containsKey(key)) {
 				String result = charmap.get(key);
-				if (result.length() > 0) {
+				if (!result.isEmpty()) {
 					return result.charAt(0);
 				}
 			}

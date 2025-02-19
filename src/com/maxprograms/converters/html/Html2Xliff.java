@@ -202,7 +202,7 @@ public class Html2Xliff {
 				start = -1;
 			}
 		}
-		if (seg.length() > 0) {
+		if (!seg.isEmpty()) {
 			// add trailing characters
 			miniList.add(seg);
 		}

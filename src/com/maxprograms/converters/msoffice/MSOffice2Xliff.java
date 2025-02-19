@@ -82,7 +82,7 @@ public class MSOffice2Xliff {
 
 		segnum = 0;
 
-		segByElement = (elementSegmentation == null) ? false : elementSegmentation.equals("yes");
+		segByElement = "yes".equals(elementSegmentation);
 
 		try {
 			if (!segByElement) {
@@ -211,7 +211,7 @@ public class MSOffice2Xliff {
 		String[] parts = test.trim().split("<");
 		Stack<String> stack = new Stack<>();
 		for (int i = 0; i < parts.length; i++) {
-			if (parts[i].length() > 0) {
+			if (!parts[i].isEmpty()) {
 				String[] subparts = parts[i].split("[\\s]|>");
 				if (subparts[0].startsWith("/")) {
 					if (stack.isEmpty()) {

@@ -132,10 +132,8 @@ public class Xml2Xliff {
 		inDesign = isInDesign != null;
 		String isResx = params.get("resx");
 		resx = isResx != null;
-		String dita = params.get("dita_based");
-		ditaBased = dita == null ? false : dita.equals("yes");
-		String qti = params.get("qti");
-		qtiBased = qti == null ? false : qti.equals("yes");
+		ditaBased = "yes".equals(params.get("dita_based"));
+		qtiBased = "yes".equals(params.get("qti"));
 
 		String ignoreTrackedChanges = params.get("ignoretc");
 		if (ignoreTrackedChanges != null) {
@@ -1370,10 +1368,10 @@ public class Xml2Xliff {
 				value = value.replace(">", "&gt;");
 
 				text = text + value;
-				if (value.trim().length() > 0) {
+				if (!value.trim().isEmpty()) {
 					translatable = translatable + value;
 				}
-				if (value.trim().length() > 0 && text.startsWith("" + '\u007F' + '\u007F')) {
+				if (!value.trim().isEmpty() && text.startsWith("" + '\u007F' + '\u007F')) {
 					for (int j = 0; j < stack.size(); j++) {
 						if (startsSegment.containsKey(stack.get(j))) {
 							text = text.substring(2);
