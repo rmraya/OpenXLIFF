@@ -39,6 +39,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
+import com.maxprograms.converters.qti.QtiCheck;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CData;
@@ -168,7 +169,12 @@ public class Xml2Xliff {
 				MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.0"));
 				throw new IOException(mf.format(new Object[] { f.getName() }));
 			}
-
+			if (qtiBased && "yes".equals(params.get("strict"))) {
+				List<String> list = QtiCheck.validateFile(inputFile, catalog);
+				if (!Constants.SUCCESS.equals(list.get(0))) {
+					return list;
+				}
+			}
 			if (elementSegmentation == null) {
 				segByElement = false;
 			} else {

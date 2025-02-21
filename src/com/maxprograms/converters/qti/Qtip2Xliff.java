@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ import com.maxprograms.converters.FileFormats;
 import com.maxprograms.converters.Join;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
+import com.maxprograms.xml.Catalog;
+import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -61,7 +64,15 @@ public class Qtip2Xliff {
         if (targetLanguage == null) {
             targetLanguage = "";
         }
+
         try {
+            if ("yes".equals(params.get("strict"))) {
+                Catalog catalog = CatalogBuilder.getCatalog(params.get("catalog"));
+                List<String> list = QtiCheck.validatePackage(inputFile, catalog);
+                if (!Constants.SUCCESS.equals(list.get(0))) {
+                    return list;
+                }
+            }
             out = new ZipOutputStream(new FileOutputStream(skeleton));
             List<String> xliffList = new ArrayList<>();
             try (ZipInputStream in = new ZipInputStream(new FileInputStream(inputFile))) {
@@ -147,7 +158,7 @@ public class Qtip2Xliff {
             }
 
             result.add(Constants.SUCCESS);
-        } catch (IOException | SAXException | ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Sdlppx2Xliff.class.getName());
             logger.log(Level.ERROR, Messages.getString("Qtip2Xliff.2"), e);
             result.add(Constants.ERROR);

@@ -221,8 +221,8 @@ convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang
         [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
         [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
         [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
-        [-xmlfilter folder] [-2.0] [-2.1] [-ignoretc] [-ignoresvg] [-charsets]
-        [-types]
+        [-xmlfilter folder] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] [-strict]
+        [-charsets] [-types]
 
 Where:
 
@@ -246,6 +246,8 @@ Where:
    -ignoresvg: (optional) ignore translatable SVG files when parsing DITA maps
    -2.0:       (optional) generate XLIFF 2.0
    -2.1:       (optional) generate XLIFF 2.1
+   -2.2:       (optional) generate XLIFF 2.2
+   -strict:    (optional) validate QTI files/packages
    -charsets:  (optional) display a list of available character sets and exit
    -types:     (optional) display a list of supported document types and exit
 ```

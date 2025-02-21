@@ -15,8 +15,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.System.Logger;
-import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.List;
@@ -31,14 +29,11 @@ import com.maxprograms.xml.SAXBuilder;
 
 public class QtiCheck {
 
-    private static final Logger logger = System.getLogger(QtiCheck.class.getName());
-
     private QtiCheck() {
         // Do not instantiate this class
     }
 
     public static List<String> validateFile(String inputFile, Catalog catalog) {
-
         List<String> result = new Vector<>();
         try {
             SAXBuilder builder = new SAXBuilder();
@@ -47,10 +42,9 @@ public class QtiCheck {
             builder.build(inputFile);
             result.add(Constants.SUCCESS);
         } catch (Exception e) {
-            MessageFormat mf = new MessageFormat(Messages.getString("QtiCheck.1"));
-            logger.log(Level.ERROR, mf.format(new String[]{inputFile, e.getMessage()}), e);
             result.add(Constants.ERROR);
-            result.add(e.getMessage());
+            MessageFormat mf = new MessageFormat(Messages.getString("QtiCheck.1"));
+            result.add(mf.format(new Object[] { inputFile, e.getMessage() }));
         }
         return result;
     }
@@ -70,7 +64,7 @@ public class QtiCheck {
                         name = entryName.replace("\\", "/");
                     }
                     File file = new File(folder, name);
-                    if ("imsmanifest.xml".equals(file.getName().toLowerCase())) {
+                    if ("imsmanifest.xml".equalsIgnoreCase(file.getName())) {
                         hasManifest = true;
                     }
                     if (entry.isDirectory()) {
@@ -96,7 +90,6 @@ public class QtiCheck {
             }
             deleteFiles(folder);
         } catch (Exception e) {
-            logger.log(Level.ERROR, e);
             result.add(Constants.ERROR);
             result.add(e.getMessage());
         }

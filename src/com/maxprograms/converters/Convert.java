@@ -100,6 +100,7 @@ public class Convert {
 		boolean xliff20 = false;
 		boolean xliff21 = false;
 		boolean xliff22 = false;
+		boolean strict = false;
 		boolean mustResegment = false;
 
 		for (int i = 0; i < arguments.length; i++) {
@@ -190,6 +191,9 @@ public class Convert {
 			}
 			if (arg.equals("-2.2")) {
 				xliff22 = true;
+			}
+			if (arg.equals("-strict")) {
+				strict = true;
 			}
 		}
 		if (arguments.length < 4) {
@@ -342,6 +346,9 @@ public class Convert {
 		}
 		if (xliff22) {
 			params.put("xliff22", "yes");
+		}
+		if (strict) {
+			params.put("strict", "yes");
 		}
 		List<String> result = run(params);
 
