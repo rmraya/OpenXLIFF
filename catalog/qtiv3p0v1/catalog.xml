@@ -27,7 +27,6 @@
 
     <!-- Other related -->
 
-    <uri name="http://www.w3.org/2001/10/synthesis" uri="ssmlv1p1-core.xsd"/>
     <uri name="http://www.imsglobal.org/xsd/imsvdex_v1p0" uri="imsvdex_v1p0.xsd"/>
 
 </catalog>
