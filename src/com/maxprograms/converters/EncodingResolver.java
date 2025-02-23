@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -122,14 +122,14 @@ public class EncodingResolver {
 				|| fileType.equals(FileFormats.TXML) || fileType.equals(FileFormats.TXLF)
 				|| fileType.equals(FileFormats.RESX) || fileType.equals(FileFormats.INX)
 				|| fileType.equals(FileFormats.TS) || fileType.equals(FileFormats.DITA)
-				|| fileType.equals(FileFormats.SDLXLIFF) || fileType.equals(FileFormats.WPML)
-				|| fileType.equals(FileFormats.XLIFF)) {
+				|| fileType.equals(FileFormats.QTI) || fileType.equals(FileFormats.SDLXLIFF)
+				|| fileType.equals(FileFormats.WPML) || fileType.equals(FileFormats.XLIFF)) {
 			try {
 				return getXMLEncoding(fileName);
 			} catch (IOException e) {
 				logger.log(Level.ERROR, Messages.getString("EncodingResolver.1"), e);
 			}
-		} else if (fileType.equals(FileFormats.SDLPPX)) {
+		} else if (fileType.equals(FileFormats.QTIP) ||fileType.equals(FileFormats.SDLPPX) ) {
 			return StandardCharsets.UTF_8;
 		} else if (fileType.equals(FileFormats.RC)) {
 			try {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -352,7 +352,7 @@ public class Mif2Xliff {
 			String key = "\\x" + Integer.toHexString(value);
 			if (charmap.containsKey(key)) {
 				String result = charmap.get(key);
-				if (result.length() > 0) {
+				if (!result.isEmpty()) {
 					return result.charAt(0);
 				}
 			}

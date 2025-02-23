@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -169,7 +169,7 @@ public class Jscript2xliff {
 	}
 
 	private static void extractStrings(String line) throws IOException {
-		while (line.length() > 0) {
+		while (!line.isEmpty()) {
 			line = checkForQuote(line, '\"');
 			line = checkForQuote(line, '\'');
 			if (line.indexOf('\"') == -1 && line.indexOf('\'') == -1) {

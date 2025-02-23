@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -202,7 +202,7 @@ public class Html2Xliff {
 				start = -1;
 			}
 		}
-		if (seg.length() > 0) {
+		if (!seg.isEmpty()) {
 			// add trailing characters
 			miniList.add(seg);
 		}

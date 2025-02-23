@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -82,7 +82,7 @@ public class MSOffice2Xliff {
 
 		segnum = 0;
 
-		segByElement = (elementSegmentation == null) ? false : elementSegmentation.equals("yes");
+		segByElement = "yes".equals(elementSegmentation);
 
 		try {
 			if (!segByElement) {
@@ -211,7 +211,7 @@ public class MSOffice2Xliff {
 		String[] parts = test.trim().split("<");
 		Stack<String> stack = new Stack<>();
 		for (int i = 0; i < parts.length; i++) {
-			if (parts[i].length() > 0) {
+			if (!parts[i].isEmpty()) {
 				String[] subparts = parts[i].split("[\\s]|>");
 				if (subparts[0].startsWith("/")) {
 					if (stack.isEmpty()) {

@@ -1,6 +1,6 @@
 # OpenXLIFF Filters
 
-![OpenXLIFF FIlters logo](openxliff_128.png) 
+![OpenXLIFF FIlters logo](openxliff_128.png)
 
 An open source set of Java filters for creating, merging and validating XLIFF 1.2, 2.0 and 2.1 files.
 
@@ -17,6 +17,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
 - **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
+- **[Recover ICE Matches](https://github.com/rmraya/OpenXLIFF#recover-ice-matches)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
 - **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
@@ -53,6 +54,7 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
+|4.3.0 | Added support for QTI files and packages; Implemented recovery of ICE matches | February 23rd, 2025|
 |4.2.0 | Created skeleton folder when needed | January 3rd, 2025|
 |4.1.0 | Adjusted for [XLIFF Manager](https://github.com/rmraya/XLIFFManager) 8.0 | December 28th, 2024|
 |4.0.0 | Updated [XMLJava](https://github.com/rmraya/XMLJava) to version 2.0.0 | December 15th, 2024|
@@ -160,6 +162,8 @@ OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
   - OpenOffice / LibreOffice / StarOffice
   - PHP Arrays
   - Plain Text
+  - QTI (IMS Question and Test Interoperability)
+  - QTI Packages
   - SDLXLIFF (Trados Studio)
   - SRT Subtitles
   - Trados Studio Packages (*.sdlppx)
@@ -218,8 +222,8 @@ convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang
         [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
         [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
         [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
-        [-xmlfilter folder] [-2.0] [-2.1] [-ignoretc] [-ignoresvg] [-charsets]
-        [-types]
+        [-xmlfilter folder] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] [-strict]
+        [-charsets] [-types]
 
 Where:
 
@@ -243,6 +247,8 @@ Where:
    -ignoresvg: (optional) ignore translatable SVG files when parsing DITA maps
    -2.0:       (optional) generate XLIFF 2.0
    -2.1:       (optional) generate XLIFF 2.1
+   -2.2:       (optional) generate XLIFF 2.2
+   -strict:    (optional) validate QTI files/packages
    -charsets:  (optional) display a list of available character sets and exit
    -types:     (optional) display a list of supported document types and exit
 ```
@@ -309,6 +315,25 @@ Where:
    -unapproved: (optional) accept translations from unapproved segments
    -export:     (optional) generate TMX file from approved segments
    -getTarget:  (optional) display a potential target file name and exit
+```
+
+## Recover ICE (In-Context Exact) Matches
+
+You can recover previous translations stored in an XLIFF file and apply them as ICE (In-Context Exact) Matches to another XLIFF file using class `com.maxprograms.converters.ICEMatches` in your Java code.
+
+If you use binaries from the command line, running `.\iceMatches.cmd` or `./iceMatches.sh` without parameters displays help for recovering ICE Matches.
+
+```text
+Usage:
+
+iceMatches.sh [-help] -old oldXliff -new newXliff [-catalog catalogFile]
+
+Where:
+
+    -help:    (optional) Display this help information and exit
+    -old:     XLIFF file with previous translations
+    -new:     XLIFF file that receives previous translations
+    -catalog: (optional) XML catalog to use for processing
 ```
 
 ## XLIFF Validation

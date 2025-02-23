@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -51,6 +51,7 @@ import com.maxprograms.converters.office.Office2Xliff;
 import com.maxprograms.converters.php.Php2Xliff;
 import com.maxprograms.converters.plaintext.Text2Xliff;
 import com.maxprograms.converters.po.Po2Xliff;
+import com.maxprograms.converters.qti.Qtip2Xliff;
 import com.maxprograms.converters.rc.Rc2Xliff;
 import com.maxprograms.converters.resx.Resx2Xliff;
 import com.maxprograms.converters.sdlppx.Sdlppx2Xliff;
@@ -98,6 +99,8 @@ public class Convert {
 		boolean ignoresvg = false;
 		boolean xliff20 = false;
 		boolean xliff21 = false;
+		boolean xliff22 = false;
+		boolean strict = false;
 		boolean mustResegment = false;
 
 		for (int i = 0; i < arguments.length; i++) {
@@ -185,6 +188,12 @@ public class Convert {
 			}
 			if (arg.equals("-2.1")) {
 				xliff21 = true;
+			}
+			if (arg.equals("-2.2")) {
+				xliff22 = true;
+			}
+			if (arg.equals("-strict")) {
+				strict = true;
 			}
 		}
 		if (arguments.length < 4) {
@@ -289,12 +298,11 @@ public class Convert {
 		if (xliff.isEmpty()) {
 			xliff = sourceFile.getAbsoluteFile().getAbsolutePath() + ".xlf";
 		}
-
-		if (xliff20 && xliff21) {
+		if ((xliff20 && xliff21) || (xliff20 && xliff22) || (xliff21 && xliff22)) {
 			logger.log(Level.ERROR, Messages.getString("Convert.21"));
 			return;
 		}
-		if ((xliff20 || xliff21) && !paragraph && config.isEmpty()) {
+		if ((xliff20 || xliff21 || xliff22) && !paragraph && config.isEmpty()) {
 			mustResegment = true;
 			paragraph = true;
 		}
@@ -335,6 +343,12 @@ public class Convert {
 		}
 		if (xliff21) {
 			params.put("xliff21", "yes");
+		}
+		if (xliff22) {
+			params.put("xliff22", "yes");
+		}
+		if (strict) {
+			params.put("strict", "yes");
 		}
 		List<String> result = run(params);
 
@@ -427,6 +441,11 @@ public class Convert {
 				result = Php2Xliff.run(params);
 			} else if (format.equals(FileFormats.PO)) {
 				result = Po2Xliff.run(params);
+			} else if (format.equals(FileFormats.QTI)) {
+				params.put("qti", "yes");
+				result = Xml2Xliff.run(params);
+			} else if (format.equals(FileFormats.QTIP)) {
+				result = Qtip2Xliff.run(params);
 			} else if (format.equals(FileFormats.RC)) {
 				result = Rc2Xliff.run(params);
 			} else if (format.equals(FileFormats.RESX)) {
@@ -463,8 +482,15 @@ public class Convert {
 			}
 			boolean xliff20 = "yes".equals(params.get("xliff20"));
 			boolean xliff21 = "yes".equals(params.get("xliff21"));
-			if ((xliff20 || xliff21) && Constants.SUCCESS.equals(result.get(0))) {
-				String version = xliff20 ? "2.0" : "2.1";
+			boolean xliff22 = "yes".equals(params.get("xliff22"));
+			if ((xliff20 || xliff21 || xliff22) && Constants.SUCCESS.equals(result.get(0))) {
+				String version = "2.0";
+				if (xliff21) {
+					version = "2.1";
+				}
+				if (xliff22) {
+					version = "2.2";
+				}
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
 				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
 					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
@@ -550,6 +576,9 @@ public class Convert {
 			if (file.has("is21")) {
 				params.put("xliff21", file.getBoolean("is21") ? "yes" : "no");
 			}
+			if (file.has("is22")) {
+				params.put("xliff22", file.getBoolean("is22") ? "yes" : "no");
+			}
 			if (file.has("ditaval")) {
 				params.put("ditaval", file.getString("ditaval"));
 			}
@@ -576,7 +605,7 @@ public class Convert {
 		return new File(srxFolder, "default.srx").getAbsolutePath();
 	}
 
-	private static String defaultCatalog() throws IOException {
+	public static String defaultCatalog() throws IOException {
 		String home = System.getenv("OpenXLIFF_HOME");
 		if (home == null) {
 			home = System.getProperty("user.dir");

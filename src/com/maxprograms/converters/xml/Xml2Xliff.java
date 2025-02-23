@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -39,6 +39,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
+import com.maxprograms.converters.qti.QtiCheck;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CData;
@@ -95,6 +96,7 @@ public class Xml2Xliff {
 	private static String startText;
 	private static String endText;
 	private static boolean ditaBased;
+	private static boolean qtiBased;
 	private static String targetLanguage;
 	private static boolean inCData;
 	private static boolean translateComments;
@@ -131,8 +133,8 @@ public class Xml2Xliff {
 		inDesign = isInDesign != null;
 		String isResx = params.get("resx");
 		resx = isResx != null;
-		String dita = params.get("dita_based");
-		ditaBased = dita == null ? false : dita.equals("yes");
+		ditaBased = "yes".equals(params.get("dita_based"));
+		qtiBased = "yes".equals(params.get("qti"));
 
 		String ignoreTrackedChanges = params.get("ignoretc");
 		if (ignoreTrackedChanges != null) {
@@ -167,7 +169,12 @@ public class Xml2Xliff {
 				MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.0"));
 				throw new IOException(mf.format(new Object[] { f.getName() }));
 			}
-
+			if (qtiBased && "yes".equals(params.get("strict"))) {
+				List<String> list = QtiCheck.validateFile(inputFile, catalog);
+				if (!Constants.SUCCESS.equals(list.get(0))) {
+					return list;
+				}
+			}
 			if (elementSegmentation == null) {
 				segByElement = false;
 			} else {
@@ -240,7 +247,7 @@ public class Xml2Xliff {
 				result.add(Constants.ERROR);
 				MessageFormat mf = new MessageFormat(Messages.getString("Xml2Xliff.2"));
 				result.add(mf.format(new String[] { inputFile }));
-				if (ditaBased || rootElement.equals("svg")) {
+				if (ditaBased || qtiBased || rootElement.equals("svg")) {
 					result.add("EMPTY");
 				} else {
 					logger.log(Level.WARNING, mf.format(new String[] { inputFile }));
@@ -289,6 +296,10 @@ public class Xml2Xliff {
 
 		root = doc.getRootElement();
 		rootElement = root.getName();
+		if (qtiBased) {
+			File base = new File(folder, "config_qti.xml");
+			return base.getAbsolutePath();
+		}
 		if (ditaBased && rootElement.equals("svg")) {
 			ditaBased = false;
 		}
@@ -488,6 +499,9 @@ public class Xml2Xliff {
 		writeString("</header>\n");
 		if (arbortextDita) {
 			writeString("<?arbortext-dita ?>\n");
+		}
+		if (qtiBased) {
+			writeString("<?qti-based ?>\n");
 		}
 		writeString("<?encoding " + srcEncoding + "?>\n");
 		writeString("<body>\n");
@@ -1360,10 +1374,10 @@ public class Xml2Xliff {
 				value = value.replace(">", "&gt;");
 
 				text = text + value;
-				if (value.trim().length() > 0) {
+				if (!value.trim().isEmpty()) {
 					translatable = translatable + value;
 				}
-				if (value.trim().length() > 0 && text.startsWith("" + '\u007F' + '\u007F')) {
+				if (!value.trim().isEmpty() && text.startsWith("" + '\u007F' + '\u007F')) {
 					for (int j = 0; j < stack.size(); j++) {
 						if (startsSegment.containsKey(stack.get(j))) {
 							text = text.substring(2);

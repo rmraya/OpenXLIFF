@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -309,19 +309,19 @@ public class Po2Xliff {
 				target = "";
 			}
 			String approved = "no";
-			if (!fuzzy && target.trim().length() > 0) {
+			if (!fuzzy && !target.trim().isEmpty()) {
 				approved = "yes";
 			}
 			writeString("      <trans-unit id=\"" + segId + " [0]\" xml:space=\"preserve\" approved=\"" + approved
 					+ "\">\n");
 			if (cformat) {
 				writeString("         <source>" + parseString(Utils.cleanString(source)) + "</source>\n");
-				if (target.length() > 0 || approved.equals("yes")) {
+				if (!target.isEmpty() || approved.equals("yes")) {
 					writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 				}
 			} else {
 				writeString("         <source>" + Utils.cleanString(source) + "</source>\n");
-				if (target.length() > 0 || approved.equals("yes")) {
+				if (!target.isEmpty() || approved.equals("yes")) {
 					writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
 				}
 			}
@@ -337,19 +337,19 @@ public class Po2Xliff {
 				} else {
 					target = "";
 				}
-				if (!fuzzy && target.trim().length() > 0) {
+				if (!fuzzy && !target.trim().isEmpty()) {
 					approved = "yes";
 				}
 				writeString("      <trans-unit id=\"" + segId + " [" + i + "]\" xml:space=\"preserve\" approved=\""
 						+ approved + "\">\n");
 				if (cformat) {
 					writeString("         <source>" + parseString(Utils.cleanString(pluralSource)) + "</source>\n");
-					if (target.length() > 0 || approved.equals("yes")) {
+					if (!target.isEmpty() || approved.equals("yes")) {
 						writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 					}
 				} else {
 					writeString("         <source>" + Utils.cleanString(pluralSource) + "</source>\n");
-					if (target.length() > 0 || approved.equals("yes")) {
+					if (!target.isEmpty() || approved.equals("yes")) {
 						writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
 					}
 				}
@@ -361,7 +361,7 @@ public class Po2Xliff {
 		} else {
 			// only singular
 			String approved = "no";
-			if (!fuzzy && target.trim().length() > 0) {
+			if (!fuzzy && !target.trim().isEmpty()) {
 				approved = "yes";
 			}
 			String restype = "";
@@ -372,7 +372,7 @@ public class Po2Xliff {
 					+ restype + ">\n");
 			if (cformat) {
 				writeString("      <source>" + parseString(Utils.cleanString(source)) + "</source>\n");
-				if (target.length() > 0 || approved.equals("yes")) {
+				if (!target.isEmpty() || approved.equals("yes")) {
 					writeString("      <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
 				}
 			} else {
@@ -380,7 +380,7 @@ public class Po2Xliff {
 					source = target;
 				}
 				writeString("      <source>" + Utils.cleanString(source) + "</source>\n");
-				if (target.length() > 0 || approved.equals("yes")) {
+				if (!target.isEmpty() || approved.equals("yes")) {
 					writeString("      <target>" + Utils.cleanString(target) + "</target>\n");
 				}
 			}

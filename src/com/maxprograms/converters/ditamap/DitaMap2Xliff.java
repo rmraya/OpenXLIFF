@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -148,7 +148,7 @@ public class DitaMap2Xliff {
 				}
 				if (excludeTable != null) {
 					try {
-						source = removeFiltered(source, catalog);
+						source = removeFiltered(source);
 					} catch (Exception sax) {
 						// skip directly referenced images
 						continue;
@@ -309,8 +309,7 @@ public class DitaMap2Xliff {
 		return result;
 	}
 
-	private static String checkXref(String source, Catalog catalog)
-			throws SAXException, IOException, ParserConfigurationException, SkipException {
+	private static String checkXref(String source, Catalog catalog) throws IOException, SkipException {
 		Element root = singleDoc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
@@ -396,8 +395,7 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static String removeFiltered(String source, Catalog catalog)
-			throws IOException, SAXException, ParserConfigurationException {
+	private static String removeFiltered(String source) throws IOException {
 		Element root = singleDoc.getRootElement();
 		elementsExcluded = false;
 		recurseExcluding(root);

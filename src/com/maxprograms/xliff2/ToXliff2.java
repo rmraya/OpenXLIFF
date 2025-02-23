@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 - 2024 Maxprograms.
+ * Copyright (c) 2018 - 2025 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -82,6 +82,9 @@ public class ToXliff2 {
 			root2 = xliff2.getRootElement();
 			recurse(root, root2);
 			root2.setAttribute("version", version);
+			if (version.equals("2.2")) {
+				root2.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.2");
+			}
 			Indenter.indent(root2, 2);
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.preserveSpace(true);
