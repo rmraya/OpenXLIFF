@@ -54,7 +54,7 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
-|4.3.0 | Added support for QTI files and packages; Implemented recovery of ICE matches | February 23rd, 2025|
+|4.3.0 | Added support for QTI files and packages; Implemented recovery of ICE matches; Added initial support for XLIFF 2.2 | February 23rd, 2025|
 |4.2.0 | Created skeleton folder when needed | January 3rd, 2025|
 |4.1.0 | Adjusted for [XLIFF Manager](https://github.com/rmraya/XLIFFManager) 8.0 | December 28th, 2024|
 |4.0.0 | Updated [XMLJava](https://github.com/rmraya/XMLJava) to version 2.0.0 | December 15th, 2024|
