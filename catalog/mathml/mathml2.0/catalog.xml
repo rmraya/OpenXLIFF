@@ -1,7 +1,4 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
-<!-- ............................................................ -->
-<!-- XML Catalog for Math ML .................................... -->
-<!-- File catalog.xml ........................................... -->
     <public publicId="-//OpenOffice.org//DTD Modified W3C MathML 1.01//EN" uri="dtd/office_mathml2.dtd"/>
     <public publicId="-//W3C//DTD MathML 2.0//EN" uri="dtd/mathml2.dtd"/>        
     <system systemId="mathml2.dtd" uri="dtd/mathml2.dtd"/>
