@@ -181,7 +181,8 @@
 
 	<!--    MathML    -->
 
-	<nextCatalog catalog="mathml/catalog.xml" />
+	<nextCatalog catalog="mathml2/catalog.xml" />
+	<nextCatalog catalog="mathml3/catalog.xml" />
 	
 	<!--    ST4    -->
 
