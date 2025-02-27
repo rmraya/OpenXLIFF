@@ -26,6 +26,10 @@
     <uri name="http://www.imsglobal.org/xsd/imsqtiv2p2_html5_v1p0" uri="imsqtiv2p2p1_html5_v1p0.xsd" />
     <uri name="http://www.imsglobal.org/xsd/qti/qtiv2p2/imscsmd_v1p0" uri="qtiv2p2_csm_v2p2.xsd" />
     <uri name="http://www.imsglobal.org/xsd/imscp_v1p1" uri="qtiv2p2_imscpv1p2_v1p0.xsd" />
+    <system systemId="http://www.imsglobal.org/xsd/imscp_v1p1" uri="qtiv2p2_imscpv1p2_v1p0.xsd" />
     <system systemId="http://www.imsglobal.org/xsd/qti/qtiv2p2/qtiv2p2_imscpv1p2_v1p0.xsd" uri="qtiv2p2_imscpv1p2_v1p0.xsd" />
+    <system systemId="http://www.imsglobal.org/xsd/imsqti_metadata_v2p2" uri="imsqti_metadata_v2p2.xsd" />
+    <system systemId="http://www.imsglobal.org/xsd/qti/qtiv2p2/imsqti_metadata_v2p2.xsd" uri="imsqti_metadata_v2p2.xsd" />
+    <system systemId="http://www.imsglobal.org/xsd/qti/qtiv2p2/qtiv2p2_csm_v2p2.xsd" uri="qtiv2p2_csm_v2p2.xsd" />
 
 </catalog>
