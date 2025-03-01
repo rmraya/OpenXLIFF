@@ -2,7 +2,7 @@
 <!DOCTYPE ini-file PUBLIC "-//MAXPROGRAMS//Converters 2.0.0//EN" "configuration.dtd">
 <ini-file>
 
-    <tag attributes="title;label" hard-break="segment">assessmentItem</tag>
+    <tag hard-break="segment">assessmentItem</tag>
     <tag attributes="title" hard-break="segment">assessmentTest</tag>
     <tag attributes="title" hard-break="segment">assessmentSection</tag>
     <tag attributes="title;label" hard-break="segment">assessmentStimulus</tag>
@@ -68,9 +68,13 @@
     <tag hard-break="inline" ctype="x-other">text</tag>
     <tag hard-break="segment">title</tag>
     <tag hard-break="segment">typicalAgeRange</tag>
+    <tag hard-break="segment">value</tag>
+    <tag hard-break="ignore">manifest</tag>
+    <tag hard-break="ignore">metadata</tag>
+    <tag hard-break="ignore">resources</tag>
 
 
-    <tag attributes="title;label" hard-break="segment">qti-assessment-item</tag>
+    <tag hard-break="segment">qti-assessment-item</tag>
     <tag attributes="title" hard-break="segment">qti-assessment-test</tag>
     <tag attributes="title" hard-break="segment">qti-assessment-section</tag>
     <tag attributes="title;label" hard-break="segment">qti-assessment-stimulus</tag>
@@ -91,6 +95,10 @@
     <tag attributes="title" hard-break="segment">qti-stylesheet</tag>
     <tag attributes="title" hard-break="segment">qti-test-feedback</tag>
     <tag attributes="title" hard-break="segment">qti-test-part</tag>
+    <tag hard-break="segment">qti-value</tag>
+    <tag hard-break="ignore">qti-metadata-ref</tag>    
+    <tag hard-break="ignore">qti-digital-material</tag>   
+    <tag hard-break="ignore">qti-calculator-info</tag>    
 
 
     <!-- From XHTML -->
