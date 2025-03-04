@@ -279,6 +279,8 @@ Default XML catalog and SRX file are provided. You can also use custom versions 
    OO = OpenOffice Document
    PHPA = PHP Array
    PO = PO (Portable Objects)
+   QTI = IMS Question and Test Interoperability
+   QTIP = QTI Package
    RC = RC (Windows C/C++ Resources)
    RESX = ResX (Windows .NET Resources)
    SDLPPX = Trados Studio Package
