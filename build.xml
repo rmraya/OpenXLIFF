@@ -71,7 +71,13 @@
         <copy file="iceMatches.sh" todir="dist" />
         <chmod dir="dist" perm="ugo+rx" includes="**/*.sh" />
     </target>
-    <target name="dist" depends="link,copyBats,copyShells">
+    <target name="copyLicenses">
+        <description>Copy license info to /dist/</description>
+        <copy todir="dist/licenses">
+            <fileset dir="licenses" />
+        </copy>
+    </target>
+    <target name="dist" depends="link,copyBats,copyShells,copyLicenses">
         <description>Prepare distribution</description>
         <copy todir="dist/catalog">
             <fileset dir="catalog" />
