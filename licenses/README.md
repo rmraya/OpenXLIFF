@@ -1,6 +1,11 @@
 # Third Party Licenses
 
-OpenXLIFF Filters uses these third party libraries:
+OpenXLIFF Filters uses these libraries:
+
+## BCP47J
+
+- Available from <https://github.com/rmraya/BCP47J>
+- Published under [Eclipse Public License v1.0](https://raw.githubusercontent.com/rmraya/BCP47J/main/LICENSE)
 
 ## DTDParser
 
@@ -17,7 +22,7 @@ OpenXLIFF Filters uses these third party libraries:
 - Available from <https://jsoup.org>
 - Published under [MIT License](https://jsoup.org/license)
 
-## MapDB
+## XMLJava
 
-- Available from <https://mapdb.org>
-- Published under [Apache License](https://raw.githubusercontent.com/jankotek/mapdb/release-1.0/license.txt)
+- Available from <https://github.com/rmraya/XMLJava>
+- Published under [Eclipse Public License v1.0](https://raw.githubusercontent.com/rmraya/XMLJava/main/LICENSE)
