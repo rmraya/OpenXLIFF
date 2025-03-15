@@ -162,7 +162,7 @@ public class FileFormats {
 			if (string.startsWith("<MIFFile")) {
 				return MIF;
 			}
-			if (string.indexOf("http://www.imsglobal.org") != -1 || string.indexOf("<html") != -1) {
+			if (string.indexOf("=\"http://www.imsglobal.org") != -1) {
 				return QTI;
 			}
 			if (string.indexOf("<xliff ") != -1 && string.indexOf("xmlns:sdl") != -1) {
