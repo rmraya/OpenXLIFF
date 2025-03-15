@@ -311,6 +311,13 @@ public class Xml2Xliff {
 				return base.getAbsolutePath();
 			}
 		}
+		String publicId = doc.getPublicId();
+		if (publicId != null && !arbortextDita && publicId.indexOf(" DITA ") != -1) {
+			ditaBased = true;
+		}
+		if (root.hasAttribute("class")  && !arbortextDita && root.getAttributeValue("class").indexOf("topic/topic") != -1) {
+			ditaBased = true;
+		}
 		if (ditaBased) {
 			File base = new File(folder, "config_dita.xml");
 			if (ditaCache == null) {

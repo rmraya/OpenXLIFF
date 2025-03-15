@@ -19,6 +19,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -129,7 +130,8 @@ public class Html2Xliff {
 				output.close();
 			}
 			result.add(Constants.SUCCESS);
-		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException | StringIndexOutOfBoundsException e) {
+		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException
+				| StringIndexOutOfBoundsException e) {
 			Logger logger = System.getLogger(Html2Xliff.class.getName());
 			logger.log(Level.ERROR, Messages.getString("Html2Xliff.2"), e);
 			result.add(Constants.ERROR);
@@ -920,7 +922,16 @@ public class Html2Xliff {
 				end = file.indexOf("]]>") + 2;
 			}
 			if (end < start || end < 0 || start < 0) {
-				throw new IOException(Messages.getString("Html2Xliff.3"));
+				String fragment = "";
+				if (start > 5 && start + 5 < file.length()) {
+					fragment = file.substring(start - 5, start + 5);
+				}
+				if (fragment.isEmpty()) {
+					throw new IOException(Messages.getString("Html2Xliff.3" + file.substring(start - 5, start + 5)));
+				} else {
+					MessageFormat mf = new MessageFormat(Messages.getString("Html2Xliff.4"));
+					throw new IOException(mf.format(new Object[] { fragment }));
+				}
 			}
 			String element = file.substring(start, end + 1);
 
@@ -1049,6 +1060,7 @@ public class Html2Xliff {
 			start = file.indexOf('<', start);
 		}
 		segments.add(text);
+
 	}
 
 	private static String getType(String string) {

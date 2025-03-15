@@ -84,11 +84,12 @@ public class Office2Xliff {
 					try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(skeleton))) {
 						ZipEntry entry = null;
 						while ((entry = in.getNextEntry()) != null) {
-							if (entry.getName().matches(".*\\.[xX][mM][lL]")
+							if (entry.getName().matches(".*\\.[xX][mM][lL]") 
 									&& !(entry.getName().matches(".*slideMaster.*")
 											|| entry.getName().matches(".*slideLayout.*")
 											|| entry.getName().matches(".*handoutMaster.*")
-											|| entry.getName().matches(".*notesMaster.*"))) {
+											|| entry.getName().matches(".*notesMaster.*")
+											|| entry.getName().matches(".*manifest.*"))) {
 								File f = new File(entry.getName());
 								String name = f.getName();
 								File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".xml");

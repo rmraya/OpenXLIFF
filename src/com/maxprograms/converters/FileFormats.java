@@ -196,12 +196,8 @@ public class FileFormats {
 				if (string.indexOf("<?xml-model") != -1 && string.indexOf("tc:dita:rng") != -1) {
 					return DITA;
 				}
-				if (string.indexOf("<map") != -1 || string.indexOf("<bookmap") != -1) {
-					return DITA;
-				}
-				if (string.indexOf("<!DOCTYPE map") != -1 || string.indexOf("<!DOCTYPE bookmap ") != -1
-						|| string.indexOf("<!DOCTYPE concept ") != -1 || string.indexOf("<!DOCTYPE reference ") != -1
-						|| string.indexOf("<!DOCTYPE task ") != -1) {
+				if (string.indexOf("<map") != -1 || string.indexOf("<bookmap") != -1
+						|| string.indexOf("<!DOCTYPE map") != -1 || string.indexOf("<!DOCTYPE bookmap ") != -1) {
 					return DITA;
 				}
 				if (string.indexOf("<?aid ") != -1 || string.indexOf("<Document ") != -1) {
