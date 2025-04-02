@@ -332,7 +332,9 @@ public class DitaMap2Xliff {
 	}
 
 	private static void fixXref(Element root, String source, Document doc, Catalog catalog) {
-		if (DitaParser.ditaClass(root, "topic/xref")) {
+		if (DitaParser.ditaClass(root, "topic/xref") && !"external".equals(root.getAttributeValue("scope"))
+				&& ("dita".equals(root.getAttributeValue("format","dita"))
+						|| "ditamap".equals(root.getAttributeValue("format","dita")))) {
 			List<XMLNode> content = root.getContent();
 			if (content.isEmpty()) {
 				String href = root.getAttributeValue("href");
