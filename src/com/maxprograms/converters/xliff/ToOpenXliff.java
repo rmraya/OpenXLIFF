@@ -101,6 +101,9 @@ public class ToOpenXliff {
             }
             if (root.getAttributeValue("version").startsWith("2")) {
                 recurse2x(root, units);
+                if (!file.hasAttribute("target-language") && hasTarget(units)) {
+                    throw new IOException(Messages.getString("ToOpenXliff.3"));
+                }
             }
             if (units.isEmpty()) {
                 result.add(Constants.ERROR);
@@ -135,6 +138,15 @@ public class ToOpenXliff {
         return result;
     }
 
+    private static boolean hasTarget(List<Element> units) {
+        for (Element unit : units) {
+            if (unit.getChild("target") != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void recurse2x(Element root, List<Element> units) {
         if ("unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             boolean preserve = root.getAttributeValue("xml:space").equals("preserve");
@@ -163,6 +175,28 @@ public class ToOpenXliff {
                 tag = 1;
                 target.setContent(getContent2x(segment.getChild("target")));
                 unit.addContent(target);
+                if (segments.size() == 1) {
+                    Element notes = root.getChild("notes");
+                    if (notes != null) {
+                        List<Element> noteList = notes.getChildren("note");
+                        Iterator<Element> it = noteList.iterator();
+                        while (it.hasNext()) {
+                            Element note = it.next();
+                            Element n = new Element("note");
+                            n.setText(note.getText());
+                            if (note.hasAttribute("priority")) {
+                                n.setAttribute("priority", note.getAttributeValue("priority"));
+                            }
+                            if (note.hasAttribute("annotates")) {
+                                String value = note.getAttributeValue("annotates");
+                                if ("source".equals(value) || "target".equals(value)) {
+                                    n.setAttribute("appliesTo", value);
+                                }
+                            }
+                            unit.addContent(n);
+                        }
+                    }
+                }
                 Element matchesHolder = root.getChild("mtc:matches");
                 if (matchesHolder != null) {
                     List<Element> matches = matchesHolder.getChildren("mtc:match");
