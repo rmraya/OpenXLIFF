@@ -206,8 +206,8 @@ public class Utils {
 			} else if (o.getNodeType() == XMLNode.ELEMENT_NODE) {
 				String type = ((Element) o).getName();
 				// discard all inline elements
-				// except <mrk> and <hi>
-				if (type.equals("sub") || type.equals("hi")) {
+				// except <sub> and <mrk>
+				if (type.equals("sub") || type.equals("mrk")) {
 					Element e = (Element) o;
 					text.append(pureText(e));
 				}
