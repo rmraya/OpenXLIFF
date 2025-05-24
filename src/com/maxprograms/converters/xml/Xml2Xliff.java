@@ -46,16 +46,16 @@ import com.maxprograms.xml.CData;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Comment;
+import com.maxprograms.xml.DTDParser;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.Grammar;
 import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.SilentErrorHandler;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
-import com.wutka.dtd.DTD;
-import com.wutka.dtd.DTDParser;
 
 public class Xml2Xliff {
 
@@ -464,10 +464,11 @@ public class Xml2Xliff {
 		String result = null;
 		File dtd = new File(file);
 		try {
-			DTDParser parser = new DTDParser(dtd);
-			DTD d = parser.parse(true);
-			if (d != null && d.rootElement != null) {
-				result = d.rootElement.getName();
+			DTDParser parser = new DTDParser();
+			Grammar grammar = parser.parse(dtd);
+			String root = grammar.getRootElement();
+			if (!root.isEmpty()) {
+				result = root;
 			}
 		} catch (Exception e) {
 			// do nothing

@@ -37,7 +37,6 @@ module openxliff {
 	exports com.maxprograms.xliff2;
 	exports com.maxprograms.validation;
 
-	requires dtd;
 	requires jsoup;
 	requires java.base;
 	requires java.net.http;

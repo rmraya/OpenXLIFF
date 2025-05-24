@@ -5,7 +5,6 @@
     <property name="build.compiler" value="javac10+" />
     <path id="OpenXLIFF.classpath">
         <pathelement location="lib/bcp47j.jar" />
-        <pathelement location="lib/dtd.jar" />
         <pathelement location="lib/json.jar" />
         <pathelement location="lib/jsoup.jar" />
     	<pathelement location="lib/xmljava.jar" />
