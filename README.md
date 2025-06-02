@@ -150,7 +150,7 @@ XML and JSON filters are configurable
 
 ## Supported File Formats
 
-OpenXLIFF Filters can generate XLIFF 1.2 and XLIFF 2.0 from these formats:
+OpenXLIFF Filters can generate XLIFF 1.2, 2.0, 2.1 and 2.2 from these formats:
 
 - **General Documentation**
   - Adobe InCopy ICML
