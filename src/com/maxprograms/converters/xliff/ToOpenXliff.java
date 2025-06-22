@@ -42,6 +42,7 @@ public class ToOpenXliff {
     private static List<String> namespaces;
     private static int tag;
     private static boolean preserveSpaces = false;
+    private static List<String[]> sourcetags;
 
     private ToOpenXliff() {
         // do not instantiate this class
@@ -166,14 +167,14 @@ public class ToOpenXliff {
                 }
                 Element source = new Element("source");
                 tag = 1;
-                source.setContent(getContent2x(src));
+                sourcetags = new Vector<>();
+                source.setContent(getContent2x(src, true));
                 if (!hasTranslatableText(source)) {
                     return;
                 }
                 unit.addContent(source);
                 Element target = new Element("target");
-                tag = 1;
-                target.setContent(getContent2x(segment.getChild("target")));
+                target.setContent(getContent2x(segment.getChild("target"), false));
                 unit.addContent(target);
                 if (segments.size() == 1) {
                     Element notes = root.getChild("notes");
@@ -216,11 +217,11 @@ public class ToOpenXliff {
                             }
                             Element altSource = new Element("source");
                             tag = 1;
-                            altSource.setContent(getContent2x(match.getChild("source")));
+                            sourcetags = new Vector<>();
+                            altSource.setContent(getContent2x(match.getChild("source"), true));
                             altTrans.addContent(altSource);
                             Element altTarget = new Element("target");
-                            tag = 1;
-                            altTarget.setContent(getContent2x(match.getChild("target")));
+                            altTarget.setContent(getContent2x(match.getChild("target"), false));
                             altTrans.addContent(altTarget);
                             if (!altSource.getContent().isEmpty() && !altTarget.getContent().isEmpty()) {
                                 unit.addContent(altTrans);
@@ -240,7 +241,7 @@ public class ToOpenXliff {
         }
     }
 
-    private static List<XMLNode> getContent2x(Element child) {
+    private static List<XMLNode> getContent2x(Element child, boolean inSource) {
         List<XMLNode> result = new Vector<>();
         if (child != null) {
             List<XMLNode> content = child.getContent();
@@ -254,41 +255,112 @@ public class ToOpenXliff {
                     Element e = (Element) node;
                     String name = e.getName();
                     if ("pc".equals(name)) {
+                        String head = XliffUtils.getHead(e);
                         Element ph1 = new Element("ph");
-                        ph1.setAttribute("id", "" + tag++);
-                        ph1.setText(XliffUtils.getHead(e));
+                        ph1.setText(head);
+                        if (inSource) {
+                            ph1.setAttribute("id", "" + tag++);
+                            sourcetags.add(new String[] { head, "" + (tag - 1) });
+                        } else {
+                            int i = findFirstTag(head);
+                            if (i != -1) {
+                                ph1.setAttribute("id", "" + i);
+                                sourcetags.remove(new String[] { head, "" + i });
+                            } else {
+                                ph1.setAttribute("id", "" + tag++);
+                            }
+                        }
                         result.add(ph1);
 
-                        List<XMLNode> nested = getContent2x(e);
+                        List<XMLNode> nested = getContent2x(e, inSource);
                         result.addAll(nested);
 
                         Element ph2 = new Element("ph");
-                        ph2.setAttribute("id", "" + tag++);
                         ph2.setText("</pc>");
+                        if (inSource) {
+                            ph2.setAttribute("id", "" + tag++);
+                            sourcetags.add(new String[] { head + "<tail/>", "" + (tag - 1) });
+                        } else {
+                            int i = findFirstTag(head + "<tail/>");
+                            if (i != -1) {
+                                ph2.setAttribute("id", "" + i);
+                                sourcetags.remove(new String[] { head + "<tail/>", "" + i });
+                            } else {
+                                ph2.setAttribute("id", "" + tag++);
+                            }
+                        }
                         result.add(ph2);
                     }
                     if ("cp".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", "" + tag++);
-                        ph.setText(e.toString());
+                        String text = e.toString();
+                        ph.setText(text);
+                        if (inSource) {
+                            ph.setAttribute("id", "" + tag++);
+                            sourcetags.add(new String[] { text, "" + (tag - 1) });
+                        } else {
+                            int i = findFirstTag(e.toString());
+                            if (i != -1) {
+                                ph.setAttribute("id", "" + i);
+                                sourcetags.remove(new String[] { text, "" + i });
+                            } else {
+                                ph.setAttribute("id", "" + tag++);
+                            }
+                        }
                         result.add(ph);
                     }
                     if ("ph".equals(name) || "sc".equals(name) || "sm".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", "" + tag++);
-                        ph.setText(e.toString());
+                        String text = e.toString();
+                        ph.setText(text);
+                        if (inSource) {
+                            ph.setAttribute("id", "" + tag++);
+                            sourcetags.add(new String[] { text, "" + (tag - 1) });
+                        } else {
+                            int i = findFirstTag(e.toString());
+                            if (i != -1) {
+                                ph.setAttribute("id", "" + i);
+                                sourcetags.remove(new String[] { text, "" + i });
+                            } else {
+                                ph.setAttribute("id", "" + tag++);
+                            }
+                        }
                         result.add(ph);
                     }
                     if ("ec".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", "" + tag++);
-                        ph.setText(e.toString());
+                        String text = e.toString();
+                        ph.setText(text);
+                        if (inSource) {
+                            ph.setAttribute("id", "" + tag++);
+                            sourcetags.add(new String[] { text, "" + (tag - 1) });
+                        } else {
+                            int i = findFirstTag(e.toString());
+                            if (i != -1) {
+                                ph.setAttribute("id", "" + i);
+                                sourcetags.remove(new String[] { text, "" + i });
+                            } else {
+                                ph.setAttribute("id", "" + tag++);
+                            }
+                        }
                         result.add(ph);
                     }
                     if ("em".equals(name)) {
                         Element ph = new Element("ph");
-                        ph.setAttribute("id", "" + tag++);
-                        ph.setText(e.toString());
+                        String text = e.toString();
+                        ph.setText(text);
+                        if (inSource) {
+                            ph.setAttribute("id", "" + tag++);
+                            sourcetags.add(new String[] { text, "" + (tag - 1) });
+                        } else {
+                            int i = findFirstTag(e.toString());
+                            if (i != -1) {
+                                ph.setAttribute("id", "" + i);
+                                sourcetags.remove(new String[] { text, "" + i });
+                            } else {
+                                ph.setAttribute("id", "" + tag++);
+                            }
+                        }
                         result.add(ph);
                     }
                     if ("mrk".equals(name)) {
@@ -308,13 +380,22 @@ public class ToOpenXliff {
                         if (e.hasAttribute("value")) {
                             mrk.setAttribute("ts", e.getAttributeValue("value"));
                         }
-                        List<XMLNode> nested = getContent2x(e);
+                        List<XMLNode> nested = getContent2x(e, inSource);
                         mrk.setContent(nested);
                     }
                 }
             }
         }
         return result;
+    }
+
+    private static int findFirstTag(String text) {
+        for (String[] pair : sourcetags) {
+            if (pair[0].equals(text)) {
+                return Integer.parseInt(pair[1]);
+            }
+        }
+        return -1;
     }
 
     private static void recurse1x(Element root, List<Element> units) {

@@ -106,7 +106,6 @@ public class ToXliff2 {
 		if (source.getName().equals("xliff")) {
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.0");
 			target.setAttribute("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
-			target.setAttribute("xmlns:mtc", "urn:oasis:names:tc:xliff:matches:2.0");
 
 			List<PI> piList = source.getPI();
 			for (int i = 0; i < piList.size(); i++) {
