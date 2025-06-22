@@ -54,6 +54,7 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
+|4.6.0 | Improved handling of tags from third-party XLIFF 2.x | June 22nd, 2025|
 |4.5.0 | Removed dependency on discontinued DTDParser library | May 24th, 2025|
 |4.3.0 | Added support for QTI files and packages; Implemented recovery of ICE matches; Added initial support for XLIFF 2.2 | February 23rd, 2025|
 |4.2.0 | Created skeleton folder when needed | January 3rd, 2025|
