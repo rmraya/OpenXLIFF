@@ -114,10 +114,8 @@ public class Xliff2json {
         if (text == null || text.isEmpty()) {
             return text;
         }
-
         Matcher matcher = Pattern.compile("\\\\u([0-9a-fA-F]{4})").matcher(text);
         StringBuilder result = new StringBuilder();
-
         while (matcher.find()) {
             String hexString = matcher.group(1);
             int codePoint = Integer.parseInt(hexString, 16);
@@ -125,7 +123,6 @@ public class Xliff2json {
             matcher.appendReplacement(result, Character.toString(unicodeChar));
         }
         matcher.appendTail(result);
-
         return result.toString();
     }
 
