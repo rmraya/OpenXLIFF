@@ -11,9 +11,10 @@
  *******************************************************************************/
 package com.maxprograms.converters.json;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ public class JsonConfig {
     private boolean mergeTags;
     private boolean rawSegmentation;
     private boolean exportHTML;
+    private boolean preserveSpaces;
     private List<String> htmlIgnore;
 
     private JsonConfig() {
@@ -52,24 +54,14 @@ public class JsonConfig {
         mergeTags = true;
         rawSegmentation = false;
         exportHTML = true;
+        preserveSpaces = false;
         htmlIgnore = new Vector<>();
     }
 
     public static JsonConfig parseFile(String configFile) throws IOException, JSONException {
         JsonConfig config = new JsonConfig();
-        StringBuilder sb = new StringBuilder();
-        String line = "";
-        try (FileReader reader = new FileReader(configFile)) {
-            try (BufferedReader buffer = new BufferedReader(reader)) {
-                while ((line = buffer.readLine()) != null) {
-                    if (!sb.isEmpty()) {
-                        sb.append('\n');
-                    }
-                    sb.append(line);
-                }
-            }
-        }
-        JSONObject configObject = new JSONObject(sb.toString());
+        String json = Files.readString(new File(configFile).toPath(), StandardCharsets.UTF_8);
+        JSONObject configObject = new JSONObject(json);
         JSONArray translatableArray = configObject.getJSONArray("translatable");
         for (int i = 0; i < translatableArray.length(); i++) {
             JSONObject translatable = translatableArray.getJSONObject(i);
@@ -105,6 +97,9 @@ public class JsonConfig {
             for (int i = 0; i < array.length(); i++) {
                 config.htmlIgnore.add(array.getString(i));
             }
+        }
+        if (configObject.has("preserveSpaces")) {
+            config.preserveSpaces = configObject.getBoolean("preserveSpaces");
         }
         return config;
     }
@@ -143,5 +138,9 @@ public class JsonConfig {
 
     public List<String> getHtmlIgnore() {
         return htmlIgnore;
+    }
+
+    public boolean getPreserveSpaces() {
+        return preserveSpaces;
     }
 }

@@ -1,6 +1,6 @@
 # JSON Filter Configuration Files
 
-Configuration files for JSON filter are defined in a JSON file that contains three arrays and five optional boolean keys:
+Configuration files for JSON filter are defined in a JSON file that contains three arrays and six optional boolean keys:
 
 - `traslatable`: array of JSON objects that define translatable keys
 - `ignorable`: array of strings listing ignorable keys
@@ -10,6 +10,7 @@ Configuration files for JSON filter are defined in a JSON file that contains thr
 - `mergeTags`: merge adjacent tags. Default: `true`
 - `rawSegmentation`: treat source and target as plain text for segmentation. Default: `false`
 - `exportHTML`: treat target as containg HTML on merge. Default: `false`
+- `preserveSpaces`: preserve spaces found in the parsed text. Default: `false`
 
 Configuration files must be written using UTF-8 character set without a byte order mark (BOM).
 

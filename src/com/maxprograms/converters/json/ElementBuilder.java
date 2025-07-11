@@ -32,10 +32,10 @@ public class ElementBuilder {
     }
 
     public static ElementHolder buildElement(String name, String string, boolean trimTags, boolean mergeTags,
-            List<String> htmlIgnore) {
+            List<String> htmlIgnore, boolean preserveSpaces) {
         Element element = new Element(name);
         element.setText(string);
-        fixHtmlTags(element, mergeTags, htmlIgnore);
+        fixHtmlTags(element, mergeTags, htmlIgnore, preserveSpaces);
         String start = "";
         String end = "";
         if (!element.getChildren().isEmpty()) {
@@ -72,7 +72,7 @@ public class ElementBuilder {
         return new ElementHolder(element, start, end);
     }
 
-    private static void fixHtmlTags(Element src, boolean mergeTags, List<String> htmlIgnore) {
+    private static void fixHtmlTags(Element src, boolean mergeTags, List<String> htmlIgnore, boolean preserveSpaces) {
         if (pattern == null) {
             pattern = Pattern.compile("<[A-Za-z0-9]+([\\s]+[A-Za-z\\-\\.]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*/?>");
         }
@@ -80,7 +80,7 @@ public class ElementBuilder {
             endPattern = Pattern.compile("</[A-Za-z0-9]+>");
         }
         int count = 0;
-        String e = normalise(src.getText());
+        String e = preserveSpaces ? src.getText() : normalise(src.getText());
 
         Matcher matcher = pattern.matcher(e);
         if (matcher.find()) {
@@ -91,7 +91,7 @@ public class ElementBuilder {
                 XMLNode node = it.next();
                 if (node.getNodeType() == XMLNode.TEXT_NODE) {
                     TextNode t = (TextNode) node;
-                    String text = normalise(t.getText());
+                    String text = preserveSpaces ? t.getText() : normalise(t.getText());
                     matcher = pattern.matcher(text);
                     if (matcher.find()) {
                         matcher.reset();
@@ -148,7 +148,7 @@ public class ElementBuilder {
                 XMLNode node = it.next();
                 if (node.getNodeType() == XMLNode.TEXT_NODE) {
                     TextNode t = (TextNode) node;
-                    String text = normalise(t.getText());
+                    String text = preserveSpaces ? t.getText() : normalise(t.getText());
                     matcher = endPattern.matcher(text);
                     if (matcher.find()) {
                         matcher.reset();

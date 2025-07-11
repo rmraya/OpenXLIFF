@@ -12,15 +12,18 @@
 
 package com.maxprograms.converters.json;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +51,7 @@ public class Xliff2json {
     private static String encoding;
     private static boolean escaped;
     private static boolean exportHTML;
+    private static Map<String, String> foundEntities;
     private static List<String[]> entities;
 
     private Xliff2json() {
@@ -61,6 +65,7 @@ public class Xliff2json {
         String xliffFile = params.get("xliff");
         String catalogFile = params.get("catalog");
         String outputFile = params.get("backfile");
+        foundEntities = new Hashtable<>();
 
         try {
             Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
@@ -79,7 +84,19 @@ public class Xliff2json {
                     out.write(((JSONArray) json).toString(2).getBytes(StandardCharsets.UTF_8));
                 }
             }
-
+            if (exportHTML) {
+                File output = new File(outputFile);
+                String content = Files.readString(output.toPath(), StandardCharsets.UTF_8);
+                content = content.replace("<\\/", "</");
+                if (!foundEntities.isEmpty()) {
+                    for (Map.Entry<String, String> entry : foundEntities.entrySet()) {
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        content = content.replace(value, key);
+                    }
+                }
+                Files.write(output.toPath(), content.getBytes(StandardCharsets.UTF_8));
+            }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
             Logger logger = System.getLogger(Xliff2json.class.getName());
@@ -101,6 +118,19 @@ public class Xliff2json {
 
         escaped = !file.getPI("escaped").isEmpty();
         exportHTML = !file.getPI("exportHTML").isEmpty();
+        if (!file.getPI("entities").isEmpty()) {
+            String list = file.getPI("entities").get(0).getData();
+            String[] pairs = list.split(",");
+            for (String pair : pairs) {
+                String[] parts = pair.split("\\|");
+                if (parts.length == 2) {
+                    foundEntities.put(parts[0], parts[1]);
+                } else {
+                    MessageFormat mf = new MessageFormat(Messages.getString("Xliff2json.0"));
+                    throw new IOException(mf.format(new String[] { pair }));
+                }
+            }
+        }
         entities = escaped ? Json2Xliff.loadEntities(catalog) : new ArrayList<>();
         if (!entities.isEmpty()) {
             entities.add(0, new String[] { "&amp;", "&" });

@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,7 @@ public class Json2Xliff {
     private static Set<String> ids;
     private static int bomLength = 0;
     private static List<String[]> entities;
+    private static Map<String, String> entitiesFound;
     private static boolean trimTags;
     private static boolean mergeTags;
     private static boolean rawSegmentation;
@@ -85,6 +87,7 @@ public class Json2Xliff {
         boolean exportHTML = false;
         entities = new ArrayList<>();
         htmlIgnore = new ArrayList<>();
+        entitiesFound = new Hashtable<>();
 
         String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
@@ -169,6 +172,23 @@ public class Json2Xliff {
                 }
                 if (exportHTML) {
                     writeString(out, "<?exportHTML yes?>\n");
+                    if (!entitiesFound.isEmpty()) {
+                        StringBuilder sb = new StringBuilder("<?entities ");
+                        Set<String> keys = entitiesFound.keySet();
+                        Iterator<String> it = keys.iterator();
+                        while (it.hasNext()) {
+                            String key = it.next();
+                            String value = entitiesFound.get(key);
+                            sb.append(key);
+                            sb.append("|");
+                            sb.append(value);
+                            if (it.hasNext()) {
+                                sb.append(",");
+                            }
+                        }
+                        sb.append("?>\n");
+                        writeString(out, sb.toString());
+                    }
                 }
                 writeString(out, "<?encoding " + encoding + "?>\n");
                 writeString(out, "<body>\n");
@@ -286,7 +306,7 @@ public class Json2Xliff {
             if (obj instanceof JSONObject js) {
                 parseJson(js);
             } else if (obj instanceof String string) {
-                json.put(key, parseText(string));
+                json.put(key, parseText(string, false));
             } else if (obj instanceof JSONArray array) {
                 parseArray(array);
             }
@@ -398,10 +418,10 @@ public class Json2Xliff {
                     ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
                     ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h], trimTags,
-                            mergeTags, htmlIgnore);
+                            mergeTags, htmlIgnore, config.getPreserveSpaces());
                     Element source = sortTags(sourceHolder.getElement());
                     transUnit.addContent(source);
-                    if (transUnit.getChild("source").getChildren().isEmpty()) {
+                    if (transUnit.getChild("source").getChildren().isEmpty() || config.getPreserveSpaces()) {
                         transUnit.setAttribute("xml:space", "preserve");
                     }
                     boolean hasTarget = false;
@@ -414,7 +434,7 @@ public class Json2Xliff {
                         json.put(sourceKey, sb.toString());
                     } else {
                         ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h], trimTags,
-                                mergeTags, htmlIgnore);
+                                mergeTags, htmlIgnore, config.getPreserveSpaces());
                         Element target = matchTags(source, targetHolder.getElement());
                         transUnit.addContent("\n    ");
                         transUnit.addContent(target);
@@ -473,7 +493,7 @@ public class Json2Xliff {
                     if (!entities.isEmpty()) {
                         string = replaceEntities(string);
                     }
-                    json.put(key, parseText(string));
+                    json.put(key, parseText(string, config.getPreserveSpaces()));
                 } else if (object instanceof JSONArray array) {
                     parseArray(array, config);
                 }
@@ -529,6 +549,9 @@ public class Json2Xliff {
             String value = entry[1];
             int index = result.indexOf(key);
             while (index != -1) {
+                if (!"&gt;".equals(key) && !"&lt;".equals(key) && !"&amp;".equals(key) && !"&quote;".equals(key)) {
+                    entitiesFound.put(key, value);
+                }
                 String start = result.substring(0, index);
                 String end = result.substring(index + key.length());
                 result = start + value + end;
@@ -595,26 +618,27 @@ public class Json2Xliff {
         return result;
     }
 
-    private static String parseText(String string) {
+    private static String parseText(String string, boolean preserveSpaces) {
         if (!paragraphSegmentation) {
             String[] segs = rawSegmentation ? segmenter.segmentRawString(string) : segmenter.segment(string);
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < segs.length; i++) {
-                result.append(addSegment(segs[i]));
+                result.append(addSegment(segs[i], preserveSpaces));
             }
             return result.toString();
         }
-        return addSegment(string);
+        return addSegment(string, preserveSpaces);
     }
 
-    private static String addSegment(String string) {
+    private static String addSegment(String string, boolean preserveSpaces) {
         Element segment = new Element("trans-unit");
         segment.setAttribute("id", "" + id);
         segment.addContent("\n    ");
-        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags, mergeTags, htmlIgnore);
+        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags, mergeTags, htmlIgnore,
+                preserveSpaces);
         segment.addContent(holder.getElement());
         segment.addContent("\n  ");
-        if (holder.getElement().getChildren().isEmpty()) {
+        if (holder.getElement().getChildren().isEmpty() || preserveSpaces) {
             segment.setAttribute("xml:space", "preserve");
         }
         segments.add(segment);
@@ -625,7 +649,7 @@ public class Json2Xliff {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String string) {
-                array.put(i, parseText(string));
+                array.put(i, parseText(string, false));
             } else if (obj instanceof JSONArray arr) {
                 parseArray(arr);
             } else if (obj instanceof JSONObject json) {
@@ -638,7 +662,7 @@ public class Json2Xliff {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String string) {
-                array.put(i, parseText(string));
+                array.put(i, parseText(string, config.getPreserveSpaces()));
             } else if (obj instanceof JSONArray arr) {
                 parseArray(arr, config);
             } else if (obj instanceof JSONObject json) {
