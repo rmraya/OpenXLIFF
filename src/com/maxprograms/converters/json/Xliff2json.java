@@ -27,6 +27,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -95,6 +97,7 @@ public class Xliff2json {
                         content = content.replace(value, key);
                     }
                 }
+                content = replaceUnicodeEntities(content);
                 Files.write(output.toPath(), content.getBytes(StandardCharsets.UTF_8));
             }
             result.add(Constants.SUCCESS);
@@ -105,6 +108,25 @@ public class Xliff2json {
             result.add(e.getMessage());
         }
         return result;
+    }
+
+    private static String replaceUnicodeEntities(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+
+        Matcher matcher = Pattern.compile("\\\\u([0-9a-fA-F]{4})").matcher(text);
+        StringBuilder result = new StringBuilder();
+
+        while (matcher.find()) {
+            String hexString = matcher.group(1);
+            int codePoint = Integer.parseInt(hexString, 16);
+            char unicodeChar = (char) codePoint;
+            matcher.appendReplacement(result, Character.toString(unicodeChar));
+        }
+        matcher.appendTail(result);
+
+        return result.toString();
     }
 
     private static void loadSegments(String xliffFile, Catalog catalog)
