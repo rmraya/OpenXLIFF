@@ -215,7 +215,7 @@ public class Json2Xliff {
             throws SAXException, IOException, NumberFormatException {
         List<String[]> result = new Vector<>();
 
-        Pattern pattern = Pattern.compile("&#[\\d]+\\;");
+        Pattern pattern = Pattern.compile("&#[\\d]+;");
 
         DTDParser parser = new DTDParser();
         String latin = catalog.matchPublic("-//W3C//ENTITIES Latin 1 for XHTML//EN");
@@ -313,7 +313,8 @@ public class Json2Xliff {
         }
     }
 
-    private static void parseJson(JSONObject json, JsonConfig config) throws IOException {
+    private static void parseJson(JSONObject json, JsonConfig config)
+            throws IOException, SAXException, ParserConfigurationException {
         List<String> translatableKeys = config.getSourceKeys();
         List<String> ignorable = config.getIgnorableKeys();
         Set<String> parsedKeys = new HashSet<>();
@@ -388,28 +389,43 @@ public class Json2Xliff {
                 if (!resnameText.isEmpty()) {
                     parsedKeys.add(resnameKey);
                 }
+                ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceText, trimTags,
+                        mergeTags, htmlIgnore, config.getPreserveSpaces());
+                ElementHolder targetHolder = ElementBuilder.buildElement("target", targetText, trimTags,
+                        mergeTags, htmlIgnore, config.getPreserveSpaces());
 
-                String[] sourceSegments = new String[] { sourceText };
+                Element fullSource = sortTags(sourceHolder.getElement());
+                Element fullTarget = matchTags(fullSource, targetHolder.getElement());
+
+                List<Element> sourceList = new Vector<>();
                 if (segmenter != null) {
-                    sourceSegments = rawSegmentation ? segmenter.segmentRawString(sourceText)
-                            : segmenter.segment(sourceText);
+                    Element segmentedSource = segmenter.segment(fullSource);
+                    sourceList.addAll(splitSegmented("source", segmentedSource));
+                } else {
+                    sourceList.add(fullSource);
                 }
-                String[] targetSegments = new String[] {};
-                if (!tgtLang.isEmpty() && !targetText.isEmpty() && targetSegmenter != null) {
-                    targetSegments = rawSegmentation ? segmenter.segmentRawString(targetText)
-                            : targetSegmenter.segment(targetText);
-                    if (targetSegments.length != sourceSegments.length) {
-                        sourceSegments = new String[] { sourceText };
-                        targetSegments = new String[] { targetText };
-                    }
+                List<Element> targetList = new Vector<>();
+                if (targetSegmenter != null) {
+                    Element segmentedTarget = targetSegmenter.segment(fullTarget);
+                    targetList.addAll(splitSegmented("target", segmentedTarget));
+                } else {
+                    targetList.add(fullTarget);
                 }
+
+                if (sourceList.size() != targetList.size()) {
+                    sourceList.clear();
+                    sourceList.add(fullSource);
+                    targetList.clear();
+                    targetList.add(fullTarget);
+                }
+
                 StringBuilder sb = new StringBuilder();
-                for (int h = 0; h < sourceSegments.length; h++) {
+                for (int h = 0; h < sourceList.size(); h++) {
                     Element transUnit = new Element("trans-unit");
                     if (!resnameText.isEmpty()) {
                         transUnit.setAttribute("resname", resnameText);
                     }
-                    String suffix = sourceSegments.length > 1 ? "-" + (h + 1) : "";
+                    String suffix = sourceList.size() > 1 ? "-" + (h + 1) : "";
                     transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString + suffix);
                     if (ids.contains(transUnit.getAttributeValue("id"))) {
                         MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.4"));
@@ -417,33 +433,38 @@ public class Json2Xliff {
                     }
                     ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
-                    ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceSegments[h], trimTags,
-                            mergeTags, htmlIgnore, config.getPreserveSpaces());
-                    Element source = sortTags(sourceHolder.getElement());
+
+                    Element source = sourceList.get(h);
                     transUnit.addContent(source);
                     if (transUnit.getChild("source").getChildren().isEmpty() || config.getPreserveSpaces()) {
                         transUnit.setAttribute("xml:space", "preserve");
                     }
                     boolean hasTarget = false;
                     if (tgtLang.isEmpty() || targetText.isEmpty()) {
-                        sb.append(sourceHolder.getStart());
+                        if (h == 0) {
+                            sb.append(sourceHolder.getStart());
+                        }
                         sb.append("%%%");
                         sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
                         sb.append("%%%");
-                        sb.append(sourceHolder.getEnd());
+                        if (h == sourceList.size() - 1) {
+                            sb.append(sourceHolder.getEnd());
+                        }
                         json.put(sourceKey, sb.toString());
                     } else {
-                        ElementHolder targetHolder = ElementBuilder.buildElement("target", targetSegments[h], trimTags,
-                                mergeTags, htmlIgnore, config.getPreserveSpaces());
-                        Element target = matchTags(source, targetHolder.getElement());
+                        Element target = targetList.get(h);
                         transUnit.addContent("\n    ");
                         transUnit.addContent(target);
                         hasTarget = true;
-                        sb.append(targetHolder.getStart());
+                        if (h == 0) {
+                            sb.append(targetHolder.getStart());
+                        }
                         sb.append("%%%");
                         sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
                         sb.append("%%%");
-                        sb.append(targetHolder.getEnd());
+                        if (h == sourceList.size() - 1) {
+                            sb.append(targetHolder.getEnd());
+                        }
                         json.put(targetKey, sb.toString());
                     }
                     if (approved && hasTarget) {
@@ -499,6 +520,18 @@ public class Json2Xliff {
                 }
             }
         }
+    }
+
+    private static List<Element> splitSegmented(String name, Element segmented) {
+        List<Element> result = new Vector<>();
+        List<Element> marks = segmented.getChildren("mrk");
+        for (int i = 0; i < marks.size(); i++) {
+            Element mrk = marks.get(i);
+            Element e = new Element(name);
+            e.setContent(mrk.getContent());
+            result.add(e);
+        }
+        return result;
     }
 
     private static Element sortTags(Element source) {
@@ -658,7 +691,8 @@ public class Json2Xliff {
         }
     }
 
-    private static void parseArray(JSONArray array, JsonConfig config) throws JSONException, IOException {
+    private static void parseArray(JSONArray array, JsonConfig config)
+            throws JSONException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String string) {
