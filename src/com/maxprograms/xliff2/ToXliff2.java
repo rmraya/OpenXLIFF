@@ -348,6 +348,9 @@ public class ToXliff2 {
 				for (int i = 0; i < notesList.size(); i++) {
 					Element note = notesList.get(i);
 					Element n = new Element("note");
+					if (note.hasAttribute("priority")) {
+						n.setAttribute("priority", note.getAttributeValue("priority"));
+					}
 					n.setAttribute("id", "n" + (i + 1));
 					notes.addContent(n);
 					n.addContent(note.getText());

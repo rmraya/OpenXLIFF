@@ -503,6 +503,28 @@ public class ToOpenXliff {
                         unit.addContent(altTrans);
                     }
                 }
+                List<Element> notes = root.getChildren("note");
+                Iterator<Element> noteIt = notes.iterator();
+                while (noteIt.hasNext()) {
+                    Element note = noteIt.next();
+                    Element n = new Element("note");
+                    n.setText(note.getText());
+                    if (note.hasAttribute("priority")) {
+                        try {
+                            Integer.parseInt(note.getAttributeValue("priority"));
+                            n.setAttribute("priority", note.getAttributeValue("priority"));
+                        } catch (NumberFormatException e) {
+                            // ignore invalid priority
+                        }
+                    }
+                    if (note.hasAttribute("annotates")) {
+                        String value = note.getAttributeValue("annotates");
+                        if ("source".equals(value) || "target".equals(value)) {
+                            n.setAttribute("annotates", value);
+                        }
+                    }
+                    unit.addContent(n);
+                }
                 units.add(unit);
                 root.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
             }
