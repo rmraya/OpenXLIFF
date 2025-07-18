@@ -1,7 +1,9 @@
 .DS_Store
-/bin/
-/dist/
-/.scannerwork/
+.scannerwork/
 .vscode/launch.json
 .dccache
-/.vscode/
+.vscode/
+.gradle/
+bin/
+build/
+dist/
