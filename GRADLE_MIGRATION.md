@@ -11,10 +11,13 @@ This project has been migrated from Apache Ant to Gradle while maintaining ident
 
 ### Main Tasks
 
-- `gradle dist` - Build complete distribution (default task)
-- `gradle clean` - Clean build artifacts
+- `gradle dist` - Build complete distribution (default task, always clean)
+- `gradle clean` - Clean build artifacts (removes lib/openxliff.jar, bin/, dist/, build/, .gradle/)
+- `gradle forceClean` - Force clean all build artifacts and caches
 - `gradle distclean` - Remove dist directory
-- `gradle jar` - Build only the JAR file
+- `gradle jar` - Build only the JAR file (always clean, removes build/ afterwards)
+
+**Note**: The `bin/` and `build/` directories may temporarily appear during compilation but are automatically cleaned up after task completion.
 
 ### Platform-Specific Tasks
 - `copyBats` - Copy .cmd files (Windows only)
@@ -25,22 +28,43 @@ This project has been migrated from Apache Ant to Gradle while maintaining ident
 
 ## Usage
 
+**Important**: All Gradle commands must be run from the project root directory (where `build.gradle` is located), not from subdirectories like `dist/`.
+
 ### Build Distribution
 ```bash
+cd /path/to/OpenXLIFF
 gradle dist
 ```
 
 ### Clean and Rebuild
 ```bash
+cd /path/to/OpenXLIFF
 gradle clean dist
 ```
 
 ### Build Only JAR
 ```bash
+cd /path/to/OpenXLIFF
 gradle jar
 ```
 
-## Cross-Platform Compatibility
+## Clean Build Features
+
+This build is configured for **always clean builds** with no caching:
+
+- **No Build Caching**: All tasks execute fresh each time
+- **No Incremental Compilation**: Java compilation is never incremental
+- **Automatic Cleanup**: Build directories are cleared before compilation
+- **Fresh Compilation**: Every build starts from a clean state
+
+### Clean Build Configuration
+
+The build includes several mechanisms to ensure clean builds:
+
+1. **Gradle Properties**: Caching disabled in `gradle.properties`
+2. **Compiler Options**: Incremental compilation disabled
+3. **Task Dependencies**: Every compilation runs `clean` first
+4. **Force Clean**: Available for complete cleanup of all artifacts
 
 The build automatically detects the operating system:
 - **Windows**: Copies `.cmd` files to dist/

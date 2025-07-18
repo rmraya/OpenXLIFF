@@ -2,6 +2,13 @@ plugins {
     id 'java'
 }
 
+// Disable all caching to ensure clean builds
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.incremental = false
+    }
+}
+
 // Set Java version
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -30,11 +37,24 @@ dependencies {
     implementation files('lib/xmljava.jar')
 }
 
+// Task to clean up build artifacts after compilation
+task cleanupBuildDir {
+    description = 'Clean up build directory after tasks complete'
+    group = 'build'
+    
+    doLast {
+        delete 'build'
+    }
+}
+
 // Configure JAR task
 jar {
     archiveFileName = 'openxliff.jar'
     destinationDirectory = file('lib')
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    
+    // Clean up build directory after JAR is created
+    finalizedBy cleanupBuildDir
 }
 
 // Task to create jlink image
@@ -44,7 +64,7 @@ task jlinkImage(type: Exec) {
     dependsOn jar
     
     doFirst {
-        // Clean dist directory first
+        // Only clean dist directory before jlink
         delete 'dist'
     }
     
@@ -151,6 +171,15 @@ task dist {
     copyShells.mustRunAfter jlinkImage
     copyLicenses.mustRunAfter jlinkImage
     copyResources.mustRunAfter jlinkImage
+    
+    // Clean up build artifacts after distribution is complete
+    doLast {
+        delete 'build'
+        // Remove empty bin directory if it exists
+        if (file('bin').exists() && file('bin').list().length == 0) {
+            file('bin').deleteDir()
+        }
+    }
 }
 
 // Clean task to remove dist directory
@@ -166,20 +195,59 @@ task distclean {
 // Make dist the default task
 defaultTasks 'dist'
 
-// Configure clean task to also remove lib/openxliff.jar
+// Configure clean task to remove all build artifacts
 clean {
     delete 'lib/openxliff.jar'
+    delete 'bin'
+    delete 'dist'
+    delete 'build'
+    delete '.gradle'
+    
+    doLast {
+        // Ensure bin directory is completely removed
+        file('bin').deleteDir()
+    }
 }
 
-// Ensure proper build order
+// Task to force clean everything before compilation
+task forceClean {
+    description = 'Force clean all build artifacts and caches'
+    group = 'build'
+    
+    doLast {
+        delete 'lib/openxliff.jar'
+        delete 'bin'
+        delete 'dist'
+        delete 'build'
+        delete '.gradle'
+        // Clear any cached class files in source directories
+        delete fileTree('src') { include '**/*.class' }
+    }
+}
+
+// Ensure proper build order with clean compilation
 compileJava.dependsOn clean
 jar.dependsOn compileJava
 jlinkImage.dependsOn jar
 
-// Configure compiler options
+// Configure compiler options for clean builds
 compileJava {
     options.encoding = 'UTF-8'
+    options.incremental = false
+    options.fork = true
     options.compilerArgs += [
         '--module-path', classpath.asPath
     ]
+    
+    // Always clean destination before compilation
+    doFirst {
+        delete destinationDirectory
+    }
+    
+    // Clean up empty bin directory after compilation if needed
+    doLast {
+        if (file('bin').exists() && file('bin').list().length == 0) {
+            file('bin').deleteDir()
+        }
+    }
 }
