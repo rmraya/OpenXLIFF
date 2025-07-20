@@ -12,6 +12,7 @@
 package com.maxprograms.converters;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,6 +43,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.languages.LanguageUtils;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
@@ -258,5 +260,10 @@ public class Utils {
 			errors += count - c2;
 		}
 		return errors * tagPenalty;
+	}
+
+	public static Element toElement(String string) throws SAXException, IOException, ParserConfigurationException {
+		SAXBuilder builder = new SAXBuilder();
+		return builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8))).getRootElement();
 	}
 }

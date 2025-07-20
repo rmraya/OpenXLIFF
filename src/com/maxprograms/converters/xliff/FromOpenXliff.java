@@ -143,7 +143,7 @@ public class FromOpenXliff {
                             String pi = e.getPI(Constants.TOOLID).get(0).getData();
                             Element segment = segments.get(pi);
                             if (segment.getAttributeValue("approved").equals("yes")) {
-                                Element mrk = ToOpenXliff.locateMrk(target, e.getAttributeValue("mid"));
+                                Element mrk = Xliff1xProcessor.locateMrk(target, e.getAttributeValue("mid"));
                                 mrk.setContent(segment.getChild("target").getContent());
                                 if (!mrk.getChildren().isEmpty()) {
                                     replaceTags(mrk, 1);

@@ -29,6 +29,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -102,7 +103,8 @@ public class ToXliff2 {
 		return result;
 	}
 
-	private static void recurse(Element source, Element target) throws SAXException, IOException {
+	private static void recurse(Element source, Element target)
+			throws SAXException, IOException, ParserConfigurationException {
 		if (source.getName().equals("xliff")) {
 			target.setAttribute("xmlns", "urn:oasis:names:tc:xliff:document:2.0");
 			target.setAttribute("xmlns:mda", "urn:oasis:names:tc:xliff:metadata:2.0");
@@ -131,6 +133,9 @@ public class ToXliff2 {
 			Element file = new Element("file");
 			file.setAttribute("id", "" + fileId++);
 			file.setAttribute("original", source.getAttributeValue("original"));
+			if (source.hasAttribute("ts")) {
+				file.setAttribute("ts", source.getAttributeValue("ts"));
+			}
 			List<Attribute> atts = source.getAttributes();
 			Iterator<Attribute> at = atts.iterator();
 			while (at.hasNext()) {
@@ -263,10 +268,29 @@ public class ToXliff2 {
 				Iterator<PI> pit = pis.iterator();
 				while (pit.hasNext()) {
 					PI pi = pit.next();
-					Element meta = new Element("mda:meta");
-					meta.setAttribute("type", pi.getTarget());
-					meta.addContent(pi.getData());
-					piGroup.addContent(meta);
+					if ("metadata".equals(pi.getTarget())) {
+						Element metadata = Utils.toElement(pi.getData().replace("mda:", "mda_"));
+						List<Element> metaGroup = metadata.getChildren("mda_metaGroup");
+						for (Element childGroup : metaGroup) {
+							Element group = new Element("mda:metaGroup");
+							group.setAttributes(childGroup.getAttributes());
+							List<Element> metas = childGroup.getChildren("mda_meta");
+							for (Element metaChild : metas) {
+								Element meta = new Element("mda:meta");
+								meta.setAttributes(metaChild.getAttributes());
+								meta.setText(metaChild.getText());
+								group.addContent(meta);
+							}
+							if (!hasGroup(fileMetadata, group)) {
+								fileMetadata.addContent(group);
+							}
+						}
+					} else {
+						Element meta = new Element("mda:meta");
+						meta.setAttribute("type", pi.getTarget());
+						meta.addContent(pi.getData());
+						piGroup.addContent(meta);
+					}
 				}
 				if (!piGroup.getChildren().isEmpty()) {
 					fileMetadata.addContent(piGroup);
@@ -318,7 +342,8 @@ public class ToXliff2 {
 				Attribute a = at.next();
 				if (a.getName().indexOf(':') != -1 && !a.getName().startsWith("xml:")) {
 					unit.setAttribute(a);
-				} else if (preserveAttributes.contains(a.getName()) && !("ts".equals(a.getName()) && "locked".equals(a.getValue()))) {
+				} else if (preserveAttributes.contains(a.getName())
+						&& !("ts".equals(a.getName()) && "locked".equals(a.getValue()))) {
 					otherAttributes.add(a);
 				}
 			}
@@ -335,6 +360,36 @@ public class ToXliff2 {
 					meta.setAttribute("type", a.getName());
 					meta.setText(a.getValue());
 					metaGroup.addContent(meta);
+				}
+			}
+			List<PI> pis = source.getPI();
+			if (!pis.isEmpty()) {
+				Iterator<PI> pit = pis.iterator();
+				while (pit.hasNext()) {
+					PI pi = pit.next();
+					if ("metadata".equals(pi.getTarget())) {
+						Element unitMetadata = unit.getChild("mda:metadata");
+						if (unitMetadata == null) {
+							unitMetadata = new Element("mda:metadata");
+							unit.addContent(unitMetadata);
+						}
+						Element metadata = Utils.toElement(pi.getData().replace("mda:", "mda_"));
+						List<Element> metaGroup = metadata.getChildren("mda_metaGroup");
+						for (Element childGroup : metaGroup) {
+							Element group = new Element("mda:metaGroup");
+							group.setAttributes(childGroup.getAttributes());
+							List<Element> metas = childGroup.getChildren("mda_meta");
+							for (Element metaChild : metas) {
+								Element meta = new Element("mda:meta");
+								meta.setAttributes(metaChild.getAttributes());
+								meta.setText(metaChild.getText());
+								group.addContent(meta);
+							}
+							if (!hasGroup(unitMetadata, group)) {
+								unitMetadata.addContent(group);
+							}
+						}
+					}
 				}
 			}
 			target.addContent(unit);
@@ -362,9 +417,12 @@ public class ToXliff2 {
 				}
 			}
 
-			Element tagAttributes = new Element("mda:metadata");
+			Element tagAttributes = unit.getChild("mda:metadata");
+			if (tagAttributes == null) {
+				tagAttributes = new Element("mda:metadata");
+				unit.addContent(tagAttributes);
+			}
 			tagAttributes.setAttribute("id", unit.getAttributeValue("id"));
-			unit.addContent(tagAttributes);
 			Element originalData = new Element("originalData");
 			unit.addContent(originalData);
 
@@ -483,6 +541,16 @@ public class ToXliff2 {
 		while (it.hasNext()) {
 			recurse(it.next(), target);
 		}
+	}
+
+	private static boolean hasGroup(Element metadata, Element group) {
+		List<Element> groups = metadata.getChildren("mda:metaGroup");
+		for (Element g : groups) {
+			if (g.getAttributeValue("category").equals(group.getAttributeValue("category"))) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static void harvestInline(Element originalData, Element tagAttributes, Element tag) {
