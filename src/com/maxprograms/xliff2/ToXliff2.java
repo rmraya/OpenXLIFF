@@ -385,9 +385,7 @@ public class ToXliff2 {
 								meta.setText(metaChild.getText());
 								group.addContent(meta);
 							}
-							if (!hasGroup(unitMetadata, group)) {
-								unitMetadata.addContent(group);
-							}
+							unitMetadata.addContent(group);
 						}
 					}
 				}
@@ -544,6 +542,9 @@ public class ToXliff2 {
 	}
 
 	private static boolean hasGroup(Element metadata, Element group) {
+		if (group.getAttributeValue("category").isEmpty()) {
+			return false;
+		}
 		List<Element> groups = metadata.getChildren("mda:metaGroup");
 		for (Element g : groups) {
 			if (g.getAttributeValue("category").equals(group.getAttributeValue("category"))) {
