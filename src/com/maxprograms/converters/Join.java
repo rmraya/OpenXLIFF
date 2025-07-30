@@ -214,16 +214,6 @@ public class Join {
 					}
 					if (version.startsWith("2")) {
 						file.setAttribute("id", "" + count++);
-						Element metadata = file.getChild("mda:metadata");
-						if (metadata != null) {
-							Element group = new Element("mda:metaGroup");
-							group.setAttribute("category", "JoinedlXLIFF");
-							metadata.addContent(group);
-							Element meta = new Element("mda:meta");
-							meta.setAttribute("type", "xliffFile");
-							meta.addContent(xliffFile.getName());
-							group.addContent(meta);
-						}
 					}
 					Indenter.indent(file, 2, 2);
 					writeString(output, "  ");
