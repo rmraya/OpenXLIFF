@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="dist" name="OpenXLIFF">
+    <property name="target" value="21" />
+    <property name="source" value="21" />
+    <property name="build.compiler" value="javac10+" />
+    <path id="OpenXLIFF.classpath">
+        <pathelement location="lib/bcp47j.jar" />
+        <pathelement location="lib/json.jar" />
+        <pathelement location="lib/jsoup.jar" />
+    	<pathelement location="lib/xmljava.jar" />
+    </path>
+    <condition property="isWindows">
+        <os family="windows" />
+    </condition>
+    <target name="init">
+        <mkdir dir="bin" />
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin" />
+    </target>
+    <target name="distclean">
+        <delete dir="dist" failonerror="false" />
+    </target>
+    <target name="compile" depends="clean,init">
+        <description>Build jar file</description>
+        <delete file="lib/openxliff.jar" />
+        <javac srcdir="src" destdir="bin" classpathref="OpenXLIFF.classpath" modulepathref="OpenXLIFF.classpath" includeAntRuntime="false">
+            <compilerarg line="-encoding utf-8" />
+        </javac>
+        <jar destfile="lib/openxliff.jar" basedir="bin" />
+    </target>
+    <target name="link" depends="distclean,compile">
+        <description>Build Java binaries</description>
+        <link destDir="dist" modulepath="lib:${java.home}/jmods" includeManPages="false" includeHeaders="false">
+            <module name="openxliff" />
+        </link>
+        <delete file="dist/lib/jrt-fs.jar" />
+    </target>
+    <target name="copyBats" if="isWindows">
+        <description>Copy .cmd to /dist</description>
+        <copy file="convert.cmd" todir="dist" />
+        <copy file="merge.cmd" todir="dist" />
+        <copy file="xliffchecker.cmd" todir="dist" />
+        <copy file="analysis.cmd" todir="dist" />
+        <copy file="join.cmd" todir="dist" />
+        <copy file="pseudotranslate.cmd" todir="dist" />
+        <copy file="copysources.cmd" todir="dist" />
+        <copy file="removetargets.cmd" todir="dist" />
+        <copy file="approveall.cmd" todir="dist" />
+        <copy file="exporttmx.cmd" todir="dist" />
+        <copy file="iceMatches.cmd" todir="dist" />
+    </target>
+    <target name="copyShells" unless="isWindows">
+        <description>Copy .sh to /dist</description>
+        <copy file="convert.sh" todir="dist" />
+        <copy file="merge.sh" todir="dist" />
+        <copy file="xliffchecker.sh" todir="dist" />
+        <copy file="analysis.sh" todir="dist" />
+        <copy file="join.sh" todir="dist" />
+        <copy file="pseudotranslate.sh" todir="dist" />
+        <copy file="copysources.sh" todir="dist" />
+        <copy file="removetargets.sh" todir="dist" />
+        <copy file="approveall.sh" todir="dist" />
+        <copy file="exporttmx.sh" todir="dist" />
+        <copy file="iceMatches.sh" todir="dist" />
+        <chmod dir="dist" perm="ugo+rx" includes="**/*.sh" />
+    </target>
+    <target name="copyLicenses">
+        <description>Copy license info to /dist/</description>
+        <copy todir="dist/licenses">
+            <fileset dir="licenses" />
+        </copy>
+    </target>
+    <target name="dist" depends="link,copyBats,copyShells,copyLicenses">
+        <description>Prepare distribution</description>
+        <copy todir="dist/catalog">
+            <fileset dir="catalog" />
+        </copy>
+        <copy todir="dist/srx">
+            <fileset dir="srx" />
+        </copy>
+        <copy todir="dist/xmlfilter">
+            <fileset dir="xmlfilter" />
+        </copy>
+        <copy file="LICENSE" todir="dist" />
+    </target>
+</project>

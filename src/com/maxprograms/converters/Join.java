@@ -201,7 +201,8 @@ public class Join {
 			int count = 0;
 			while (it.hasNext()) {
 				String xliff = it.next();
-				Document doc = builder.build(xliff);
+				File xliffFile = new File(xliff);
+				Document doc = builder.build(xliffFile);
 				Element root = doc.getRootElement();
 				List<Element> files1 = root.getChildren("file");
 
@@ -213,6 +214,16 @@ public class Join {
 					}
 					if (version.startsWith("2")) {
 						file.setAttribute("id", "" + count++);
+						Element metadata = file.getChild("mda:metadata");
+						if (metadata != null) {
+							Element group = new Element("mda:metaGroup");
+							group.setAttribute("category", "JoinedlXLIFF");
+							metadata.addContent(group);
+							Element meta = new Element("mda:meta");
+							meta.setAttribute("type", "xliffFile");
+							meta.addContent(xliffFile.getName());
+							group.addContent(meta);
+						}
 					}
 					Indenter.indent(file, 2, 2);
 					writeString(output, "  ");
