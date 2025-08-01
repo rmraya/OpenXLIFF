@@ -13,7 +13,7 @@ This project has been migrated from Apache Ant to Gradle while maintaining ident
 ### Main Tasks
 
 - `gradle dist` — Build complete distribution (default task, always clean)
-- `gradle clean` — Clean build artifacts (`lib/openxliff.jar`, `bin/`, `dist/`, `build/`, `.gradle/`)
+- `gradle clean` — Clean build artifacts (`lib/openxliff.jar`, `bin/`, `dist/`, `build/`)
 - `gradle forceClean` — Force clean all build artifacts and caches (removes all build output and any stray `.class` files)
 - `gradle distclean` — Remove only the `dist` directory
 - `gradle jar` — Build only the JAR file (always clean, removes `build/` afterwards)
@@ -51,8 +51,9 @@ This project has been migrated from Apache Ant to Gradle while maintaining ident
 
 This build is configured for **always clean builds** with no caching:
 
-- **No Build Caching:** All tasks execute fresh each time (`gradle.properties` disables caching)
-- **No Incremental Compilation:** Java compilation is never incremental
+- **No Build Caching:** All tasks are configured with `outputs.upToDateWhen { false }` to disable caching
+- **No Incremental Compilation:** Java compilation is never incremental (`options.incremental = false`)
+- **Global Cache Disabling:** All tasks in the task graph are set to never be up-to-date
 - **Automatic Cleanup:** Build directories are cleared before compilation and after tasks
 - **Fresh Compilation:** Every build starts from a clean state
 
@@ -60,10 +61,11 @@ This build is configured for **always clean builds** with no caching:
 
 The build includes several mechanisms to ensure clean builds:
 
-1. **Gradle Properties:** Caching disabled in `gradle.properties`
-2. **Compiler Options:** Incremental compilation disabled
-3. **Task Dependencies:** Every compilation runs `clean` first
-4. **Force Clean:** Available for complete cleanup of all artifacts
+1. **Task Output Disabling:** All major tasks use `outputs.upToDateWhen { false }`
+2. **Global Task Graph Configuration:** `gradle.taskGraph.whenReady` disables caching for all tasks
+3. **Compiler Options:** Incremental compilation disabled with `options.incremental = false`
+4. **Task Dependencies:** Every compilation runs `clean` first
+5. **Force Clean:** Available for complete cleanup of all artifacts
 
 The build automatically detects the operating system:
 
@@ -89,12 +91,15 @@ The `dist/` directory contains:
 2. **Improved Task Dependencies:** Better dependency management between tasks
 3. **UTF-8 Encoding:** Explicitly configured for all source files
 4. **Resource Copying:** Resource copying is split into separate tasks for clarity
-5. **Extra Cleaning Tasks:** `forceClean` and `cleanupBuildDir` provide more aggressive cleanup than Ant
+5. **Cross-Platform jlink:** Automatic path separator detection for Windows/Unix compatibility
+6. **Enhanced Cache Disabling:** Multiple mechanisms ensure completely fresh builds
+7. **Extra Cleaning Tasks:** `forceClean` and `cleanupBuildDir` provide more aggressive cleanup than Ant
 
 ## Migration Benefits
 
-- **Faster Builds:** Gradle can support incremental compilation and caching (disabled here for clean builds)
+- **Cross-Platform Compatibility:** Automatic path separator detection ensures builds work on Windows, Linux, and macOS
 - **Better IDE Integration:** Enhanced support in modern IDEs
 - **Parallel Execution:** Tasks can run in parallel where possible
 - **Dependency Management:** Ready for future dependency management if needed
 - **Modern Tooling:** Access to Gradle's extensive plugin ecosystem
+- **Reliable Clean Builds:** Multiple caching prevention mechanisms ensure consistent builds

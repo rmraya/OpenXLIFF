@@ -6,6 +6,14 @@ plugins {
 gradle.projectsEvaluated {
     tasks.withType(JavaCompile) {
         options.incremental = false
+        outputs.upToDateWhen { false }
+    }
+}
+
+// Disable caching globally
+gradle.taskGraph.whenReady { taskGraph ->
+    taskGraph.allTasks.each { task ->
+        task.outputs.upToDateWhen { false }
     }
 }
 
@@ -53,6 +61,9 @@ jar {
     destinationDirectory = file('lib')
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     
+    // Disable caching for JAR task
+    outputs.upToDateWhen { false }
+    
     // Clean up build directory after JAR is created
     finalizedBy cleanupBuildDir
 }
@@ -63,13 +74,18 @@ task jlinkImage(type: Exec) {
     group = 'distribution'
     dependsOn jar
     
+    // Disable caching for jlink task
+    outputs.upToDateWhen { false }
+    
     doFirst {
         // Only clean dist directory before jlink
         delete 'dist'
     }
     
+    def modulePath = "lib${File.pathSeparator}${System.getProperty('java.home')}${File.separator}jmods"
+    
     commandLine 'jlink',
-        '--module-path', 'lib:' + System.getProperty('java.home') + '/jmods',
+        '--module-path', modulePath,
         '--add-modules', 'openxliff',
         '--output', 'dist',
         '--no-man-pages',
@@ -201,7 +217,6 @@ clean {
     delete 'bin'
     delete 'dist'
     delete 'build'
-    delete '.gradle'
     
     doLast {
         // Ensure bin directory is completely removed
@@ -219,7 +234,6 @@ task forceClean {
         delete 'bin'
         delete 'dist'
         delete 'build'
-        delete '.gradle'
         // Clear any cached class files in source directories
         delete fileTree('src') { include '**/*.class' }
     }
@@ -238,6 +252,9 @@ compileJava {
     options.compilerArgs += [
         '--module-path', classpath.asPath
     ]
+    
+    // Disable caching for compilation
+    outputs.upToDateWhen { false }
     
     // Always clean destination before compilation
     doFirst {
