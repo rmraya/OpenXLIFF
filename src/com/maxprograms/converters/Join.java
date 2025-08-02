@@ -201,7 +201,8 @@ public class Join {
 			int count = 0;
 			while (it.hasNext()) {
 				String xliff = it.next();
-				Document doc = builder.build(xliff);
+				File xliffFile = new File(xliff);
+				Document doc = builder.build(xliffFile);
 				Element root = doc.getRootElement();
 				List<Element> files1 = root.getChildren("file");
 

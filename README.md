@@ -54,6 +54,7 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
+|4.8.0 | Migrated to Gradle 8.14.3; Implemented metadata extraction from XLIFF 2.x files | August 2nd, 2025 |
 |4.7.0 | Improved support for JSON with custom configuration files | July 15th, 2025|
 |4.6.0 | Improved handling of tags from third-party XLIFF 2.x | June 22nd, 2025|
 |4.5.0 | Removed dependency on discontinued DTDParser library | May 24th, 2025|
@@ -194,20 +195,20 @@ OpenXLIFF Filters can generate XLIFF 1.2, 2.0, 2.1 and 2.2 from these formats:
 ## Requirements
 
 - JDK 21 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
-- Apache Ant 1.10.13 or newer
+- Gradle 8.14.3 or newer. get it from [Gradle Releases](https://gradle.org/releases/).
 
 ## Building
 
 - Checkout this repository.
 - Point your JAVA_HOME variable to JDK 21
-- Run `ant` to generate a binary distribution in `./dist`
+- Run `gradle` to generate a binary distribution in `./dist`
 
 ### Steps for building
 
 ``` bash
   git clone https://github.com/rmraya/OpenXLIFF.git
   cd OpenXLIFF
-  ant
+  gradle
 ```
 
 A binary distribution will be created in `/dist` folder.

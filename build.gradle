@@ -1,0 +1,270 @@
+plugins {
+    id 'java'
+}
+
+// Disable all caching to ensure clean builds
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.incremental = false
+        outputs.upToDateWhen { false }
+    }
+}
+
+// Disable caching globally
+gradle.taskGraph.whenReady { taskGraph ->
+    taskGraph.allTasks.each { task ->
+        task.outputs.upToDateWhen { false }
+    }
+}
+
+// Set Java version
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    modularity.inferModulePath = true
+}
+
+// Source sets configuration
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources {
+            srcDirs = ['src']
+            exclude '**/*.java'
+        }
+    }
+}
+
+// Use existing JAR files from lib folder
+dependencies {
+    implementation files('lib/bcp47j.jar')
+    implementation files('lib/json.jar')
+    implementation files('lib/jsoup.jar')
+    implementation files('lib/xmljava.jar')
+}
+
+// Task to clean up build artifacts after compilation
+task cleanupBuildDir {
+    description = 'Clean up build directory after tasks complete'
+    group = 'build'
+    
+    doLast {
+        delete 'build'
+    }
+}
+
+// Configure JAR task
+jar {
+    archiveFileName = 'openxliff.jar'
+    destinationDirectory = file('lib')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    
+    // Disable caching for JAR task
+    outputs.upToDateWhen { false }
+    
+    // Clean up build directory after JAR is created
+    finalizedBy cleanupBuildDir
+}
+
+// Task to create jlink image
+task jlinkImage(type: Exec) {
+    description = 'Create modular runtime image with jlink'
+    group = 'distribution'
+    dependsOn jar
+    
+    // Disable caching for jlink task
+    outputs.upToDateWhen { false }
+    
+    doFirst {
+        // Only clean dist directory before jlink
+        delete 'dist'
+    }
+    
+    def modulePath = "lib${File.pathSeparator}${System.getProperty('java.home')}${File.separator}jmods"
+    
+    commandLine 'jlink',
+        '--module-path', modulePath,
+        '--add-modules', 'openxliff',
+        '--output', 'dist',
+        '--no-man-pages',
+        '--no-header-files'
+    
+    doLast {
+        // Remove jrt-fs.jar
+        delete file('dist/lib/jrt-fs.jar')
+    }
+}
+
+// Task to copy batch files (Windows)
+task copyBats {
+    description = 'Copy .cmd files to /dist'
+    group = 'distribution'
+    
+    doLast {
+        if (System.getProperty('os.name').toLowerCase().contains('windows')) {
+            copy {
+                from projectDir
+                into 'dist'
+                include '*.cmd'
+            }
+        }
+    }
+}
+
+// Task to copy shell scripts (Unix/Linux/macOS)
+task copyShells {
+    description = 'Copy .sh files to /dist'
+    group = 'distribution'
+    
+    doLast {
+        if (!System.getProperty('os.name').toLowerCase().contains('windows')) {
+            copy {
+                from projectDir
+                into 'dist'
+                include '*.sh'
+            }
+            
+            // Make shell scripts executable
+            fileTree('dist').matching { include '**/*.sh' }.each { file ->
+                file.setExecutable(true, false)
+            }
+        }
+    }
+}
+
+// Task to copy licenses
+task copyLicenses {
+    description = 'Copy license info to /dist/'
+    group = 'distribution'
+    
+    doLast {
+        copy {
+            from 'licenses'
+            into 'dist/licenses'
+        }
+    }
+}
+
+// Task to copy additional resources
+task copyResources {
+    description = 'Copy additional resources to /dist/'
+    group = 'distribution'
+    
+    doLast {
+        copy {
+            from 'catalog'
+            into 'dist/catalog'
+        }
+        
+        copy {
+            from 'srx'
+            into 'dist/srx'
+        }
+        
+        copy {
+            from 'xmlfilter'
+            into 'dist/xmlfilter'
+        }
+        
+        copy {
+            from 'LICENSE'
+            into 'dist'
+        }
+    }
+}
+
+// Main distribution task
+task dist {
+    description = 'Prepare distribution'
+    group = 'distribution'
+    
+    dependsOn jlinkImage, copyBats, copyShells, copyLicenses, copyResources
+    
+    // Ensure jlink runs before other copy tasks
+    copyBats.mustRunAfter jlinkImage
+    copyShells.mustRunAfter jlinkImage
+    copyLicenses.mustRunAfter jlinkImage
+    copyResources.mustRunAfter jlinkImage
+    
+    // Clean up build artifacts after distribution is complete
+    doLast {
+        delete 'build'
+        // Remove empty bin directory if it exists
+        if (file('bin').exists() && file('bin').list().length == 0) {
+            file('bin').deleteDir()
+        }
+    }
+}
+
+// Clean task to remove dist directory
+task distclean {
+    description = 'Remove dist directory'
+    group = 'distribution'
+    
+    doLast {
+        delete 'dist'
+    }
+}
+
+// Make dist the default task
+defaultTasks 'dist'
+
+// Configure clean task to remove all build artifacts
+clean {
+    delete 'lib/openxliff.jar'
+    delete 'bin'
+    delete 'dist'
+    delete 'build'
+    
+    doLast {
+        // Ensure bin directory is completely removed
+        file('bin').deleteDir()
+    }
+}
+
+// Task to force clean everything before compilation
+task forceClean {
+    description = 'Force clean all build artifacts and caches'
+    group = 'build'
+    
+    doLast {
+        delete 'lib/openxliff.jar'
+        delete 'bin'
+        delete 'dist'
+        delete 'build'
+        // Clear any cached class files in source directories
+        delete fileTree('src') { include '**/*.class' }
+    }
+}
+
+// Ensure proper build order with clean compilation
+compileJava.dependsOn clean
+jar.dependsOn compileJava
+jlinkImage.dependsOn jar
+
+// Configure compiler options for clean builds
+compileJava {
+    options.encoding = 'UTF-8'
+    options.incremental = false
+    options.fork = true
+    options.compilerArgs += [
+        '--module-path', classpath.asPath
+    ]
+    
+    // Disable caching for compilation
+    outputs.upToDateWhen { false }
+    
+    // Always clean destination before compilation
+    doFirst {
+        delete destinationDirectory
+    }
+    
+    // Clean up empty bin directory after compilation if needed
+    doLast {
+        if (file('bin').exists() && file('bin').list().length == 0) {
+            file('bin').deleteDir()
+        }
+    }
+}
