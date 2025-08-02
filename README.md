@@ -11,6 +11,7 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
+- **[Building OpenXLIFF Filters](https://github.com/rmraya/OpenXLIFF?tab=readme-ov-file#building)**
 
 ## Features
 
@@ -192,18 +193,18 @@ OpenXLIFF Filters can generate XLIFF 1.2, 2.0, 2.1 and 2.2 from these formats:
   - ResX (Windows .NET Resources)
   - TS (Qt Linguist translation source)
 
-## Requirements
+## Building OpenXLIFF Filters
+
+### Requirements
 
 - JDK 21 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
 - Gradle 8.14.3 or newer. get it from [Gradle Releases](https://gradle.org/releases/).
 
-## Building
+### Steps for building
 
 - Checkout this repository.
 - Point your JAVA_HOME variable to JDK 21
 - Run `gradle` to generate a binary distribution in `./dist`
-
-### Steps for building
 
 ``` bash
   git clone https://github.com/rmraya/OpenXLIFF.git
