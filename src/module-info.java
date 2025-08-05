@@ -42,6 +42,6 @@ module openxliff {
 	requires java.net.http;
 	requires transitive json;
 	requires transitive java.xml;
-	requires javabcp47;
+	requires bcp47j;
 	requires transitive xmljava;
 }
