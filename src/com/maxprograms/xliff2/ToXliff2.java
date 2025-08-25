@@ -153,6 +153,7 @@ public class ToXliff2 {
 			typeMeta.addContent(source.getAttributeValue("datatype"));
 			typeGroup.addContent(typeMeta);
 			fileMetadata.addContent(typeGroup);
+
 			if (!source.getAttributeValue("product-name").isEmpty()
 					|| !source.getAttributeValue("product-version").isEmpty()
 					|| !source.getAttributeValue("build-num").isEmpty()) {
@@ -172,6 +173,7 @@ public class ToXliff2 {
 				productGroup.addContent(buildNumber);
 				fileMetadata.addContent(productGroup);
 			}
+
 			Element header = source.getChild("header");
 			if (header != null) {
 				Element skl = header.getChild("skl");
@@ -281,6 +283,7 @@ public class ToXliff2 {
 								meta.setText(metaChild.getText());
 								group.addContent(meta);
 							}
+							group.setAttribute("category", "metadata");
 							if (!hasGroup(fileMetadata, group)) {
 								fileMetadata.addContent(group);
 							}

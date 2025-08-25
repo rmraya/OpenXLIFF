@@ -45,6 +45,7 @@ public class FromXliff2 {
 
 	private static String srcLang;
 	private static String trgLang;
+	private static int fileCounter;
 
 	private FromXliff2() {
 		// do not instantiate this class
@@ -53,6 +54,7 @@ public class FromXliff2 {
 
 	public static List<String> run(String sourceFile, String outputFile, String catalog) {
 		List<String> result = new ArrayList<>();
+		fileCounter = 0;
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
@@ -109,6 +111,7 @@ public class FromXliff2 {
 
 		if (source.getName().equals("file")) {
 			Element file = new Element("file");
+			file.addContent(new PI("counter", String.valueOf(fileCounter++)));
 			file.setAttribute("original", source.getAttributeValue("original"));
 			file.setAttribute("source-language", srcLang);
 			if (!trgLang.isEmpty()) {
@@ -185,18 +188,9 @@ public class FromXliff2 {
 						Element meta = metaGroup.getChild("mda:meta");
 						file.setAttribute("datatype", meta.getText());
 					} else {
-						Element group = new Element("prop-group");
-						group.setAttribute("name", category);
-						header.addContent(group);
-						List<Element> metaList = metaGroup.getChildren("mda:meta");
-						Iterator<Element> it = metaList.iterator();
-						while (it.hasNext()) {
-							Element meta = it.next();
-							Element prop = new Element("prop");
-							prop.setAttribute("prop-type", meta.getAttributeValue("type"));
-							prop.setContent(meta.getContent());
-							group.addContent(prop);
-						}
+						// custom metadata
+						PI pi = new PI("customMetadata", metaGroup.toString());
+						file.addContent(pi);
 					}
 				}
 			}
@@ -272,13 +266,15 @@ public class FromXliff2 {
 							list.add(new String[] { meta.getAttributeValue("type"), meta.getText() });
 						}
 						attributes.put(id, list);
-					}
-					if ("transUnitAttributes".equals(group.getAttributeValue("category"))) {
+					} else if ("transUnitAttributes".equals(group.getAttributeValue("category"))) {
 						List<Element> metas = group.getChildren("mda:meta");
 						for (int i = 0; i < metas.size(); i++) {
 							Element meta = metas.get(i);
 							transUnit.setAttribute(meta.getAttributeValue("type"), meta.getText());
 						}
+					} else {
+						PI pi = new PI("customMetadata", group.toString());
+						transUnit.addContent(pi);
 					}
 				}
 			}
