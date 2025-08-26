@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
@@ -133,9 +135,7 @@ public class ToXliff2 {
 			Element file = new Element("file");
 			file.setAttribute("id", "" + fileId++);
 			file.setAttribute("original", source.getAttributeValue("original"));
-			if (source.hasAttribute("ts")) {
-				file.setAttribute("ts", source.getAttributeValue("ts"));
-			}
+
 			List<Attribute> atts = source.getAttributes();
 			Iterator<Attribute> at = atts.iterator();
 			while (at.hasNext()) {
@@ -153,6 +153,20 @@ public class ToXliff2 {
 			typeMeta.addContent(source.getAttributeValue("datatype"));
 			typeGroup.addContent(typeMeta);
 			fileMetadata.addContent(typeGroup);
+
+			if (source.hasAttribute("ts")) {
+				try {
+					JSONObject attributes = new JSONObject(source.getAttributeValue("ts"));
+					if (attributes.has("id")) {
+						Element idMeta = new Element("mda:meta");
+						idMeta.setAttribute("type", "id");
+						idMeta.addContent(attributes.getString("id"));
+						typeGroup.addContent(idMeta);
+					}
+				} catch (JSONException ex) {
+					// ignore TS that is not in JSON format
+				}
+			}
 
 			if (!source.getAttributeValue("product-name").isEmpty()
 					|| !source.getAttributeValue("product-version").isEmpty()
