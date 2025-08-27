@@ -163,6 +163,15 @@ public class ToXliff2 {
 						idMeta.addContent(attributes.getString("id"));
 						typeGroup.addContent(idMeta);
 					}
+					if (attributes.has("sourceFile")) {
+						Element sourceFileGroup = new Element("mda:metaGroup");
+						sourceFileGroup.setAttribute("category", "sourceFile");
+						Element sourceFileMeta = new Element("mda:meta");
+						sourceFileMeta.setAttribute("type", "sourceFile");
+						sourceFileMeta.addContent(attributes.getString("sourceFile"));
+						sourceFileGroup.addContent(sourceFileMeta);
+						fileMetadata.addContent(sourceFileGroup);
+					}
 				} catch (JSONException ex) {
 					// ignore TS that is not in JSON format
 				}

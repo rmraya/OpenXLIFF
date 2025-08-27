@@ -10,6 +10,7 @@
 
 package com.maxprograms.converters.xliff;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.System.Logger;
@@ -75,11 +76,16 @@ public class ToOpenXliff {
                 if (targetLanguage != null && !targetLanguage.isEmpty()) {
                     file.setAttribute("target-language", targetLanguage);
                 }
-                file.setAttribute("original", inputFile);
                 JSONObject json = new JSONObject();
                 List<Attribute> atts = originalFile.getAttributes();
                 for (Attribute att : atts) {
                     json.put(att.getName(), att.getValue());
+                }
+                if (originalFile.hasAttribute("original")) {
+                    file.setAttribute("original", originalFile.getAttributeValue("original"));
+                    json.put("sourceFile", new File(inputFile).getName());
+                } else {
+                    file.setAttribute("original", inputFile);
                 }
                 file.setAttribute("ts", json.toString());
                 Element metadata = originalFile.getChild("mda:metadata");
