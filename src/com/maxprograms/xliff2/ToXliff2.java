@@ -288,8 +288,6 @@ public class ToXliff2 {
 
 			List<PI> pis = source.getPI();
 			if (!pis.isEmpty()) {
-				Element piGroup = new Element("mda:metaGroup");
-				piGroup.setAttribute("category", "PI");
 				Iterator<PI> pit = pis.iterator();
 				while (pit.hasNext()) {
 					PI pi = pit.next();
@@ -306,27 +304,22 @@ public class ToXliff2 {
 								meta.setText(metaChild.getText());
 								group.addContent(meta);
 							}
-							group.setAttribute("category", "metadata");
-							if (!hasGroup(fileMetadata, group)) {
-								fileMetadata.addContent(group);
-							}
+							fileMetadata.addContent(group);
 						}
 					} else {
+						Element piGroup = new Element("mda:metaGroup");
+						piGroup.setAttribute("category", "PI");
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", pi.getTarget());
 						meta.addContent(pi.getData());
 						piGroup.addContent(meta);
+						fileMetadata.addContent(piGroup);
 					}
 				}
-				if (!piGroup.getChildren().isEmpty()) {
-					fileMetadata.addContent(piGroup);
-				}
 			}
-
 			if (!fileMetadata.getChildren().isEmpty()) {
 				file.addContent(fileMetadata);
 			}
-
 			target.addContent(file);
 			target = file;
 		}
@@ -565,19 +558,6 @@ public class ToXliff2 {
 		while (it.hasNext()) {
 			recurse(it.next(), target);
 		}
-	}
-
-	private static boolean hasGroup(Element metadata, Element group) {
-		if (group.getAttributeValue("category").isEmpty()) {
-			return false;
-		}
-		List<Element> groups = metadata.getChildren("mda:metaGroup");
-		for (Element g : groups) {
-			if (g.getAttributeValue("category").equals(group.getAttributeValue("category"))) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private static void harvestInline(Element originalData, Element tagAttributes, Element tag) {
