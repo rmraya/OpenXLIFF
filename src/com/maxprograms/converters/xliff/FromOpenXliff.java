@@ -452,6 +452,9 @@ public class FromOpenXliff {
                     }
                     metadata.addContent(group);
                 }
+                if (metadata.getChildren().isEmpty()) {
+                    root.removeChild("mda:metadata");
+                }
                 root.removePI("customMetadata");
             }
         }
