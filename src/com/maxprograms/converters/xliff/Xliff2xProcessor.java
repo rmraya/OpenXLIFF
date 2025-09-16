@@ -23,6 +23,7 @@ public class Xliff2xProcessor {
 
     private static int tag;
     private static List<String[]> sourcetags;
+    private static String currentFile;
 
     private Xliff2xProcessor() {
         // do not instantiate this class
@@ -45,6 +46,9 @@ public class Xliff2xProcessor {
     }
 
     private static void recurse2x(Element root, List<Element> units) {
+        if ("file".equals(root.getName())) {
+            currentFile = root.getAttributeValue("id");
+        }
         if ("unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             boolean preserve = root.getAttributeValue("xml:space").equals("preserve");
             List<Element> segments = root.getChildren("segment");
@@ -130,7 +134,7 @@ public class Xliff2xProcessor {
                     unit.addContent(new PI("metadata", metadata.toString()));
                 }
                 units.add(unit);
-                segment.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
+                segment.addContent(new PI(Constants.TOOLID, currentFile + "_" + unit.getAttributeValue("id")));
             }
             return;
         }

@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
@@ -53,9 +54,9 @@ public class FromOpenXliff {
     private static String tgtLang;
     private static boolean hasTarget;
     private static int auto;
-    private static Map<String, String> segmentMetadata;
-    private static Map<String, String> filesMetadata;
-    private static int fileCounter;
+    private static String currentFile;
+    private static Map<String, Element> fileMetadata;
+    private static Map<String, Element> unitMetadata;
 
     private FromOpenXliff() {
         // do not instantiate this class
@@ -64,13 +65,12 @@ public class FromOpenXliff {
 
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
-        fileCounter = 0;
         tgtLang = "";
         String xliffFile = params.get("xliff");
         String sklFile = params.get("skeleton");
-        segmentMetadata = new Hashtable<>();
-        filesMetadata = new Hashtable<>();
         String outputFile = params.get("backfile");
+        fileMetadata = new Hashtable<>();
+        unitMetadata = new Hashtable<>();
         try {
             catalog = CatalogBuilder.getCatalog(params.get("catalog"));
             loadXliff(xliffFile);
@@ -96,9 +96,6 @@ public class FromOpenXliff {
                 Indenter.indent(root, 2);
                 outputter.preserveSpace(true);
                 outputter.output(skeleton, out);
-            }
-            if (!segmentMetadata.isEmpty() || !filesMetadata.isEmpty()) {
-                restoreMetadata(outputFile);
             }
             result.add(Constants.SUCCESS);
         } catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
@@ -128,6 +125,10 @@ public class FromOpenXliff {
     private static void recurse1x(Element root) throws SAXException, IOException, ParserConfigurationException {
         if ("file".equals(root.getName())) {
             tgtLang = root.getAttributeValue("target-language");
+            String original = root.getAttributeValue("original");
+            if (fileMetadata.containsKey(original)) {
+                root.addContent(fileMetadata.get(original));
+            }
         }
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             Element segSource = root.getChild("seg-source");
@@ -292,12 +293,36 @@ public class FromOpenXliff {
 
     private static void recurse2x(Element root) throws SAXException, IOException, ParserConfigurationException {
         if ("file".equals(root.getName())) {
-            String metadata = filesMetadata.get(String.valueOf(fileCounter++));
-            if (metadata != null) {
-                root.addContent(new PI("customMetadata", metadata));
+            currentFile = root.getAttributeValue("id");
+            Element sklMetadata = root.getChild("mda:metadata");
+            Element xliffMetadata = fileMetadata.get(currentFile);
+            if (sklMetadata != null && xliffMetadata == null) {
+                root.removeChild(sklMetadata);
+            } else if (sklMetadata == null && xliffMetadata != null) {
+                Element metadata = new Element("mda:metadata");
+                metadata.clone(xliffMetadata);
+                List<XMLNode> content = root.getContent();
+                content.add(0, metadata);
+                root.setContent(content);
+            } else if (sklMetadata != null && xliffMetadata != null) {
+                sklMetadata.clone(xliffMetadata);
             }
         }
         if ("unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
+            Element sklMetadata = root.getChild("mda:metadata");
+            String id = root.getChildren("segment").get(0).getPI(Constants.TOOLID).get(0).getData();
+            Element xliffMetadata = unitMetadata.get(id);
+            if (sklMetadata != null && xliffMetadata == null) {
+                root.removeChild(sklMetadata);
+            } else if (sklMetadata == null && xliffMetadata != null) {
+                Element metadata = new Element("mda:metadata");
+                metadata.clone(xliffMetadata);
+                List<XMLNode> content = root.getContent();
+                content.add(0, metadata);
+                root.setContent(content);
+            } else if (sklMetadata != null && xliffMetadata != null) {
+                sklMetadata.clone(xliffMetadata);
+            }
             List<Element> children = root.getChildren("segment");
             Iterator<Element> it = children.iterator();
             while (it.hasNext()) {
@@ -306,10 +331,6 @@ public class FromOpenXliff {
                 if (!list.isEmpty()) {
                     String pi = list.get(0).getData();
                     Element segment = segments.get(pi);
-                    String metadata = segmentMetadata.get(pi);
-                    if (metadata != null) {
-                        root.addContent(new PI("customMetadata", metadata));
-                    }
                     if (segment.getAttributeValue("approved").equals("yes")) {
                         Element target = seg.getChild("target");
                         if (target == null) {
@@ -347,42 +368,91 @@ public class FromOpenXliff {
         recurseXliff(xliff.getRootElement());
     }
 
-    private static void recurseXliff(Element e) throws IOException, SAXException, ParserConfigurationException {
+    private static void recurseXliff(Element e) throws IOException {
         if ("xliff".equals(e.getName()) && !"1.2".equals(e.getAttributeValue("version"))) {
             throw new IOException(Messages.getString("FromOpenXliff.2"));
         }
-        if ("file".equals(e.getName()) && tgtLang.isEmpty()) {
-            tgtLang = e.getAttributeValue("target-language");
-            List<PI> pids = e.getPI("counter");
-            String id = (pids.isEmpty()) ? e.getAttributeValue("original") : pids.get(0).getData();
-            List<PI> metadata = e.getPI("customMetadata");
-            if (!metadata.isEmpty()) {
-                StringBuffer sb = new StringBuffer();
-                for (PI pi : metadata) {
-                    String meta = pi.getData();
-                    sb.append(meta);
+        if ("file".equals(e.getName())) {
+            List<PI> pi = e.getPI("ts");
+            if (!pi.isEmpty()) {
+                String json = pi.get(0).getData();
+                if (json != null && !json.isEmpty()) {
+                    JSONObject obj = new JSONObject(json);
+                    if (obj.has("id")) {
+                        // original was XLIFF 2.x
+                        currentFile = obj.getString("id");
+                    } else if (obj.has("original")) {
+                        // original was XLIFF 1.x
+                        currentFile = obj.getString("original");
+                    }
                 }
-                filesMetadata.put(id, sb.toString());
+            } else if (e.hasAttribute("ts")) {
+                String json = e.getAttributeValue("ts");
+                if (json != null && !json.isEmpty()) {
+                    JSONObject obj = new JSONObject(json);
+                    if (obj.has("id")) {
+                        // original was XLIFF 2.x
+                        currentFile = obj.getString("id");
+                    } else if (obj.has("original")) {
+                        // original was XLIFF 1.x
+                        currentFile = obj.getString("original");
+                    }
+                }
+            }
+            if (tgtLang.isEmpty()) {
+                tgtLang = e.getAttributeValue("target-language");
+            }
+            List<PI> metadata = e.getPI("metadata");
+            if (!metadata.isEmpty()) {
+                fileMetadata.put(currentFile, toMetadata(metadata.get(0).getData()));
             }
         }
         if ("trans-unit".equals(e.getName())) {
-            segments.put(e.getAttributeValue("id"), e);
-            List<PI> metadata = e.getPI("customMetadata");
+            String id = e.getAttributeValue("id");
+            segments.put(currentFile + "_" + id, e);
+            List<PI> metadata = e.getPI("metadata");
             if (!metadata.isEmpty()) {
-                StringBuffer sb = new StringBuffer();
-                for (PI pi : metadata) {
-                    String meta = pi.getData();
-                    sb.append(meta);
-                }
-                segmentMetadata.put(e.getAttributeValue("id"), sb.toString());
+                String data = metadata.get(0).getData();
+                Element unitData = toMetadata(data);
+                unitMetadata.put(currentFile + "_" + id, unitData);
             }
-        } else {
-            List<Element> children = e.getChildren();
-            Iterator<Element> it = children.iterator();
-            while (it.hasNext()) {
-                recurseXliff(it.next());
-            }
+            return;
         }
+        List<Element> children = e.getChildren();
+        Iterator<Element> it = children.iterator();
+        while (it.hasNext()) {
+            recurseXliff(it.next());
+        }
+    }
+
+    private static Element toMetadata(String string) {
+        string = string.replace("mda:", "");
+        Element metadata = new Element("mda:metadata");
+        try {
+            SAXBuilder builder = new SAXBuilder();
+            Document d = builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
+            Element root = d.getRootElement();
+            if (root.hasAttribute("id")) {
+                metadata.setAttribute("id", root.getAttributeValue("id"));
+            }
+            List<Element> groups = root.getChildren();
+            for (Element g : groups) {
+                Element group = new Element("mda:metaGroup");
+                group.setAttributes(g.getAttributes());
+                metadata.addContent(group);
+                List<Element> metas = g.getChildren("meta");
+                for (Element m : metas) {
+                    Element meta = new Element("mda:meta");
+                    meta.setAttributes(m.getAttributes());
+                    meta.setContent(m.getContent());
+                    group.addContent(meta);
+                }
+            }
+        } catch (Exception ex) {
+            Logger logger = System.getLogger(FromOpenXliff.class.getName());
+            logger.log(Level.ERROR, Messages.getString("FromOpenXliff.3"), ex);
+        }
+        return metadata;
     }
 
     private static void loadSkeleton(String sklFile) throws SAXException, IOException, ParserConfigurationException {
@@ -412,67 +482,5 @@ public class FromOpenXliff {
         while (it.hasNext()) {
             restoreAttributes(it.next());
         }
-    }
-
-    private static void restoreMetadata(String outputFile)
-            throws SAXException, IOException, ParserConfigurationException {
-        SAXBuilder builder = new SAXBuilder();
-        Document doc = builder.build(outputFile);
-        Element root = doc.getRootElement();
-        recurseMetadata(root);
-        try (FileOutputStream out = new FileOutputStream(outputFile)) {
-            XMLOutputter outputter = new XMLOutputter();
-            Indenter.indent(root, 2);
-            outputter.preserveSpace(true);
-            outputter.output(doc, out);
-        }
-
-    }
-
-    private static void recurseMetadata(Element root) throws SAXException, IOException, ParserConfigurationException {
-        if ("file".equals(root.getName()) || "unit".equals(root.getName())) {
-            List<PI> pis = root.getPI("customMetadata");
-            if (!pis.isEmpty()) {
-                List<Element> metaGroups = parseMetadata(pis.get(0).getData());
-                Element metadata = root.getChild("mda:metadata");
-                if (metadata == null) {
-                    metadata = new Element("mda:metadata");
-                    List<XMLNode> content = root.getContent();
-                    content.add(0, metadata);
-                    root.setContent(content);
-                }
-                metadata.setContent(new Vector<>());
-                for (Element group : metaGroups) {
-                    if ("file".equals(root.getName())) {
-                        String category = group.getAttributeValue("category");
-                        if (category.equals("format") || category.equals("tool") || category.equals("PI")
-                                || category.equals("sourceFile") || category.equals("document")) {
-                            continue; // Skip standard metadata categories
-                        }
-                    }
-                    metadata.addContent(group);
-                }
-                if (metadata.getChildren().isEmpty()) {
-                    root.removeChild("mda:metadata");
-                }
-                root.removePI("customMetadata");
-            }
-        }
-        if ("unit".equals(root.getName())) {
-            return;
-        }
-        List<Element> children = root.getChildren();
-        Iterator<Element> it = children.iterator();
-        while (it.hasNext()) {
-            recurseMetadata(it.next());
-        }
-    }
-
-    private static List<Element> parseMetadata(String data)
-            throws SAXException, IOException, ParserConfigurationException {
-        String source = "<mda:metadata xmlns:mda=\"urn:oasis:names:tc:xliff:metadata:2.0\">" + data + "</mda:metadata>";
-        SAXBuilder builder = new SAXBuilder();
-        Document doc = builder.build(new ByteArrayInputStream(source.getBytes(StandardCharsets.UTF_8)));
-        return doc.getRootElement().getChildren();
     }
 }

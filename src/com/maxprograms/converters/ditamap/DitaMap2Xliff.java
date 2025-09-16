@@ -294,8 +294,12 @@ public class DitaMap2Xliff {
 			Indenter.indent(mergedRoot, 2);
 			outputter.preserveSpace(true);
 			File xliff = new File(xliffFile);
-			if (!xliff.getParentFile().exists()) {
-				Files.createDirectories(xliff.getParentFile().toPath());
+			File xliffParent = xliff.getParentFile();
+			if (xliffParent == null) {
+				xliffParent = new File(System.getProperty("user.dir"));
+			}
+			if (!xliffParent.exists()) {
+				Files.createDirectories(xliffParent.toPath());
 			}
 			try (FileOutputStream output = new FileOutputStream(xliff)) {
 				outputter.output(merged, output);

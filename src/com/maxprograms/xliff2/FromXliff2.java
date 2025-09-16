@@ -18,6 +18,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.Convert;
+import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -43,18 +46,68 @@ import com.maxprograms.xml.XMLUtils;
 
 public class FromXliff2 {
 
+	private static Logger logger = System.getLogger(FromXliff2.class.getName());
+
 	private static String srcLang;
 	private static String trgLang;
-	private static int fileCounter;
 
 	private FromXliff2() {
 		// do not instantiate this class
 		// use run or main methods instead
 	}
 
+	public static void main(String[] args) {
+		String[] arguments = Utils.fixPath(args);
+		if (arguments.length < 4) {
+			help();
+			return;
+		}
+
+		String sourceFile = "";
+		String targetFile = "";
+		String catalog = "";
+
+		for (int i = 0; i < arguments.length; i++) {
+			String arg = arguments[i];
+			if (arg.equals("-help")) {
+				help();
+				return;
+			}
+			if ("-source".equals(arg) && (i + 1) < arguments.length) {
+				sourceFile = arguments[i + 1];
+			}
+			if ("-target".equals(arg) && (i + 1) < arguments.length) {
+				targetFile = arguments[i + 1];
+			}
+			if (arg.equals("-catalog") && (i + 1) < arguments.length) {
+				catalog = arguments[i + 1];
+			}
+		}
+
+		if (catalog.isEmpty()) {
+			try {
+				catalog = Convert.defaultCatalog();
+			} catch (IOException e) {
+				logger.log(Level.ERROR, e.getMessage());
+				return;
+			}
+		}
+		if (sourceFile.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("FromXliff2.3"));
+			return;
+		}
+		if (targetFile.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("FromXliff2.4"));
+			return;
+		}
+		List<String> result = run(sourceFile, targetFile, catalog);
+		if (!result.get(0).equals(Constants.SUCCESS)) {
+			logger.log(Level.ERROR, result.get(1));
+		}
+	}
+
 	public static List<String> run(String sourceFile, String outputFile, String catalog) {
 		List<String> result = new ArrayList<>();
-		fileCounter = 0;
 		try {
 			SAXBuilder builder = new SAXBuilder();
 			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
@@ -111,7 +164,6 @@ public class FromXliff2 {
 
 		if (source.getName().equals("file")) {
 			Element file = new Element("file");
-			file.addContent(new PI("counter", String.valueOf(fileCounter++)));
 			file.setAttribute("original", source.getAttributeValue("original"));
 			file.setAttribute("source-language", srcLang);
 			if (!trgLang.isEmpty()) {
@@ -124,6 +176,14 @@ public class FromXliff2 {
 				if (a.getName().startsWith("xmlns:")) {
 					file.setAttribute(a);
 				}
+			}
+			List<PI> pis = source.getPI("ts");
+			if (!pis.isEmpty()) {
+				file.addContent(pis.get(0));
+			}
+			pis = source.getPI("metadata");
+			if (!pis.isEmpty()) {
+				file.addContent(pis.get(0));
 			}
 			Element header = new Element("header");
 			file.addContent(header);
@@ -188,9 +248,18 @@ public class FromXliff2 {
 						Element meta = metaGroup.getChild("mda:meta");
 						file.setAttribute("datatype", meta.getText());
 					} else {
-						// custom metadata
-						PI pi = new PI("customMetadata", metaGroup.toString());
-						file.addContent(pi);
+						Element group = new Element("prop-group");
+						group.setAttribute("name", category);
+						header.addContent(group);
+						List<Element> metaList = metaGroup.getChildren("mda:meta");
+						Iterator<Element> it = metaList.iterator();
+						while (it.hasNext()) {
+							Element meta = it.next();
+							Element prop = new Element("prop");
+							prop.setAttribute("prop-type", meta.getAttributeValue("type"));
+							prop.setContent(meta.getContent());
+							group.addContent(prop);
+						}
 					}
 				}
 			}
@@ -239,6 +308,11 @@ public class FromXliff2 {
 			}
 			target.addContent(transUnit);
 
+			List<PI> pis = source.getPI("metadata");
+			if (!pis.isEmpty()) {
+				transUnit.addContent(pis.get(0));
+			}
+
 			Map<String, String> tags = new HashMap<>();
 			Element originalData = source.getChild("originalData");
 			if (originalData != null) {
@@ -266,15 +340,13 @@ public class FromXliff2 {
 							list.add(new String[] { meta.getAttributeValue("type"), meta.getText() });
 						}
 						attributes.put(id, list);
-					} else if ("transUnitAttributes".equals(group.getAttributeValue("category"))) {
+					}
+					if ("transUnitAttributes".equals(group.getAttributeValue("category"))) {
 						List<Element> metas = group.getChildren("mda:meta");
 						for (int i = 0; i < metas.size(); i++) {
 							Element meta = metas.get(i);
 							transUnit.setAttribute(meta.getAttributeValue("type"), meta.getText());
 						}
-					} else {
-						PI pi = new PI("customMetadata", group.toString());
-						transUnit.addContent(pi);
 					}
 				}
 			}
@@ -659,5 +731,12 @@ public class FromXliff2 {
 			}
 		}
 		return result;
+	}
+
+	private static void help() {
+		MessageFormat mf = new MessageFormat(Messages.getString("FromXliff2.help"));
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "fromxliff2.cmd" : "fromxliff2.sh" });
+		System.out.println(help);
 	}
 }

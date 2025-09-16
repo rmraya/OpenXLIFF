@@ -26,11 +26,10 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
+import com.maxprograms.converters.Convert;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CatalogBuilder;
@@ -45,6 +44,8 @@ import com.maxprograms.xml.XMLUtils;
 
 public class ToXliff2 {
 
+	private static Logger logger = System.getLogger(ToXliff2.class.getName());
+
 	private static Element root2;
 	private static int fileId;
 	private static int mrkCount;
@@ -57,6 +58,66 @@ public class ToXliff2 {
 	private ToXliff2() {
 		// do not instantiate this class
 		// use run or main methods instead
+	}
+
+	public static void main(String[] args) {
+		String[] arguments = Utils.fixPath(args);
+		if (arguments.length < 4) {
+			help();
+			return;
+		}
+
+		String sourceFile = "";
+		String targetFile = "";
+		String version = "2.1";
+		String catalog = "";
+
+		for (int i = 0; i < arguments.length; i++) {
+			String arg = arguments[i];
+			if (arg.equals("-help")) {
+				help();
+				return;
+			}
+			if ("-source".equals(arg) && (i + 1) < arguments.length) {
+				sourceFile = arguments[i + 1];
+			}
+			if ("-target".equals(arg) && (i + 1) < arguments.length) {
+				targetFile = arguments[i + 1];
+			}
+			if ("-2.0".equals(arg)) {
+				version = "2.0";
+			}
+			if ("-2.1".equals(arg)) {
+				version = "2.1";
+			}
+			if ("-2.2".equals(arg)) {
+				version = "2.2";
+			}
+			if (arg.equals("-catalog") && (i + 1) < arguments.length) {
+				catalog = arguments[i + 1];
+			}
+		}
+
+		if (catalog.isEmpty()) {
+			try {
+				catalog = Convert.defaultCatalog();
+			} catch (IOException e) {
+				logger.log(Level.ERROR, e.getMessage());
+				return;
+			}
+		}
+		if (sourceFile.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("ToXliff2.5"));
+			return;
+		}
+		if (targetFile.isEmpty()) {
+			logger.log(Level.ERROR, Messages.getString("ToXliff2.6"));
+			return;
+		}
+		List<String> result = run(sourceFile, targetFile, catalog, version);
+		if (!result.get(0).equals(Constants.SUCCESS)) {
+			logger.log(Level.ERROR, result.get(1));
+		}
 	}
 
 	public static List<String> run(File xliffFile, String catalog, String version) {
@@ -135,7 +196,9 @@ public class ToXliff2 {
 			Element file = new Element("file");
 			file.setAttribute("id", "" + fileId++);
 			file.setAttribute("original", source.getAttributeValue("original"));
-
+			if (source.hasAttribute("ts")) {
+				file.addContent(new PI("ts", source.getAttributeValue("ts")));
+			}
 			List<Attribute> atts = source.getAttributes();
 			Iterator<Attribute> at = atts.iterator();
 			while (at.hasNext()) {
@@ -153,30 +216,6 @@ public class ToXliff2 {
 			typeMeta.addContent(source.getAttributeValue("datatype"));
 			typeGroup.addContent(typeMeta);
 			fileMetadata.addContent(typeGroup);
-
-			if (source.hasAttribute("ts")) {
-				try {
-					JSONObject attributes = new JSONObject(source.getAttributeValue("ts"));
-					if (attributes.has("id")) {
-						Element idMeta = new Element("mda:meta");
-						idMeta.setAttribute("type", "id");
-						idMeta.addContent(attributes.getString("id"));
-						typeGroup.addContent(idMeta);
-					}
-					if (attributes.has("sourceFile")) {
-						Element sourceFileGroup = new Element("mda:metaGroup");
-						sourceFileGroup.setAttribute("category", "sourceFile");
-						Element sourceFileMeta = new Element("mda:meta");
-						sourceFileMeta.setAttribute("type", "sourceFile");
-						sourceFileMeta.addContent(attributes.getString("sourceFile"));
-						sourceFileGroup.addContent(sourceFileMeta);
-						fileMetadata.addContent(sourceFileGroup);
-					}
-				} catch (JSONException ex) {
-					// ignore TS that is not in JSON format
-				}
-			}
-
 			if (!source.getAttributeValue("product-name").isEmpty()
 					|| !source.getAttributeValue("product-version").isEmpty()
 					|| !source.getAttributeValue("build-num").isEmpty()) {
@@ -196,7 +235,6 @@ public class ToXliff2 {
 				productGroup.addContent(buildNumber);
 				fileMetadata.addContent(productGroup);
 			}
-
 			Element header = source.getChild("header");
 			if (header != null) {
 				Element skl = header.getChild("skl");
@@ -288,38 +326,29 @@ public class ToXliff2 {
 
 			List<PI> pis = source.getPI();
 			if (!pis.isEmpty()) {
+				Element piGroup = new Element("mda:metaGroup");
+				piGroup.setAttribute("category", "PI");
 				Iterator<PI> pit = pis.iterator();
 				while (pit.hasNext()) {
 					PI pi = pit.next();
 					if ("metadata".equals(pi.getTarget())) {
-						Element metadata = Utils.toElement(pi.getData().replace("mda:", "mda_"));
-						List<Element> metaGroup = metadata.getChildren("mda_metaGroup");
-						for (Element childGroup : metaGroup) {
-							Element group = new Element("mda:metaGroup");
-							group.setAttributes(childGroup.getAttributes());
-							List<Element> metas = childGroup.getChildren("mda_meta");
-							for (Element metaChild : metas) {
-								Element meta = new Element("mda:meta");
-								meta.setAttributes(metaChild.getAttributes());
-								meta.setText(metaChild.getText());
-								group.addContent(meta);
-							}
-							fileMetadata.addContent(group);
-						}
+						file.addContent(pi);
 					} else {
-						Element piGroup = new Element("mda:metaGroup");
-						piGroup.setAttribute("category", "PI");
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", pi.getTarget());
 						meta.addContent(pi.getData());
 						piGroup.addContent(meta);
-						fileMetadata.addContent(piGroup);
 					}
 				}
+				if (!piGroup.getChildren().isEmpty()) {
+					fileMetadata.addContent(piGroup);
+				}
 			}
+
 			if (!fileMetadata.getChildren().isEmpty()) {
 				file.addContent(fileMetadata);
 			}
+
 			target.addContent(file);
 			target = file;
 		}
@@ -387,25 +416,7 @@ public class ToXliff2 {
 				while (pit.hasNext()) {
 					PI pi = pit.next();
 					if ("metadata".equals(pi.getTarget())) {
-						Element unitMetadata = unit.getChild("mda:metadata");
-						if (unitMetadata == null) {
-							unitMetadata = new Element("mda:metadata");
-							unit.addContent(unitMetadata);
-						}
-						Element metadata = Utils.toElement(pi.getData().replace("mda:", "mda_"));
-						List<Element> metaGroup = metadata.getChildren("mda_metaGroup");
-						for (Element childGroup : metaGroup) {
-							Element group = new Element("mda:metaGroup");
-							group.setAttributes(childGroup.getAttributes());
-							List<Element> metas = childGroup.getChildren("mda_meta");
-							for (Element metaChild : metas) {
-								Element meta = new Element("mda:meta");
-								meta.setAttributes(metaChild.getAttributes());
-								meta.setText(metaChild.getText());
-								group.addContent(meta);
-							}
-							unitMetadata.addContent(group);
-						}
+						unit.addContent(pi);
 					}
 				}
 			}
@@ -782,5 +793,12 @@ public class ToXliff2 {
 			}
 		}
 		return result;
+	}
+
+	private static void help() {
+		MessageFormat mf = new MessageFormat(Messages.getString("ToXliff2.help"));
+		boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+		String help = mf.format(new String[] { isWindows ? "toxliff2.cmd" : "toxliff2.sh" });
+		System.out.println(help);
 	}
 }

@@ -113,7 +113,7 @@ public class Merge {
 			if (arg.equals("-getTarget")) {
 				getTarget = true;
 			}
-			if (arg.equals("-lang") && (i + 1)  < arguments.length) {
+			if (arg.equals("-lang") && (i + 1) < arguments.length) {
 				Locale.setDefault(Locale.forLanguageTag(arguments[i + 1]));
 			}
 		}
@@ -208,6 +208,9 @@ public class Merge {
 				approveAll(root);
 			}
 
+			segments = new ArrayList<>();
+			removeAltTrans(root);
+
 			List<Element> files = root.getChildren("file");
 			fileSet = new HashSet<>();
 			Iterator<Element> it = files.iterator();
@@ -215,8 +218,6 @@ public class Merge {
 				Element file = it.next();
 				fileSet.add(file.getAttributeValue("original"));
 			}
-			segments = new ArrayList<>();
-			createList(root);
 
 			if (fileSet.size() != 1) {
 				File f = new File(target);
@@ -314,17 +315,14 @@ public class Merge {
 		}
 	}
 
-	private static void createList(Element e) {
+	private static void removeAltTrans(Element e) {
+		if (e.getName().equals("trans-unit")) {
+			e.removeChild("alt-trans");
+			segments.add(e);
+		}
 		List<Element> children = e.getChildren();
-		Iterator<Element> it = children.iterator();
-		while (it.hasNext()) {
-			Element child = it.next();
-			if (child.getName().equals("trans-unit")) {
-				child.removeChild("alt-trans");
-				segments.add(child);
-			} else {
-				createList(child);
-			}
+		for (Element child : children) {
+			removeAltTrans(child);
 		}
 	}
 
@@ -598,6 +596,14 @@ public class Merge {
 				if (target.indexOf('.') != -1) {
 					target = target.substring(0, target.lastIndexOf('.'))
 							+ "_" + tgtLanguage + target.substring(target.lastIndexOf('.'));
+				} else {
+					String original = originals.first();
+					if (original.indexOf('.') != -1) {
+						target = original.substring(0, original.lastIndexOf('.'))
+								+ "_" + tgtLanguage + original.substring(original.lastIndexOf('.'));
+					} else {
+						target = original + "_" + tgtLanguage;
+					}
 				}
 			} else {
 				if (target.indexOf('.') != -1) {

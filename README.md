@@ -18,6 +18,8 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
 - **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
 - **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
+- **[Convert XLIFF 1.2 to XLIFF 2.x](https://github.com/rmraya/OpenXLIFF#convert-xliff-12-to-xliff-2x)**
+- **[Convert XLIFF 2.x to XLIFF 1.2](https://github.com/rmraya/OpenXLIFF#convert-xliff-2x-to-xliff-12)**
 - **[Recover ICE (In-Context Exact) Matches](https://github.com/rmraya/OpenXLIFF#recover-ice-in-context-exact-matches)**
 - **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
 - **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
@@ -364,6 +366,43 @@ Where:
 
    -help:      (optional) Display this help information and exit
    -file:      XLIFF file to validate
+   -catalog:   (optional) XML catalog to use for processing
+```
+
+### Convert XLIFF 1.2 to XLIFF 2.x
+
+You can convert XLIFF 1.2 files to XLIFF 2.0, 2.1 or 2.2 using class `com.maxprograms.xliff2.ToXliff2` from your Java code or using the provided scripts.
+
+```text
+Usage:
+
+toxliff2.sh [-help] -source sourceFile -target targetFile [-2.0] [-2.1] [-2.2] [-catalog catalogFile] 
+
+Where:
+
+   -help:      (optional) display this help information and exit
+   -source:    XLIFF 1.2 file to convert
+   -target:    XLIFF 2.x to generate
+   -2.0:       (optional) generate XLIFF 2.0
+   -2.1:       (optional) generate XLIFF 2.1
+   -2.2:       (optional) generate XLIFF 2.2
+   -catalog:   (optional) XML catalog to use for processing
+```
+
+### Convert XLIFF 2.x to XLIFF 1.2
+
+You can convert XLIFF 2.0, 2.1 or 2.2 files to XLIFF 1.2 using class `com.maxprograms.xliff2.FromXliff2` from your Java code or using the provided scripts.
+
+```text
+Usage:
+
+fromxliff2.sh [-help] -source sourceFile -target targetFile [-catalog catalogFile] 
+
+Where:
+
+   -help:      (optional) display this help information and exit
+   -source:    XLIFF 2.x file to convert
+   -target:    XLIFF 1.2 to generate
    -catalog:   (optional) XML catalog to use for processing
 ```
 

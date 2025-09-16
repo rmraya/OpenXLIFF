@@ -27,6 +27,7 @@ public class Xliff1xProcessor {
     private static List<String> namespaces;
     private static int tag;
     private static boolean preserveSpaces = false;
+    private static String currentFile;
 
     private Xliff1xProcessor() {
         // do not instantiate this class
@@ -59,6 +60,9 @@ public class Xliff1xProcessor {
             if (!namespaces.isEmpty()) {
                 renameAttributes(root);
             }
+        }
+        if ("file".equals(root.getName())) {
+            currentFile = root.getAttributeValue("original");
         }
         if ("trans-unit".equals(root.getName()) && !root.getAttributeValue("translate").equals("no")) {
             Element segSource = root.getChild("seg-source");
@@ -95,7 +99,7 @@ public class Xliff1xProcessor {
                             }
                             unit.addContent(target);
                             units.add(unit);
-                            e.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
+                            e.addContent(new PI(Constants.TOOLID, currentFile + "_" + unit.getAttributeValue("id")));
                         }
                     }
                 }
@@ -168,7 +172,7 @@ public class Xliff1xProcessor {
                     unit.addContent(n);
                 }
                 units.add(unit);
-                root.addContent(new PI(Constants.TOOLID, unit.getAttributeValue("id")));
+                root.addContent(new PI(Constants.TOOLID, currentFile + "_" + unit.getAttributeValue("id")));
             }
             return;
         }
