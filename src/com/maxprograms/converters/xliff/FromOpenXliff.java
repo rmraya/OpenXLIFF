@@ -29,6 +29,8 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
@@ -297,6 +299,7 @@ public class FromOpenXliff {
             Element sklMetadata = root.getChild("mda:metadata");
             Element xliffMetadata = fileMetadata.get(currentFile);
             if (sklMetadata != null && xliffMetadata == null) {
+                // remove old metadata
                 root.removeChild(sklMetadata);
             } else if (sklMetadata == null && xliffMetadata != null) {
                 Element metadata = new Element("mda:metadata");
@@ -426,29 +429,41 @@ public class FromOpenXliff {
     }
 
     private static Element toMetadata(String string) {
-        string = string.replace("mda:", "");
         Element metadata = new Element("mda:metadata");
         try {
-            SAXBuilder builder = new SAXBuilder();
-            Document d = builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
-            Element root = d.getRootElement();
-            if (root.hasAttribute("id")) {
-                metadata.setAttribute("id", root.getAttributeValue("id"));
-            }
-            List<Element> groups = root.getChildren();
-            for (Element g : groups) {
-                Element group = new Element("mda:metaGroup");
-                group.setAttributes(g.getAttributes());
-                metadata.addContent(group);
-                List<Element> metas = g.getChildren("meta");
-                for (Element m : metas) {
-                    Element meta = new Element("mda:meta");
-                    meta.setAttributes(m.getAttributes());
-                    meta.setContent(m.getContent());
-                    group.addContent(meta);
+            JSONObject json = new JSONObject(string);
+            if (json.has("data")) {
+                JSONArray groups = json.getJSONArray("data");
+                for (int i = 0; i < groups.length(); i++) {
+                    JSONObject group = groups.getJSONObject(i);
+                    Element g = new Element("mda:metaGroup");
+                    metadata.addContent(g);
+                    if (group.has("id")) {
+                        g.setAttribute("id", group.getString("id"));
+                    }
+                    if (group.has("category")) {
+                        g.setAttribute("category", group.getString("category"));
+                    }
+                    if (group.has("appliesTo")) {
+                        g.setAttribute("appliesTo", group.getString("appliesTo"));
+                    }
+                    if (group.has("meta")) {
+                        JSONArray metas = group.getJSONArray("meta");
+                        for (int j = 0; j < metas.length(); j++) {
+                            JSONObject meta = metas.getJSONObject(j);
+                            Element m = new Element("mda:meta");
+                            g.addContent(m);
+                            if (meta.has("type")) {
+                                m.setAttribute("type", meta.getString("type"));
+                            }
+                            if (meta.has("value")) {
+                                m.setText(meta.getString("value"));
+                            }
+                        }
+                    }
                 }
             }
-        } catch (Exception ex) {
+        } catch (JSONException ex) {
             Logger logger = System.getLogger(FromOpenXliff.class.getName());
             logger.log(Level.ERROR, Messages.getString("FromOpenXliff.3"), ex);
         }

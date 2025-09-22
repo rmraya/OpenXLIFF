@@ -247,20 +247,7 @@ public class FromXliff2 {
 					} else if (category.equals("format")) {
 						Element meta = metaGroup.getChild("mda:meta");
 						file.setAttribute("datatype", meta.getText());
-					} else {
-						Element group = new Element("prop-group");
-						group.setAttribute("name", category);
-						header.addContent(group);
-						List<Element> metaList = metaGroup.getChildren("mda:meta");
-						Iterator<Element> it = metaList.iterator();
-						while (it.hasNext()) {
-							Element meta = it.next();
-							Element prop = new Element("prop");
-							prop.setAttribute("prop-type", meta.getAttributeValue("type"));
-							prop.setContent(meta.getContent());
-							group.addContent(prop);
-						}
-					}
+					} 
 				}
 			}
 
