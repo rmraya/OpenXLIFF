@@ -90,6 +90,7 @@ public class Xliff20 {
 	private boolean isReference;
 	private boolean inSource;
 	private boolean inTarget;
+	private boolean inResourceData;
 	private String fsPrefix = "fs";
 
 	private List<String> knownTypes = Arrays.asList("fmt", "ui", "quote", "link", "image", "other");
@@ -218,6 +219,13 @@ public class Xliff20 {
 						}
 						glossId.add(id);
 					}
+				}
+			}
+
+			if (XLIFF_RESOURCEDATA_2_0.equals(declaredNamespaces.get(namespace))) {
+				// In Resource Data module
+				if ("resourceItem".equals(e.getLocalName())) {
+					inResourceData = true;
 				}
 			}
 		}
@@ -409,7 +417,7 @@ public class Xliff20 {
 				reason = Messages.getString("Xliff20.23");
 				return false;
 			}
-			if (!inMatch) {
+			if (!inMatch && !inResourceData) {
 				String order = e.getAttributeValue("order", "" + segCount);
 				int value = Integer.parseInt(order);
 				if (value > maxSegment) {
@@ -904,6 +912,10 @@ public class Xliff20 {
 		if (XLIFF_MATCHES_2_0.equals(declaredNamespaces.get(namespace)) && "match".equals(e.getLocalName())) {
 			inMatch = false;
 			isReference = false;
+		}
+
+		if (XLIFF_RESOURCEDATA_2_0.equals(declaredNamespaces.get(namespace)) && "resourceItem".equals(e.getLocalName())) {
+			inResourceData = false;
 		}
 
 		// remove namespaces declared in current element
