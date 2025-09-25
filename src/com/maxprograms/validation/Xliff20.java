@@ -24,6 +24,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
@@ -54,7 +55,11 @@ public class Xliff20 {
 	private static final String XLIFF_CHANGETRACKING_2_0 = "urn:oasis:names:tc:xliff:changetracking:2.0";
 	private static final String XLIFF_METADATA_2_0 = "urn:oasis:names:tc:xliff:metadata:2.0";
 	private static final String XLIFF_DOCUMENT_2_0 = "urn:oasis:names:tc:xliff:document:2.0";
+	private static final String XLIFF_ITS_2_1 = "urn:oasis:names:tc:xliff:itsm:2.1";
+	private static final String XLIFF_DOCUMENT_2_2 = "urn:oasis:names:tc:xliff:document:2.2";
+	private static final String XLIFF_PGS_1_0 = "urn:oasis:names:tc:xliff:pgs:1.0";
 	private static final String W3_ORG_XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
+	private static final String W3_ORG_ITS_2_0 = "http://www.w3.org/2005/11/its/";
 
 	private static Logger logger = System.getLogger(Xliff20.class.getName());
 	private String reason = "";
@@ -95,16 +100,34 @@ public class Xliff20 {
 		registry = new RegistryParser();
 	}
 
-	public boolean validate(String file, String catalog) {
+	public boolean validate(String file, String catalog, String version) {
 		try {
 			StreamSource source = new StreamSource(new File(file));
 			resolver = CatalogBuilder.getCatalog(catalog);
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			Source[] schemas = new Source[] { getSource(W3_ORG_XML_NAMESPACE), getSource(XLIFF_DOCUMENT_2_0),
-					getSource(XLIFF_METADATA_2_0), getSource(XLIFF_CHANGETRACKING_2_0), getSource(XLIFF_FS_2_0),
-					getSource(XLIFF_GLOSSARY_2_0), getSource(XLIFF_MATCHES_2_0), getSource(XLIFF_RESOURCEDATA_2_0),
-					getSource(XLIFF_SIZERESTRICTION_2_0), getSource(XLIFF_VALIDATION_2_0) };
-			Schema schema = schemaFactory.newSchema(schemas);
+			List<Source> schemas = new Vector<>();
+			schemas.add(getSource(W3_ORG_XML_NAMESPACE));
+			schemas.add(getSource(XLIFF_METADATA_2_0));
+			schemas.add(getSource(XLIFF_CHANGETRACKING_2_0));
+			schemas.add(getSource(XLIFF_FS_2_0));
+			schemas.add(getSource(XLIFF_GLOSSARY_2_0));
+			schemas.add(getSource(XLIFF_MATCHES_2_0));
+			schemas.add(getSource(XLIFF_RESOURCEDATA_2_0));
+			schemas.add(getSource(XLIFF_SIZERESTRICTION_2_0));
+			schemas.add(getSource(XLIFF_VALIDATION_2_0));
+			if ("2.0".equals(version)) {
+				schemas.add(getSource(XLIFF_DOCUMENT_2_0));
+			} else if ("2.1".equals(version)) {
+				schemas.add(getSource(XLIFF_DOCUMENT_2_0));
+				schemas.add(getSource(XLIFF_ITS_2_1));
+				schemas.add(getSource(W3_ORG_ITS_2_0));
+			} else if ("2.2".equals(version)) {
+				schemas.add(getSource(XLIFF_ITS_2_1));
+				schemas.add(getSource(XLIFF_DOCUMENT_2_2));
+				schemas.add(getSource(XLIFF_PGS_1_0));
+				schemas.add(getSource(W3_ORG_ITS_2_0));
+			}
+			Schema schema = schemaFactory.newSchema(schemas.toArray(new Source[0]));
 			schema.newValidator().validate(source);
 			return validateContent(file);
 		} catch (SAXException | IOException | ParserConfigurationException | URISyntaxException e) {
@@ -1157,6 +1180,6 @@ public class Xliff20 {
 			// custom language code
 			return true;
 		}
-		return !registry.getTagDescription(lang).isEmpty();
+		return lang.equalsIgnoreCase(registry.normalizeCode(lang));
 	}
 }

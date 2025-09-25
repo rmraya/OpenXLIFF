@@ -197,19 +197,15 @@ public class XliffChecker {
 					reason = validator.getReason();
 					return false;
 				}
-			} else if ("2.0".equals(version)) {
+			} else if ("2.0".equals(version) || "2.1".equals(version) || "2.2".equals(version)) {
 				// validate with schemas only, for now
 				Xliff20 validator = new Xliff20();
-				boolean valid = validator.validate(file, catalog);
+				boolean valid = validator.validate(file, catalog, version);
 				if (!valid) {
 					reason = validator.getReason();
 					return false;
 				}
-				return true;
-			} else if ("2.1".equals(version) || "2.2".equals(version)) {
-				MessageFormat mf = new MessageFormat(Messages.getString("XliffChecker.9"));
-				reason = mf.format(new String[] { version });
-				return false;
+				return true;			
 			} else {
 				reason = Messages.getString("XliffChecker.10");
 				return false;
@@ -988,7 +984,7 @@ public class XliffChecker {
 			return false;
 		}
 
-		// check for missing <trans-unite> referenced in <sub>
+		// check for missing <trans-unit> referenced in <sub>
 		if (e.getLocalName().equals("file")) {
 			Set<String> keys = xids.keySet();
 			Iterator<String> it = keys.iterator();
@@ -1020,7 +1016,6 @@ public class XliffChecker {
 	}
 
 	private static boolean checkDate(String date) {
-
 		// YYYY-MM-DDThh:mm:ssZ
 		if (date.length() != 20) {
 			return false;
@@ -1128,7 +1123,7 @@ public class XliffChecker {
 			// custom language code
 			return true;
 		}
-		return !registry.getTagDescription(lang).isEmpty();
+		return lang.equalsIgnoreCase(registry.normalizeCode(lang));
 	}
 
 }
