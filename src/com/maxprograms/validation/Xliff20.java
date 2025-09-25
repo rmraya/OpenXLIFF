@@ -109,7 +109,6 @@ public class Xliff20 {
 			List<Source> schemas = new Vector<>();
 			schemas.add(getSource(W3_ORG_XML_NAMESPACE));
 			schemas.add(getSource(XLIFF_METADATA_2_0));
-			schemas.add(getSource(XLIFF_CHANGETRACKING_2_0));
 			schemas.add(getSource(XLIFF_FS_2_0));
 			schemas.add(getSource(XLIFF_GLOSSARY_2_0));
 			schemas.add(getSource(XLIFF_MATCHES_2_0));
@@ -118,6 +117,7 @@ public class Xliff20 {
 			schemas.add(getSource(XLIFF_VALIDATION_2_0));
 			if ("2.0".equals(version)) {
 				schemas.add(getSource(XLIFF_DOCUMENT_2_0));
+				schemas.add(getSource(XLIFF_CHANGETRACKING_2_0));
 			} else if ("2.1".equals(version)) {
 				schemas.add(getSource(XLIFF_DOCUMENT_2_0));
 				schemas.add(getSource(XLIFF_ITS_2_1));
@@ -914,7 +914,8 @@ public class Xliff20 {
 			isReference = false;
 		}
 
-		if (XLIFF_RESOURCEDATA_2_0.equals(declaredNamespaces.get(namespace)) && "resourceItem".equals(e.getLocalName())) {
+		if (XLIFF_RESOURCEDATA_2_0.equals(declaredNamespaces.get(namespace))
+				&& "resourceItem".equals(e.getLocalName())) {
 			inResourceData = false;
 		}
 
