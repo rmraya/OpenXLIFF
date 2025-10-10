@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
@@ -244,10 +245,32 @@ public class FromXliff2 {
 								file.setAttribute("build-num", meta.getText());
 							}
 						}
+					} else if (category.equals("reviewProject") || category.equals("tool")
+							|| category.equals("sourceFile")) {
+						JSONObject obj = new JSONObject();
+						List<Element> metaList = metaGroup.getChildren("mda:meta");
+						Iterator<Element> it = metaList.iterator();
+						while (it.hasNext()) {
+							Element meta = it.next();
+							String type = meta.getAttributeValue("type");
+							obj.put(type, meta.getText());
+						}
+						List<XMLNode> content = file.getContent();
+						content.add(0, new PI(category, obj.toString()));
+						file.setContent(content);
 					} else if (category.equals("format")) {
 						Element meta = metaGroup.getChild("mda:meta");
 						file.setAttribute("datatype", meta.getText());
-					} 
+					} else if (category.equals("document")) {
+						Element meta = metaGroup.getChild("mda:meta");
+						Element propGroup = new Element("prop-group");
+						propGroup.setAttribute("name", "document");
+						Element prop = new Element("prop");
+						prop.setAttribute("prop-type", "original");
+						prop.setText(meta.getText());
+						propGroup.addContent(prop);
+						header.addContent(propGroup);
+					}
 				}
 			}
 

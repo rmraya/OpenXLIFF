@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
@@ -333,6 +334,20 @@ public class ToXliff2 {
 					PI pi = pit.next();
 					if ("metadata".equals(pi.getTarget())) {
 						file.addContent(pi);
+					} else if ("reviewProject".equals(pi.getTarget()) || "tool".equals(pi.getTarget())
+							|| "document".equals(pi.getTarget()) || "sourceFile".equals(pi.getTarget())) {
+						Element extractedMetaGroup = new Element("mda:metaGroup");
+						extractedMetaGroup.setAttribute("category", pi.getTarget());
+						JSONObject obj = new JSONObject(pi.getData());
+						Iterator<String> keys = obj.keys();
+						while (keys.hasNext()) {
+							String key = keys.next();
+							Element meta = new Element("mda:meta");
+							meta.setAttribute("type", key);
+							meta.addContent(obj.getString(key));
+							extractedMetaGroup.addContent(meta);
+						}
+						fileMetadata.addContent(extractedMetaGroup);
 					} else {
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", pi.getTarget());

@@ -126,9 +126,10 @@ task copyShells {
                 include '*.sh'
             }
             
-            // Make shell scripts executable
+            // Make all shell scripts executable with proper permissions
             fileTree('dist').matching { include '**/*.sh' }.each { file ->
-                file.setExecutable(true, false)
+                file.setExecutable(true, false)  // executable for owner and group
+                file.setReadable(true, false)    // readable for owner and group
             }
         }
     }
