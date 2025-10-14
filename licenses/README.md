@@ -20,4 +20,4 @@ OpenXLIFF Filters uses these libraries:
 ## XMLJava
 
 - Available from <https://github.com/rmraya/XMLJava>
-- Published under [Eclipse Public License v1.0](https://raw.githubusercontent.com/rmraya/XMLJava/main/LICENSE)
+- Published under [GNU AFFERO GENERAL PUBLIC LICENSE, Version 3](https://raw.githubusercontent.com/rmraya/XMLJava/main/LICENSE)
