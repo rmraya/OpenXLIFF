@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -44,7 +45,6 @@ public class Story2Xliff {
 	private static String sourceLanguage;
 	private static String targetLanguage;
 	private static String srcEncoding;
-	private static Segmenter segmenter;
 	private static FileOutputStream output;
 	private static FileOutputStream skeleton;
 	private static int id = 1;
@@ -67,6 +67,7 @@ public class Story2Xliff {
 		String initSegmenter = params.get("srxFile");
 		String catalog = params.get("catalog");
 		boolean paragraphSegmentation = false;
+		Segmenter segmenter = null;
 
 		if (elementSegmentation == null) {
 			paragraphSegmentation = false;
@@ -76,7 +77,7 @@ public class Story2Xliff {
 
 		try {
 			if (!paragraphSegmentation) {
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
+				segmenter = SegmenterPool.getSegmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
 			}
 			skeleton = new FileOutputStream(skeletonFile);
 			output = new FileOutputStream(xliffFile);
@@ -119,7 +120,7 @@ public class Story2Xliff {
 									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\"");
 						}
 						writeSkeleton(">");
-						processStory(e);
+						processStory(segmenter, e);
 						writeSkeleton("</" + e.getName() + ">");
 					} else {
 						writeSkeleton(e.toString());
@@ -242,7 +243,7 @@ public class Story2Xliff {
 		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void processStory(Element root) throws IOException {
+	private static void processStory(Segmenter segmenter, Element root) throws IOException {
 		List<XMLNode> content = root.getContent();
 		Iterator<XMLNode> nit = content.iterator();
 		while (nit.hasNext()) {
@@ -254,7 +255,7 @@ public class Story2Xliff {
 				Element e = (Element) n;
 				if (e.getName().equals("ParagraphStyleRange")) {
 					if (hasText(e)) {
-						processPara(e);
+						processPara(segmenter, e);
 					} else {
 						writeSkeleton(e.toString());
 					}
@@ -271,7 +272,7 @@ public class Story2Xliff {
 									+ Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
 						}
 						writeSkeleton(">");
-						processStory(e);
+						processStory(segmenter, e);
 						writeSkeleton("</" + e.getName() + ">");
 					}
 				}
@@ -285,7 +286,7 @@ public class Story2Xliff {
 		}
 	}
 
-	private static void processPara(Element e) throws IOException {
+	private static void processPara(Segmenter segmenter, Element e) throws IOException {
 		cleanAttributes(e);
 		mergeStyles(e);
 		writeSkeleton("<" + e.getName());

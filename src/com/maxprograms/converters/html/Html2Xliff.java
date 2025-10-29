@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -68,7 +69,6 @@ public class Html2Xliff {
 	private static boolean segByElement;
 	private static boolean keepFormat;
 
-	private static Segmenter segmenter;
 	private static String first;
 	private static String last;
 	private static String targetLanguage;
@@ -91,6 +91,7 @@ public class Html2Xliff {
 		srcEncoding = params.get("srcEncoding");
 		String catalog = params.get("catalog");
 		String paragraphSegmentation = params.get("paragraph");
+		Segmenter segmenter = null;
 		if (paragraphSegmentation == null) {
 			segByElement = false;
 		} else {
@@ -104,7 +105,8 @@ public class Html2Xliff {
 			builder = new SAXBuilder();
 			if (!segByElement) {
 				String initSegmenter = params.get("srxFile");
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
+				segmenter = SegmenterPool.getSegmenter(initSegmenter, sourceLanguage,
+						CatalogBuilder.getCatalog(catalog));
 			}
 			try (FileInputStream input = new FileInputStream(inputFile)) {
 				skeleton = new FileOutputStream(skeletonFile);
@@ -121,7 +123,7 @@ public class Html2Xliff {
 				String file = new String(array, srcEncoding);
 				buildTables();
 				buildList(file);
-				processList();
+				processList(segmenter);
 
 				skeleton.close();
 				writeString("</body>\n");
@@ -163,11 +165,12 @@ public class Html2Xliff {
 		writeString("<body>\n");
 	}
 
-	private static void processList() throws IOException, SAXException, ParserConfigurationException {
+	private static void processList(Segmenter segmenter)
+		throws IOException, SAXException, ParserConfigurationException {
 		for (int i = 0; i < segments.size(); i++) {
 			String text = segments.get(i);
 			if (isTranslateable(text)) {
-				extractSegment(text);
+				extractSegment(segmenter, text);
 			} else {
 				// send directly to skeleton
 				writeSkeleton(text);
@@ -175,7 +178,8 @@ public class Html2Xliff {
 		}
 	}
 
-	private static void extractSegment(String seg) throws IOException, SAXException, ParserConfigurationException {
+	private static void extractSegment(Segmenter segmenter, String seg)
+		throws IOException, SAXException, ParserConfigurationException {
 
 		// start by making a smaller list
 

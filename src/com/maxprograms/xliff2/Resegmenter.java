@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
@@ -38,9 +39,11 @@ import com.maxprograms.xml.XMLOutputter;
 
 public class Resegmenter {
 
-    private static Segmenter segmenter;
-    private static boolean canResegment;
-    private static boolean translate;
+    private static final class Context {
+        Segmenter segmenter;
+        boolean canResegment;
+        boolean translate;
+    }
 
     private Resegmenter() {
         // do not instantiate this class
@@ -50,12 +53,13 @@ public class Resegmenter {
     public static List<String> run(String xliff, String srx, String srcLang, Catalog catalog) {
         List<String> result = new ArrayList<>();
         try {
-            segmenter = new Segmenter(srx, srcLang, catalog);
+            Context ctx = new Context();
+            ctx.segmenter = SegmenterPool.getSegmenter(srx, srcLang, catalog);
             SAXBuilder builder = new SAXBuilder();
             builder.setEntityResolver(catalog);
             Document doc = builder.build(xliff);
             Element root = doc.getRootElement();
-            recurse(root);
+            recurse(ctx, root);
             try (FileOutputStream out = new FileOutputStream(new File(xliff))) {
                 XMLOutputter outputter = new XMLOutputter();
                 outputter.preserveSpace(true);
@@ -86,17 +90,20 @@ public class Resegmenter {
                 && e.getContent().get(e.getContent().size() - 1).getNodeType() == XMLNode.ELEMENT_NODE;
     }
 
-    private static void recurse(Element root) throws SAXException, IOException, ParserConfigurationException {
+    private static void recurse(Context ctx, Element root)
+            throws SAXException, IOException, ParserConfigurationException {
         if ("file".equals(root.getName())) {
-            canResegment = "yes".equals(root.getAttributeValue("canResegment", "yes"));
-            translate = "yes".equals(root.getAttributeValue("translate", "yes"));
+            ctx.canResegment = "yes".equals(root.getAttributeValue("canResegment", "yes"));
+            ctx.translate = "yes".equals(root.getAttributeValue("translate", "yes"));
         } else if (root.hasAttribute("canResegment")) {
-            canResegment = "yes".equals(root.getAttributeValue("canResegment", canResegment ? "yes" : "no"));
-            translate = "yes".equals(root.getAttributeValue("translate", translate ? "yes" : "no"));
+            ctx.canResegment = "yes"
+                    .equals(root.getAttributeValue("canResegment", ctx.canResegment ? "yes" : "no"));
+            ctx.translate = "yes"
+                    .equals(root.getAttributeValue("translate", ctx.translate ? "yes" : "no"));
         }
         if ("unit".equals(root.getName())) {
             boolean hasMatches = !root.getChildren("mtc:matches").isEmpty();
-            if (translate && canResegment && !hasMatches && root.getChildren("segment").size() == 1) {
+            if (ctx.translate && ctx.canResegment && !hasMatches && root.getChildren("segment").size() == 1) {
                 Element segment = root.getChild("segment");
                 String originalId = segment.getAttributeValue("id");
                 String unitId = root.getAttributeValue("id");
@@ -105,7 +112,7 @@ public class Resegmenter {
                 boolean isSourceCopy = target != null && source.getContent().equals(target.getContent());
                 boolean isEmpty = target != null && target.getContent().isEmpty();
                 if (target == null || isSourceCopy || isEmpty) {
-                    Element segSource = segmenter.segment(source);
+                    Element segSource = ctx.segmenter.segment(source);
                     int newSegments = segSource.getChildren("mrk").size();
                     int id = 0;
                     root.removeChild(segment);
@@ -179,7 +186,7 @@ public class Resegmenter {
             List<Element> children = root.getChildren();
             Iterator<Element> it = children.iterator();
             while (it.hasNext()) {
-                recurse(it.next());
+                recurse(ctx, it.next());
             }
         }
     }

@@ -31,16 +31,19 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.CatalogBuilder;
 
 public class Text2Xliff {
 
-	private static FileOutputStream output;
-	private static FileOutputStream skeleton;
-	private static String source;
-	private static int segId;
-	private static Segmenter segmenter;
-	private static boolean segByElement;
+	private static final class Context {
+		FileOutputStream output;
+		FileOutputStream skeleton;
+		String source = "";
+		int segId;
+		Segmenter segmenter;
+		boolean segByElement;
+	}
 
 	private Text2Xliff() {
 		// do not instantiate this class
@@ -49,7 +52,8 @@ public class Text2Xliff {
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
-		segId = 0;
+		Context ctx = new Context();
+		ctx.segId = 0;
 
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -65,48 +69,47 @@ public class Text2Xliff {
 			tgtLang = "\" target-language=\"" + targetLanguage;
 		}
 
-		segByElement = "yes".equals(elementSegmentation);
-
-		source = "";
+		ctx.segByElement = "yes".equals(elementSegmentation);
 		try {
-			if (!segByElement) {
+			if (!ctx.segByElement) {
 				String initSegmenter = params.get("srxFile");
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
+				ctx.segmenter = SegmenterPool.getSegmenter(initSegmenter, sourceLanguage,
+						CatalogBuilder.getCatalog(catalog));
 			}
 			FileInputStream stream = new FileInputStream(inputFile);
 			try (InputStreamReader input = new InputStreamReader(stream, srcEncoding)) {
 				BufferedReader buffer = new BufferedReader(input);
 
-				output = new FileOutputStream(xliffFile);
+				ctx.output = new FileOutputStream(xliffFile);
 
-				writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-				writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
+				writeString(ctx, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+				writeString(ctx, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 						+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 						+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 
-				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
+				writeString(ctx, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
 						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"plaintext\">\n");
-				writeString("<header>\n");
-				writeString("   <skl>\n");
-				writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
-				writeString("   </skl>\n");
-				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+				writeString(ctx, "<header>\n");
+				writeString(ctx, "   <skl>\n");
+				writeString(ctx, "      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+				writeString(ctx, "   </skl>\n");
+				writeString(ctx, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
-				writeString("</header>\n");
-				writeString("<?encoding " + srcEncoding + "?>\n");
-				writeString("<body>\n");
+				writeString(ctx, "</header>\n");
+				writeString(ctx, "<?encoding " + srcEncoding + "?>\n");
+				writeString(ctx, "<body>\n");
 
-				skeleton = new FileOutputStream(skeletonFile);
+				ctx.skeleton = new FileOutputStream(skeletonFile);
 
 				if (breakOnCRLF) {
-					source = buffer.readLine();
-					while (source != null) {
-						if (source.isBlank()) {
-							writeSkeleton(source + "\n");
+					ctx.source = buffer.readLine();
+					while (ctx.source != null) {
+						if (ctx.source.isBlank()) {
+							writeSkeleton(ctx, ctx.source + "\n");
 						} else {
-							writeSegment();
+							writeSegment(ctx);
 						}
-						source = buffer.readLine();
+						ctx.source = buffer.readLine();
 					}
 				} else {
 					String line = buffer.readLine();
@@ -116,27 +119,27 @@ public class Text2Xliff {
 						if (line.isBlank()) {
 							// no text in this line
 							// segment separator
-							writeSkeleton(line);
+							writeSkeleton(ctx, line);
 						} else {
 							while (line != null && !line.isBlank()) {
-								source = source + line;
+								ctx.source = ctx.source + line;
 								line = buffer.readLine();
 								if (line != null) {
 									line = line + "\n";
 								}
 							}
-							writeSegment();
+							writeSegment(ctx);
 						}
 						line = buffer.readLine();
 					}
 				}
-				skeleton.close();
+				ctx.skeleton.close();
 
-				writeString("</body>\n");
-				writeString("</file>\n");
-				writeString("</xliff>");
+				writeString(ctx, "</body>\n");
+				writeString(ctx, "</file>\n");
+				writeString(ctx, "</xliff>");
 			}
-			output.close();
+			ctx.output.close();
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
 			Logger logger = System.getLogger(Text2Xliff.class.getName());
@@ -148,33 +151,33 @@ public class Text2Xliff {
 		return result;
 	}
 
-	private static void writeString(String string) throws IOException {
-		output.write(string.getBytes(StandardCharsets.UTF_8));
+	private static void writeString(Context ctx, String string) throws IOException {
+		ctx.output.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void writeSkeleton(String string) throws IOException {
-		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
+	private static void writeSkeleton(Context ctx, String string) throws IOException {
+		ctx.skeleton.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void writeSegment() throws IOException {
+	private static void writeSegment(Context ctx) throws IOException {
 		String[] segments;
-		if (!segByElement) {
-			segments = segmenter.segment(source);
+		if (!ctx.segByElement) {
+			segments = ctx.segmenter.segment(ctx.source);
 		} else {
 			segments = new String[1];
-			segments[0] = source;
+			segments[0] = ctx.source;
 		}
 		for (int i = 0; i < segments.length; i++) {
 			if (Utils.cleanString(segments[i]).trim().isEmpty()) {
-				writeSkeleton(segments[i]);
+				writeSkeleton(ctx, segments[i]);
 			} else {
-				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
+				writeString(ctx, "   <trans-unit id=\"" + ctx.segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
 						+ "      <source>" + Utils.cleanString(segments[i]) + "</source>\n");
-				writeString("   </trans-unit>\n");
-				writeSkeleton("%%%" + segId++ + "%%%\n");
+				writeString(ctx, "   </trans-unit>\n");
+				writeSkeleton(ctx, "%%%" + ctx.segId++ + "%%%\n");
 			}
 		}
-		source = "";
+		ctx.source = "";
 	}
 
 }
