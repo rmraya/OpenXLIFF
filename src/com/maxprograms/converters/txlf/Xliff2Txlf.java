@@ -216,6 +216,9 @@ public class Xliff2Txlf {
         sb.append("</target>");
         SAXBuilder builder = new SAXBuilder();
         String string = sb.toString();
+        if (string.indexOf("gs4tr:") != -1) {
+            string = string.replace("<target>", "<target xmlns:gs4tr=\"http://www.gs4tr.org/schema/xliff-ext\">");
+        }
         Document d = builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
         target.setContent(d.getRootElement().getContent());
     }

@@ -36,6 +36,7 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class Txlf2Xliff {
 
@@ -230,7 +231,7 @@ public class Txlf2Xliff {
                             || "bpt".equals(name) || "ept".equals(name) || "it".equals(name)) {
                         Element ph = new Element("ph");
                         ph.setAttribute("id", "" + tag++);
-                        ph.setText(e.toString());
+                        ph.setText(XMLUtils.cleanText(e.toString()));
                         result.add(ph);
                     }
                     if ("mrk".equals(name)) {
