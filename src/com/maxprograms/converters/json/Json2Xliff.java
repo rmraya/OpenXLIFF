@@ -24,14 +24,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,9 +42,9 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.EncodingResolver;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.DTDParser;
@@ -55,20 +54,22 @@ import com.maxprograms.xml.Grammar;
 
 public class Json2Xliff {
 
-    private static boolean paragraphSegmentation;
-    private static Segmenter segmenter;
-    private static Segmenter targetSegmenter;
-    private static String tgtLang;
-    private static int id;
-    private static List<Element> segments;
-    private static Set<String> ids;
-    private static int bomLength = 0;
-    private static List<String[]> entities;
-    private static Map<String, String> entitiesFound;
-    private static boolean trimTags;
-    private static boolean mergeTags;
-    private static boolean rawSegmentation;
-    private static List<String> htmlIgnore;
+    private static final class Context {
+        boolean paragraphSegmentation;
+        Segmenter segmenter;
+        Segmenter targetSegmenter;
+        String tgtLang = "";
+        int id;
+        final List<Element> segments = new ArrayList<>();
+        final Set<String> ids = new HashSet<>();
+        List<String[]> entities = new ArrayList<>();
+        final Map<String, String> entitiesFound = new HashMap<>();
+        boolean trimTags = true;
+        boolean mergeTags = true;
+        boolean rawSegmentation;
+        List<String> htmlIgnore = new ArrayList<>();
+        boolean exportHTML;
+    }
 
     private Json2Xliff() {
         // do not instantiate this class
@@ -76,18 +77,8 @@ public class Json2Xliff {
     }
 
     public static List<String> run(Map<String, String> params) {
+        Context ctx = new Context();
         List<String> result = new ArrayList<>();
-
-        id = 0;
-        segments = new ArrayList<>();
-        ids = new HashSet<>();
-        trimTags = true;
-        mergeTags = true;
-        rawSegmentation = false;
-        boolean exportHTML = false;
-        entities = new ArrayList<>();
-        htmlIgnore = new ArrayList<>();
-        entitiesFound = new Hashtable<>();
 
         String inputFile = params.get("source");
         String xliffFile = params.get("xliff");
@@ -95,51 +86,48 @@ public class Json2Xliff {
         String sourceLanguage = params.get("srcLang");
         String targetLanguage = params.get("tgtLang");
         String encoding = params.get("srcEncoding");
-        String paragraph = params.get("paragraph");
-        paragraphSegmentation = "yes".equals(paragraph);
+        ctx.paragraphSegmentation = "yes".equals(params.get("paragraph"));
         String initSegmenter = params.get("srxFile");
         String catalogFile = params.get("catalog");
-        tgtLang = "";
         if (targetLanguage != null) {
-            tgtLang = "\" target-language=\"" + targetLanguage;
+            ctx.tgtLang = "\" target-language=\"" + targetLanguage;
         }
         try {
             Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
-            bomLength = EncodingResolver.getBOM(inputFile) == null ? 0 : 1;
-            Object json = loadFile(inputFile, encoding);
-            if (!paragraphSegmentation) {
-                segmenter = new Segmenter(initSegmenter, sourceLanguage, catalog);
+            Object json = loadFile(ctx, inputFile, encoding);
+            if (!ctx.paragraphSegmentation) {
+                ctx.segmenter = SegmenterPool.getSegmenter(initSegmenter, sourceLanguage, catalog);
                 if (targetLanguage != null) {
-                    targetSegmenter = new Segmenter(initSegmenter, targetLanguage, catalog);
+                    ctx.targetSegmenter = SegmenterPool.getSegmenter(initSegmenter, targetLanguage, catalog);
                 }
             }
             String configFile = params.get("config");
             if (configFile != null) {
                 JsonConfig config = JsonConfig.parseFile(configFile);
-                trimTags = config.getTrimTags();
-                mergeTags = config.getMergeTags();
-                rawSegmentation = config.getRawSegmentation();
-                exportHTML = config.getExportHTML();
-                htmlIgnore = config.getHtmlIgnore();
+                ctx.trimTags = config.getTrimTags();
+                ctx.mergeTags = config.getMergeTags();
+                ctx.rawSegmentation = config.getRawSegmentation();
+                ctx.exportHTML = config.getExportHTML();
+                ctx.htmlIgnore = new ArrayList<>(config.getHtmlIgnore());
                 if (config.getParseEntities()) {
-                    entities = loadEntities(catalog);
-                    entities.add(new String[] { "&lt;", "<" });
-                    entities.add(new String[] { "&amp;", "&" });
+                    ctx.entities = loadEntities(catalog);
+                    ctx.entities.add(new String[] { "&lt;", "<" });
+                    ctx.entities.add(new String[] { "&amp;", "&" });
                 }
                 if (json instanceof JSONObject obj) {
-                    parseJson(obj, config);
+                    parseJson(ctx, obj, config);
                 } else {
-                    parseArray((JSONArray) json, config);
+                    parseArray(ctx, (JSONArray) json, config);
                 }
             } else {
                 if (json instanceof JSONObject obj) {
-                    parseJson(obj);
+                    parseJson(ctx, obj);
                 } else {
-                    parseArray((JSONArray) json);
+                    parseArray(ctx, (JSONArray) json);
                 }
             }
 
-            if (segments.isEmpty()) {
+            if (ctx.segments.isEmpty()) {
                 result.add(Constants.ERROR);
                 result.add(Messages.getString("Json2Xliff.1"));
                 return result;
@@ -158,8 +146,8 @@ public class Json2Xliff {
                 writeString(out, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
                         + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
                         + "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-                writeString(out, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-                        + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"x-json\">\n");
+                writeString(out, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage
+                        + ctx.tgtLang + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"x-json\">\n");
                 writeString(out, "<header>\n");
                 writeString(out, "   <skl>\n");
                 writeString(out, "      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
@@ -167,18 +155,17 @@ public class Json2Xliff {
                 writeString(out, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD
                         + "\" tool-id=\"" + Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
                 writeString(out, "</header>\n");
-                if (!entities.isEmpty() && !exportHTML) {
+                if (!ctx.entities.isEmpty() && !ctx.exportHTML) {
                     writeString(out, "<?escaped yes?>\n");
                 }
-                if (exportHTML) {
+                if (ctx.exportHTML) {
                     writeString(out, "<?exportHTML yes?>\n");
-                    if (!entitiesFound.isEmpty()) {
+                    if (!ctx.entitiesFound.isEmpty()) {
                         StringBuilder sb = new StringBuilder("<?entities ");
-                        Set<String> keys = entitiesFound.keySet();
-                        Iterator<String> it = keys.iterator();
+                        Iterator<String> it = ctx.entitiesFound.keySet().iterator();
                         while (it.hasNext()) {
                             String key = it.next();
-                            String value = entitiesFound.get(key);
+                            String value = ctx.entitiesFound.get(key);
                             sb.append(key);
                             sb.append("|");
                             sb.append(value);
@@ -193,8 +180,8 @@ public class Json2Xliff {
                 writeString(out, "<?encoding " + encoding + "?>\n");
                 writeString(out, "<body>\n");
 
-                for (int i = 0; i < segments.size(); i++) {
-                    writeString(out, "  " + segments.get(i).toString() + "\n");
+                for (Element segment : ctx.segments) {
+                    writeString(out, "  " + segment + "\n");
                 }
 
                 writeString(out, "</body>\n");
@@ -213,7 +200,7 @@ public class Json2Xliff {
 
     protected static List<String[]> loadEntities(Catalog catalog)
             throws SAXException, IOException, NumberFormatException {
-        List<String[]> result = new Vector<>();
+        List<String[]> result = new ArrayList<>();
 
         Pattern pattern = Pattern.compile("&#[\\d]+;");
 
@@ -271,7 +258,7 @@ public class Json2Xliff {
         out.write(string.getBytes(StandardCharsets.UTF_8));
     }
 
-    protected static Object loadFile(String file, String charset) throws IOException {
+    protected static Object loadFile(Context ctx, String file, String charset) throws IOException {
         StringBuilder builder = new StringBuilder();
         try (FileReader stream = new FileReader(new File(file), Charset.forName(charset))) {
             try (BufferedReader reader = new BufferedReader(stream)) {
@@ -284,36 +271,47 @@ public class Json2Xliff {
                 }
             }
         }
-        for (int i = bomLength; i < builder.length(); i++) {
-            if (builder.charAt(i) == '[') {
-                return new JSONArray(builder.toString().substring(bomLength));
-            }
-            if (builder.charAt(i) == '{') {
-                return new JSONObject(builder.toString().substring(bomLength));
-            }
-            if (!Character.isSpaceChar(builder.charAt(i))) {
-                break;
-            }
+        String content = builder.toString();
+        if (!content.isEmpty() && content.charAt(0) == '\uFEFF') {
+            content = content.substring(1);
+        }
+        int index = 0;
+        while (index < content.length() && Character.isWhitespace(content.charAt(index))) {
+            index++;
+        }
+        if (index >= content.length()) {
+            throw new IOException(Messages.getString("Json2Xliff.2"));
+        }
+        char first = content.charAt(index);
+        if (first == '[') {
+            return new JSONArray(content);
+        }
+        if (first == '{') {
+            return new JSONObject(content);
         }
         throw new IOException(Messages.getString("Json2Xliff.2"));
     }
 
-    private static void parseJson(JSONObject json) {
+    protected static Object loadFile(String file, String charset) throws IOException {
+        return loadFile(new Context(), file, charset);
+    }
+
+    private static void parseJson(Context ctx, JSONObject json) {
         Iterator<String> it = json.keys();
         while (it.hasNext()) {
             String key = it.next();
             Object obj = json.get(key);
             if (obj instanceof JSONObject js) {
-                parseJson(js);
+                parseJson(ctx, js);
             } else if (obj instanceof String string) {
-                json.put(key, parseText(string, false));
+                json.put(key, parseText(ctx, string, false));
             } else if (obj instanceof JSONArray array) {
-                parseArray(array);
+                parseArray(ctx, array);
             }
         }
     }
 
-    private static void parseJson(JSONObject json, JsonConfig config)
+    private static void parseJson(Context ctx, JSONObject json, JsonConfig config)
             throws IOException, SAXException, ParserConfigurationException {
         List<String> translatableKeys = config.getSourceKeys();
         List<String> ignorable = config.getIgnorableKeys();
@@ -327,8 +325,8 @@ public class Json2Xliff {
                     throw new IOException(mf.format(new String[] { sourceKey }));
                 }
                 String sourceText = json.get(sourceKey) instanceof String ? json.getString(sourceKey) : "";
-                if (!entities.isEmpty()) {
-                    sourceText = replaceEntities(sourceText);
+                if (!ctx.entities.isEmpty()) {
+                    sourceText = replaceEntities(ctx, sourceText);
                 }
                 String targetKey = configuration.has(JsonConfig.TARGETKEY)
                         ? configuration.getString(JsonConfig.TARGETKEY)
@@ -336,8 +334,8 @@ public class Json2Xliff {
                 String targetText = json.has(targetKey) && json.get(targetKey) instanceof String
                         ? json.getString(targetKey)
                         : "";
-                if (!entities.isEmpty()) {
-                    targetText = replaceEntities(targetText);
+                if (!ctx.entities.isEmpty()) {
+                    targetText = replaceEntities(ctx, targetText);
                 }
                 String idKey = configuration.has(JsonConfig.IDKEY) ? configuration.getString(JsonConfig.IDKEY) : "";
                 String idString = "";
@@ -370,14 +368,14 @@ public class Json2Xliff {
                 String resnameText = json.has(resnameKey) ? json.getString(resnameKey) : "";
                 String noteKey = configuration.has(JsonConfig.NOTEKEY) ? configuration.getString(JsonConfig.NOTEKEY)
                         : "";
-                List<String> notes = json.has(noteKey) ? harvestNotes(json.get(noteKey))
+                List<String> notes = json.has(noteKey) ? harvestNotes(ctx, json.get(noteKey))
                         : new ArrayList<>();
                 boolean replicate = false;
                 if (configuration.has(JsonConfig.REPLICATE)) {
                     replicate = configuration.getBoolean(JsonConfig.REPLICATE);
                 }
                 parsedKeys.add(sourceKey);
-                if (!targetKey.isEmpty() && !tgtLang.isEmpty()) {
+                if (!targetKey.isEmpty() && !ctx.tgtLang.isEmpty()) {
                     parsedKeys.add(targetKey);
                 }
                 if (!idKey.isEmpty()) {
@@ -389,24 +387,24 @@ public class Json2Xliff {
                 if (!resnameText.isEmpty()) {
                     parsedKeys.add(resnameKey);
                 }
-                ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceText, trimTags,
-                        mergeTags, htmlIgnore, config.getPreserveSpaces());
-                ElementHolder targetHolder = ElementBuilder.buildElement("target", targetText, trimTags,
-                        mergeTags, htmlIgnore, config.getPreserveSpaces());
+                ElementHolder sourceHolder = ElementBuilder.buildElement("source", sourceText, ctx.trimTags,
+                        ctx.mergeTags, ctx.htmlIgnore, config.getPreserveSpaces());
+                ElementHolder targetHolder = ElementBuilder.buildElement("target", targetText, ctx.trimTags,
+                        ctx.mergeTags, ctx.htmlIgnore, config.getPreserveSpaces());
 
                 Element fullSource = sortTags(sourceHolder.getElement());
                 Element fullTarget = matchTags(fullSource, targetHolder.getElement());
 
-                List<Element> sourceList = new Vector<>();
-                if (segmenter != null) {
-                    Element segmentedSource = segmenter.segment(fullSource);
+                List<Element> sourceList = new ArrayList<>();
+                if (ctx.segmenter != null) {
+                    Element segmentedSource = ctx.segmenter.segment(fullSource);
                     sourceList.addAll(splitSegmented("source", segmentedSource));
                 } else {
                     sourceList.add(fullSource);
                 }
-                List<Element> targetList = new Vector<>();
-                if (targetSegmenter != null) {
-                    Element segmentedTarget = targetSegmenter.segment(fullTarget);
+                List<Element> targetList = new ArrayList<>();
+                if (ctx.targetSegmenter != null) {
+                    Element segmentedTarget = ctx.targetSegmenter.segment(fullTarget);
                     targetList.addAll(splitSegmented("target", segmentedTarget));
                 } else {
                     targetList.add(fullTarget);
@@ -426,12 +424,12 @@ public class Json2Xliff {
                         transUnit.setAttribute("resname", resnameText);
                     }
                     String suffix = sourceList.size() > 1 ? "-" + (h + 1) : "";
-                    transUnit.setAttribute("id", idString.isEmpty() ? "" + id : idString + suffix);
-                    if (ids.contains(transUnit.getAttributeValue("id"))) {
+                    transUnit.setAttribute("id", idString.isEmpty() ? "" + ctx.id : idString + suffix);
+                    if (ctx.ids.contains(transUnit.getAttributeValue("id"))) {
                         MessageFormat mf = new MessageFormat(Messages.getString("Json2Xliff.4"));
                         throw new IOException(mf.format(new String[] { transUnit.getAttributeValue("id") }));
                     }
-                    ids.add(transUnit.getAttributeValue("id"));
+                    ctx.ids.add(transUnit.getAttributeValue("id"));
                     transUnit.addContent("\n    ");
 
                     Element source = sourceList.get(h);
@@ -440,12 +438,12 @@ public class Json2Xliff {
                         transUnit.setAttribute("xml:space", "preserve");
                     }
                     boolean hasTarget = false;
-                    if (tgtLang.isEmpty() || targetText.isEmpty()) {
+                    if (ctx.tgtLang.isEmpty() || targetText.isEmpty()) {
                         if (h == 0) {
                             sb.append(sourceHolder.getStart());
                         }
                         sb.append("%%%");
-                        sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
+                        sb.append(idString.isEmpty() ? "" + ctx.id++ : transUnit.getAttributeValue("id"));
                         sb.append("%%%");
                         if (h == sourceList.size() - 1) {
                             sb.append(sourceHolder.getEnd());
@@ -460,7 +458,7 @@ public class Json2Xliff {
                             sb.append(targetHolder.getStart());
                         }
                         sb.append("%%%");
-                        sb.append(idString.isEmpty() ? "" + id++ : transUnit.getAttributeValue("id"));
+                        sb.append(idString.isEmpty() ? "" + ctx.id++ : transUnit.getAttributeValue("id"));
                         sb.append("%%%");
                         if (h == sourceList.size() - 1) {
                             sb.append(targetHolder.getEnd());
@@ -476,54 +474,51 @@ public class Json2Xliff {
                         transUnit.setAttribute("ts", "crlf");
                     }
                     if (!notes.isEmpty() && (replicate || h == 0)) {
-                        // add notes to all segments if "replicate"
-                        // otherwise, only to first segment
-                        Iterator<String> it = notes.iterator();
-                        while (it.hasNext()) {
+                        Iterator<String> noteIt = notes.iterator();
+                        while (noteIt.hasNext()) {
                             Element note = new Element("note");
-                            note.setText(it.next());
+                            note.setText(noteIt.next());
                             transUnit.addContent("\n    ");
                             transUnit.addContent(note);
                         }
                     }
                     transUnit.addContent("\n  ");
                     if (transUnit.getChild("source").getText().isBlank()) {
-                        String id = "%%%" + transUnit.getAttributeValue("id") + "%%%";
+                        String idRef = "%%%" + transUnit.getAttributeValue("id") + "%%%";
                         Element target = transUnit.getChild("target");
                         if (target != null) {
-                            json.put(targetKey, json.getString(targetKey).replace(id, target.getText()));
+                            json.put(targetKey, json.getString(targetKey).replace(idRef, target.getText()));
                         } else {
                             json.put(sourceKey,
-                                    json.getString(sourceKey).replace(id, transUnit.getChild("source").getText()));
+                                    json.getString(sourceKey).replace(idRef, transUnit.getChild("source").getText()));
                         }
                     } else {
-                        segments.add(transUnit);
+                        ctx.segments.add(transUnit);
                     }
                 }
             }
         }
-        // parse keys not handled by configuration
         Iterator<String> it = json.keys();
         while (it.hasNext()) {
             String key = it.next();
             if (!parsedKeys.contains(key) && !ignorable.contains(key)) {
                 Object object = json.get(key);
                 if (object instanceof JSONObject jsobj) {
-                    parseJson(jsobj, config);
+                    parseJson(ctx, jsobj, config);
                 } else if (object instanceof String string) {
-                    if (!entities.isEmpty()) {
-                        string = replaceEntities(string);
+                    if (!ctx.entities.isEmpty()) {
+                        string = replaceEntities(ctx, string);
                     }
-                    json.put(key, parseText(string, config.getPreserveSpaces()));
+                    json.put(key, parseText(ctx, string, config.getPreserveSpaces()));
                 } else if (object instanceof JSONArray array) {
-                    parseArray(array, config);
+                    parseArray(ctx, array, config);
                 }
             }
         }
     }
 
     private static List<Element> splitSegmented(String name, Element segmented) {
-        List<Element> result = new Vector<>();
+        List<Element> result = new ArrayList<>();
         List<Element> marks = segmented.getChildren("mrk");
         for (int i = 0; i < marks.size(); i++) {
             Element mrk = marks.get(i);
@@ -571,19 +566,18 @@ public class Json2Xliff {
         return target;
     }
 
-    private static String replaceEntities(String string) {
-        if (string.isEmpty() || entities.isEmpty()) {
+    private static String replaceEntities(Context ctx, String string) {
+        if (string.isEmpty() || ctx.entities.isEmpty()) {
             return string;
         }
         String result = string;
-        for (int i = 0; i < entities.size(); i++) {
-            String[] entry = entities.get(i);
+        for (String[] entry : ctx.entities) {
             String key = entry[0];
             String value = entry[1];
             int index = result.indexOf(key);
             while (index != -1) {
                 if (!"&gt;".equals(key) && !"&lt;".equals(key) && !"&amp;".equals(key) && !"&quote;".equals(key)) {
-                    entitiesFound.put(key, value);
+                    ctx.entitiesFound.put(key, value);
                 }
                 String start = result.substring(0, index);
                 String end = result.substring(index + key.length());
@@ -632,75 +626,75 @@ public class Json2Xliff {
         }
     }
 
-    private static List<String> harvestNotes(Object object) {
+    private static List<String> harvestNotes(Context ctx, Object object) {
         List<String> result = new ArrayList<>();
         if (object instanceof JSONObject json) {
             Iterator<String> keys = json.keys();
             while (keys.hasNext()) {
-                result.addAll(harvestNotes(json.get(keys.next())));
+                result.addAll(harvestNotes(ctx, json.get(keys.next())));
             }
         }
         if (object instanceof JSONArray array) {
             for (int i = 0; i < array.length(); i++) {
-                result.addAll(harvestNotes(array.get(i)));
+                result.addAll(harvestNotes(ctx, array.get(i)));
             }
         }
         if (object instanceof String string) {
-            result.add(replaceEntities(string));
+            result.add(replaceEntities(ctx, string));
         }
         return result;
     }
 
-    private static String parseText(String string, boolean preserveSpaces) {
-        if (!paragraphSegmentation) {
-            String[] segs = rawSegmentation ? segmenter.segmentRawString(string) : segmenter.segment(string);
+    private static String parseText(Context ctx, String string, boolean preserveSpaces) {
+        if (!ctx.paragraphSegmentation && ctx.segmenter != null) {
+            String[] segs = ctx.rawSegmentation ? ctx.segmenter.segmentRawString(string) : ctx.segmenter.segment(string);
             StringBuilder result = new StringBuilder();
-            for (int i = 0; i < segs.length; i++) {
-                result.append(addSegment(segs[i], preserveSpaces));
+            for (String seg : segs) {
+                result.append(addSegment(ctx, seg, preserveSpaces));
             }
             return result.toString();
         }
-        return addSegment(string, preserveSpaces);
+        return addSegment(ctx, string, preserveSpaces);
     }
 
-    private static String addSegment(String string, boolean preserveSpaces) {
+    private static String addSegment(Context ctx, String string, boolean preserveSpaces) {
         Element segment = new Element("trans-unit");
-        segment.setAttribute("id", "" + id);
+        segment.setAttribute("id", "" + ctx.id);
         segment.addContent("\n    ");
-        ElementHolder holder = ElementBuilder.buildElement("source", string, trimTags, mergeTags, htmlIgnore,
-                preserveSpaces);
+        ElementHolder holder = ElementBuilder.buildElement("source", string, ctx.trimTags, ctx.mergeTags,
+                ctx.htmlIgnore, preserveSpaces);
         segment.addContent(holder.getElement());
         segment.addContent("\n  ");
         if (holder.getElement().getChildren().isEmpty() || preserveSpaces) {
             segment.setAttribute("xml:space", "preserve");
         }
-        segments.add(segment);
-        return holder.getStart() + "%%%" + id++ + "%%%" + holder.getEnd();
+        ctx.segments.add(segment);
+        return holder.getStart() + "%%%" + ctx.id++ + "%%%" + holder.getEnd();
     }
 
-    private static void parseArray(JSONArray array) {
+    private static void parseArray(Context ctx, JSONArray array) {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String string) {
-                array.put(i, parseText(string, false));
+                array.put(i, parseText(ctx, string, false));
             } else if (obj instanceof JSONArray arr) {
-                parseArray(arr);
+                parseArray(ctx, arr);
             } else if (obj instanceof JSONObject json) {
-                parseJson(json);
+                parseJson(ctx, json);
             }
         }
     }
 
-    private static void parseArray(JSONArray array, JsonConfig config)
+    private static void parseArray(Context ctx, JSONArray array, JsonConfig config)
             throws JSONException, IOException, SAXException, ParserConfigurationException {
         for (int i = 0; i < array.length(); i++) {
             Object obj = array.get(i);
             if (obj instanceof String string) {
-                array.put(i, parseText(string, config.getPreserveSpaces()));
+                array.put(i, parseText(ctx, string, config.getPreserveSpaces()));
             } else if (obj instanceof JSONArray arr) {
-                parseArray(arr, config);
+                parseArray(ctx, arr, config);
             } else if (obj instanceof JSONObject json) {
-                parseJson(json, config);
+                parseJson(ctx, json, config);
             }
         }
     }

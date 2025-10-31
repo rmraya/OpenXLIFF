@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.Document;
@@ -73,7 +74,7 @@ public class XliffModel {
 		version = root.getAttributeValue("version");
 		srclang = root.getChild("file").getAttributeValue("source-language");
 		if (version.equals("1.2") && srx != null) {
-			segmenter = new Segmenter(srx, srclang, catalog);
+			segmenter = SegmenterPool.getSegmenter(srx, srclang, catalog);
 		}
 		ids = new ArrayList<>();
 		sources = new HashMap<>();

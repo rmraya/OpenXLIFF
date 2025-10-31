@@ -31,16 +31,19 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.CatalogBuilder;
 
 public class Properties2Xliff {
 
-	private static FileOutputStream output;
-	private static FileOutputStream skeleton;
-	private static String source;
-	private static int segId;
-	private static Segmenter segmenter;
-	private static boolean segByElement;
+	private static final class Context {
+		FileOutputStream output;
+		FileOutputStream skeleton;
+		String source = "";
+		int segId;
+		Segmenter segmenter;
+		boolean segByElement;
+	}
 
 	private Properties2Xliff() {
 		// do not instantiate this class
@@ -49,7 +52,8 @@ public class Properties2Xliff {
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
-		segId = 0;
+		Context ctx = new Context();
+		ctx.segId = 0;
 
 		String inputFile = params.get("source");
 		String xliffFile = params.get("xliff");
@@ -61,59 +65,59 @@ public class Properties2Xliff {
 		String catalog = params.get("catalog");
 
 		if (elementSegmentation == null) {
-			segByElement = false;
+			ctx.segByElement = false;
 		} else {
 			if (elementSegmentation.equals("yes")) {
-				segByElement = true;
+				ctx.segByElement = true;
 			} else {
-				segByElement = false;
+				ctx.segByElement = false;
 			}
 		}
 
-		source = "";
+		ctx.source = "";
 		try {
-			if (!segByElement) {
+			if (!ctx.segByElement) {
 				String initSegmenter = params.get("srxFile");
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
+				ctx.segmenter = SegmenterPool.getSegmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
 			}
 			FileInputStream stream = new FileInputStream(inputFile);
 			try (InputStreamReader input = new InputStreamReader(stream, srcEncoding)) {
 				BufferedReader buffer = new BufferedReader(input);
-				output = new FileOutputStream(xliffFile);
+				ctx.output = new FileOutputStream(xliffFile);
 				String tgtLang = "";
 				if (targetLanguage != null) {
 					tgtLang = "\" target-language=\"" + targetLanguage;
 				}
 
-				writeString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-				writeString("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
+				writeString(ctx, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+				writeString(ctx, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 						+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 						+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 
-				writeString("<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
+				writeString(ctx, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
 						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"javapropertyresourcebundle\">\n");
-				writeString("<header>\n");
-				writeString("   <skl>\n");
-				writeString("      <external-file href=\"" + skeletonFile + "\"/>\n");
-				writeString("   </skl>\n");
-				writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+				writeString(ctx, "<header>\n");
+				writeString(ctx, "   <skl>\n");
+				writeString(ctx, "      <external-file href=\"" + skeletonFile + "\"/>\n");
+				writeString(ctx, "   </skl>\n");
+				writeString(ctx, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
-				writeString("</header>\n");
-				writeString("<?encoding " + srcEncoding + "?>\n");
-				writeString("<body>\n");
+				writeString(ctx, "</header>\n");
+				writeString(ctx, "<?encoding " + srcEncoding + "?>\n");
+				writeString(ctx, "<body>\n");
 
-				skeleton = new FileOutputStream(skeletonFile);
+				ctx.skeleton = new FileOutputStream(skeletonFile);
 
 				String line;
 				while ((line = buffer.readLine()) != null) {
 					if (line.isBlank()) {
 						// no text in this line
 						// segment separator
-						writeSkeleton(line + "\n");
+						writeSkeleton(ctx, line + "\n");
 					} else if (line.trim().startsWith("#")) {
 						// this line is a comment
 						// send to skeleton
-						writeSkeleton(line + "\n");
+						writeSkeleton(ctx, line + "\n");
 					} else {
 						String tmp = line;
 						if (line.endsWith("\\")) {
@@ -125,25 +129,25 @@ public class Properties2Xliff {
 						int index = tmp.indexOf('=');
 						if (index != -1) {
 							String key = tmp.substring(0, index + 1);
-							writeSkeleton(key);
-							source = tmp.substring(index + 1);
-							writeSegment(key);
-							writeSkeleton("\n");
+							writeSkeleton(ctx, key);
+							ctx.source = tmp.substring(index + 1);
+							writeSegment(ctx, key);
+							writeSkeleton(ctx, "\n");
 						} else {
 							// this line may be wrong, send to skeleton
 							// and continue
-							writeSkeleton(tmp);
+							writeSkeleton(ctx, tmp);
 						}
 					}
 				}
 
-				skeleton.close();
+				ctx.skeleton.close();
 
-				writeString("</body>\n");
-				writeString("</file>\n");
-				writeString("</xliff>");
+				writeString(ctx, "</body>\n");
+				writeString(ctx, "</file>\n");
+				writeString(ctx, "</xliff>");
 			}
-			output.close();
+			ctx.output.close();
 
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
@@ -156,36 +160,36 @@ public class Properties2Xliff {
 		return result;
 	}
 
-	private static void writeString(String string) throws IOException {
-		output.write(string.getBytes(StandardCharsets.UTF_8));
+	private static void writeString(Context ctx, String string) throws IOException {
+		ctx.output.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void writeSkeleton(String string) throws IOException {
-		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
+	private static void writeSkeleton(Context ctx, String string) throws IOException {
+		ctx.skeleton.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void writeSegment(String key) throws IOException {
+	private static void writeSegment(Context ctx, String key) throws IOException {
 		String[] segments;
-		if (!segByElement) {
-			segments = segmenter.segment(fixChars(source));
+		if (!ctx.segByElement) {
+			segments = ctx.segmenter.segment(fixChars(ctx.source));
 		} else {
 			segments = new String[1];
-			segments[0] = fixChars(source);
+			segments[0] = fixChars(ctx.source);
 		}
 		for (int i = 0; i < segments.length; i++) {
 			if (!segments[i].trim().isEmpty()) {
-				writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"no\" resname=\""
+				writeString(ctx, "   <trans-unit id=\"" + ctx.segId + "\" xml:space=\"preserve\" approved=\"no\" resname=\""
 						+ key.substring(0, key.length() - 1)
 						+ "\">\n      <source>"
 						+ Utils.cleanString(segments[i])
 						+ "</source>\n");
-				writeString("   </trans-unit>\n");
-				writeSkeleton("%%%" + segId++ + "%%%");
+				writeString(ctx, "   </trans-unit>\n");
+				writeSkeleton(ctx, "%%%" + ctx.segId++ + "%%%");
 			} else {
-				writeSkeleton(segments[i]);
+				writeSkeleton(ctx, segments[i]);
 			}
 		}
-		source = "";
+		ctx.source = "";
 	}
 
 	private static String fixChars(String string) {

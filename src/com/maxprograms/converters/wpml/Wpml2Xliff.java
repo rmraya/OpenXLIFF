@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.CData;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.CatalogBuilder;
@@ -42,15 +43,18 @@ import com.maxprograms.xml.XMLOutputter;
 
 public class Wpml2Xliff {
 
-    private static String inputFile;
-    private static String skeletonFile;
-    private static String sourceLanguage;
-    private static String targetLanguage;
-    private static int segId = 0;
-    private static Segmenter segmenter;
-    private static boolean paragraphSegmentation;
-    private static Pattern pattern;
-    private static Pattern endPattern;
+    private static final Pattern START_TAG_PATTERN = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*[/]?>");
+    private static final Pattern END_TAG_PATTERN = Pattern.compile("</[A-Za-z0-9]+>");
+
+    private static final class Context {
+        String inputFile;
+        String skeletonFile;
+        String sourceLanguage;
+        String targetLanguage;
+        int segId;
+        Segmenter segmenter;
+        boolean paragraphSegmentation;
+    }
 
     private Wpml2Xliff() {
         // do not instantiate this class
@@ -59,41 +63,41 @@ public class Wpml2Xliff {
 
     public static List<String> run(Map<String, String> params) {
         List<String> result = new ArrayList<>();
-        inputFile = params.get("source");
+        Context ctx = new Context();
+        ctx.inputFile = params.get("source");
         String xliffFile = params.get("xliff");
-        skeletonFile = params.get("skeleton");
-        sourceLanguage = params.get("srcLang");
-        targetLanguage = params.get("tgtLang");
+        ctx.skeletonFile = params.get("skeleton");
+        ctx.sourceLanguage = params.get("srcLang");
+        ctx.targetLanguage = params.get("tgtLang");
+        ctx.segId = 0;
         String srxRules = params.get("srxFile");
         String catalogFile = params.get("catalog");
         String elementSegmentation = params.get("paragraph");
         if (elementSegmentation == null) {
-            paragraphSegmentation = false;
+            ctx.paragraphSegmentation = false;
         } else {
             if (elementSegmentation.equals("yes")) {
-                paragraphSegmentation = true;
+                ctx.paragraphSegmentation = true;
             } else {
-                paragraphSegmentation = false;
+                ctx.paragraphSegmentation = false;
             }
         }
-        pattern = Pattern.compile("<[A-Za-z0-9]+([\\s][A-Za-z]+=[\"|\'][^<&>]*[\"|\'])*[\\s]*[/]?>");
-        endPattern = Pattern.compile("</[A-Za-z0-9]+>");
 
         try {
             Catalog catalog = CatalogBuilder.getCatalog(catalogFile);
-            if (!paragraphSegmentation) {
-                segmenter = new Segmenter(srxRules, sourceLanguage, catalog);
+            if (!ctx.paragraphSegmentation) {
+                ctx.segmenter = SegmenterPool.getSegmenter(srxRules, ctx.sourceLanguage, catalog);
             }
             SAXBuilder builder = new SAXBuilder();
             builder.setEntityResolver(catalog);
-            Document doc = builder.build(inputFile);
+            Document doc = builder.build(ctx.inputFile);
             Element root = doc.getRootElement();
 
             Document newDoc = new Document(root.getNamespace(), root.getName(), doc.getPublicId(), doc.getSystemId());
             Element newRoot = newDoc.getRootElement();
             newRoot.addContent(new PI("encoding", doc.getEncoding().name()));
 
-            recurse(root, newRoot);
+            recurse(ctx, root, newRoot);
 
             try (FileOutputStream out = new FileOutputStream(xliffFile)) {
                 Indenter.indent(newRoot, 2);
@@ -101,7 +105,7 @@ public class Wpml2Xliff {
                 outputter.preserveSpace(true);
                 outputter.output(newDoc, out);
             }
-            try (FileOutputStream skl = new FileOutputStream(skeletonFile)) {
+            try (FileOutputStream skl = new FileOutputStream(ctx.skeletonFile)) {
                 XMLOutputter outputter = new XMLOutputter();
                 outputter.preserveSpace(true);
                 outputter.output(doc, skl);
@@ -116,22 +120,22 @@ public class Wpml2Xliff {
         return result;
     }
 
-    private static void recurse(Element root, Element newRoot)
+    private static void recurse(Context ctx, Element root, Element newRoot)
             throws SAXException, IOException, ParserConfigurationException {
         newRoot.setAttributes(root.getAttributes());
         if ("file".equals(root.getName())) {
             newRoot.setAttribute("datatype", "x-wpmlxliff");
-            newRoot.setAttribute("original", Utils.cleanString(inputFile));
-            newRoot.setAttribute("source-language", sourceLanguage);
-            if (targetLanguage != null) {
-                newRoot.setAttribute("target-language", targetLanguage);
+            newRoot.setAttribute("original", Utils.cleanString(ctx.inputFile));
+            newRoot.setAttribute("source-language", ctx.sourceLanguage);
+            if (ctx.targetLanguage != null) {
+                newRoot.setAttribute("target-language", ctx.targetLanguage);
             }
             Element header = new Element("header");
             newRoot.addContent(header);
             Element skl = new Element("skl");
             header.addContent(skl);
             Element externalFile = new Element("external-file");
-            externalFile.setAttribute("href", Utils.cleanString(skeletonFile));
+            externalFile.setAttribute("href", Utils.cleanString(ctx.skeletonFile));
             skl.addContent(externalFile);
             Element tool = new Element("tool");
             tool.setAttribute("tool-version", Constants.VERSION + " " + Constants.BUILD);
@@ -198,25 +202,25 @@ public class Wpml2Xliff {
                                 newContent.add(new TextNode(getText(source)));
                                 continue;
                             }
-                            if (paragraphSegmentation) {
+                            if (ctx.paragraphSegmentation) {
                                 Element unit = new Element("trans-unit");
-                                unit.setAttribute("id", "" + segId);
+                                unit.setAttribute("id", "" + ctx.segId);
                                 newRoot.addContent(unit);
                                 unit.addContent(source);
-                                newContent.add(new TextNode("%%%" + segId++ + "%%%"));
+                                newContent.add(new TextNode("%%%" + ctx.segId++ + "%%%"));
                             } else {
-                                Element segmented = segmenter.segment(source);
+                                Element segmented = ctx.segmenter.segment(source);
                                 List<Element> list = segmented.getChildren("mrk");
                                 Iterator<Element> mt = list.iterator();
                                 while (mt.hasNext()) {
                                     Element mrk = mt.next();
                                     Element unit = new Element("trans-unit");
-                                    unit.setAttribute("id", "" + segId);
+                                    unit.setAttribute("id", "" + ctx.segId);
                                     newRoot.addContent(unit);
                                     Element segment = new Element("source");
                                     segment.setContent(mrk.getContent());
                                     unit.addContent(segment);
-                                    newContent.add(new TextNode("%%%" + segId++ + "%%%"));
+                                    newContent.add(new TextNode("%%%" + ctx.segId++ + "%%%"));
                                 }
                             }
                         }
@@ -230,7 +234,7 @@ public class Wpml2Xliff {
                         Element newChild = new Element(child.getName());
                         newChild.setAttributes(child.getAttributes());
                         newRoot.addContent(newChild);
-                        recurse(child, newChild);
+                        recurse(ctx, child, newChild);
                     }
                     break;
                 case XMLNode.TEXT_NODE:
@@ -299,7 +303,7 @@ public class Wpml2Xliff {
         int count = 0;
         String e = src.getText();
 
-        Matcher matcher = pattern.matcher(e);
+        Matcher matcher = START_TAG_PATTERN.matcher(e);
         if (matcher.find()) {
             List<XMLNode> newContent = new ArrayList<>();
             List<XMLNode> content = src.getContent();
@@ -309,7 +313,7 @@ public class Wpml2Xliff {
                 if (node.getNodeType() == XMLNode.TEXT_NODE) {
                     TextNode t = (TextNode) node;
                     String text = t.getText();
-                    matcher = pattern.matcher(text);
+                    matcher = START_TAG_PATTERN.matcher(text);
                     if (matcher.find()) {
                         matcher.reset();
                         while (matcher.find()) {
@@ -326,7 +330,7 @@ public class Wpml2Xliff {
                             newContent.add(ph);
 
                             text = text.substring(end);
-                            matcher = pattern.matcher(text);
+                            matcher = START_TAG_PATTERN.matcher(text);
                         }
                         newContent.add(new TextNode(text));
                     } else {
@@ -338,7 +342,7 @@ public class Wpml2Xliff {
             }
             src.setContent(newContent);
         }
-        matcher = endPattern.matcher(e);
+        matcher = END_TAG_PATTERN.matcher(e);
         if (matcher.find()) {
             List<XMLNode> newContent = new ArrayList<>();
             List<XMLNode> content = src.getContent();
@@ -348,7 +352,7 @@ public class Wpml2Xliff {
                 if (node.getNodeType() == XMLNode.TEXT_NODE) {
                     TextNode t = (TextNode) node;
                     String text = t.getText();
-                    matcher = endPattern.matcher(text);
+                    matcher = END_TAG_PATTERN.matcher(text);
                     if (matcher.find()) {
                         matcher.reset();
                         while (matcher.find()) {
@@ -365,7 +369,7 @@ public class Wpml2Xliff {
                             newContent.add(ph);
 
                             text = text.substring(end);
-                            matcher = endPattern.matcher(text);
+                            matcher = END_TAG_PATTERN.matcher(text);
                         }
                         newContent.add(new TextNode(text));
                     } else {

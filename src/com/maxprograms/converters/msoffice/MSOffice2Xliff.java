@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
+import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -42,7 +43,6 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
-
 public class MSOffice2Xliff {
 
 	private static String inputFile;
@@ -56,7 +56,6 @@ public class MSOffice2Xliff {
 	private static FileOutputStream skel;
 	private static int segnum;
 	private static boolean segByElement;
-	private static Segmenter segmenter;
 	private static String srcEncoding;
 
 	private static Pattern pattern;
@@ -79,6 +78,7 @@ public class MSOffice2Xliff {
 		String initSegmenter = params.get("srxFile");
 		srcEncoding = params.get("srcEncoding");
 		String catalog = params.get("catalog");
+		Segmenter segmenter = null;
 
 		segnum = 0;
 
@@ -86,7 +86,7 @@ public class MSOffice2Xliff {
 
 		try {
 			if (!segByElement) {
-				segmenter = new Segmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
+				segmenter = SegmenterPool.getSegmenter(initSegmenter, sourceLanguage, CatalogBuilder.getCatalog(catalog));
 			}
 			SAXBuilder builder = new SAXBuilder();
 			Document doc = builder.build(inputFile);
@@ -94,7 +94,7 @@ public class MSOffice2Xliff {
 			out = new FileOutputStream(xliffFile);
 			skel = new FileOutputStream(skeletonFile);
 			writeHeader();
-			recurse(root);
+			recurse(segmenter, root);
 			writeOut("    </body>\n  </file>\n</xliff>");
 			out.close();
 			skel.close();
@@ -259,7 +259,8 @@ public class MSOffice2Xliff {
 		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void recurse(Element e) throws IOException, SAXException, ParserConfigurationException {
+	private static void recurse(Segmenter segmenter, Element e)
+		throws IOException, SAXException, ParserConfigurationException {
 		writeSkel("<" + e.getName());
 		List<Attribute> atts = e.getAttributes();
 		Iterator<Attribute> at = atts.iterator();
@@ -280,23 +281,24 @@ public class MSOffice2Xliff {
 				Element child = (Element) n;
 				if (child.getName().equals("Text")) {
 					if (!child.getText().trim().isEmpty()) {
-						recurseVisioElement(child);
+						recurseVisioElement(segmenter, child);
 					} else {
 						writeSkel(child.toString());
 					}
 					continue;
 				}
 				if (child.getName().matches("[a-z]:p") || "si".equals(child.getName()) || "t".equals(child.getName())) {
-					recursePara(child);
+					recursePara(segmenter, child);
 				} else {
-					recurse(child);
+					recurse(segmenter, child);
 				}
 			}
 		}
 		writeSkel("</" + e.getName() + ">");
 	}
 
-	private static void recurseVisioElement(Element e) throws IOException, SAXException, ParserConfigurationException {
+	private static void recurseVisioElement(Segmenter segmenter, Element e)
+		throws IOException, SAXException, ParserConfigurationException {
 		if (!text.isEmpty()) {
 			if (segByElement) {
 				writeSegment(text);
@@ -381,7 +383,8 @@ public class MSOffice2Xliff {
 		skel.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void recursePara(Element e) throws IOException, SAXException, ParserConfigurationException {
+	private static void recursePara(Segmenter segmenter, Element e)
+		throws IOException, SAXException, ParserConfigurationException {
 		if ("si".equals(e.getName())) {
 			cleanPhonetics(e);
 		}
@@ -426,7 +429,7 @@ public class MSOffice2Xliff {
 			text = fixHtmlTags(e.getText());
 		} else {
 			for (; i < content.size(); i++) {
-				recursePhrase(content.get(i));
+				recursePhrase(segmenter, content.get(i));
 			}
 		}
 		text = text.replace("</ph><ph>", "");
@@ -588,7 +591,8 @@ public class MSOffice2Xliff {
 				&& "w:br".equals(e.getChildren().get(0).getName());
 	}
 
-	private static void recursePhrase(Element e) throws IOException, SAXException, ParserConfigurationException {
+	private static void recursePhrase(Segmenter segmenter, Element e)
+		throws IOException, SAXException, ParserConfigurationException {
 		if ("mc:AlternateContent".equals(e.getName()) && !hasTextElement(e)) {
 			text = text + "<ph>" + getImageText(e) + "</ph>";
 			return;
@@ -630,9 +634,9 @@ public class MSOffice2Xliff {
 				if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 					Element child = (Element) n;
 					if (child.getName().matches("[a-z]:p")) {
-						recursePara(child);
+							recursePara(segmenter, child);
 					} else {
-						recursePhrase(child);
+							recursePhrase(segmenter, child);
 					}
 				}
 				if (n.getNodeType() == XMLNode.TEXT_NODE) {
