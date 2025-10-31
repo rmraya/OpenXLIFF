@@ -155,11 +155,6 @@ public class Xliff2Txlf {
                         replaceTags(target);
                     }
                     target.setAttribute("state", "translated");
-                } else {
-                    Element target = root.getChild("target");
-                    if (target != null) {
-                        target.setAttribute("state", "needs-review");
-                    }
                 }
                 root.removePI(Constants.TOOLID);
             }
