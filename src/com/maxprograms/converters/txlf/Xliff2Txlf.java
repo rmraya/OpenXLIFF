@@ -204,17 +204,31 @@ public class Xliff2Txlf {
                 if ("mrk".equals(e.getName())) {
                     sb.append(e.toString());
                 } else {
-                    sb.append(e.getText());
+                    StringBuilder tagContent = new StringBuilder();
+                    List<XMLNode> tagNodes = e.getContent();
+                    Iterator<XMLNode> tagIt = tagNodes.iterator();
+                    while (tagIt.hasNext()) {
+                        XMLNode tagNode = tagIt.next();
+                        tagContent = tagContent.append(tagNode.toString());
+                    }
+                    sb.append(uncleanString(tagContent.toString()));
                 }
             }
         }
         sb.append("</target>");
-        SAXBuilder builder = new SAXBuilder();
         String string = sb.toString();
         if (string.indexOf("gs4tr:") != -1) {
             string = string.replace("<target>", "<target xmlns:gs4tr=\"http://www.gs4tr.org/schema/xliff-ext\">");
         }
+        SAXBuilder builder = new SAXBuilder();
         Document d = builder.build(new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
         target.setContent(d.getRootElement().getContent());
+    }
+
+    public static String uncleanString(String string) {
+        String result = string.replace("&amp;", "&");
+        result = result.replace("&gt;", ">");
+        result = result.replace("&lt;", "<");
+        return result;
     }
 }

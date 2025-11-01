@@ -150,6 +150,7 @@ public class Txlf2Xliff {
             tag = 1;
             Element originalTarget = root.getChild("target");
             if (originalTarget != null) {
+                tag = 1;
                 if (originalTarget.hasAttribute("state")) {
                     String state = originalTarget.getAttributeValue("state");
                     target.setAttribute("state", state);
@@ -159,7 +160,7 @@ public class Txlf2Xliff {
                         && !originalTarget.getAttributeValue("state-qualifier").startsWith("x-")) {
                     target.setAttribute(originalTarget.getAttribute("state-qualifier"));
                 }
-                target.setContent(originalTarget.getContent());
+                target.setContent(getContent(originalTarget));
                 unit.addContent(target);
             }
             units.add(unit);
