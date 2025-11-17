@@ -498,7 +498,7 @@ public class Xml2Xliff {
 				+ "\" datatype=\"" + format + "\" tool-id=\"" + Constants.TOOLID + "\">\n");
 		writeString("<header>\n");
 		writeString("   <skl>\n");
-		writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+		writeString("      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 		writeString("   </skl>\n");
 		if (!entitiesMap.isEmpty()) {
 			writeString("   <prop-group name=\"entities\">\n" + entitiesMap + "   </prop-group>\n");

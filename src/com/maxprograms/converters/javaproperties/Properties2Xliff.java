@@ -29,10 +29,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.CatalogBuilder;
+import com.maxprograms.xml.XMLUtils;
 
 public class Properties2Xliff {
 
@@ -181,7 +181,7 @@ public class Properties2Xliff {
 				writeString(ctx, "   <trans-unit id=\"" + ctx.segId + "\" xml:space=\"preserve\" approved=\"no\" resname=\""
 						+ key.substring(0, key.length() - 1)
 						+ "\">\n      <source>"
-						+ Utils.cleanString(segments[i])
+						+ XMLUtils.cleanText(segments[i])
 						+ "</source>\n");
 				writeString(ctx, "   </trans-unit>\n");
 				writeSkeleton(ctx, "%%%" + ctx.segId++ + "%%%");

@@ -42,7 +42,6 @@ import org.json.JSONObject;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Catalog;
@@ -51,6 +50,7 @@ import com.maxprograms.xml.DTDParser;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.EntityDecl;
 import com.maxprograms.xml.Grammar;
+import com.maxprograms.xml.XMLUtils;
 
 public class Json2Xliff {
 
@@ -150,7 +150,7 @@ public class Json2Xliff {
                         + ctx.tgtLang + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"x-json\">\n");
                 writeString(out, "<header>\n");
                 writeString(out, "   <skl>\n");
-                writeString(out, "      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+                writeString(out, "      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
                 writeString(out, "   </skl>\n");
                 writeString(out, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD
                         + "\" tool-id=\"" + Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");

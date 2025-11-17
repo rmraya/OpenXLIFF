@@ -33,7 +33,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
@@ -43,6 +42,7 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 
 public class Html2Xliff {
 
@@ -156,7 +156,7 @@ public class Html2Xliff {
 
 		writeString("<header>\n");
 		writeString("   <skl>\n");
-		writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+		writeString("      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 		writeString("   </skl>\n");
 		writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");

@@ -27,13 +27,13 @@ import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
-
-import org.xml.sax.SAXException;
+import com.maxprograms.xml.XMLUtils;
 
 public class Mif2Xliff {
 
@@ -85,7 +85,7 @@ public class Mif2Xliff {
 							+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"mif\">\n");
 					writeString("<header>\n");
 					writeString("   <skl>\n");
-					writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+					writeString("      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 					writeString("   </skl>\n");
 					writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 							+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
@@ -147,9 +147,9 @@ public class Mif2Xliff {
 									if (!segment.isEmpty()) {
 										if (segment.endsWith("</ph>")) {
 											segment = segment.substring(0, segment.length() - 5);
-											segment += "\n" + Utils.cleanString(line) + "</ph>";
+											segment += "\n" + XMLUtils.cleanText(line) + "</ph>";
 										} else {
-											segment += "<ph id=\"" + tagId++ + "\">" + Utils.cleanString(line)
+											segment += "<ph id=\"" + tagId++ + "\">" + XMLUtils.cleanText(line)
 													+ "</ph>";
 										}
 									} else {
@@ -179,9 +179,9 @@ public class Mif2Xliff {
 							if (inPara && !segment.isEmpty()) {
 								if (segment.endsWith("</ph>")) {
 									segment = segment.substring(0, segment.length() - 5);
-									segment += "\n" + Utils.cleanString(line) + "</ph>";
+									segment += "\n" + XMLUtils.cleanText(line) + "</ph>";
 								} else {
-									segment += "<ph id=\"" + tagId++ + "\">" + Utils.cleanString(line) + "</ph>";
+									segment += "<ph id=\"" + tagId++ + "\">" + XMLUtils.cleanText(line) + "</ph>";
 								}
 							} else {
 								writeSkeleton(line + "\n");
@@ -307,7 +307,7 @@ public class Mif2Xliff {
 			}
 			control = s.indexOf("\\x", control + 1);
 		}
-		return Utils.cleanString(s);
+		return XMLUtils.cleanText(s);
 	}
 
 	private static void fillTranslatable() {

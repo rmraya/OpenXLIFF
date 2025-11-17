@@ -30,8 +30,9 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
@@ -39,8 +40,7 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
+import com.maxprograms.xml.XMLUtils;
 
 public class Idml2Xliff {
 
@@ -122,7 +122,7 @@ public class Idml2Xliff {
 		Element root = doc.getRootElement();
 		Element file = root.getChild("file");
 		file.setAttribute("datatype", "x-idml");
-		file.setAttribute("original", Utils.cleanString(inputFile));
+		file.setAttribute("original", XMLUtils.cleanText(inputFile));
 		file.setAttribute("tool-id", Constants.TOOLID);
 		Element header = file.getChild("header");
 		Element propGroup = new Element("prop-group");
@@ -139,7 +139,7 @@ public class Idml2Xliff {
 		header.addContent(propGroup);
 
 		Element ext = header.getChild("skl").getChild("external-file");
-		ext.setAttribute("href", Utils.cleanString(skeleton));
+		ext.setAttribute("href", XMLUtils.cleanText(skeleton));
 
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.preserveSpace(true);

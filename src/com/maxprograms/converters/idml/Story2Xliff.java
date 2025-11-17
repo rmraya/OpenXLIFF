@@ -27,7 +27,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
@@ -38,6 +37,7 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 
 public class Story2Xliff {
 	private static String inputFile;
@@ -100,7 +100,7 @@ public class Story2Xliff {
 			while (ia.hasNext()) {
 				Attribute a = ia.next();
 				writeSkeleton(
-						" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
+						" " + a.getName() + "=\"" + XMLUtils.cleanText(a.getValue()).replace("\"", "&quote;") + "\"");
 			}
 			writeSkeleton(">");
 
@@ -117,7 +117,7 @@ public class Story2Xliff {
 						while (ia.hasNext()) {
 							Attribute a = ia.next();
 							writeSkeleton(" " + a.getName() + "=\""
-									+ Utils.cleanString(a.getValue()).replaceAll("\"", "&quote;") + "\"");
+									+ XMLUtils.cleanText(a.getValue()).replaceAll("\"", "&quote;") + "\"");
 						}
 						writeSkeleton(">");
 						processStory(segmenter, e);
@@ -269,7 +269,7 @@ public class Story2Xliff {
 						while (ia.hasNext()) {
 							Attribute a = ia.next();
 							writeSkeleton(" " + a.getName() + "=\""
-									+ Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
+									+ XMLUtils.cleanText(a.getValue()).replace("\"", "&quote;") + "\"");
 						}
 						writeSkeleton(">");
 						processStory(segmenter, e);
@@ -295,7 +295,7 @@ public class Story2Xliff {
 		while (ia.hasNext()) {
 			Attribute a = ia.next();
 			writeSkeleton(
-					" " + a.getName() + "=\"" + Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"");
+					" " + a.getName() + "=\"" + XMLUtils.cleanText(a.getValue()).replace("\"", "&quote;") + "\"");
 		}
 		writeSkeleton(">");
 		StringBuilder source = new StringBuilder("<ph>");
@@ -496,7 +496,7 @@ public class Story2Xliff {
 			result.append(string.substring(0, start));
 			string = string.substring(start);
 			int end = string.indexOf("</ph>");
-			String clean = Utils.cleanString(string.substring("<ph>".length(), end));
+			String clean = XMLUtils.cleanText(string.substring("<ph>".length(), end));
 			result.append("<ph id=\"");
 			result.append(id1++);
 			result.append("\">");
@@ -515,7 +515,7 @@ public class Story2Xliff {
 	private static String recurseElement(Element e) {
 		String result = "";
 		if (e.getName().equals("Content")) {
-			result = result + "<Content></ph>" + Utils.cleanString(e.getText()) + "<ph></Content>";
+			result = result + "<Content></ph>" + XMLUtils.cleanText(e.getText()) + "<ph></Content>";
 		} else {
 			result = result + "<" + e.getName();
 			List<Attribute> atts = e.getAttributes();
@@ -523,7 +523,7 @@ public class Story2Xliff {
 			while (ia.hasNext()) {
 				Attribute a = ia.next();
 				result = result + " " + a.getName() + "=\""
-						+ Utils.cleanString(a.getValue()).replace("\"", "&quote;") + "\"";
+						+ XMLUtils.cleanText(a.getValue()).replace("\"", "&quote;") + "\"";
 			}
 			if (e.getContent().isEmpty()) {
 				result = result + " />";
@@ -570,11 +570,11 @@ public class Story2Xliff {
 				+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 				+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 
-		writeString("<file original=\"" + Utils.cleanString(inputFile) + "\" source-language=\"" + sourceLanguage
+		writeString("<file original=\"" + XMLUtils.cleanText(inputFile) + "\" source-language=\"" + sourceLanguage
 				+ tgtLang + "\" datatype=\"" + format + "\">\n");
 		writeString("<header>\n");
 		writeString("   <skl>\n");
-		writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+		writeString("      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 		writeString("   </skl>\n");
 		writeString("</header>\n");
 		writeString("<?encoding " + srcEncoding + "?>\n");

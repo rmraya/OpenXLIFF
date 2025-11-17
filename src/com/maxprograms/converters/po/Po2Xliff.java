@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
+import com.maxprograms.xml.XMLUtils;
 
 public class Po2Xliff {
 
@@ -97,7 +97,7 @@ public class Po2Xliff {
 							+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"po\">\n");
 					writeString("<header>\n");
 					writeString("   <skl>\n");
-					writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+					writeString("      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 					writeString("   </skl>\n");
 					writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 							+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
@@ -288,19 +288,19 @@ public class Po2Xliff {
 			if (!context.isEmpty()) {
 				writeString("      <context-group name=\"x-po-entry-header#" + contextId++
 						+ "\" purpose=\"information\">\n" + "         <context context-type=\"x-po-autocomment\">"
-						+ Utils.cleanString(context) + "</context>\n" + "      </context-group>\n");
+						+ XMLUtils.cleanText(context) + "</context>\n" + "      </context-group>\n");
 			}
 			if (!reference.isEmpty()) {
 				parseReference(reference);
 			}
 			if (!newContext.isEmpty()) {
 				writeString("      <context-group name=\"x-po-msgctxt#" + contextId++ + "\" purpose=\"information\">\n"
-						+ "         <context context-type=\"x-msgctxt\">" + Utils.cleanString(newContext)
+						+ "         <context context-type=\"x-msgctxt\">" + XMLUtils.cleanText(newContext)
 						+ "</context>\n" + "      </context-group>\n");
 			}
 			if (!flags.isEmpty()) {
 				writeString("      <prop-group>\n" + "         <prop prop-type=\"x-po-flags\">"
-						+ Utils.cleanString(flags).trim() + "</prop>\n" + "      </prop-group>\n");
+						+ XMLUtils.cleanText(flags).trim() + "</prop>\n" + "      </prop-group>\n");
 			}
 			// write singular first
 			if (!pluralTargets.isEmpty()) {
@@ -315,18 +315,18 @@ public class Po2Xliff {
 			writeString("      <trans-unit id=\"" + segId + " [0]\" xml:space=\"preserve\" approved=\"" + approved
 					+ "\">\n");
 			if (cformat) {
-				writeString("         <source>" + parseString(Utils.cleanString(source)) + "</source>\n");
+				writeString("         <source>" + parseString(XMLUtils.cleanText(source)) + "</source>\n");
 				if (!target.isEmpty() || approved.equals("yes")) {
-					writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
+					writeString("         <target>" + parseString(XMLUtils.cleanText(target)) + "</target>\n");
 				}
 			} else {
-				writeString("         <source>" + Utils.cleanString(source) + "</source>\n");
+				writeString("         <source>" + XMLUtils.cleanText(source) + "</source>\n");
 				if (!target.isEmpty() || approved.equals("yes")) {
-					writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
+					writeString("         <target>" + XMLUtils.cleanText(target) + "</target>\n");
 				}
 			}
 			if (!comment.isEmpty()) {
-				writeString("         <note from=\"po-file\">" + Utils.cleanString(comment) + "</note>\n");
+				writeString("         <note from=\"po-file\">" + XMLUtils.cleanText(comment) + "</note>\n");
 			}
 			writeString("         <note from=\"po-file\" annotates=\"source\">" + "Singular form" + "</note>\n");
 			writeString("      </trans-unit>\n");
@@ -343,14 +343,14 @@ public class Po2Xliff {
 				writeString("      <trans-unit id=\"" + segId + " [" + i + "]\" xml:space=\"preserve\" approved=\""
 						+ approved + "\">\n");
 				if (cformat) {
-					writeString("         <source>" + parseString(Utils.cleanString(pluralSource)) + "</source>\n");
+					writeString("         <source>" + parseString(XMLUtils.cleanText(pluralSource)) + "</source>\n");
 					if (!target.isEmpty() || approved.equals("yes")) {
-						writeString("         <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
+						writeString("         <target>" + parseString(XMLUtils.cleanText(target)) + "</target>\n");
 					}
 				} else {
-					writeString("         <source>" + Utils.cleanString(pluralSource) + "</source>\n");
+					writeString("         <source>" + XMLUtils.cleanText(pluralSource) + "</source>\n");
 					if (!target.isEmpty() || approved.equals("yes")) {
-						writeString("         <target>" + Utils.cleanString(target) + "</target>\n");
+						writeString("         <target>" + XMLUtils.cleanText(target) + "</target>\n");
 					}
 				}
 				writeString("         <note from=\"po-file\" annotates=\"source\">" + "Plural form: [" + i + "]"
@@ -371,38 +371,38 @@ public class Po2Xliff {
 			writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\" approved=\"" + approved + "\""
 					+ restype + ">\n");
 			if (cformat) {
-				writeString("      <source>" + parseString(Utils.cleanString(source)) + "</source>\n");
+				writeString("      <source>" + parseString(XMLUtils.cleanText(source)) + "</source>\n");
 				if (!target.isEmpty() || approved.equals("yes")) {
-					writeString("      <target>" + parseString(Utils.cleanString(target)) + "</target>\n");
+					writeString("      <target>" + parseString(XMLUtils.cleanText(target)) + "</target>\n");
 				}
 			} else {
 				if (source.trim().isEmpty()) {
 					source = target;
 				}
-				writeString("      <source>" + Utils.cleanString(source) + "</source>\n");
+				writeString("      <source>" + XMLUtils.cleanText(source) + "</source>\n");
 				if (!target.isEmpty() || approved.equals("yes")) {
-					writeString("      <target>" + Utils.cleanString(target) + "</target>\n");
+					writeString("      <target>" + XMLUtils.cleanText(target) + "</target>\n");
 				}
 			}
 			if (!comment.isEmpty()) {
-				writeString("      <note from=\"po-file\">" + Utils.cleanString(comment) + "</note>\n");
+				writeString("      <note from=\"po-file\">" + XMLUtils.cleanText(comment) + "</note>\n");
 			}
 			if (!context.isEmpty()) {
 				writeString("      <context-group name=\"x-po-entry-header#" + contextId++
 						+ "\" purpose=\"information\">\n" + "         <context context-type=\"x-po-autocomment\">"
-						+ Utils.cleanString(context) + "</context>\n" + "      </context-group>\n");
+						+ XMLUtils.cleanText(context) + "</context>\n" + "      </context-group>\n");
 			}
 			if (!reference.isEmpty()) {
 				parseReference(reference);
 			}
 			if (!newContext.isEmpty()) {
 				writeString("      <context-group name=\"x-po-msgctxt#" + contextId++ + "\" purpose=\"information\">\n"
-						+ "         <context context-type=\"x-msgctxt\">" + Utils.cleanString(newContext)
+						+ "         <context context-type=\"x-msgctxt\">" + XMLUtils.cleanText(newContext)
 						+ "</context>\n" + "      </context-group>\n");
 			}
 			if (!flags.isEmpty()) {
 				writeString("      <prop-group>\n" + "         <prop prop-type=\"x-po-flags\">"
-						+ Utils.cleanString(flags).trim() + "</prop>\n" + "      </prop-group>\n");
+						+ XMLUtils.cleanText(flags).trim() + "</prop>\n" + "      </prop-group>\n");
 			}
 			writeString("   </trans-unit>\n");
 		}
@@ -461,7 +461,7 @@ public class Po2Xliff {
 		writeString("      <context-group name=\"x-po-reference#" + refId++ + "\" purpose=\"x-unknown\">\n");
 		String[] lines = ref.split("\\n");
 		for (int i = 0; i < lines.length; i++) {
-			writeString("         <context context-type=\"x-unknown\">" + Utils.cleanString(lines[i]).trim()
+			writeString("         <context context-type=\"x-unknown\">" + XMLUtils.cleanText(lines[i]).trim()
 					+ "</context>\n");
 		}
 		writeString("      </context-group>\n");

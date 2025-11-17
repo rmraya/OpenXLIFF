@@ -26,7 +26,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.CData;
@@ -40,6 +39,7 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class Wpml2Xliff {
 
@@ -125,7 +125,7 @@ public class Wpml2Xliff {
         newRoot.setAttributes(root.getAttributes());
         if ("file".equals(root.getName())) {
             newRoot.setAttribute("datatype", "x-wpmlxliff");
-            newRoot.setAttribute("original", Utils.cleanString(ctx.inputFile));
+            newRoot.setAttribute("original", XMLUtils.cleanText(ctx.inputFile));
             newRoot.setAttribute("source-language", ctx.sourceLanguage);
             if (ctx.targetLanguage != null) {
                 newRoot.setAttribute("target-language", ctx.targetLanguage);
@@ -135,7 +135,7 @@ public class Wpml2Xliff {
             Element skl = new Element("skl");
             header.addContent(skl);
             Element externalFile = new Element("external-file");
-            externalFile.setAttribute("href", Utils.cleanString(ctx.skeletonFile));
+            externalFile.setAttribute("href", XMLUtils.cleanText(ctx.skeletonFile));
             skl.addContent(externalFile);
             Element tool = new Element("tool");
             tool.setAttribute("tool-version", Constants.VERSION + " " + Constants.BUILD);

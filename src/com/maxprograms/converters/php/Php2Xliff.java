@@ -29,12 +29,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Element;
+import com.maxprograms.xml.XMLUtils;
 
 public class Php2Xliff {
 
@@ -92,7 +92,7 @@ public class Php2Xliff {
 						+ "\" datatype=\"x-phparray\">\n");
 				writeString(output, "<header>\n");
 				writeString(output, "   <skl>\n");
-				writeString(output, "      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+				writeString(output, "      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 				writeString(output, "   </skl>\n");
 				writeString(output, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD
 						+ "\" tool-id=\"" + Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
@@ -227,14 +227,14 @@ public class Php2Xliff {
 			segments = new String[] { source };
 		}
 		for (int i = 0; i < segments.length; i++) {
-			if (Utils.cleanString(segments[i]).trim().equals("")) {
+			if (XMLUtils.cleanText(segments[i]).trim().equals("")) {
 				writeSkeleton(skeleton, segments[i]);
 			} else {
 				String string = segments[i];
 				if (hasHtml(string)) {
 					string = fixHtml(string);
 				} else {
-					string = Utils.cleanString(string);
+					string = XMLUtils.cleanText(string);
 				}
 				writeString(output, "   <trans-unit id=\"" + ctx.segId
 						+ "\" xml:space=\"preserve\" approved=\"no\">\n"
@@ -305,7 +305,7 @@ public class Php2Xliff {
 			result = temp;
 		}
 
-		result = Utils.cleanString(result);
+		result = XMLUtils.cleanText(result);
 
 		Set<String> keys = table.keySet();
 		Iterator<String> it = keys.iterator();

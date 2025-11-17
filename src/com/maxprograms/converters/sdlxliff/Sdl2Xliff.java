@@ -29,7 +29,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Catalog;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -37,6 +36,7 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class Sdl2Xliff {
 
@@ -82,14 +82,14 @@ public class Sdl2Xliff {
 			writeStr("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 					+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 					+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-			writeStr("<file datatype=\"x-sdlxliff\" original=\"" + Utils.cleanString(params.get("source"))
+			writeStr("<file datatype=\"x-sdlxliff\" original=\"" + XMLUtils.cleanText(params.get("source"))
 					+ "\" tool-id=\"" + Constants.TOOLID + "\" source-language=\"" + sourceLanguage + tgtLang + "\" "
 					+ "xmlns:sdl=\"http://sdl.com/FileTypes/SdlXliff/1.0\" " + ">\n");
 			writeStr("<?encoding " + doc.getEncoding() + "?>\n");
 
 			writeStr("<header>\n");
 			writeStr("  <skl>\n");
-			writeStr("    <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+			writeStr("    <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 			writeStr("  </skl>\n");
 			writeStr("  <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 					+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");

@@ -27,13 +27,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class Txml2Xliff {
 
@@ -99,11 +99,11 @@ public class Txml2Xliff {
 		writeStr("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 		writeStr(
 				"<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-		writeStr("<file datatype=\"x-txml\" original=\"" + Utils.cleanString(source) + "\" tool-id=\""
+		writeStr("<file datatype=\"x-txml\" original=\"" + XMLUtils.cleanText(source) + "\" tool-id=\""
 				+ Constants.TOOLID + "\" source-language=\"" + sourceLanguage + tgtLang + "\">\n");
 		writeStr("<header>\n");
 		writeStr("  <skl>\n");
-		writeStr("    <external-file href=\"" + Utils.cleanString(skeleton) + "\"/>\n");
+		writeStr("    <external-file href=\"" + XMLUtils.cleanText(skeleton) + "\"/>\n");
 		writeStr("  </skl>\n");
 		writeStr("  <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
@@ -170,7 +170,7 @@ public class Txml2Xliff {
 
 	private static String parseTag(Element tag) {
 		tagId++;
-		return "<ph id=\"" + tagId + "\">" + Utils.cleanString(tag.toString()) + "</ph>";
+		return "<ph id=\"" + tagId + "\">" + XMLUtils.cleanText(tag.toString()) + "</ph>";
 	}
 
 	private static void parseComments(Element comments) throws IOException {
@@ -179,7 +179,7 @@ public class Txml2Xliff {
 		while (it.hasNext()) {
 			Element comment = it.next();
 			writeStr("<note>");
-			writeStr(Utils.cleanString(comment.getText()));
+			writeStr(XMLUtils.cleanText(comment.getText()));
 			writeStr("</note>\n");
 		}
 	}

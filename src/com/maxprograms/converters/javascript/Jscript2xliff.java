@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
+import com.maxprograms.xml.XMLUtils;
 
 public class Jscript2xliff {
 
@@ -65,7 +65,7 @@ public class Jscript2xliff {
 							+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"javascript\">\n");
 					writeString("<header>\n");
 					writeString("   <skl>\n");
-					writeString("      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+					writeString("      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 					writeString("   </skl>\n");
 					writeString("   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 							+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
@@ -215,7 +215,7 @@ public class Jscript2xliff {
 			return;
 		}
 		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n      <source>"
-				+ Utils.cleanString(segment) + "</source>\n" + "   </trans-unit>\n");
+				+ XMLUtils.cleanText(segment) + "</source>\n" + "   </trans-unit>\n");
 		writeSkeleton("%%%" + segId++ + "%%%");
 	}
 

@@ -23,15 +23,15 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.xml.sax.SAXException;
+import com.maxprograms.xml.XMLUtils;
 
 public class Ts2Xliff {
 
@@ -147,7 +147,7 @@ public class Ts2Xliff {
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element by = (Element) n;
-				result = result + "<ph id=\"" + id++ + "\">" + Utils.cleanString(by.toString()) + "</ph>";
+				result = result + "<ph id=\"" + id++ + "\">" + XMLUtils.cleanText(by.toString()) + "</ph>";
 			}
 		}
 		return result;

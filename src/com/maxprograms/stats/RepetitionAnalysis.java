@@ -43,6 +43,7 @@ import com.maxprograms.xml.Document;
 import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 
 public class RepetitionAnalysis {
 
@@ -181,7 +182,7 @@ public class RepetitionAnalysis {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
 		Iterator<Element> it = null;
-		String shortName = Utils.cleanString(new File(fileName).getName());
+		String shortName = XMLUtils.cleanText(new File(fileName).getName());
 		Document doc = builder.build(fileName);
 		Element root = doc.getRootElement();
 

@@ -31,6 +31,11 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.Join;
 import com.maxprograms.converters.Utils;
@@ -42,11 +47,7 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.Indenter;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLOutputter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
+import com.maxprograms.xml.XMLUtils;
 
 public class Sdlppx2Xliff {
 
@@ -236,7 +237,7 @@ public class Sdlppx2Xliff {
 		Element root = doc.getRootElement();
 		Element file = root.getChild("file");
 		file.setAttribute("datatype", "x-sdlpackage");
-		file.setAttribute("original", Utils.cleanString(inputFile));
+		file.setAttribute("original", XMLUtils.cleanText(inputFile));
 		Element header = file.getChild("header");
 		Element propGroup = new Element("prop-group");
 		propGroup.setAttribute("name", "document");
@@ -247,7 +248,7 @@ public class Sdlppx2Xliff {
 		header.addContent(propGroup);
 
 		Element ext = header.getChild("skl").getChild("external-file");
-		ext.setAttribute("href", Utils.cleanString(skeleton));
+		ext.setAttribute("href", XMLUtils.cleanText(skeleton));
 
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.preserveSpace(true);

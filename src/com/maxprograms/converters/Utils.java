@@ -46,7 +46,6 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
-import com.maxprograms.xml.XMLUtils;
 
 public class Utils {
 
@@ -54,13 +53,6 @@ public class Utils {
 
 	private Utils() {
 		// do not instantiate this class
-	}
-
-	public static String cleanString(String string) {
-		String result = string.replace("&", "&amp;");
-		result = result.replace("<", "&lt;");
-		result = result.replace(">", "&gt;");
-		return XMLUtils.validChars(result);
 	}
 
 	public static String getAbsolutePath(File homeFile, String relative) throws IOException {

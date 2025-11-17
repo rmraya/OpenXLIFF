@@ -33,7 +33,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.Attribute;
@@ -43,6 +42,7 @@ import com.maxprograms.xml.Element;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
+import com.maxprograms.xml.XMLUtils;
 public class MSOffice2Xliff {
 
 	private static String inputFile;
@@ -118,11 +118,11 @@ public class MSOffice2Xliff {
 		writeOut("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
 		writeOut(
 				"<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-		writeOut("  <file datatype=\"x-office\" original=\"" + Utils.cleanString(inputFile) + "\" source-language=\""
+		writeOut("  <file datatype=\"x-office\" original=\"" + XMLUtils.cleanText(inputFile) + "\" source-language=\""
 				+ sourceLanguage + tgtLang + "\" tool-id=\"" + Constants.TOOLID + "\">\n");
 		writeOut("    <header>\n");
 		writeOut("      <skl>\n");
-		writeOut("        <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+		writeOut("        <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 		writeOut("      </skl>\n");
 		writeOut("      <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 				+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
@@ -188,7 +188,7 @@ public class MSOffice2Xliff {
 			while (i.hasNext()) {
 				XMLNode n = i.next();
 				if (n.getNodeType() == XMLNode.TEXT_NODE) {
-					writeSkel(Utils.cleanString(replaceText(((TextNode) n).getText(), "\uE0FF", "&quot;")));
+					writeSkel(XMLUtils.cleanText(replaceText(((TextNode) n).getText(), "\uE0FF", "&quot;")));
 				} else {
 					Element e = (Element) n;
 					writeSkel(replaceText(e.getText(), "\uE0FF", "&quot;"));
@@ -640,7 +640,7 @@ public class MSOffice2Xliff {
 					}
 				}
 				if (n.getNodeType() == XMLNode.TEXT_NODE) {
-					text = text + "<ph>" + Utils.cleanString(n.toString()) + "</ph>";
+					text = text + "<ph>" + XMLUtils.cleanText(n.toString()) + "</ph>";
 				}
 			}
 		}
@@ -660,7 +660,7 @@ public class MSOffice2Xliff {
 			sb.append("=\"");
 			if ("pic:cNvPr".equals(e.getName()) && ("title".equals(a.getName()) || "descr".equals(a.getName()))) {
 				sb.append("</ph>");
-				sb.append(Utils.cleanString(a.getValue()));
+				sb.append(XMLUtils.cleanText(a.getValue()));
 				sb.append("<ph>");
 			} else {
 				sb.append(cleanAttribute(a.getValue()));
@@ -681,7 +681,7 @@ public class MSOffice2Xliff {
 				sb.append(getImageText(child));
 			}
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				sb.append(Utils.cleanString(n.toString()));
+				sb.append(XMLUtils.cleanText(n.toString()));
 			}
 		}
 		if (!content.isEmpty()) {
@@ -708,7 +708,7 @@ public class MSOffice2Xliff {
 			endPattern = Pattern.compile("&lt;/[A-Za-z0-9]+&gt;");
 		}
 		Element src = new Element("src");
-		src.setText(Utils.cleanString(original));
+		src.setText(XMLUtils.cleanText(original));
 		String e = normalise(src.getText());
 
 		Matcher matcher = pattern.matcher(e);
@@ -799,7 +799,7 @@ public class MSOffice2Xliff {
 			src.setContent(newContent);
 		}
 		if (src.getChildren().isEmpty()) {
-			return Utils.cleanString(original);
+			return XMLUtils.cleanText(original);
 		}
 		StringBuilder sb = new StringBuilder();
 		List<XMLNode> content = src.getContent();

@@ -36,7 +36,6 @@ import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
 import com.maxprograms.converters.FileFormats;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.converters.msoffice.MSOffice2Xliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
 import com.maxprograms.xml.CatalogBuilder;
@@ -48,6 +47,7 @@ import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.TextNode;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+import com.maxprograms.xml.XMLUtils;
 
 public class Office2Xliff {
 
@@ -368,7 +368,7 @@ public class Office2Xliff {
 		Element root = doc.getRootElement();
 		Element file = root.getChild("file");
 		file.setAttribute("datatype", "x-office");
-		file.setAttribute("original", Utils.cleanString(inputFile));
+		file.setAttribute("original", XMLUtils.cleanText(inputFile));
 		Element header = file.getChild("header");
 		Element propGroup = new Element("prop-group");
 		propGroup.setAttribute("name", "document");
@@ -379,7 +379,7 @@ public class Office2Xliff {
 		header.addContent(propGroup);
 
 		Element ext = header.getChild("skl").getChild("external-file");
-		ext.setAttribute("href", Utils.cleanString(skeleton));
+		ext.setAttribute("href", XMLUtils.cleanText(skeleton));
 
 		XMLOutputter outputter = new XMLOutputter();
 		Indenter.indent(root, 2);

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
+import com.maxprograms.xml.XMLUtils;
 
 public class Rc2Xliff {
 
@@ -118,7 +118,7 @@ public class Rc2Xliff {
 			return;
 		}
 		writeString("   <trans-unit id=\"" + segId + "\" xml:space=\"preserve\">\n      <source>"
-				+ Utils.cleanString(segment) + "</source>\n   </trans-unit>\n");
+				+ XMLUtils.cleanText(segment) + "</source>\n   </trans-unit>\n");
 		writeSkeleton("%%%" + segId++ + "%%%");
 	}
 
