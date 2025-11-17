@@ -29,10 +29,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.maxprograms.converters.Constants;
-import com.maxprograms.converters.Utils;
 import com.maxprograms.segmenter.Segmenter;
 import com.maxprograms.segmenter.SegmenterPool;
 import com.maxprograms.xml.CatalogBuilder;
+import com.maxprograms.xml.XMLUtils;
 
 public class Text2Xliff {
 
@@ -87,14 +87,16 @@ public class Text2Xliff {
 						+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 						+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
 
-				writeString(ctx, "<file original=\"" + inputFile + "\" source-language=\"" + sourceLanguage + tgtLang
-						+ "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"plaintext\">\n");
+				writeString(ctx,
+						"<file original=\"" + XMLUtils.cleanText(inputFile) + "\" source-language=\"" + sourceLanguage
+								+ tgtLang + "\" tool-id=\"" + Constants.TOOLID + "\" datatype=\"plaintext\">\n");
 				writeString(ctx, "<header>\n");
 				writeString(ctx, "   <skl>\n");
-				writeString(ctx, "      <external-file href=\"" + Utils.cleanString(skeletonFile) + "\"/>\n");
+				writeString(ctx, "      <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
 				writeString(ctx, "   </skl>\n");
-				writeString(ctx, "   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
-						+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
+				writeString(ctx,
+						"   <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+								+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
 				writeString(ctx, "</header>\n");
 				writeString(ctx, "<?encoding " + srcEncoding + "?>\n");
 				writeString(ctx, "<body>\n");
@@ -168,11 +170,11 @@ public class Text2Xliff {
 			segments[0] = ctx.source;
 		}
 		for (int i = 0; i < segments.length; i++) {
-			if (Utils.cleanString(segments[i]).trim().isEmpty()) {
+			if (XMLUtils.cleanText(segments[i]).trim().isEmpty()) {
 				writeSkeleton(ctx, segments[i]);
 			} else {
 				writeString(ctx, "   <trans-unit id=\"" + ctx.segId + "\" xml:space=\"preserve\" approved=\"no\">\n"
-						+ "      <source>" + Utils.cleanString(segments[i]) + "</source>\n");
+						+ "      <source>" + XMLUtils.cleanText(segments[i]) + "</source>\n");
 				writeString(ctx, "   </trans-unit>\n");
 				writeSkeleton(ctx, "%%%" + ctx.segId++ + "%%%\n");
 			}
