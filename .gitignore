@@ -4,6 +4,7 @@
 .dccache
 .vscode/
 .gradle/
+.github/
 bin/
 build/
 dist/
