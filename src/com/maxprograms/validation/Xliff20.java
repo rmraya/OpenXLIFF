@@ -83,7 +83,8 @@ public class Xliff20 {
 	private HashSet<String> noteId;
 	private HashSet<String> smId;
 	private HashSet<String> orderSet;
-	private Map<String, Element> unitSc;
+	private Map<String, Element> unitScSource;
+	private Map<String, Element> unitScTarget;
 	private int segCount;
 	private int maxSegment;
 	private boolean inMatch;
@@ -341,6 +342,8 @@ public class Xliff20 {
 			smId = new HashSet<>();
 			orderSet = new HashSet<>();
 			sourceId = new HashSet<>();
+			unitScSource = new Hashtable<>();
+			unitScTarget = new Hashtable<>();
 		}
 
 		if ("ignorable".equals(e.getLocalName())) {
@@ -398,7 +401,6 @@ public class Xliff20 {
 				return false;
 			}
 			inSource = true;
-			unitSc = new Hashtable<>();
 			cantDelete = new HashSet<>();
 		}
 
@@ -408,7 +410,6 @@ public class Xliff20 {
 				reason = Messages.getString("Xliff20.21");
 				return false;
 			}
-			unitSc = new Hashtable<>();
 			if (!inMatch && !lang.isEmpty() && !trgLang.equals(lang)) {
 				reason = Messages.getString("Xliff20.22");
 				return false;
@@ -632,7 +633,11 @@ public class Xliff20 {
 		if ("sc".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
 			if (!"yes".equals(e.getAttributeValue("isolated"))) {
-				unitSc.put(id, e);
+				if (inTarget) {
+					unitScTarget.put(id, e);
+				} else {
+					unitScSource.put(id, e);
+				}
 			}
 			if (inSource) {
 				if (sourceId.contains(id)) {
@@ -733,12 +738,13 @@ public class Xliff20 {
 					reason = Messages.getString("Xliff20.67");
 					return false;
 				}
-				if (!unitSc.containsKey(startRef)) {
+				Map<String, Element> scMap = inTarget ? unitScTarget : unitScSource;
+				if (!scMap.containsKey(startRef)) {
 					MessageFormat mf = new MessageFormat(Messages.getString("Xliff20.68"));
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
-				Element sc = unitSc.get(startRef);
+				Element sc = scMap.get(startRef);
 				if (!sc.getAttributeValue("canCopy", "yes").equals(e.getAttributeValue("canCopy", "yes"))) {
 					MessageFormat mf = new MessageFormat(
 							Messages.getString("Xliff20.69"));
@@ -763,7 +769,7 @@ public class Xliff20 {
 					reason = mf.format(new String[] { startRef });
 					return false;
 				}
-				unitSc.remove(startRef);
+				scMap.remove(startRef);
 			}
 			boolean isCopy = !e.getAttributeValue("copyOf").isEmpty();
 			String dataRef = e.getAttributeValue("dataRef");
@@ -899,11 +905,14 @@ public class Xliff20 {
 			if ("source".equals(child.getLocalName())) {
 				inSource = false;
 			}
-			if (result && "source".equals(child.getName()) && !unitSc.isEmpty()) {
+		}
+
+		if ("unit".equals(e.getLocalName())) {
+			if (!unitScSource.isEmpty()) {
 				reason = Messages.getString("Xliff20.90");
 				return false;
 			}
-			if (result && "target".equals(child.getName()) && !unitSc.isEmpty()) {
+			if (!unitScTarget.isEmpty()) {
 				reason = Messages.getString("Xliff20.91");
 				return false;
 			}
