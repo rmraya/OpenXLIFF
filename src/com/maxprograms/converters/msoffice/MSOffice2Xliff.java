@@ -184,7 +184,7 @@ public class MSOffice2Xliff {
 			writeOut("      <trans-unit id=\"" + segnum + "\" xml:space=\"preserve\">\n");
 			writeOut("        " + replaceText(source.toString(), "\uE0FF", "&amp;quot;") + "\n");
 			writeOut("      </trans-unit>\n");
-			writeSkel("%%%" + segnum++ + "%%%\n");
+			writeSkel("%%%" + segnum++ + "%%%");
 		} else {
 			Iterator<XMLNode> i = source.getContent().iterator();
 			while (i.hasNext()) {
@@ -646,7 +646,7 @@ public class MSOffice2Xliff {
 				}
 			}
 		}
-		text = text + "<ph>&lt;/" + e.getName() + " &gt;</ph>";
+		text = text + "<ph>&lt;/" + e.getName() + "&gt;</ph>";
 	}
 
 	private static String getImageText(Element e) {
