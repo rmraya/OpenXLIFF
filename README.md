@@ -57,6 +57,7 @@ XML and JSON filters are configurable
 
 | Version | Comment | Release Date |
 |:-------:|---------|:------------:|
+|4.10.0 | Fixed validation and improved Office support | February 6th, 2026 |
 |4.9.1 | Fixed path handling for plain text files | November 19th, 2025 |
 |4.9.0 | Added validation of XLIFF 2.1 and 2.2, Segmenter pooling and improved TXLF support | November 1st, 2025 |
 |4.8.0 | Migrated to Gradle 8.14.3; Implemented metadata extraction from XLIFF 2.x files | August 2nd, 2025 |
