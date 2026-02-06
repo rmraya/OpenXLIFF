@@ -6,7 +6,7 @@ An open source set of Java filters for creating, merging and validating XLIFF 1.
 
 With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup and are compatible with most CAT (Computer Asisted Translation) tools.
 
-- **[Releases](https://github.com/rmraya/OpenXLIFF#releases)**
+- **[Releases](https://github.com/rmraya/OpenXLIFF?tab=readme-ov-file#releases)**
 - **[Binary Downloads](https://www.maxprograms.com/products/openxliff.html)**
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
