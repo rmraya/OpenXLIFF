@@ -46,6 +46,8 @@ import com.maxprograms.xml.XMLUtils;
 
 public class MSOffice2Xliff {
 
+	private static final String ATTRIBUTE_RESTYPE = "x-attribute";
+
 	private static String inputFile;
 	private static String skeletonFile;
 	private static String sourceLanguage;
@@ -133,7 +135,13 @@ public class MSOffice2Xliff {
 		writeOut("    <body>\n");
 	}
 
-	private static void writeSegment(String sourceText) throws IOException, SAXException, ParserConfigurationException {
+	private static void writeSegment(String sourceText)
+			throws IOException, SAXException, ParserConfigurationException {
+		writeSegment(sourceText, null);
+	}
+
+	private static void writeSegment(String sourceText, String restype)
+			throws IOException, SAXException, ParserConfigurationException {
 		// replace escaped quotes with extended characters
 		sourceText = replaceText(sourceText, "&quot;", "\uE0FF");
 
@@ -181,7 +189,8 @@ public class MSOffice2Xliff {
 			for (int i = 0; i < phs.size(); i++) {
 				phs.get(i).setAttribute("id", "" + (i + 1));
 			}
-			writeOut("      <trans-unit id=\"" + segnum + "\" xml:space=\"preserve\">\n");
+			String restypeAttr = restype == null ? "" : " restype=\"" + restype + "\"";
+			writeOut("      <trans-unit id=\"" + segnum + "\" xml:space=\"preserve\"" + restypeAttr + ">\n");
 			writeOut("        " + replaceText(source.toString(), "\uE0FF", "&amp;quot;") + "\n");
 			writeOut("      </trans-unit>\n");
 			writeSkel("%%%" + segnum++ + "%%%");
@@ -198,6 +207,15 @@ public class MSOffice2Xliff {
 			}
 		}
 		writeSkel(replaceText(end, "\uE0FF", "&quot;"));
+	}
+
+	private static void writeAttributeSegment(String value)
+			throws IOException, SAXException, ParserConfigurationException {
+		writeSegment(XMLUtils.cleanText(value), ATTRIBUTE_RESTYPE);
+	}
+
+	private static boolean isTableColumnNameAttribute(Element element, Attribute attribute) {
+		return "tableColumn".equals(element.getName()) && "name".equals(attribute.getName());
 	}
 
 	private static String replaceText(String source, String string, String string2) {
@@ -268,7 +286,13 @@ public class MSOffice2Xliff {
 		Iterator<Attribute> at = atts.iterator();
 		while (at.hasNext()) {
 			Attribute a = at.next();
-			writeSkel(" " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"");
+			if (isTableColumnNameAttribute(e, a)) {
+				writeSkel(" " + a.getName() + "=\"");
+				writeAttributeSegment(a.getValue());
+				writeSkel("\"");
+			} else {
+				writeSkel(" " + a.getName() + "=\"" + cleanAttribute(a.getValue()) + "\"");
+			}
 		}
 		writeSkel(">");
 
