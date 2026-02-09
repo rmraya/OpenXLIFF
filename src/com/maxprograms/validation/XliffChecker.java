@@ -1147,8 +1147,15 @@ public class XliffChecker {
 	}
 
 	private boolean checkLanguage(String lang) {
+		if (lang.isBlank() || lang.length() > 8) {
+			return false;
+		}
 		if (lang.startsWith("x-") || lang.startsWith("X-")) {
 			// custom language code
+			return true;
+		}
+		if (lang.toLowerCase().indexOf("-x-") != -1 && !lang.endsWith("-")) {
+			// private use tag, e.g. "en-x-abc"
 			return true;
 		}
 		return lang.equalsIgnoreCase(registry.normalizeCode(lang));
