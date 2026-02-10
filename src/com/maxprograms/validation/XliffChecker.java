@@ -1147,7 +1147,7 @@ public class XliffChecker {
 	}
 
 	private boolean checkLanguage(String lang) {
-		if (lang.isBlank() || lang.length() > 8) {
+		if (lang.isBlank()) {
 			return false;
 		}
 		if (lang.startsWith("x-") || lang.startsWith("X-")) {
