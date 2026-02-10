@@ -1158,7 +1158,39 @@ public class XliffChecker {
 			// private use tag, e.g. "en-x-abc"
 			return true;
 		}
-		return lang.equalsIgnoreCase(registry.normalizeCode(lang));
+		if (lang.equalsIgnoreCase(registry.normalizeCode(lang))) {
+			// exists in registry
+			return true;
+		}
+		String[] parts = lang.split("-");
+		String langTag = parts[0].toLowerCase();
+		if (langTag.length() == 3 && (langTag.compareTo("qaa") >= 0 && langTag.compareTo("qtz") <= 0)) {
+			// private use language tag
+			return true;
+		}
+		if (parts[1].length() == 4) {
+			// lang + script
+			String script = parts[1].substring(0, 1).toUpperCase() + parts[1].substring(1).toLowerCase();
+			if (script.compareTo("Qaaa") >= 0 && script.compareTo("Qabx") <= 0) {
+				return true;
+			}
+		} else {
+			// lang + region
+			String region = parts[1].toUpperCase();
+			if (region.length() == 2 && ("AA".equals(region) || "ZZ".equals(region) ||
+					(region.compareTo("QM") >= 0 && region.compareTo("QZ") <= 0) ||
+					(region.compareTo("XA") >= 0 && region.compareTo("XZ") <= 0))) {
+				return true;
+			}
+		}
+		if (parts.length == 3 && parts[2].length() == 4) {
+			// lang + region + script
+			String script = parts[2].substring(0, 1).toUpperCase() + parts[2].substring(1).toLowerCase();
+			if (script.compareTo("Qaaa") >= 0 && script.compareTo("Qabx") <= 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
