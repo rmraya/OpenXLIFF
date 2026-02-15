@@ -9,7 +9,6 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 - **[Releases](https://github.com/rmraya/OpenXLIFF?tab=readme-ov-file#releases)**
 - **[Binary Downloads](https://www.maxprograms.com/products/openxliff.html)**
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
-- **[Related Projects](https://github.com/rmraya/OpenXLIFF#related-projects)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
 - **[Building OpenXLIFF Filters](https://github.com/rmraya/OpenXLIFF/tree/master?tab=readme-ov-file#building-openxliff-filters)**
 
