@@ -346,7 +346,7 @@ public class Story2Xliff {
 					if (segments[h].trim().isEmpty()) {
 						writeSkeleton(segments[h]);
 					} else {
-						writeSkeleton("%%%" + id + "%%%\n");
+						writeSkeleton("%%%" + id + "%%%");
 						writeString("<trans-unit id=\"" + id++ + "\" xml:space=\"preserve\">\n<source>" + segments[h]
 								+ "</source>\n</trans-unit>\n");
 					}
