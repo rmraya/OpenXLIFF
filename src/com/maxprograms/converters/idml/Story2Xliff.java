@@ -425,12 +425,17 @@ public class Story2Xliff {
 			Attribute a = atts.get(i);
 			result.setAttribute(a.getName(), a.getValue());
 		}
-		List<Element> children = e.getChildren();
-		Iterator<Element> it = children.iterator();
+		List<XMLNode> content = e.getContent();
+		Iterator<XMLNode> it = content.iterator();
 		while (it.hasNext()) {
-			Element child = it.next();
-			if (!child.getName().equals("Content")) {
-				result.addContent(getStyle(child));
+			XMLNode node = it.next();
+			if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+				Element child = (Element) node;
+				if (!child.getName().equals("Content")) {
+					result.addContent(getStyle(child));
+				}
+			} else if (node.getNodeType() == XMLNode.TEXT_NODE) {
+				result.addContent(node);
 			}
 		}
 		return result;
