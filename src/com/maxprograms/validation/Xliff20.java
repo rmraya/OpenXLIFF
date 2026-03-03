@@ -305,11 +305,13 @@ public class Xliff20 {
 
 		if ("note".equals(e.getLocalName())) {
 			String id = e.getAttributeValue("id");
-			if (noteId.contains(id)) {
-				reason = Messages.getString("Xliff20.11");
-				return false;
+			if (!id.isBlank()) {
+				if (noteId.contains(id)) {
+					reason = Messages.getString("Xliff20.11");
+					return false;
+				}
+				noteId.add(id);
 			}
-			noteId.add(id);
 		}
 
 		if ("group".equals(e.getLocalName())) {

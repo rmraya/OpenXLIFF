@@ -10,7 +10,6 @@
 
 package com.maxprograms.converters.xliff;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -24,7 +23,6 @@ import com.maxprograms.xml.XMLNode;
 
 public class Xliff1xProcessor {
 
-    private static List<String> namespaces;
     private static int tag;
     private static boolean preserveSpaces = false;
     private static String currentFile;
@@ -35,32 +33,12 @@ public class Xliff1xProcessor {
     }
 
     public static void processXliff1x(Element root, List<Element> units) {
-        namespaces = new ArrayList<>();
         tag = 1;
         preserveSpaces = false;
         recurse1x(root, units);
     }
 
     private static void recurse1x(Element root, List<Element> units) {
-        if ("xliff".equals(root.getName())) {
-            List<Attribute> atts = root.getAttributes();
-            Iterator<Attribute> it = atts.iterator();
-            while (it.hasNext()) {
-                Attribute a = it.next();
-                if (a.getName().startsWith("xmlns:")) {
-                    String ns = a.getName().substring("xmlns:".length());
-                    if (!ns.equals("xml")) {
-                        namespaces.add(ns);
-                    }
-                }
-                if (a.getName().startsWith("x-workiva")) {
-                    preserveSpaces = true;
-                }
-            }
-            if (!namespaces.isEmpty()) {
-                renameAttributes(root);
-            }
-        }
         if ("file".equals(root.getName())) {
             currentFile = root.getAttributeValue("original");
         }
@@ -229,7 +207,7 @@ public class Xliff1xProcessor {
                     if ("g".equals(name)) {
                         Element ph1 = new Element("ph");
                         ph1.setAttribute("id", "" + tag++);
-                        ph1.setText(XliffUtils.getHead(e));
+                        ph1.setText(getCleanHead(e));
                         result.add(ph1);
                         if (e.getChildren().isEmpty()) {
                             result.add(new TextNode(e.getText()));
@@ -245,11 +223,11 @@ public class Xliff1xProcessor {
                             || "bpt".equals(name) || "ept".equals(name) || "it".equals(name)) {
                         Element ph = new Element("ph");
                         ph.setAttribute("id", "" + tag++);
-                        ph.setText(e.toString());
+                        ph.setText(toCleanString(e));
                         result.add(ph);
                     }
                     if ("mrk".equals(name)) {
-                        // add <mrk> as is
+                        // add <mrk> as is, ignore namespaces
                         result.add(e);
                     }
                 }
@@ -258,29 +236,44 @@ public class Xliff1xProcessor {
         return result;
     }
 
-    private static void renameAttributes(Element e) {
-        List<Attribute> atts = e.getAttributes();
-        Iterator<Attribute> at = atts.iterator();
-        Vector<String> change = new Vector<>();
-        while (at.hasNext()) {
-            Attribute a = at.next();
-            if (a.getName().indexOf(":") != -1) {
-                String ns = a.getName().substring(0, a.getName().indexOf(":"));
-                if (namespaces.contains(ns)) {
-                    change.add(a.getName());
-                }
+    private static String toCleanString(Element e) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getCleanHead(e));
+        List<XMLNode> content = e.getContent();
+        Iterator<XMLNode> it = content.iterator();
+        while (it.hasNext()) {
+            XMLNode node = it.next();
+            if (node.getNodeType() == XMLNode.TEXT_NODE) {
+                TextNode textNode = (TextNode) node;
+                sb.append(textNode.getText());
+            }
+            if (node.getNodeType() == XMLNode.ELEMENT_NODE) {
+                Element child = (Element) node;
+                sb.append(toCleanString(child));
             }
         }
-        for (int i = 0; i < change.size(); i++) {
-            String name = change.get(i);
-            Attribute a = e.getAttribute(name);
-            e.setAttribute(name.replace(":", "__"), a.getValue());
-            e.removeAttribute(name);
-        }
-        List<Element> children = e.getChildren();
-        Iterator<Element> it = children.iterator();
+        sb.append("</").append(e.getName()).append(">");
+        return sb.toString();
+    }
+
+    private static String getCleanHead(Element e) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<").append(e.getName());
+        List<Attribute> atts = e.getAttributes();
+        Iterator<Attribute> it = atts.iterator();
         while (it.hasNext()) {
-            renameAttributes(it.next());
+            Attribute a = it.next();
+            String name = a.getName();
+            if (name.indexOf(":") != -1) {
+                name = name.replace(":", "__");
+            }
+            sb.append(' ');
+            sb.append(name);
+            sb.append("=\"");
+            sb.append(a.getValue());
+            sb.append("\"");
         }
+        sb.append(">");
+        return sb.toString();
     }
 }
