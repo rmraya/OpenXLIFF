@@ -440,3 +440,7 @@ Where:
 ```
 
 If the optional `-tmx` parameter is not provided, the TMX file will be generated in the same folder as the XLIFF file and its name will be the same as the XLIFF file plus `.tmx`.
+
+## Legal
+
+License information for all included components is available in the [licenses](licenses/README.md) directory.
