@@ -5,7 +5,7 @@ OpenXLIFF Filters uses these libraries:
 ## BCP47J
 
 - Available from <https://github.com/rmraya/BCP47J>
-- Published under [Eclipse Public License v1.0](https://raw.githubusercontent.com/rmraya/BCP47J/main/LICENSE)
+- Published under [Custom License](https://github.com/rmraya/BCP47J/blob/main/LICENSE.md)
 
 ## JSON-java
 
@@ -20,4 +20,4 @@ OpenXLIFF Filters uses these libraries:
 ## XMLJava
 
 - Available from <https://github.com/rmraya/XMLJava>
-- Published under [Eclipse Public License v1.0](https://raw.githubusercontent.com/rmraya/XMLJava/main/LICENSE)
+- Published under [Custom License](https://github.com/rmraya/XMLJava/blob/main/LICENSE.md)
