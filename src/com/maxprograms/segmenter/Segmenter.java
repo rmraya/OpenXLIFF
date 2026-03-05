@@ -203,6 +203,9 @@ public class Segmenter {
 			end = string.indexOf(ENDIGNORE);
 		}
 
+		string = string.replace(STARTIGNORE, "");
+		string = string.replace(ENDIGNORE, "");
+
 		start = string.indexOf("<mrk ");
 		end = string.indexOf("</mrk>");
 		// check nested <mrk>
