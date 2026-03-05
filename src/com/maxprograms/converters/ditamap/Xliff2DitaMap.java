@@ -23,7 +23,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -41,17 +44,36 @@ import com.maxprograms.xml.PI;
 import com.maxprograms.xml.SAXBuilder;
 import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLOutputter;
+
 public class Xliff2DitaMap {
 
-	private static Map<String, String[]> filesTable;
+	private Logger logger = System.getLogger(Xliff2DitaMap.class.getName());
+	private Map<String, String[]> filesTable;
 	private static ILogger dataLogger;
 
+	private class ProcessingResult {
+		String errorMessage;
+		boolean success;
+
+		ProcessingResult() {
+			this.success = true;
+		}
+
+		ProcessingResult(String errorMessage) {
+			this.errorMessage = errorMessage;
+			this.success = false;
+		}
+	}
+
 	public static List<String> run(Map<String, String> params) {
-		List<String> result = new ArrayList<>();
-		String xliffFile = "";
 		Xliff2DitaMap instance = new Xliff2DitaMap();
+		return instance.runConversion(params);
+	}
+
+	private List<String> runConversion(Map<String, String> params) {
+		List<String> result = new ArrayList<>();
 		try {
-			xliffFile = params.get("xliff");
+			String xliffFile = params.get("xliff");
 			File outputFile = new File(params.get("backfile"));
 			File parent = outputFile.getParentFile();
 			if (Files.notExists(parent.toPath())) {
@@ -71,56 +93,20 @@ public class Xliff2DitaMap {
 			}
 			String tgtlang = files.get(0).getAttributeValue("target-language",
 					files.get(0).getAttributeValue("source-language"));
-			Set<String> keys = filesTable.keySet();
-			Iterator<String> kt = keys.iterator();
-			XMLOutputter outputter = new XMLOutputter();
-			outputter.preserveSpace(true);
-			while (kt.hasNext()) {
-				String topicFile = kt.next();
-				if (dataLogger != null) {
-					if (dataLogger.isCancelled()) {
-						throw new IOException(Constants.CANCELLED);
-					}
-					dataLogger.log(topicFile);
-				}
-				String[] values = filesTable.get(topicFile);
-				Map<String, String> params2 = new HashMap<>();
-				params2.put("xliff", values[0]);
-				params2.put("skeleton", values[1]);
-				File topic = files.size() > 1 ? new File(outputFile, topicFile) : outputFile;
-				params2.put("backfile", topic.getAbsolutePath());
-				params2.put("encoding", params.get("encoding"));
-				params2.put("catalog", params.get("catalog"));
-				params2.put("dita_based", "yes");
-				List<String> res = Xliff2Xml.run(params2);
-				if (!Constants.SUCCESS.equals(res.get(0))) {
-					return res;
-				}
 
-				doc = builder.build(topic);
-				Element r = doc.getRootElement();
+			List<String> topicFiles = new ArrayList<>(filesTable.keySet());
+			List<ProcessingResult> results = mergeInParallel(topicFiles, params, outputFile, files.size(), tgtlang,
+					catalog);
 
-				List<PI> ish = doc.getPI("ish");
-				String id = r.getAttributeValue("id");
-
-				if (!ish.isEmpty() || id.startsWith("GUID-")) {
-					restoreGUID(r);
+			for (ProcessingResult procResult : results) {
+				if (!procResult.success) {
+					result.add(Constants.ERROR);
+					result.add(procResult.errorMessage);
+					return result;
 				}
-				cleanAttributes(r);
-				if (!"svg".equals(r.getName())) {
-					r.setAttribute("xml:lang", tgtlang);
-					Indenter.indent(r, 2);
-					instance.cleanConref(r);
-				}								
-				try (FileOutputStream out = new FileOutputStream(topic)) {
-					outputter.output(doc, out);
-				}
-				File f = new File(values[0]);
-				Files.delete(f.toPath());
 			}
 			result.add(Constants.SUCCESS);
 		} catch (IOException | SAXException | ParserConfigurationException | URISyntaxException e) {
-			Logger logger = System.getLogger(Xliff2DitaMap.class.getName());
 			logger.log(Level.ERROR, Messages.getString("Xliff2DitaMap.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
@@ -128,7 +114,108 @@ public class Xliff2DitaMap {
 		return result;
 	}
 
-	private static void cleanAttributes(Element r) {
+	private List<ProcessingResult> mergeInParallel(List<String> topicFiles, Map<String, String> params,
+			File outputFile, int fileCount, String tgtlang, String catalog) {
+		List<ProcessingResult> results = new Vector<>();
+
+		int maxThreads = Runtime.getRuntime().availableProcessors();
+		String maxThreadsParam = params.get("maxThreads");
+		if (maxThreadsParam != null) {
+			try {
+				maxThreads = Integer.parseInt(maxThreadsParam);
+				if (maxThreads < 2) {
+					maxThreads = 2;
+				}
+			} catch (NumberFormatException e) {
+				// Use default if invalid
+			}
+		}
+
+		try (ExecutorService executor = Executors.newFixedThreadPool(maxThreads)) {
+			List<Future<ProcessingResult>> futures = new ArrayList<>();
+
+			for (String topicFile : topicFiles) {
+				Future<ProcessingResult> future = executor.submit(() -> {
+					return mergeSingleFile(topicFile, params, outputFile, fileCount, tgtlang, catalog);
+				});
+				futures.add(future);
+			}
+
+			for (Future<ProcessingResult> future : futures) {
+				try {
+					results.add(future.get());
+				} catch (Exception e) {
+					logger.log(Level.ERROR, "Error processing file", e);
+					results.add(new ProcessingResult(e.getMessage()));
+				}
+			}
+		} catch (Exception e) {
+			logger.log(Level.ERROR, "Error in parallel processing", e);
+		}
+		return results;
+	}
+
+	private ProcessingResult mergeSingleFile(String topicFile, Map<String, String> params, File outputFile,
+			int fileCount, String tgtlang, String catalog) {
+		try {
+			if (dataLogger != null) {
+				if (dataLogger.isCancelled()) {
+					return new ProcessingResult(Constants.CANCELLED);
+				}
+				synchronized (dataLogger) {
+					dataLogger.log(topicFile);
+				}
+			}
+
+			String[] values = filesTable.get(topicFile);
+			Map<String, String> params2 = new HashMap<>();
+			params2.put("xliff", values[0]);
+			params2.put("skeleton", values[1]);
+			File topic = fileCount > 1 ? new File(outputFile, topicFile) : outputFile;
+			params2.put("backfile", topic.getAbsolutePath());
+			params2.put("encoding", params.get("encoding"));
+			params2.put("catalog", catalog);
+			params2.put("dita_based", "yes");
+			List<String> res = Xliff2Xml.run(params2);
+			if (!Constants.SUCCESS.equals(res.get(0))) {
+				return new ProcessingResult(res.get(1));
+			}
+
+			SAXBuilder builder = new SAXBuilder();
+			builder.preserveCustomAttributes(true);
+			builder.setEntityResolver(CatalogBuilder.getCatalog(catalog));
+			Document doc = builder.build(topic);
+			Element r = doc.getRootElement();
+
+			List<PI> ish = doc.getPI("ish");
+			String id = r.getAttributeValue("id");
+
+			if (!ish.isEmpty() || id.startsWith("GUID-")) {
+				restoreGUID(r);
+			}
+			cleanAttributes(r);
+			if (!"svg".equals(r.getName())) {
+				r.setAttribute("xml:lang", tgtlang);
+				Indenter.indent(r, 2);
+				cleanConref(r);
+			}
+
+			XMLOutputter outputter = new XMLOutputter();
+			outputter.preserveSpace(true);
+			try (FileOutputStream out = new FileOutputStream(topic)) {
+				outputter.output(doc, out);
+			}
+			File f = new File(values[0]);
+			Files.delete(f.toPath());
+
+			return new ProcessingResult();
+		} catch (Exception e) {
+			logger.log(Level.ERROR, "Error processing file: " + topicFile, e);
+			return new ProcessingResult(e.getMessage());
+		}
+	}
+
+	private void cleanAttributes(Element r) {
 		r.removeAttribute("class");
 		r.removeAttribute("xmlns:ditaarch");
 		r.removeAttribute("ditaarch:DITAArchVersion");
@@ -143,7 +230,7 @@ public class Xliff2DitaMap {
 		}
 	}
 
-	private static void restoreGUID(Element r) {
+	private void restoreGUID(Element r) {
 		String href = r.getAttributeValue("href");
 		if (!href.isEmpty()) {
 			int index = href.indexOf("GUID");
@@ -209,7 +296,7 @@ public class Xliff2DitaMap {
 		}
 	}
 
-	private static void saveFile(Element element, String xliffFile) throws IOException {
+	private void saveFile(Element element, String xliffFile) throws IOException {
 		Document doc = new Document(null, "xliff", null, null);
 		Element root = doc.getRootElement();
 		root.setAttribute("version", "1.2");
