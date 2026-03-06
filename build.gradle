@@ -105,7 +105,7 @@ task copyBats {
     doLast {
         if (System.getProperty('os.name').toLowerCase().contains('windows')) {
             copy {
-                from projectDir
+                from 'scripts'
                 into 'dist'
                 include '*.cmd'
             }
@@ -121,7 +121,7 @@ task copyShells {
     doLast {
         if (!System.getProperty('os.name').toLowerCase().contains('windows')) {
             copy {
-                from projectDir
+                from 'scripts'
                 into 'dist'
                 include '*.sh'
             }
