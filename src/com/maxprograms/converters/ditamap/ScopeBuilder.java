@@ -52,9 +52,11 @@ public class ScopeBuilder {
 	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
 	private List<String> issues;
+	private long executionTime = 0l;
 
 	public Scope buildScope(String inputFile, String ditavalFile, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
+		long start = System.currentTimeMillis();
 		this.catalog = catalog;
 		issues = new ArrayList<>();
 		if (ditavalFile != null) {
@@ -73,6 +75,7 @@ public class ScopeBuilder {
 		Scope rootScope = currentScope;
 		recurse(root, inputFile);
 
+		executionTime = System.currentTimeMillis() - start;
 		return rootScope;
 	}
 
@@ -257,4 +260,7 @@ public class ScopeBuilder {
 		return issues;
 	}
 
+	public long getExecutionTime() {
+		return executionTime;
+	}
 }

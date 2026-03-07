@@ -120,6 +120,7 @@ public class DitaParser {
 	private List<String> skipped;
 	private Map<String, List<String>> images;
 	private Set<String> translatableSVG;
+	private long scopeBuildTime;
 
 	public List<String> run(Map<String, String> params, Catalog catalog)
 			throws IOException, SAXException, ParserConfigurationException {
@@ -163,6 +164,7 @@ public class DitaParser {
 		}
 		rootScope = sbuilder.buildScope(inputFile, ditaval, catalog);
 		issues.addAll(sbuilder.getIssues());
+		scopeBuildTime = sbuilder.getExecutionTime();
 
 		if (ditaval != null) {
 			parseDitaVal(ditaval, catalog);
@@ -1082,5 +1084,9 @@ public class DitaParser {
 
 	public Set<String> getTranslatableSVG() {
 		return translatableSVG;
+	}
+
+	public long getScopeBuildTime() {
+		return scopeBuildTime;
 	}
 }
