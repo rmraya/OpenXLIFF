@@ -261,8 +261,13 @@ public class DitaParser {
 		} finally {
 			executor.shutdown();
 			try {
-				if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+				// Wait for tasks to complete, then force shutdown
+				if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
 					executor.shutdownNow();
+					// Wait for forced shutdown to complete
+					if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+						logger.log(Level.WARNING, "DitaParser thread pool did not terminate");
+					}
 				}
 			} catch (InterruptedException ex) {
 				executor.shutdownNow();
