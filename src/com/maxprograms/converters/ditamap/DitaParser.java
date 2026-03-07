@@ -27,6 +27,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -119,17 +125,17 @@ public class DitaParser {
 			throws IOException, SAXException, ParserConfigurationException {
 		List<String> result = new ArrayList<>();
 		issues = new ArrayList<>();
-		filesMap = new TreeSet<>();
-		searchedConref = new TreeSet<>();
-		usedKeys = new HashMap<>();
-		recursed = new TreeSet<>();
-		pendingRecurse = new TreeSet<>();
+		filesMap = new ConcurrentSkipListSet<>();
+		searchedConref = new ConcurrentSkipListSet<>();
+		usedKeys = new ConcurrentHashMap<>();
+		recursed = new ConcurrentSkipListSet<>();
+		pendingRecurse = new ConcurrentSkipListSet<>();
 		ignored = new ArrayList<>();
-		translatableSVG = new TreeSet<>();
-		referenceChache = new HashMap<>();
+		translatableSVG = new ConcurrentSkipListSet<>();
+		referenceChache = new ConcurrentHashMap<>();
 		skipped = new ArrayList<>();
-		images = new HashMap<>();
-		visiting = new TreeSet<>();
+		images = new ConcurrentHashMap<>();
+		visiting = new ConcurrentSkipListSet<>();
 
 		String inputFile = params.get("source");
 		this.catalog = catalog;
@@ -151,7 +157,9 @@ public class DitaParser {
 			if (dataLogger.isCancelled()) {
 				throw new IOException(Constants.CANCELLED);
 			}
-			dataLogger.log(Messages.getString("DitaParser.01"));
+			synchronized (dataLogger) {
+				dataLogger.log(Messages.getString("DitaParser.01"));
+			}
 		}
 		rootScope = sbuilder.buildScope(inputFile, ditaval, catalog);
 		issues.addAll(sbuilder.getIssues());
@@ -160,7 +168,6 @@ public class DitaParser {
 			parseDitaVal(ditaval, catalog);
 		}
 
-		filesMap = new TreeSet<>();
 		filesMap.add(inputFile);
 
 		Element root = doc.getRootElement();
@@ -169,7 +176,9 @@ public class DitaParser {
 			if (dataLogger.isCancelled()) {
 				throw new IOException(Constants.CANCELLED);
 			}
-			dataLogger.log(new File(inputFile).getName());
+			synchronized (dataLogger) {
+				dataLogger.log(new File(inputFile).getName());
+			}
 		}
 
 		recurse(root, inputFile);
@@ -187,41 +196,88 @@ public class DitaParser {
 			}
 		}
 
+		String maxThreadsParam = params.get("maxThreads");
+		int maxThreads = Integer.parseInt(maxThreadsParam);
+
 		int count = 0;
-		do {
-			List<String> files = new ArrayList<>();
-			files.addAll(pendingRecurse);
-			pendingRecurse.clear();
-			Iterator<String> st = files.iterator();
-			while (st.hasNext()) {
-				String file = st.next();
-				if (!recursed.contains(file)) {
+		ExecutorService executor = Executors.newFixedThreadPool(maxThreads);
+		try {
+			do {
+				List<String> files = new ArrayList<>(pendingRecurse);
+				pendingRecurse.clear();
+				
+				List<java.util.concurrent.Future<?>> futures = files.stream()
+					.filter(file -> !recursed.contains(file))
+					.map(file -> executor.submit((Runnable) () -> {
+						// Use visiting as a semaphore to prevent concurrent processing of the same file
+						if (!visiting.add(file)) {
+							return; // Another thread is already processing this file
+						}
+						try {
+							if (dataLogger != null) {
+								if (dataLogger.isCancelled()) {
+									throw new IOException(Constants.CANCELLED);
+								}
+								synchronized (dataLogger) {
+									dataLogger.log(new File(file).getName());
+								}
+							}
+							SAXBuilder threadBuilder = new SAXBuilder();
+							threadBuilder.setEntityResolver(catalog);
+							threadBuilder.setErrorHandler(new SilentErrorHandler());
+							Element e = threadBuilder.build(file).getRootElement();
+							if ("svg".equals(e.getName())) {
+								if (containsText(e)) {
+									translatableSVG.add(file);
+								} else {
+									recursed.add(file);
+									return;
+								}
+							}
+							recurse(e, file);
+							recursed.add(file);
+							filesMap.add(file);
+						} catch (IOException ex) {
+							if (Constants.CANCELLED.equals(ex.getMessage())) {
+								throw new RuntimeException(ex);
+							}
+							// ignore images and other IO errors
+						} catch (SAXException | ParserConfigurationException ex) {
+							// ignore images
+						} finally {
+							visiting.remove(file);
+						}
+					}))
+					.collect(Collectors.toList());
+				
+				// Wait for all tasks to complete
+				for (java.util.concurrent.Future<?> future : futures) {
 					try {
-						if (dataLogger != null) {
-							if (dataLogger.isCancelled()) {
-								throw new IOException(Constants.CANCELLED);
-							}
-							dataLogger.log(new File(file).getName());
+						future.get();
+					} catch (java.util.concurrent.ExecutionException ex) {
+						if (ex.getCause() instanceof RuntimeException && 
+							ex.getCause().getCause() instanceof IOException &&
+							Constants.CANCELLED.equals(ex.getCause().getCause().getMessage())) {
+							throw new IOException(Constants.CANCELLED);
 						}
-						Element e = builder.build(file).getRootElement();
-						if ("svg".equals(e.getName())) {
-							if (containsText(e)) {
-								translatableSVG.add(file);
-							} else {
-								recursed.add(file);
-								continue;
-							}
-						}
-						recurse(e, file);
-						recursed.add(file);
-						filesMap.add(file);
-					} catch (IOException | SAXException | ParserConfigurationException ex) {
-						// ignore images
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+						throw new IOException("File discovery interrupted", ex);
 					}
 				}
+				count++;
+			} while (!pendingRecurse.isEmpty() && count < 4);
+		} finally {
+			executor.shutdown();
+			try {
+				if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+					executor.shutdownNow();
+				}
+			} catch (InterruptedException ex) {
+				executor.shutdownNow();
+				Thread.currentThread().interrupt();
 			}
-			count++;
-		} while (!pendingRecurse.isEmpty() && count < 4);
+		}
 		result.addAll(filesMap);
 		return result;
 	}
@@ -276,10 +332,8 @@ public class DitaParser {
 			if (!keyref.isEmpty()) {
 				Key k = rootScope.getKey(keyref);
 				if (k != null) {
-					if (!usedKeys.containsKey(k)) {
-						usedKeys.put(k, new TreeSet<>());
-					}
-					usedKeys.get(k).add(parentFile);
+					Set<String> keySet = usedKeys.computeIfAbsent(k, key -> new ConcurrentSkipListSet<>());
+					keySet.add(parentFile);
 					href = k.getHref();
 				} else {
 					href = e.getAttributeValue("href");
@@ -482,10 +536,8 @@ public class DitaParser {
 					}
 					return;
 				}
-				if (!usedKeys.containsKey(k)) {
-					usedKeys.put(k, new TreeSet<>());
-				}
-				usedKeys.get(k).add(parentFile);
+				Set<String> keySet = usedKeys.computeIfAbsent(k, k2 -> new ConcurrentSkipListSet<>());
+				keySet.add(parentFile);
 				String file = k.getHref();
 				if (file == null) {
 					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.12"));
@@ -521,10 +573,8 @@ public class DitaParser {
 				if (keyref.indexOf('/') == -1) {
 					Key k = rootScope.getKey(keyref);
 					if (k != null) {
-						if (!usedKeys.containsKey(k)) {
-							usedKeys.put(k, new TreeSet<>());
-						}
-						usedKeys.get(k).add(parentFile);
+						Set<String> keySet = usedKeys.computeIfAbsent(k, k2 -> new ConcurrentSkipListSet<>());
+						keySet.add(parentFile);
 						if (k.getTopicmeta() != null && e.getContent().isEmpty()) {
 
 							// empty element that reuses from <topicmeta>
@@ -570,10 +620,8 @@ public class DitaParser {
 					String id = keyref.substring(keyref.indexOf('/') + 1);
 					Key k = rootScope.getKey(key);
 					if (k != null) {
-						if (!usedKeys.containsKey(k)) {
-							usedKeys.put(k, new TreeSet<>());
-						}
-						usedKeys.get(k).add(parentFile);
+						Set<String> keySet = usedKeys.computeIfAbsent(k, k2 -> new ConcurrentSkipListSet<>());
+						keySet.add(parentFile);
 						String kref = k.getHref();
 						filesMap.add(kref);
 						if (!visiting.contains(id + "|" + kref)) {
@@ -659,11 +707,12 @@ public class DitaParser {
 		JSONObject json = new JSONObject();
 		json.put("imagePath", imagePath);
 		json.put("href", href);
-		images.computeIfAbsent(parentFile, s -> new ArrayList<String>());
-		List<String> list = images.get(parentFile);
-		String string = json.toString();
-		if (!list.contains(string)) {
-			list.add(string);
+		List<String> list = images.computeIfAbsent(parentFile, s -> new ArrayList<>());
+		synchronized (list) {
+			String string = json.toString();
+			if (!list.contains(string)) {
+				list.add(string);
+			}
 		}
 	}
 
@@ -840,7 +889,9 @@ public class DitaParser {
 			if (dataLogger.isCancelled()) {
 				throw new IOException(Constants.CANCELLED);
 			}
-			dataLogger.log(new File(ditaval).getName());
+			synchronized (dataLogger) {
+				dataLogger.log(new File(ditaval).getName());
+			}
 		}
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -927,7 +978,9 @@ public class DitaParser {
 			if (dataLogger.isCancelled()) {
 				throw new IOException(Constants.CANCELLED);
 			}
-			dataLogger.log(new File(file).getName());
+			synchronized (dataLogger) {
+				dataLogger.log(new File(file).getName());
+			}
 		}
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);

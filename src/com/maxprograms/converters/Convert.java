@@ -93,6 +93,7 @@ public class Convert {
 		String config = "";
 		String xmlfilter = "";
 		String jsonFile = "";
+		String maxThreads = "";
 		boolean embed = false;
 		boolean paragraph = false;
 		boolean ignoretc = false;
@@ -194,6 +195,9 @@ public class Convert {
 			}
 			if (arg.equals("-strict")) {
 				strict = true;
+			}
+			if (arg.equals("-maxThreads") && (i + 1) < arguments.length) {
+				maxThreads = arguments[i + 1];
 			}
 		}
 		if (arguments.length < 4) {
@@ -349,6 +353,9 @@ public class Convert {
 		}
 		if (strict) {
 			params.put("strict", "yes");
+		}
+		if (!maxThreads.isEmpty()) {
+			params.put("maxThreads", maxThreads);
 		}
 		List<String> result = run(params);
 
