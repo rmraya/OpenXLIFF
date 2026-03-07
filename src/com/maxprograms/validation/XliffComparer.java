@@ -15,6 +15,7 @@ package com.maxprograms.validation;
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.text.MessageFormat;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -58,7 +59,7 @@ public class XliffComparer {
         }
 
         if (file1.isEmpty() || file2.isEmpty()) {
-            logger.log(Level.ERROR, "Both -file1 and -file2 arguments are required");
+            logger.log(Level.ERROR, Messages.getString("XliffComparer.1"));
             help();
             return;
         }
@@ -79,14 +80,15 @@ public class XliffComparer {
 
             boolean result = compareXliff(file1, file2, cat);
             if (result) {
-                System.out.println("Files are semantically equivalent");
-                System.out.println("Total segments compared: " + differenceCount);
+                System.out.println(Messages.getString("XliffComparer.3"));
+                MessageFormat mf = new MessageFormat(Messages.getString("XliffComparer.4"));
+                System.out.println(mf.format(new Object[]{differenceCount}));
             } else {
-                System.out.println("Files have differences");
+                System.out.println(Messages.getString("XliffComparer.5"));
                 System.exit(1);
             }
         } catch (Exception e) {
-            logger.log(Level.ERROR, "Error comparing files", e);
+            logger.log(Level.ERROR, Messages.getString("XliffComparer.2"), e);
             System.exit(1);
         }
     }
@@ -109,9 +111,9 @@ public class XliffComparer {
         List<Element> files2 = root2.getChildren("file");
 
         if (files1.size() != files2.size()) {
-            System.out.println("Different number of files");
-            System.out.println("  File1 has " + files1.size() + " files");
-            System.out.println("  File2 has " + files2.size() + " files");
+            System.out.println(Messages.getString("XliffComparer.6"));
+            MessageFormat mf = new MessageFormat(Messages.getString("XliffComparer.7"));
+            System.out.println(mf.format(new Object[]{files1.size(), files2.size()}));
             return false;
         }
 
@@ -122,8 +124,8 @@ public class XliffComparer {
             Element fileElement1 = files1.get(i);
             Element fileElement2 = files2.get(i);
             
-            String original1 = fileElement1.getAttributeValue("original", "");
-            String original2 = fileElement2.getAttributeValue("original", "");
+            String original1 = fileElement1.getAttributeValue("original");
+            String original2 = fileElement2.getAttributeValue("original");
             
             List<Element> units1 = getUnits(fileElement1);
             List<Element> units2 = getUnits(fileElement2);
@@ -143,16 +145,20 @@ public class XliffComparer {
     private static boolean compareFileUnits(String original1, String original2, int fileIndex, 
                                            List<Element> units1, List<Element> units2) {
         if (!original1.equals(original2)) {
-            System.out.println("Different original attribute at file position: " + fileIndex);
-            System.out.println("  File1 original: " + original1);
-            System.out.println("  File2 original: " + original2);
+            MessageFormat mf = new MessageFormat(Messages.getString("XliffComparer.8"));
+            System.out.println(mf.format(new Object[]{fileIndex}));
+            MessageFormat mf1 = new MessageFormat(Messages.getString("XliffComparer.9"));
+            System.out.println(mf1.format(new Object[]{original1}));
+            MessageFormat mf2 = new MessageFormat(Messages.getString("XliffComparer.10"));
+            System.out.println(mf2.format(new Object[]{original2}));
             return false;
         }
         
         if (units1.size() != units2.size()) {
-            System.out.println("Different number of units in file: " + original1 + " (position " + fileIndex + ")");
-            System.out.println("  File1 has " + units1.size() + " units");
-            System.out.println("  File2 has " + units2.size() + " units");
+            MessageFormat mf = new MessageFormat(Messages.getString("XliffComparer.11"));
+            System.out.println(mf.format(new Object[]{original1, fileIndex}));
+            MessageFormat mf2 = new MessageFormat(Messages.getString("XliffComparer.12"));  
+            System.out.println(mf2.format(new Object[]{units1.size(), units2.size()}));
             return false;
         }
         
@@ -164,11 +170,16 @@ public class XliffComparer {
             if (!unit1.equals(unit2)) {
                 String id1 = unit1.getAttributeValue("id", String.valueOf(i));
                 String id2 = unit2.getAttributeValue("id", String.valueOf(i));
-                System.out.println("Difference in file: " + original1 + " (position " + fileIndex + "), unit position: " + i);
-                System.out.println("  File1 unit id: " + id1);
-                System.out.println("  File2 unit id: " + id2);
-                System.out.println("  File1 unit: " + unit1.toString());
-                System.out.println("  File2 unit: " + unit2.toString());
+                MessageFormat mf = new MessageFormat(Messages.getString("XliffComparer.13"));
+                System.out.println(mf.format(new Object[]{original1, fileIndex, i}));
+                MessageFormat mfId = new MessageFormat(Messages.getString("XliffComparer.14"));
+                System.out.println(mfId.format(new Object[]{id1}));
+                MessageFormat mfId2 = new MessageFormat(Messages.getString("XliffComparer.15"));
+                System.out.println(mfId2.format(new Object[]{id2}));
+                MessageFormat mfUnit1 = new MessageFormat(Messages.getString("XliffComparer.16"));
+                System.out.println(mfUnit1.format(new Object[]{unit1.toString()}));
+                MessageFormat mfUnit2 = new MessageFormat(Messages.getString("XliffComparer.17"));
+                System.out.println(mfUnit2.format(new Object[]{unit2.toString()}));
                 identical = false;
             }
         }
@@ -193,19 +204,7 @@ public class XliffComparer {
     }
 
     private static void help() {
-        String help = "Usage: XliffComparer -file1 <xliff1> -file2 <xliff2> [-catalog <catalog>]\n\n" +
-                "Parameters:\n" +
-                "  -file1 <xliff1>     First XLIFF file to compare\n" +
-                "  -file2 <xliff2>     Second XLIFF file to compare\n" +
-                "  -catalog <catalog>  XML catalog file (optional)\n" +
-                "  -help               Display this help information\n\n" +
-                "Compares two XLIFF files for semantic equivalence, ignoring:\n" +
-                "  - Skeleton file references and paths\n" +
-                "  - Whitespace and formatting differences\n" +
-                "  - Attribute order\n\n" +
-                "Exit codes:\n" +
-                "  0 - Files are equivalent\n" +
-                "  1 - Files differ or error occurred";
+        String help = Messages.getString("XliffComparer.help");
         System.out.println(help);
     }
 }
