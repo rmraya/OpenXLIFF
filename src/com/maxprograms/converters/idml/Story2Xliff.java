@@ -40,21 +40,22 @@ import com.maxprograms.xml.XMLNode;
 import com.maxprograms.xml.XMLUtils;
 
 public class Story2Xliff {
-	private static String inputFile;
-	private static String skeletonFile;
-	private static String sourceLanguage;
-	private static String targetLanguage;
-	private static String srcEncoding;
-	private static FileOutputStream output;
-	private static FileOutputStream skeleton;
-	private static int id = 1;
 
-	private Story2Xliff() {
-		// do not instantiate this class
-		// use run method instead
-	}
+	private String inputFile;
+	private String skeletonFile;
+	private String sourceLanguage;
+	private String targetLanguage;
+	private String srcEncoding;
+	private FileOutputStream output;
+	private FileOutputStream skeleton;
+	private int id = 1;
 
 	public static List<String> run(Map<String, String> params) {
+		Story2Xliff converter = new Story2Xliff();
+		return converter.process(params);
+	}
+
+	private List<String> process(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
 		id = 1;
 		inputFile = params.get("source");
@@ -100,7 +101,8 @@ public class Story2Xliff {
 			while (ia.hasNext()) {
 				Attribute a = ia.next();
 				writeSkeleton(
-						" " + a.getName() + "=\"" + XMLUtils.cleanText(a.getValue()).replace("\"", "&quote;") + "\"");
+						" " + a.getName() + "=\"" + XMLUtils.cleanText(a.getValue()).replace("\"", "&quote;")
+								+ "\"");
 			}
 			writeSkeleton(">");
 
@@ -155,7 +157,7 @@ public class Story2Xliff {
 		return result;
 	}
 
-	private static void removeChangeTracking(Element root) {
+	private void removeChangeTracking(Element root) {
 		List<XMLNode> newContent = new ArrayList<>();
 		List<XMLNode> nodes = root.getContent();
 		Iterator<XMLNode> it = nodes.iterator();
@@ -189,7 +191,7 @@ public class Story2Xliff {
 		}
 	}
 
-	private static void mergeContent(Element e) {
+	private void mergeContent(Element e) {
 		List<XMLNode> newContent = new ArrayList<>();
 		Element current = null;
 		List<XMLNode> content = e.getContent();
@@ -224,7 +226,7 @@ public class Story2Xliff {
 		}
 	}
 
-	private static boolean validateAttributes(Element current, Element next) {
+	private boolean validateAttributes(Element current, Element next) {
 		List<Attribute> currentList = current.getAttributes();
 		List<Attribute> nextList = next.getAttributes();
 		if (currentList.size() != nextList.size()) {
@@ -239,11 +241,11 @@ public class Story2Xliff {
 		return true;
 	}
 
-	private static void writeSkeleton(String string) throws IOException {
+	private void writeSkeleton(String string) throws IOException {
 		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void processStory(Segmenter segmenter, Element root) throws IOException {
+	private void processStory(Segmenter segmenter, Element root) throws IOException {
 		List<XMLNode> content = root.getContent();
 		Iterator<XMLNode> nit = content.iterator();
 		while (nit.hasNext()) {
@@ -286,7 +288,7 @@ public class Story2Xliff {
 		}
 	}
 
-	private static void processPara(Segmenter segmenter, Element e) throws IOException {
+	private void processPara(Segmenter segmenter, Element e) throws IOException {
 		cleanAttributes(e);
 		mergeStyles(e);
 		writeSkeleton("<" + e.getName());
@@ -347,8 +349,9 @@ public class Story2Xliff {
 						writeSkeleton(segments[h]);
 					} else {
 						writeSkeleton("%%%" + id + "%%%");
-						writeString("<trans-unit id=\"" + id++ + "\" xml:space=\"preserve\">\n<source>" + segments[h]
-								+ "</source>\n</trans-unit>\n");
+						writeString(
+								"<trans-unit id=\"" + id++ + "\" xml:space=\"preserve\">\n<source>" + segments[h]
+										+ "</source>\n</trans-unit>\n");
 					}
 				}
 				writeSkeleton(last.substring("<ph>".length(), last.length() - "</ph>".length()));
@@ -357,7 +360,7 @@ public class Story2Xliff {
 		writeSkeleton("</" + e.getName() + ">");
 	}
 
-	private static void mergeStyles(Element e) {
+	private void mergeStyles(Element e) {
 		List<XMLNode> newContent = new ArrayList<>();
 		List<XMLNode> content = e.getContent();
 		Element current = null;
@@ -403,14 +406,14 @@ public class Story2Xliff {
 		e.setContent(newContent);
 	}
 
-	private static void addContent(Element e, String text) {
+	private void addContent(Element e, String text) {
 		Element content = e.getChild("Content");
 		if (content != null) {
 			content.setText(content.getText() + text);
 		}
 	}
 
-	private static String extractContent(Element e) {
+	private String extractContent(Element e) {
 		Element content = e.getChild("Content");
 		if (content != null) {
 			return content.getText();
@@ -418,7 +421,7 @@ public class Story2Xliff {
 		return "";
 	}
 
-	private static Element getStyle(Element e) {
+	private Element getStyle(Element e) {
 		Element result = new Element(e.getName());
 		List<Attribute> atts = e.getAttributes();
 		for (int i = 0; i < atts.size(); i++) {
@@ -441,7 +444,7 @@ public class Story2Xliff {
 		return result;
 	}
 
-	private static void cleanAttributes(Element e) {
+	private void cleanAttributes(Element e) {
 		Attribute a = e.getAttribute("CharacterDirection");
 		if (a != null && a.getValue().equals("DefaultDirection")) {
 			e.removeAttribute("CharacterDirection");
@@ -461,7 +464,7 @@ public class Story2Xliff {
 		}
 	}
 
-	private static String[] splitCell(String string) {
+	private String[] splitCell(String string) {
 		int index = string.indexOf("<Cell");
 		if (index == -1 && string.indexOf("<Br") == -1) {
 			return new String[] { string };
@@ -493,7 +496,7 @@ public class Story2Xliff {
 		return v2.toArray(new String[v2.size()]);
 	}
 
-	private static String fixTags(String string) {
+	private String fixTags(String string) {
 		StringBuilder result = new StringBuilder();
 		int id1 = 1;
 		int start = string.indexOf("<ph>");
@@ -517,7 +520,7 @@ public class Story2Xliff {
 		return result.toString();
 	}
 
-	private static String recurseElement(Element e) {
+	private String recurseElement(Element e) {
 		String result = "";
 		if (e.getName().equals("Content")) {
 			result = result + "<Content></ph>" + XMLUtils.cleanText(e.getText()) + "<ph></Content>";
@@ -551,7 +554,7 @@ public class Story2Xliff {
 		return result;
 	}
 
-	private static boolean hasText(Element e) {
+	private boolean hasText(Element e) {
 		if (e.getName().equals("Content") && !e.getText().isEmpty()) {
 			return true;
 		}
@@ -565,7 +568,7 @@ public class Story2Xliff {
 		return false;
 	}
 
-	private static void writeHeader(String format) throws IOException {
+	private void writeHeader(String format) throws IOException {
 		String tgtLang = "";
 		if (targetLanguage != null) {
 			tgtLang = "\" target-language=\"" + targetLanguage;
@@ -586,7 +589,7 @@ public class Story2Xliff {
 		writeString("<body>\n");
 	}
 
-	private static void writeString(String string) throws IOException {
+	private void writeString(String string) throws IOException {
 		output.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 }
