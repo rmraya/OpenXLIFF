@@ -498,10 +498,14 @@ public class Convert {
 				if (xliff22) {
 					version = "2.2";
 				}
+				long toXliff2Start = System.currentTimeMillis();
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
+				System.out.println("ToXliff2 conversion duration: " + (System.currentTimeMillis() - toXliff2Start));
 				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
+					long segentationStart = System.currentTimeMillis();
 					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
 							CatalogBuilder.getCatalog(params.get("catalog")));
+					System.out.println("Resegmenter conversion duration: " + (System.currentTimeMillis() - segentationStart));
 				}
 			}
 		} catch (Exception e) {
