@@ -43,8 +43,6 @@ public class Segmenter {
 	private Element root;
 	private boolean cascade;
 	private List<Element> rules;
-	private Map<String, String> tags;
-	private int tagId;
 
 	public Segmenter(String srxFile, String srcLanguage, Catalog catalog)
 			throws SAXException, IOException, ParserConfigurationException {
@@ -58,7 +56,6 @@ public class Segmenter {
 		if (!root.getAttributeValue("version").equals("2.0")) {
 			throw new IOException(Messages.getString("Segmenter.2"));
 		}
-		tags = new HashMap<>();
 		cascade = isCascading();
 		buildRulesList(srcLanguage);
 	}
@@ -84,11 +81,12 @@ public class Segmenter {
 		if (string == null || string.isEmpty()) {
 			return new String[] {};
 		}
-		String pureText = prepare ? prepareString(string) : string;
+		Map<String, String> tags = new HashMap<>();
+		String pureText = prepare ? prepareString(string, tags) : string;
 		List<String> parts = new ArrayList<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
-			String left = hideTags(pureText.substring(0, pos));
-			String right = hideTags(pureText.substring(pos));
+			String left = hideTags(pureText.substring(0, pos), tags);
+			String right = hideTags(pureText.substring(pos), tags);
 			if (left.isEmpty()) {
 				continue;
 			}
@@ -141,12 +139,12 @@ public class Segmenter {
 		parts.add(pureText);
 		String[] result = new String[parts.size()];
 		for (int i = 0; i < parts.size(); i++) {
-			result[i] = cleanup(parts.get(i));
+			result[i] = cleanup(parts.get(i), tags);
 		}
 		return result;
 	}
 
-	private String hideTags(String string) {
+	private String hideTags(String string, Map<String, String> tags) {
 		String result = string;
 		Set<String> keys = tags.keySet();
 		Iterator<String> it = keys.iterator();
@@ -186,9 +184,8 @@ public class Segmenter {
 		return m.lookingAt();
 	}
 
-	private String prepareString(String raw) {
+	private String prepareString(String raw, Map<String, String> tags) {
 		String string = raw;
-		tags = new HashMap<>();
 		int k = 0;
 
 		int start = string.indexOf(STARTIGNORE);
@@ -205,6 +202,9 @@ public class Segmenter {
 			start = string.indexOf(STARTIGNORE);
 			end = string.indexOf(ENDIGNORE);
 		}
+
+		string = string.replace(STARTIGNORE, "");
+		string = string.replace(ENDIGNORE, "");
 
 		start = string.indexOf("<mrk ");
 		end = string.indexOf("</mrk>");
@@ -275,7 +275,7 @@ public class Segmenter {
 		return buffer.toString();
 	}
 
-	private String cleanup(String string) {
+	private String cleanup(String string, Map<String, String> tags) {
 		String result = string;
 		Set<String> keys = tags.keySet();
 		Iterator<String> it = keys.iterator();
@@ -323,13 +323,13 @@ public class Segmenter {
 	}
 
 	public Element segment(Element source) throws SAXException, IOException, ParserConfigurationException {
-		tags = new HashMap<>();
-		tagId = 0;
-		String pureText = pureText(source);
+		Map<String, String> tags = new HashMap<>();
+		int[] tagId = new int[1];
+		String pureText = pureText(source, tags, tagId);
 		List<String> parts = new ArrayList<>();
 		for (int pos = 0; pos < pureText.length(); pos++) {
-			String left = hideTags(pureText.substring(0, pos));
-			String right = hideTags(pureText.substring(pos));
+			String left = hideTags(pureText.substring(0, pos), tags);
+			String right = hideTags(pureText.substring(pos), tags);
 			if (left.isEmpty()) {
 				continue;
 			}
@@ -382,7 +382,7 @@ public class Segmenter {
 		parts.add(pureText);
 		String[] result = new String[parts.size()];
 		for (int i = 0; i < parts.size(); i++) {
-			result[i] = cleanup(XMLUtils.cleanText(parts.get(i)));
+			result[i] = cleanup(XMLUtils.cleanText(parts.get(i)), tags);
 		}
 		if (result.length == 1) {
 			// return a <seg-source> with the content of source
@@ -405,7 +405,7 @@ public class Segmenter {
 		return res;
 	}
 
-	private String pureText(Element e) {
+	private String pureText(Element e, Map<String, String> tags, int[] tagId) {
 		StringBuilder result = new StringBuilder();
 		List<XMLNode> nodes = e.getContent();
 		Iterator<XMLNode> it = nodes.iterator();
@@ -416,9 +416,9 @@ public class Segmenter {
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element tag = (Element) n;
-				tags.put("" + (char) ('\uE000' + tagId), tag.toString());
-				result.append((char) ('\uE000' + tagId));
-				tagId++;
+				tags.put("" + (char) ('\uE000' + tagId[0]), tag.toString());
+				result.append((char) ('\uE000' + tagId[0]));
+				tagId[0]++;
 			}
 		}
 		return result.toString();

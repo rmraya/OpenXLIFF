@@ -32,6 +32,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -59,20 +63,40 @@ public class DitaMap2Xliff {
 	private static Logger logger = System.getLogger(DitaMap2Xliff.class.getName());
 
 	private static Element mergedRoot;
-	private static boolean hasConref;
-	private static boolean hasXref;
-	private static boolean hasConKeyRef;
 	private static Scope rootScope;
 	private static Map<String, Set<String>> excludeTable;
 	private static Map<String, Set<String>> includeTable;
 	private static boolean filterAttributes;
-	private static boolean elementsExcluded;
 	private static List<String> skipped;
 	private static ILogger dataLogger;
 	private static List<String> issues;
 	private static Map<String, List<String>> images;
 
-	private static Document singleDoc;
+	private static class ProcessingContext {
+		Document singleDoc;
+		boolean hasConref;
+		boolean hasXref;
+		boolean hasConKeyRef;
+		boolean elementsExcluded;
+	}
+
+	private static class ProcessingResult {
+		String xliffPath;
+		String skeletonPath;
+		boolean skipped;
+		String errorMessage;
+
+		ProcessingResult(String xliffPath, String skeletonPath) {
+			this.xliffPath = xliffPath;
+			this.skeletonPath = skeletonPath;
+			this.skipped = false;
+		}
+
+		ProcessingResult(String errorMessage) {
+			this.errorMessage = errorMessage;
+			this.skipped = true;
+		}
+	}
 
 	private DitaMap2Xliff() {
 		// do not instantiate this class
@@ -81,13 +105,32 @@ public class DitaMap2Xliff {
 
 	public static List<String> run(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
-		issues = new ArrayList<>();
+		issues = new Vector<>();
 		try {
 			String xliffFile = params.get("xliff");
 			String skeleton = params.get("skeleton");
 			Catalog catalog = CatalogBuilder.getCatalog(params.get("catalog"));
 			String mapFile = params.get("source");
 
+			// Parse maxThreads parameter early to pass to DitaParser
+			String maxThreadsParam = params.get("maxThreads");
+			int maxThreads;
+			if (maxThreadsParam != null) {
+				try {
+					maxThreads = Integer.parseInt(maxThreadsParam);
+					if (maxThreads < 2) {
+						maxThreads = 2;
+					}
+				} catch (NumberFormatException e) {
+					// Use default if invalid
+					maxThreads = Runtime.getRuntime().availableProcessors();
+				}
+			} else {
+				maxThreads = Runtime.getRuntime().availableProcessors();
+			}
+			params.put("maxThreads", String.valueOf(maxThreads));
+
+			long ditaParserStart = System.currentTimeMillis();
 			DitaParser parser = new DitaParser();
 			if (dataLogger != null) {
 				if (dataLogger.isCancelled()) {
@@ -99,9 +142,12 @@ public class DitaMap2Xliff {
 				DitaParser.setDataLogger(dataLogger);
 			}
 			List<String> filesMap = parser.run(params, catalog);
+			long ditaParserEnd = System.currentTimeMillis();
 			issues.addAll(parser.getIssues());
 			rootScope = parser.getScope();
 			images = parser.getImages();
+			long scopeBuildTime = parser.getScopeBuildTime();
+			long ditaParserDuration = ditaParserEnd - ditaParserStart;
 
 			List<String> xliffs = new ArrayList<>();
 			List<String> skels = new ArrayList<>();
@@ -110,7 +156,7 @@ public class DitaMap2Xliff {
 			if (ditaval != null) {
 				parseDitaVal(ditaval, catalog);
 			}
-			skipped = new ArrayList<>();
+			skipped = new Vector<>();
 			skipped.addAll(parser.getSkipped());
 			if ("yes".equals(params.get("ignoresvg"))) {
 				filesMap.removeAll(parser.getTranslatableSVG());
@@ -123,101 +169,30 @@ public class DitaMap2Xliff {
 				}
 				dataLogger.setStage(Messages.getString("DitaMap2Xliff.02"));
 			}
-			// start processing single file
-			SAXBuilder builder = new SAXBuilder();
-			builder.setEntityResolver(catalog);
-			builder.preserveCustomAttributes(true);
-			builder.setErrorHandler(new SilentErrorHandler());
-			for (int i = 0; i < filesMap.size(); i++) {
-				String file = filesMap.get(i);
-				if (dataLogger != null) {
-					if (dataLogger.isCancelled()) {
-						result.add("1");
-						result.add(Constants.CANCELLED);
-						return result;
-					}
-					dataLogger.log(new File(file).getName());
-				}
-				singleDoc = builder.build(file);
-				String source = "";
-				try {
-					source = checkConref(file, catalog);
-				} catch (Exception skip) {
-					// skip untranslatable files
-					continue;
-				}
-				if (excludeTable != null) {
-					try {
-						source = removeFiltered(source);
-					} catch (Exception sax) {
-						// skip directly referenced images
-						continue;
-					}
-				}
-				try {
-					source = checkConKeyRef(source, catalog);
-				} catch (Exception sax) {
-					// skip directly referenced images
-					continue;
-				}
-				try {
-					source = checkXref(source, catalog);
-				} catch (Exception sax) {
-					// skip directly referenced images
-					continue;
-				}
 
-				File sklParent = new File(skeleton).getParentFile();
-				if (Files.notExists(sklParent.toPath())) {
-					Files.createDirectories(sklParent.toPath());
-				}
-				File skl = File.createTempFile("dita", ".skl", sklParent);
-				skels.add(skl.getAbsolutePath());
-				File xlf = File.createTempFile("dita", ".xlf", new File(skeleton).getParentFile());
-				xlf.deleteOnExit();
+			long xliffConversionStart = System.currentTimeMillis();
+			List<ProcessingResult> results = convertInParallel(filesMap, params, catalog, skeleton);
+			long xliffConversionDuration = System.currentTimeMillis() - xliffConversionStart;
 
-				Charset encoding = singleDoc.getEncoding();
-				Map<String, String> params2 = new HashMap<>();
-				params2.put("source", source);
-				params2.put("xliff", xlf.getAbsolutePath());
-				params2.put("skeleton", skl.getAbsolutePath());
-				params2.put("srcLang", params.get("srcLang"));
-				String tgtLang = params.get("tgtLang");
-				if (tgtLang != null) {
-					params2.put("tgtLang", tgtLang);
+			// Collect xliffs and skels from results
+			for (ProcessingResult fpr : results) {
+				if (fpr.skipped) {
+					continue;
 				}
-				params2.put("catalog", params.get("catalog"));
-				params2.put("srcEncoding", encoding.name());
-				params2.put("srxFile", params.get("srxFile"));
-				params2.put("paragraph", params.get("paragraph"));
-				params2.put("dita_based", "yes");
-				params2.put("xmlfilter", params.get("xmlfilter"));
-				params2.put("ignoretc", params.get("ignoretc"));
-				String tComments = params.get("translateComments");
-				if (tComments != null) {
-					params2.put("translateComments", tComments);
+				if (fpr.errorMessage != null) {
+					logger.log(Level.ERROR, fpr.errorMessage);
+					issues.add(fpr.errorMessage);
+					result.add(Constants.ERROR);
+					result.add(fpr.errorMessage);
+					return result;
 				}
-				List<String> res = Xml2Xliff.run(params2);
-				if (!Constants.SUCCESS.equals(res.get(0))) {
-					if (res.size() == 3 && "EMPTY".equals(res.get(2))) {
-						// this DITA file does not contain text
-						skipped.add(filesMap.get(i));
-						continue;
-					}
-					MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.03"));
-					String issue = mf.format(new String[] { source });
-					logger.log(Level.ERROR, issue);
-					issues.add(issue);
-					return res;
+				if (fpr.xliffPath != null) {
+					xliffs.add(fpr.xliffPath);
+					skels.add(fpr.skeletonPath);
 				}
-				xliffs.add(xlf.getAbsolutePath());
-				if (!source.equals(filesMap.get(i))) {
-					// original has conref
-					fixSource(xlf.getAbsolutePath(), filesMap.get(i), catalog);
-				}
-				// end processing single file
 			}
 
+			long xliffMergeStart = System.currentTimeMillis();
 			Document merged = new Document(null, "xliff", null, null);
 			mergedRoot = merged.getRootElement();
 			mergedRoot.setAttribute("version", "1.2");
@@ -240,7 +215,7 @@ public class DitaMap2Xliff {
 					}
 					dataLogger.setStage(Messages.getString("DitaMap2Xliff.04"));
 				}
-				builder = new SAXBuilder();
+				SAXBuilder builder = new SAXBuilder();
 				builder.setEntityResolver(catalog);
 				builder.preserveCustomAttributes(true);
 				Document doc = builder.build(xliffs.get(0));
@@ -304,6 +279,15 @@ public class DitaMap2Xliff {
 			try (FileOutputStream output = new FileOutputStream(xliff)) {
 				outputter.output(merged, output);
 			}
+			long xliffMergeDuration = System.currentTimeMillis() - xliffMergeStart;
+
+			System.out.println("scope build duration: " + scopeBuildTime + " ms");
+			System.out.println("DITA parsing duration: " + ditaParserDuration + " ms");
+			System.out.println("XLIFF conversion duration: " + xliffConversionDuration + " ms");
+			System.out.println("XLIFF merge duration: " + xliffMergeDuration + " ms");
+			System.out.println("Total duration: " + (ditaParserDuration + xliffConversionDuration + xliffMergeDuration) + " ms");
+			System.out.println("threads used: " + maxThreads);
+
 			result.add(Constants.SUCCESS);
 		} catch (Exception e) {
 			logger.log(Level.ERROR, Messages.getString("DitaMap2Xliff.05"), e);
@@ -313,32 +297,192 @@ public class DitaMap2Xliff {
 		return result;
 	}
 
-	private static String checkXref(String source, Catalog catalog) throws IOException, SkipException {
-		Element root = singleDoc.getRootElement();
+	private static List<ProcessingResult> convertInParallel(List<String> filesMap, Map<String, String> params,
+			Catalog catalog, String skeleton) {
+		List<ProcessingResult> results = new Vector<>();
+
+		String maxThreadsParam = params.get("maxThreads");
+		int maxThreads = Integer.parseInt(maxThreadsParam);
+
+		try (ExecutorService executor = Executors.newFixedThreadPool(maxThreads)) {
+			List<Future<ProcessingResult>> futures = new ArrayList<>();
+
+			for (String file : filesMap) {
+				Future<ProcessingResult> future = executor.submit(() -> {
+					return convertSingleFile(file, params, catalog, skeleton);
+				});
+				futures.add(future);
+			}
+
+			// Collect results
+			for (Future<ProcessingResult> future : futures) {
+				try {
+					results.add(future.get());
+				} catch (Exception e) {
+					logger.log(Level.ERROR, "Error processing file", e);
+					results.add(new ProcessingResult(e.getMessage()));
+				}
+			}
+		} catch (Exception e) {
+			logger.log(Level.ERROR, "Error in parallel processing", e);
+		}
+		return results;
+	}
+
+	private static ProcessingResult convertSingleFile(String file, Map<String, String> params, Catalog catalog,
+			String skeleton) {
+		try {
+			if (dataLogger != null) {
+				if (dataLogger.isCancelled()) {
+					return new ProcessingResult(Constants.CANCELLED);
+				}
+				synchronized (dataLogger) {
+					dataLogger.log(new File(file).getName());
+				}
+			}
+
+			// Create per-file context
+			ProcessingContext context = new ProcessingContext();
+
+			SAXBuilder builder = new SAXBuilder();
+			builder.setEntityResolver(catalog);
+			builder.preserveCustomAttributes(true);
+			builder.setErrorHandler(new SilentErrorHandler());
+			context.singleDoc = builder.build(file);
+
+			String source = "";
+			try {
+				source = checkConref(file, catalog, context);
+			} catch (Exception skip) {
+				// skip untranslatable files
+				synchronized (skipped) {
+					skipped.add(file);
+				}
+				return new ProcessingResult("Skipped: untranslatable");
+			}
+
+			if (excludeTable != null) {
+				try {
+					source = removeFiltered(source, context);
+				} catch (Exception sax) {
+					// skip directly referenced images
+					synchronized (skipped) {
+						skipped.add(file);
+					}
+					return new ProcessingResult("Skipped: filtered out");
+				}
+			}
+
+			try {
+				source = checkConKeyRef(source, catalog, context);
+			} catch (Exception sax) {
+				// skip directly referenced images
+				synchronized (skipped) {
+					skipped.add(file);
+				}
+				return new ProcessingResult("Skipped: invalid conkeyref");
+			}
+
+			try {
+				source = checkXref(source, catalog, context);
+			} catch (Exception sax) {
+				// skip directly referenced images
+				synchronized (skipped) {
+					skipped.add(file);
+				}
+				return new ProcessingResult("Skipped: invalid xref");
+			}
+
+			// Create temporary files in a thread-safe manner
+			File sklParent = new File(skeleton).getParentFile();
+			synchronized (DitaMap2Xliff.class) {
+				if (Files.notExists(sklParent.toPath())) {
+					Files.createDirectories(sklParent.toPath());
+				}
+			}
+
+			File skl = File.createTempFile("dita", ".skl", sklParent);
+			File xlf = File.createTempFile("dita", ".xlf", sklParent);
+			xlf.deleteOnExit();
+
+			Charset encoding = context.singleDoc.getEncoding();
+			Map<String, String> params2 = new HashMap<>();
+			params2.put("source", source);
+			params2.put("xliff", xlf.getAbsolutePath());
+			params2.put("skeleton", skl.getAbsolutePath());
+			params2.put("srcLang", params.get("srcLang"));
+			String tgtLang = params.get("tgtLang");
+			if (tgtLang != null) {
+				params2.put("tgtLang", tgtLang);
+			}
+			params2.put("catalog", params.get("catalog"));
+			params2.put("srcEncoding", encoding.name());
+			params2.put("srxFile", params.get("srxFile"));
+			params2.put("paragraph", params.get("paragraph"));
+			params2.put("dita_based", "yes");
+			params2.put("xmlfilter", params.get("xmlfilter"));
+			params2.put("ignoretc", params.get("ignoretc"));
+			String tComments = params.get("translateComments");
+			if (tComments != null) {
+				params2.put("translateComments", tComments);
+			}
+
+			List<String> res = Xml2Xliff.run(params2);
+			if (!Constants.SUCCESS.equals(res.get(0))) {
+				if (res.size() == 3 && "EMPTY".equals(res.get(2))) {
+					// this DITA file does not contain text
+					synchronized (skipped) {
+						skipped.add(file);
+					}
+					return new ProcessingResult("Skipped: empty file");
+				}
+				MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.03"));
+				String issue = mf.format(new String[] { source });
+				return new ProcessingResult(issue);
+			}
+
+			if (!source.equals(file)) {
+				// original has conref
+				fixSource(xlf.getAbsolutePath(), file, catalog);
+			}
+
+			return new ProcessingResult(xlf.getAbsolutePath(), skl.getAbsolutePath());
+
+		} catch (Exception e) {
+			MessageFormat mf = new MessageFormat("Error processing file {0}: {1}");
+			String issue = mf.format(new Object[] { file, e.getMessage() });
+			logger.log(Level.ERROR, issue, e);
+			return new ProcessingResult(issue);
+		}
+	}
+
+	private static String checkXref(String source, Catalog catalog, ProcessingContext context)
+			throws IOException, SkipException {
+		Element root = context.singleDoc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
 		}
-		hasXref = false;
-		fixXref(root, source, singleDoc, catalog);
-		if (hasXref) {
-			Charset encoding = singleDoc.getEncoding();
+		context.hasXref = false;
+		fixXref(root, source, context.singleDoc, catalog, context);
+		if (context.hasXref) {
+			Charset encoding = context.singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(singleDoc, out);
+				outputter.output(context.singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
 		return source;
 	}
 
-	private static void fixXref(Element root, String source, Document doc, Catalog catalog) {
+	private static void fixXref(Element root, String source, Document doc, Catalog catalog, ProcessingContext context) {
 		if (DitaParser.ditaClass(root, "topic/xref") && !"external".equals(root.getAttributeValue("scope"))
-				&& ("dita".equals(root.getAttributeValue("format","dita"))
-						|| "ditamap".equals(root.getAttributeValue("format","dita")))) {
+				&& ("dita".equals(root.getAttributeValue("format", "dita"))
+						|| "ditamap".equals(root.getAttributeValue("format", "dita")))) {
 			List<XMLNode> content = root.getContent();
 			if (content.isEmpty()) {
 				String href = root.getAttributeValue("href");
@@ -364,7 +508,7 @@ public class DitaMap2Xliff {
 						String title = getTitle(file, id, catalog);
 						if (title != null) {
 							root.setText(title);
-							hasXref = true;
+							context.hasXref = true;
 							root.setAttribute("status", "removeContent");
 							if (!root.getAttributeValue("translate", "yes").equals("no")) {
 								root.setAttribute("translate", "no");
@@ -380,7 +524,7 @@ public class DitaMap2Xliff {
 			List<Element> children = root.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				fixXref(it.next(), source, doc, catalog);
+				fixXref(it.next(), source, doc, catalog, context);
 			}
 		}
 	}
@@ -401,59 +545,59 @@ public class DitaMap2Xliff {
 		return null;
 	}
 
-	private static String removeFiltered(String source) throws IOException {
-		Element root = singleDoc.getRootElement();
-		elementsExcluded = false;
-		recurseExcluding(root);
-		if (elementsExcluded) {
-			Charset encoding = singleDoc.getEncoding();
+	private static String removeFiltered(String source, ProcessingContext context) throws IOException {
+		Element root = context.singleDoc.getRootElement();
+		context.elementsExcluded = false;
+		recurseExcluding(root, context);
+		if (context.elementsExcluded) {
+			Charset encoding = context.singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(singleDoc, out);
+				outputter.output(context.singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
 		return source;
 	}
 
-	private static void recurseExcluding(Element root) {
+	private static void recurseExcluding(Element root, ProcessingContext context) {
 		List<Element> children = root.getChildren();
 		for (int i = 0; i < children.size(); i++) {
 			Element child = children.get(i);
 			if (filterOut(child)) {
 				child.setAttribute("fluentaIgnore", "yes");
-				elementsExcluded = true;
+				context.elementsExcluded = true;
 			} else {
-				recurseExcluding(child);
+				recurseExcluding(child, context);
 			}
 		}
 	}
 
-	private static String checkConKeyRef(String source, Catalog catalog)
+	private static String checkConKeyRef(String source, Catalog catalog, ProcessingContext context)
 			throws IOException, SAXException, ParserConfigurationException {
-		Element root = singleDoc.getRootElement();
-		hasConKeyRef = false;
-		fixConKeyRef(root, source, singleDoc, catalog);
-		if (hasConKeyRef) {
-			Charset encoding = singleDoc.getEncoding();
+		Element root = context.singleDoc.getRootElement();
+		context.hasConKeyRef = false;
+		fixConKeyRef(root, source, context.singleDoc, catalog, context);
+		if (context.hasConKeyRef) {
+			Charset encoding = context.singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(singleDoc, out);
+				outputter.output(context.singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
 		return source;
 	}
 
-	private static void fixConKeyRef(Element e, String source, Document doc, Catalog catalog)
+	private static void fixConKeyRef(Element e, String source, Document doc, Catalog catalog, ProcessingContext context)
 			throws IOException, SAXException, ParserConfigurationException {
 		String conkeyref = e.getAttributeValue("conkeyref");
 		String conaction = e.getAttributeValue("conaction");
@@ -476,7 +620,7 @@ public class DitaMap2Xliff {
 				}
 				Element ref = getConKeyReferenced(file, id, catalog);
 				if (ref != null) {
-					hasConKeyRef = true;
+					context.hasConKeyRef = true;
 					if (e.getChildren().isEmpty()) {
 						e.setAttribute("status", "removeContent");
 					}
@@ -489,7 +633,7 @@ public class DitaMap2Xliff {
 					List<Element> children = e.getChildren();
 					Iterator<Element> its = children.iterator();
 					while (its.hasNext()) {
-						fixConKeyRef(its.next(), file, doc, catalog);
+						fixConKeyRef(its.next(), file, doc, catalog, context);
 					}
 				} else {
 					MessageFormat mf = new MessageFormat(Messages.getString("DitaMap2Xliff.07"));
@@ -510,7 +654,7 @@ public class DitaMap2Xliff {
 
 			if (k != null) {
 				if (k.getTopicmeta() != null) {
-					// empty element that reuses from <topicmenta>
+					// empty element that reuses from <topicmeta>
 					Element matched = DitaParser.getMatched(e.getName(), k.getTopicmeta());
 					if (matched != null) {
 						if (e.getChildren().isEmpty()) {
@@ -522,7 +666,7 @@ public class DitaMap2Xliff {
 							e.setAttribute("translate", "no");
 							e.setAttribute("removeTranslate", "yes");
 						}
-						hasConKeyRef = true;
+						context.hasConKeyRef = true;
 					} else {
 						if (DitaParser.ditaClass(e, "topic/image") || DitaParser.isImage(e.getName())) {
 							Element keyword = DitaParser.getMatched("keyword", k.getTopicmeta());
@@ -536,7 +680,7 @@ public class DitaMap2Xliff {
 								}
 								e.addContent(alt);
 								e.setAttribute("status", "removeContent");
-								hasConKeyRef = true;
+								context.hasConKeyRef = true;
 							}
 						} else if (DitaParser.ditaClass(e, "topic/xref") || DitaParser.ditaClass(e, "topic/link")
 								|| DitaParser.isXref(e.getName()) || DitaParser.isLink(e.getName())) {
@@ -551,7 +695,7 @@ public class DitaMap2Xliff {
 								}
 								e.addContent(alt);
 								e.setAttribute("status", "removeContent");
-								hasConKeyRef = true;
+								context.hasConKeyRef = true;
 							}
 						} else {
 							Element keyword = DitaParser.getMatched("keyword", k.getTopicmeta());
@@ -563,7 +707,7 @@ public class DitaMap2Xliff {
 									e.setAttribute("removeTranslate", "yes");
 								}
 								e.setAttribute("status", "removeContent");
-								hasConKeyRef = true;
+								context.hasConKeyRef = true;
 							}
 						}
 					}
@@ -586,7 +730,7 @@ public class DitaMap2Xliff {
 								e.setAttribute("status", "removeContent");
 							}
 							e.setContent(referenced.getContent());
-							hasConKeyRef = true;
+							context.hasConKeyRef = true;
 						} else {
 							if (e.getName().equals("abbreviated-form") && referenced != null
 									&& referenced.getName().equals("glossentry")) {
@@ -596,14 +740,14 @@ public class DitaMap2Xliff {
 										e.setAttribute("status", "removeContent");
 									}
 									e.setContent(content);
-									hasConKeyRef = true;
+									context.hasConKeyRef = true;
 								}
 							}
 						}
 						List<Element> children = e.getChildren();
 						Iterator<Element> it = children.iterator();
 						while (it.hasNext()) {
-							fixConKeyRef(it.next(), source, doc, catalog);
+							fixConKeyRef(it.next(), href, d, catalog, context);
 						}
 					} catch (Exception ex) {
 						// do nothing
@@ -614,7 +758,7 @@ public class DitaMap2Xliff {
 			List<Element> children = e.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				fixConKeyRef(it.next(), source, doc, catalog);
+				fixConKeyRef(it.next(), source, doc, catalog, context);
 			}
 		}
 	}
@@ -696,30 +840,30 @@ public class DitaMap2Xliff {
 		}
 	}
 
-	private static String checkConref(String source, Catalog catalog)
+	private static String checkConref(String source, Catalog catalog, ProcessingContext context)
 			throws SkipException, IOException, SAXException, ParserConfigurationException {
-		Element root = singleDoc.getRootElement();
+		Element root = context.singleDoc.getRootElement();
 		if (root.getAttributeValue("translate", "yes").equalsIgnoreCase("no")) {
 			throw new SkipException("Untranslatable!");
 		}
-		hasConref = false;
-		fixConref(root, source, singleDoc, catalog);
-		if (hasConref) {
-			Charset encoding = singleDoc.getEncoding();
+		context.hasConref = false;
+		fixConref(root, source, context.singleDoc, catalog, context);
+		if (context.hasConref) {
+			Charset encoding = context.singleDoc.getEncoding();
 			File temp = File.createTempFile("temp", ".dita");
 			temp.deleteOnExit();
 			XMLOutputter outputter = new XMLOutputter();
 			outputter.setEncoding(encoding);
 			outputter.preserveSpace(true);
 			try (FileOutputStream out = new FileOutputStream(temp)) {
-				outputter.output(singleDoc, out);
+				outputter.output(context.singleDoc, out);
 			}
 			return temp.getAbsolutePath();
 		}
 		return source;
 	}
 
-	private static void fixConref(Element e, String source, Document doc, Catalog catalog)
+	private static void fixConref(Element e, String source, Document doc, Catalog catalog, ProcessingContext context)
 			throws IOException, SAXException, ParserConfigurationException {
 		String conref = e.getAttributeValue("conref");
 		String conaction = e.getAttributeValue("conaction");
@@ -741,7 +885,7 @@ public class DitaMap2Xliff {
 				String id = conref.substring(conref.indexOf('#') + 1);
 				Element ref = getReferenced(file, id, catalog);
 				if (ref != null) {
-					hasConref = true;
+					context.hasConref = true;
 					if (e.getChildren().isEmpty()) {
 						e.setAttribute("status", "removeContent");
 					}
@@ -754,7 +898,7 @@ public class DitaMap2Xliff {
 					List<Element> children = e.getChildren();
 					Iterator<Element> its = children.iterator();
 					while (its.hasNext()) {
-						fixConref(its.next(), file, doc, catalog);
+						fixConref(its.next(), file, doc, catalog, context);
 					}
 				}
 			}
@@ -762,7 +906,7 @@ public class DitaMap2Xliff {
 			List<Element> children = e.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				fixConref(it.next(), source, doc, catalog);
+				fixConref(it.next(), source, doc, catalog, context);
 			}
 		}
 	}

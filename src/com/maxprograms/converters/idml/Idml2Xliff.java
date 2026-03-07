@@ -19,11 +19,14 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -52,6 +55,38 @@ public class Idml2Xliff {
 	private static ZipOutputStream out;
 	private static List<String> used = null;
 
+	private static class StoryEntry {
+		String entryName;
+		File tempFile;
+
+		StoryEntry(String entryName, File tempFile) {
+			this.entryName = entryName;
+			this.tempFile = tempFile;
+		}
+	}
+
+	private static class StoryResult {
+		String entryName;
+		File originalFile;
+		File xliffFile;
+		File sklFile;
+		boolean processed;
+
+		StoryResult(String entryName, File originalFile, File xliffFile, File sklFile, boolean processed) {
+			this.entryName = entryName;
+			this.originalFile = originalFile;
+			this.xliffFile = xliffFile;
+			this.sklFile = sklFile;
+			this.processed = processed;
+		}
+
+		StoryResult(String entryName, File originalFile) {
+			this.entryName = entryName;
+			this.originalFile = originalFile;
+			this.processed = false;
+		}
+	}
+
 	private Idml2Xliff() {
 		// do not instantiate this class
 		// use run method instead
@@ -60,12 +95,12 @@ public class Idml2Xliff {
 	private static void sortStories() {
 		List<Element> files = mergedRoot.getChildren("file");
 		List<PI> instructions = mergedRoot.getPI();
-		Map<String, Integer> table = new HashMap<>();
+		Map<String, Integer> table = new Hashtable<>();
 		for (int i = 0; i < files.size(); i++) {
 			String key = getKey(files.get(i));
 			table.put(key, i);
 		}
-		List<XMLNode> v = new ArrayList<>();
+		List<XMLNode> v = new Vector<>();
 		Iterator<String> it = used.iterator();
 		while (it.hasNext()) {
 			String key = it.next();
@@ -93,7 +128,7 @@ public class Idml2Xliff {
 
 	private static List<String> getStories(String map)
 			throws SAXException, IOException, ParserConfigurationException {
-		List<String> result = new ArrayList<>();
+		List<String> result = new Vector<>();
 		SAXBuilder builder = new SAXBuilder();
 		Document doc = builder.build(map);
 		Element root = doc.getRootElement();
@@ -171,12 +206,33 @@ public class Idml2Xliff {
 	}
 
 	public static List<String> run(Map<String, String> params) {
-		List<String> result = new ArrayList<>();
+		List<String> result = new Vector<>();
 
 		inputFile = params.get("source");
 		String xliff = params.get("xliff");
 		skeleton = params.get("skeleton");
 		String encoding = params.get("srcEncoding");
+
+		// Parse maxThreads parameter
+		String maxThreadsParam = params.get("maxThreads");
+		int maxThreads;
+		if (maxThreadsParam != null) {
+			try {
+				maxThreads = Integer.parseInt(maxThreadsParam);
+				maxThreads = Math.max(1, maxThreads);
+			} catch (NumberFormatException e) {
+				logger.log(Level.WARNING, "Invalid maxThreads value, using default", e);
+				maxThreads = Runtime.getRuntime().availableProcessors();
+			}
+		} else {
+			maxThreads = Runtime.getRuntime().availableProcessors();
+		}
+		params.put("maxThreads", String.valueOf(maxThreads));
+
+		List<String> entryOrder = new Vector<>();
+		Map<String, File> allEntries = new Hashtable<>();
+		Map<String, File> storyFiles = new Hashtable<>();
+		List<StoryResult> results = new Vector<>();
 
 		try {
 			Document merged = new Document(null, "xliff", null, null);
@@ -188,91 +244,90 @@ public class Idml2Xliff {
 					"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd");
 			mergedRoot.addContent(new PI("encoding", encoding));
 
-			out = new ZipOutputStream(new FileOutputStream(skeleton));
 			try (ZipInputStream in = new ZipInputStream(new FileInputStream(inputFile))) {
-
 				ZipEntry entry = null;
 				while ((entry = in.getNextEntry()) != null) {
-					if (entry.getName().matches(".*Story_.*\\.xml")
-							&& (used != null && used.contains(entry.getName()))) {
-						File f = new File(entry.getName());
-						String name = f.getName();
-						File tmp = File.createTempFile(name.substring(0, name.lastIndexOf('.')), ".xml",
-								new File(skeleton).getParentFile());
-						try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-							byte[] buf = new byte[1024];
-							int len;
-							while ((len = in.read(buf)) > 0) {
-								output.write(buf, 0, len);
-							}
+					String entryName = entry.getName();
+					entryOrder.add(entryName);
+					
+					File tmp = File.createTempFile("idml", ".tmp", new File(skeleton).getParentFile());
+					try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
+						byte[] buf = new byte[1024];
+						int len;
+						while ((len = in.read(buf)) > 0) {
+							output.write(buf, 0, len);
 						}
-						try {
-							Map<String, String> table = new HashMap<>();
-							table.put("source", tmp.getAbsolutePath());
-							table.put("xliff", tmp.getAbsolutePath() + ".xlf");
-							table.put("skeleton", tmp.getAbsolutePath() + ".skl");
-							table.put("catalog", params.get("catalog"));
-							table.put("srcLang", params.get("srcLang"));
-							String tgtLang = params.get("tgtLang");
-							if (tgtLang != null) {
-								table.put("tgtLang", tgtLang);
-							}
-							table.put("srcEncoding", params.get("srcEncoding"));
-							table.put("paragraph", params.get("paragraph"));
-							table.put("srxFile", params.get("srxFile"));
-							table.put("format", params.get("format"));
-							table.put("from", "x-idml");
-							List<String> res = Story2Xliff.run(table);
+					}
 
-							if (Constants.SUCCESS.equals(res.get(0))) {
-								if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {
-									updateXliff(tmp.getAbsolutePath() + ".xlf", entry.getName());
-									addFile(tmp.getAbsolutePath() + ".xlf");
-									ZipEntry content = new ZipEntry(entry.getName() + ".skl");
-									content.setMethod(ZipEntry.DEFLATED);
-									out.putNextEntry(content);
-									try (FileInputStream input = new FileInputStream(tmp.getAbsolutePath() + ".skl")) {
-										byte[] array = new byte[1024];
-										int len;
-										while ((len = input.read(array)) > 0) {
-											out.write(array, 0, len);
-										}
-										out.closeEntry();
-									}
-								} else {
-									saveEntry(entry, tmp.getAbsolutePath());
-								}
-								File skl = new File(tmp.getAbsolutePath() + ".skl");
-								Files.delete(Paths.get(skl.toURI()));
-								File xlf = new File(tmp.getAbsolutePath() + ".xlf");
-								Files.delete(Paths.get(xlf.toURI()));
-							} else {
-								saveEntry(entry, tmp.getAbsolutePath());
-							}
-						} catch (Exception e) {
-							// do nothing
-							saveEntry(entry, tmp.getAbsolutePath());
-						}
-						Files.delete(Paths.get(tmp.toURI()));
-					} else {
-						// not a story
-						File tmp = File.createTempFile("zip", ".tmp");
-						try (FileOutputStream output = new FileOutputStream(tmp.getAbsolutePath())) {
-							byte[] buf = new byte[1024];
-							int len;
-							while ((len = in.read(buf)) > 0) {
-								output.write(buf, 0, len);
-							}
-						}
-						if (entry.getName().matches(".*designmap\\.xml")) {
-							used = getStories(tmp.getAbsolutePath());
-						}
-						saveEntry(entry, tmp.getAbsolutePath());
-						Files.delete(Paths.get(tmp.toURI()));
+					allEntries.put(entryName, tmp);
+
+					// Check if it's the designmap to get story list
+					if (entryName.matches(".*designmap\\.xml")) {
+						used = getStories(tmp.getAbsolutePath());
+					}
+
+					if (entryName.matches(".*Story_.*\\.xml")) {
+						storyFiles.put(entryName, tmp);
 					}
 				}
-
 			}
+
+			// Process stories in parallel
+			List<StoryEntry> storiesToProcess = new Vector<>();
+			for (Map.Entry<String, File> entry : storyFiles.entrySet()) {
+				if (used != null && used.contains(entry.getKey())) {
+					storiesToProcess.add(new StoryEntry(entry.getKey(), entry.getValue()));
+				}
+			}
+
+			results = processStoriesInParallel(storiesToProcess, params, maxThreads);
+			
+			// Index results by entry name for quick lookup
+			Map<String, StoryResult> resultMap = new Hashtable<>();
+			for (StoryResult storyResult : results) {
+				resultMap.put(storyResult.entryName, storyResult);
+			}
+
+			// Write output ZIP with entries in original order
+			out = new ZipOutputStream(new FileOutputStream(skeleton));
+
+			for (String entryName : entryOrder) {
+				if (resultMap.containsKey(entryName)) {
+					// This is a processed story
+					StoryResult storyResult = resultMap.get(entryName);
+					if (storyResult.processed && storyResult.xliffFile != null) {
+						synchronized (mergedRoot) {
+							addFile(storyResult.xliffFile.getAbsolutePath());
+						}
+						ZipEntry content = new ZipEntry(entryName + ".skl");
+						content.setMethod(ZipEntry.DEFLATED);
+						out.putNextEntry(content);
+						try (FileInputStream input = new FileInputStream(storyResult.sklFile.getAbsolutePath())) {
+							byte[] array = new byte[1024];
+							int len;
+							while ((len = input.read(array)) > 0) {
+								out.write(array, 0, len);
+							}
+							out.closeEntry();
+						}
+						// Clean up temp files
+						Files.delete(Paths.get(storyResult.xliffFile.toURI()));
+						Files.delete(Paths.get(storyResult.sklFile.toURI()));
+					} else {
+						// Story not processed, copy original
+						ZipEntry zipEntry = new ZipEntry(entryName);
+						saveEntry(zipEntry, storyResult.originalFile.getAbsolutePath());
+					}
+					Files.delete(Paths.get(storyResult.originalFile.toURI()));
+				} else {
+					// Non-story or story not in used list
+					File tmp = allEntries.get(entryName);
+					ZipEntry zipEntry = new ZipEntry(entryName);
+					saveEntry(zipEntry, tmp.getAbsolutePath());
+					Files.delete(Paths.get(tmp.toURI()));
+				}
+			}
+
 			out.close();
 
 			sortStories();
@@ -289,7 +344,146 @@ public class Idml2Xliff {
 			logger.log(Level.ERROR, Messages.getString("Idml2Xliff.1"), e);
 			result.add(Constants.ERROR);
 			result.add(e.getMessage());
+			
+			// Close ZipOutputStream if it was opened
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException ioe) {
+					logger.log(Level.WARNING, Messages.getString("Idml2Xliff.2"), ioe);
+				}
+			}
+			
+			// Clean up all temporary files on error
+			for (StoryResult storyResult : results) {
+				try {
+					if (storyResult.xliffFile != null && storyResult.xliffFile.exists()) {
+						Files.delete(Paths.get(storyResult.xliffFile.toURI()));
+					}
+					if (storyResult.sklFile != null && storyResult.sklFile.exists()) {
+						Files.delete(Paths.get(storyResult.sklFile.toURI()));
+					}
+					if (storyResult.originalFile != null && storyResult.originalFile.exists()) {
+						Files.delete(Paths.get(storyResult.originalFile.toURI()));
+					}
+				} catch (IOException ioe) {
+					logger.log(Level.WARNING, Messages.getString("Idml2Xliff.3"), ioe);
+				}
+			}
+			
+			for (File tempFile : allEntries.values()) {
+				try {
+					if (tempFile != null && tempFile.exists()) {
+						Files.delete(Paths.get(tempFile.toURI()));
+					}
+				} catch (IOException ioe) {
+					logger.log(Level.WARNING, Messages.getString("Idml2Xliff.3"), ioe);
+				}
+			}
 		}
 		return result;
+	}
+
+	private static List<StoryResult> processStoriesInParallel(List<StoryEntry> stories, Map<String, String> params,
+			int maxThreads) {
+		List<StoryResult> results = new Vector<>();
+
+		try (ExecutorService executor = Executors.newFixedThreadPool(maxThreads)) {
+			List<Future<StoryResult>> futures = new Vector<>();
+
+			for (StoryEntry story : stories) {
+				Future<StoryResult> future = executor.submit(() -> processSingleStory(story, params));
+				futures.add(future);
+			}
+
+			// Collect results
+			for (Future<StoryResult> future : futures) {
+				try {
+					results.add(future.get());
+				} catch (Exception e) {
+					logger.log(Level.ERROR, "Error processing story in parallel", e);
+				}
+			}
+		} catch (Exception e) {
+			logger.log(Level.ERROR, "Error in parallel story processing", e);
+		}
+		return results;
+	}
+
+	private static StoryResult processSingleStory(StoryEntry story, Map<String, String> params) {
+		try {
+			File tmp = story.tempFile;
+			String entryName = story.entryName;
+
+			Map<String, String> table = new Hashtable<>();
+			table.put("source", tmp.getAbsolutePath());
+			table.put("xliff", tmp.getAbsolutePath() + ".xlf");
+			table.put("skeleton", tmp.getAbsolutePath() + ".skl");
+			table.put("catalog", params.get("catalog"));
+			table.put("srcLang", params.get("srcLang"));
+			String tgtLang = params.get("tgtLang");
+			if (tgtLang != null) {
+				table.put("tgtLang", tgtLang);
+			}
+			table.put("srcEncoding", params.get("srcEncoding"));
+			table.put("paragraph", params.get("paragraph"));
+			table.put("srxFile", params.get("srxFile"));
+			table.put("format", params.get("format"));
+			table.put("from", "x-idml");
+			List<String> res = Story2Xliff.run(table);
+
+			if (Constants.SUCCESS.equals(res.get(0))) {
+				if (countSegments(tmp.getAbsolutePath() + ".xlf") > 0) {
+					updateXliff(tmp.getAbsolutePath() + ".xlf", entryName);
+					File xliffFile = new File(tmp.getAbsolutePath() + ".xlf");
+					File sklFile = new File(tmp.getAbsolutePath() + ".skl");
+					return new StoryResult(entryName, tmp, xliffFile, sklFile, true);
+				} else {
+					// No segments, don't process
+					// Clean up empty xliff and skeleton files
+					File skl = new File(tmp.getAbsolutePath() + ".skl");
+					if (skl.exists()) {
+						Files.delete(Paths.get(skl.toURI()));
+					}
+					File xlf = new File(tmp.getAbsolutePath() + ".xlf");
+					if (xlf.exists()) {
+						Files.delete(Paths.get(xlf.toURI()));
+					}
+					return new StoryResult(entryName, tmp);
+				}
+			} else {
+				// Conversion failed
+				// Clean up any created files
+				File skl = new File(tmp.getAbsolutePath() + ".skl");
+				if (skl.exists()) {
+					Files.delete(Paths.get(skl.toURI()));
+				}
+				File xlf = new File(tmp.getAbsolutePath() + ".xlf");
+				if (xlf.exists()) {
+					Files.delete(Paths.get(xlf.toURI()));
+				}
+				return new StoryResult(entryName, tmp);
+			}
+		} catch (Exception e) {
+			logger.log(Level.ERROR, "Error processing story: " + story.entryName, e);
+			// Clean up any partially created files
+			File skl = new File(story.tempFile.getAbsolutePath() + ".skl");
+			if (skl.exists()) {
+				try {
+					Files.delete(Paths.get(skl.toURI()));
+				} catch (IOException ioe) {
+					// ignore cleanup errors
+				}
+			}
+			File xlf = new File(story.tempFile.getAbsolutePath() + ".xlf");
+			if (xlf.exists()) {
+				try {
+					Files.delete(Paths.get(xlf.toURI()));
+				} catch (IOException ioe) {
+					// ignore cleanup errors
+				}
+			}
+			return new StoryResult(story.entryName, story.tempFile);
+		}
 	}
 }

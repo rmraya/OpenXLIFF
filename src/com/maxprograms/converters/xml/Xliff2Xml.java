@@ -56,28 +56,28 @@ public class Xliff2Xml {
 
 	private static Logger logger = System.getLogger(Xliff2Xml.class.getName());
 
-	private static String xliffFile;
-	private static Map<String, Element> segments;
-	private static String encoding;
-	private static Catalog catalog;
-	private static Map<String, String> entities;
-	private static boolean inDesign = false;
-	private static boolean inAttribute;
-	private static boolean inCData;
-	private static boolean ditaBased = false;
-	private static boolean arbortextDita = false;
-	private static boolean qtiBased = false;
-	private static String tgtLang;
-	private static boolean isIdml;
-	private static List<PI> skipped;
-	private static List<PI> images;
-
-	private Xliff2Xml() {
-		// do not instantiate this class
-		// use run method instead
-	}
+	private String xliffFile;
+	private Map<String, Element> segments;
+	private String encoding;
+	private Catalog catalog;
+	private Map<String, String> entities;
+	private boolean inDesign = false;
+	private boolean inAttribute;
+	private boolean inCData;
+	private boolean ditaBased = false;
+	private boolean arbortextDita = false;
+	private boolean qtiBased = false;
+	private String tgtLang;
+	private boolean isIdml;
+	private List<PI> skipped;
+	private List<PI> images;
 
 	public static List<String> run(Map<String, String> params) {
+		Xliff2Xml instance = new Xliff2Xml();
+		return instance.runConversion(params);
+	}
+
+	private List<String> runConversion(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
 		String sklFile = params.get("skeleton");
 		xliffFile = params.get("xliff");
@@ -209,7 +209,7 @@ public class Xliff2Xml {
 		return result;
 	}
 
-	private static void recoverImages(String outputFile) {
+	private void recoverImages(String outputFile) {
 		try {
 			Decoder decoder = Base64.getMimeDecoder();
 			for (int i = 0; i < images.size(); i++) {
@@ -239,7 +239,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void removeTranslate(String outputFile)
+	private void removeTranslate(String outputFile)
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -254,7 +254,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void removeTranslateAtt(Element e) {
+	private void removeTranslateAtt(Element e) {
 		if (e.getAttributeValue("removeTranslate", "no").equals("yes")) {
 			e.removeAttribute("translate");
 			e.removeAttribute("removeTranslate");
@@ -265,7 +265,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void removeSeparators(String outputFile)
+	private void removeSeparators(String outputFile)
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -279,7 +279,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void changeLanguage(String outputFile)
+	private void changeLanguage(String outputFile)
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -295,7 +295,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void adjustLanguage(String outputFile)
+	private void adjustLanguage(String outputFile)
 			throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
@@ -310,7 +310,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void setLanguage(Element e) {
+	private void setLanguage(Element e) {
 		if (e.hasAttribute("xml:lang")) {
 			e.setAttribute("xml:lang", tgtLang);
 		}
@@ -323,7 +323,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void updatePI(Element e) {
+	private void updatePI(Element e) {
 		List<PI> pis = e.getPI();
 		for (int i = 0; i < pis.size(); i++) {
 			PI pi = pis.get(i);
@@ -336,7 +336,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static void recurse(Element e) {
+	private void recurse(Element e) {
 		List<XMLNode> content = e.getContent();
 		for (int i = 0; i < content.size(); i++) {
 			XMLNode n = content.get(i);
@@ -352,7 +352,7 @@ public class Xliff2Xml {
 		}
 	}
 
-	private static String extractText(Element element) throws SAXException {
+	private String extractText(Element element) throws SAXException {
 		String result = "";
 		List<XMLNode> content = element.getContent();
 		Iterator<XMLNode> i = content.iterator();
@@ -392,7 +392,7 @@ public class Xliff2Xml {
 		return result;
 	}
 
-	private static String cleanMrk(Element element) throws SAXException {
+	private String cleanMrk(Element element) throws SAXException {
 		String ts = element.getAttributeValue("ts");
 		if (ts.isEmpty()) {
 			throw new SAXException(Messages.getString("Xliff2Xml.5"));
@@ -422,7 +422,7 @@ public class Xliff2Xml {
 		return ts + content + "</" + name + ">";
 	}
 
-	private static String restoreChars(String string) {
+	private String restoreChars(String string) {
 		String result = string.replace(Xml2Xliff.MATHLT, "<");
 		result = result.replace(Xml2Xliff.MATHGT, ">");
 		result = result.replace(Xml2Xliff.DOUBLEPRIME, "\"");
@@ -472,7 +472,7 @@ public class Xliff2Xml {
 		return (result + string).replace("###AMP###", "&amp;");
 	}
 
-	private static String replaceEntities(String original, String token, String entity) {
+	private String replaceEntities(String original, String token, String entity) {
 		String result = original;
 		int index = result.indexOf(token);
 		while (index != -1) {
@@ -519,7 +519,7 @@ public class Xliff2Xml {
 		return result;
 	}
 
-	private static String addEntities(String string) {
+	private String addEntities(String string) {
 		String result = string;
 		int index = result.indexOf('&');
 		while (index != -1) {
@@ -592,11 +592,11 @@ public class Xliff2Xml {
 		return result;
 	}
 
-	private static void writeString(FileOutputStream output, String string) throws IOException {
+	private void writeString(FileOutputStream output, String string) throws IOException {
 		output.write(string.getBytes(encoding));
 	}
 
-	private static void loadSegments() throws SAXException, IOException, ParserConfigurationException {
+	private void loadSegments() throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		if (catalog != null) {
 			builder.setEntityResolver(catalog);
@@ -662,7 +662,7 @@ public class Xliff2Xml {
 
 	}
 
-	private static void checkUntranslatable(Element unit) {
+	private void checkUntranslatable(Element unit) {
 		Element source = unit.getChild("source");
 		Element target = unit.getChild("target");
 		if (target == null) {
@@ -685,13 +685,4 @@ public class Xliff2Xml {
 		}
 	}
 
-	protected static String replaceToken(String string, String token, String newText) {
-		String result = string;
-		int index = result.indexOf(token);
-		while (index != -1) {
-			result = result.substring(0, index) + newText + result.substring(index + token.length());
-			index = result.indexOf(token, index + newText.length());
-		}
-		return result;
-	}
 }

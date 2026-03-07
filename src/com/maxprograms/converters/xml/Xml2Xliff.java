@@ -67,53 +67,52 @@ public class Xml2Xliff {
 	static final String MATHGT = "\u200B\u203A";
 	static final String GAMP = "\u200B\u203A";
 
-	private static String inputFile;
-	private static String skeletonFile;
-	private static String sourceLanguage;
-	private static String srcEncoding;
-	private static FileOutputStream output;
-	private static FileOutputStream skeleton;
-	private static int segId;
-	private static int tagId;
-	private static List<String> segments;
-	private static Map<String, String> startsSegment;
-	private static Map<String, List<String>> translatableAttributes;
-	private static Map<String, String> inline;
-	private static Map<String, String> ctypes;
-	private static Map<String, String> keepFormating;
-	private static boolean segByElement;
 	private static Catalog catalog;
-	private static String rootElement;
-	private static Map<String, String> entities;
-	private static String entitiesMap;
-	private static Element root;
-	private static String text;
-	private static Stack<String> stack;
-	private static String translatable = "";
-	private static boolean inDesign = false;
-	private static Map<String, String> ignore;
-	private static boolean resx;
-	private static String startText;
-	private static String endText;
-	private static boolean ditaBased;
-	private static boolean qtiBased;
-	private static String targetLanguage;
-	private static boolean inCData;
-	private static boolean translateComments;
-	private static boolean containsText;
-
 	private static String currentCatalog;
 	private static Document ditaCache;
 
-	private static boolean ignoreTC = false;
-	private static boolean arbortextDita = false;
-
-	private Xml2Xliff() {
-		// do not instantiate this class
-		// use run method instead
-	}
+	private String inputFile;
+	private String skeletonFile;
+	private String sourceLanguage;
+	private String srcEncoding;
+	private FileOutputStream output;
+	private FileOutputStream skeleton;
+	private int segId;
+	private int tagId;
+	private List<String> segments;
+	private Map<String, String> startsSegment;
+	private Map<String, List<String>> translatableAttributes;
+	private Map<String, String> inline;
+	private Map<String, String> ctypes;
+	private Map<String, String> keepFormating;
+	private boolean segByElement;
+	private String rootElement;
+	private Map<String, String> entities;
+	private String entitiesMap;
+	private Element root;
+	private String text;
+	private Stack<String> stack;
+	private String translatable = "";
+	private boolean inDesign = false;
+	private Map<String, String> ignore;
+	private boolean resx;
+	private String startText;
+	private String endText;
+	private boolean ditaBased;
+	private boolean qtiBased;
+	private String targetLanguage;
+	private boolean inCData;
+	private boolean translateComments;
+	private boolean containsText;
+	private boolean ignoreTC = false;
+	private boolean arbortextDita = false;
 
 	public static List<String> run(Map<String, String> params) {
+		Xml2Xliff instance = new Xml2Xliff();
+		return instance.runConversion(params);
+	}
+
+	private List<String> runConversion(Map<String, String> params) {
 		List<String> result = new ArrayList<>();
 		segId = 1;
 		stack = new Stack<>();
@@ -153,9 +152,11 @@ public class Xml2Xliff {
 		}
 
 		try {
-			if (catalog == null || !catalogFile.equals(currentCatalog)) {
-				catalog = CatalogBuilder.getCatalog(catalogFile);
-				currentCatalog = catalogFile;
+			synchronized (Xml2Xliff.class) {
+				if (catalog == null || !catalogFile.equals(currentCatalog)) {
+					catalog = CatalogBuilder.getCatalog(catalogFile);
+					currentCatalog = catalogFile;
+				}
 			}
 			boolean autoConfiguration = false;
 			String iniFile = getIniFile(xmlfilter, inputFile);
@@ -265,7 +266,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String getIniFile(String filtersFolder, String fileName)
+	private String getIniFile(String filtersFolder, String fileName)
 			throws SAXException, IOException, ParserConfigurationException {
 		File folder = new File(filtersFolder);
 		SAXBuilder builder = new SAXBuilder();
@@ -316,13 +317,16 @@ public class Xml2Xliff {
 		if (publicId != null && !arbortextDita && publicId.indexOf(" DITA ") != -1) {
 			ditaBased = true;
 		}
-		if (root.hasAttribute("class")  && !arbortextDita && root.getAttributeValue("class").indexOf("topic/topic") != -1) {
+		if (root.hasAttribute("class") && !arbortextDita
+				&& root.getAttributeValue("class").indexOf("topic/topic") != -1) {
 			ditaBased = true;
 		}
 		if (ditaBased) {
 			File base = new File(folder, "config_dita.xml");
-			if (ditaCache == null) {
-				ditaCache = builder.build(base);
+			synchronized (Xml2Xliff.class) {
+				if (ditaCache == null) {
+					ditaCache = builder.build(base);
+				}
 			}
 			List<Element> list = ditaCache.getRootElement().getChildren();
 			Iterator<Element> it = list.iterator();
@@ -404,7 +408,7 @@ public class Xml2Xliff {
 		return new File(folder, "config_" + rootElement + ".xml").getAbsolutePath();
 	}
 
-	private static String cleanEntity(String string) {
+	private String cleanEntity(String string) {
 		String result = string;
 		int control = result.indexOf('&');
 		while (control != -1) {
@@ -458,7 +462,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String getRootElement(String file) {
+	private String getRootElement(String file) {
 		if (file == null) {
 			return null;
 		}
@@ -477,7 +481,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static void writeHeader() throws IOException {
+	private void writeHeader() throws IOException {
 		String tgtLang = "";
 		if (targetLanguage != null) {
 			tgtLang = "\" target-language=\"" + targetLanguage;
@@ -516,7 +520,7 @@ public class Xml2Xliff {
 		writeString("<body>\n");
 	}
 
-	private static void processList(Segmenter segmenter)
+	private void processList(Segmenter segmenter)
 			throws IOException, SAXException, ParserConfigurationException {
 		for (int i = 0; i < segments.size(); i++) {
 			String txt = segments.get(i);
@@ -562,7 +566,7 @@ public class Xml2Xliff {
 		}
 	}
 
-	private static void writeSegment(String tagged) throws IOException, SAXException, ParserConfigurationException {
+	private void writeSegment(String tagged) throws IOException, SAXException, ParserConfigurationException {
 		String restype = "";
 		if (!containsText(tagged)) {
 			String untagged = removeTags(tagged);
@@ -582,7 +586,7 @@ public class Xml2Xliff {
 		containsText = true;
 	}
 
-	private static String removeTags(String tagged) throws IOException, SAXException, ParserConfigurationException {
+	private String removeTags(String tagged) throws IOException, SAXException, ParserConfigurationException {
 		String source = "<skeleton>" + tagged + "</skeleton>";
 		SAXBuilder b = new SAXBuilder();
 		Document d = null;
@@ -597,7 +601,7 @@ public class Xml2Xliff {
 		return extractText(r);
 	}
 
-	private static String extractText(Element element) throws SAXException {
+	private String extractText(Element element) throws SAXException {
 		if ("ph".equals(element.getName())) {
 			return Xliff2Xml.fixEntities(element);
 		}
@@ -636,7 +640,7 @@ public class Xml2Xliff {
 		return result.toString();
 	}
 
-	private static String cleanMrk(Element element) throws SAXException {
+	private String cleanMrk(Element element) throws SAXException {
 		String ts = element.getAttributeValue("ts");
 		if (ts.isEmpty()) {
 			throw new SAXException(Messages.getString("Xml2Xliff.8"));
@@ -677,7 +681,7 @@ public class Xml2Xliff {
 		return result.toString();
 	}
 
-	private static String restoreChars(String string) {
+	private String restoreChars(String string) {
 		String result = string.replace(Xml2Xliff.MATHLT, "<");
 		result = result.replace(Xml2Xliff.MATHGT, ">");
 		result = result.replace(Xml2Xliff.DOUBLEPRIME, "\"");
@@ -685,7 +689,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String tidy(String seg) throws SAXException, IOException, ParserConfigurationException {
+	private String tidy(String seg) throws SAXException, IOException, ParserConfigurationException {
 		startText = "";
 		endText = "";
 		SAXBuilder b = new SAXBuilder();
@@ -831,7 +835,7 @@ public class Xml2Xliff {
 		return r.toString();
 	}
 
-	private static boolean containsText(String string) throws IOException, ParserConfigurationException, SAXException {
+	private boolean containsText(String string) throws IOException, ParserConfigurationException, SAXException {
 		if (string.strip().isEmpty()) {
 			return false;
 		}
@@ -848,7 +852,7 @@ public class Xml2Xliff {
 		return containsText(d.getRootElement());
 	}
 
-	private static boolean containsText(Element e) {
+	private boolean containsText(Element e) {
 		if ("ph".equals(e.getName()) || "bpt".equals(e.getName()) || "ept".equals(e.getName())
 				|| "it".equals(e.getName())) {
 			return false;
@@ -880,7 +884,7 @@ public class Xml2Xliff {
 		return false;
 	}
 
-	private static String normalize(String string) {
+	private String normalize(String string) {
 		String result = string.replace('\n', ' ');
 		result = result.replace('\t', ' ');
 		result = result.replace('\r', ' ');
@@ -901,7 +905,7 @@ public class Xml2Xliff {
 		return rs;
 	}
 
-	private static String addTags(String string) {
+	private String addTags(String string) {
 		String src = string;
 		StringBuilder result = new StringBuilder();
 		int start = src.indexOf('<');
@@ -932,14 +936,14 @@ public class Xml2Xliff {
 		return result.toString();
 	}
 
-	private static String clean(String string) {
+	private String clean(String string) {
 		String result = string.replace("<", MATHLT);
 		result = result.replace(">", MATHGT);
 		result = result.replace("\"", DOUBLEPRIME);
 		return replaceAmp(result);
 	}
 
-	private static String replaceAmp(String value) {
+	private String replaceAmp(String value) {
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
@@ -952,7 +956,7 @@ public class Xml2Xliff {
 		return result.toString();
 	}
 
-	private static String tag(String element) {
+	private String tag(String element) {
 		String result = "";
 		String type = getType(element);
 		if (translatableAttributes.containsKey(type)) {
@@ -967,7 +971,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String cleanString(String string) {
+	private String cleanString(String string) {
 		String s = string;
 		int control = s.indexOf('&');
 		while (control != -1) {
@@ -1025,7 +1029,7 @@ public class Xml2Xliff {
 		return XMLUtils.validChars(s);
 	}
 
-	private static boolean validEntitiy(String candidate) {
+	private boolean validEntitiy(String candidate) {
 		if (candidate.length() < 3) {
 			return false;
 		}
@@ -1067,15 +1071,15 @@ public class Xml2Xliff {
 		return true;
 	}
 
-	private static void writeSkeleton(String string) throws IOException {
+	private void writeSkeleton(String string) throws IOException {
 		skeleton.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static void writeString(String string) throws IOException {
+	private void writeString(String string) throws IOException {
 		output.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private static String extractAttributes(String type, String element) {
+	private String extractAttributes(String type, String element) {
 		String ctype = "";
 		if (ctypes.containsKey(type)) {
 			ctype = " ctype=\"" + ctypes.get(type) + "\"";
@@ -1132,7 +1136,7 @@ public class Xml2Xliff {
 		return result + "</ph>";
 	}
 
-	private static void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException {
+	private void buildTables(String iniFile) throws SAXException, IOException, ParserConfigurationException {
 		SAXBuilder builder = new SAXBuilder();
 		builder.setEntityResolver(catalog);
 		Document doc = builder.build(iniFile);
@@ -1178,14 +1182,14 @@ public class Xml2Xliff {
 		}
 	}
 
-	private static void buildList() throws SAXException, IOException {
+	private void buildList() throws SAXException, IOException {
 		segments = new ArrayList<>();
 		text = "";
 		parseNode(root);
 		segments.add(text);
 	}
 
-	private static void parseNode(XMLNode n) throws SAXException, IOException {
+	private void parseNode(XMLNode n) throws SAXException, IOException {
 		switch (n.getNodeType()) {
 			case XMLNode.ATTRIBUTE_NODE:
 				throw new SAXException(Messages.getString("Xml2Xliff.10") + n);
@@ -1404,7 +1408,7 @@ public class Xml2Xliff {
 		}
 	}
 
-	private static Element parseElement(Element e) {
+	private Element parseElement(Element e) {
 		if (!isKnownElement(e.getName())) {
 			configureElement(e);
 		}
@@ -1438,7 +1442,7 @@ public class Xml2Xliff {
 		return mrk;
 	}
 
-	private static void configureElement(Element e) {
+	private void configureElement(Element e) {
 		String cls = e.getAttributeValue("class");
 		String[] parts = cls.split("\\s");
 		for (int h = 0; h < parts.length; h++) {
@@ -1473,7 +1477,7 @@ public class Xml2Xliff {
 		logger.log(Level.WARNING, mf.format(new String[] { e.getName() }));
 	}
 
-	private static boolean isKnownElement(String name) {
+	private boolean isKnownElement(String name) {
 		if (startsSegment.containsKey(name)) {
 			return true;
 		}
@@ -1483,7 +1487,7 @@ public class Xml2Xliff {
 		return ignore.containsKey(name);
 	}
 
-	private static void removeComments(Element e) {
+	private void removeComments(Element e) {
 		List<XMLNode> content = new ArrayList<>();
 		List<XMLNode> list = e.getContent();
 		Iterator<XMLNode> it = list.iterator();
@@ -1499,7 +1503,7 @@ public class Xml2Xliff {
 		e.setContent(content);
 	}
 
-	private static void normalizeElement(Element e) {
+	private void normalizeElement(Element e) {
 		List<XMLNode> l = e.getContent();
 		Iterator<XMLNode> i = l.iterator();
 		List<XMLNode> normal = new ArrayList<>();
@@ -1522,7 +1526,7 @@ public class Xml2Xliff {
 		e.setContent(normal);
 	}
 
-	private static String cleanAttribute(String value) {
+	private String cleanAttribute(String value) {
 		String result = value;
 		if (stack.size() > 1 && !text.startsWith("" + '\u007F' + '\u007F')) {
 			// this is an inline element and will be placed in <ph>
@@ -1536,7 +1540,7 @@ public class Xml2Xliff {
 		return result;
 	}
 
-	private static String getType(String string) {
+	private String getType(String string) {
 		String result = "";
 		if (string.startsWith("<![CDATA[")) {
 			return "![CDATA[";
