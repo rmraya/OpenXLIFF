@@ -130,7 +130,6 @@ public class DitaMap2Xliff {
 			}
 			params.put("maxThreads", String.valueOf(maxThreads));
 
-			long ditaParserStart = System.currentTimeMillis();
 			DitaParser parser = new DitaParser();
 			if (dataLogger != null) {
 				if (dataLogger.isCancelled()) {
@@ -142,12 +141,9 @@ public class DitaMap2Xliff {
 				DitaParser.setDataLogger(dataLogger);
 			}
 			List<String> filesMap = parser.run(params, catalog);
-			long ditaParserEnd = System.currentTimeMillis();
 			issues.addAll(parser.getIssues());
 			rootScope = parser.getScope();
 			images = parser.getImages();
-			long scopeBuildTime = parser.getScopeBuildTime();
-			long ditaParserDuration = ditaParserEnd - ditaParserStart;
 
 			List<String> xliffs = new ArrayList<>();
 			List<String> skels = new ArrayList<>();
@@ -170,10 +166,8 @@ public class DitaMap2Xliff {
 				dataLogger.setStage(Messages.getString("DitaMap2Xliff.02"));
 			}
 
-			long xliffConversionStart = System.currentTimeMillis();
 			List<ProcessingResult> results = convertInParallel(filesMap, params, catalog, skeleton);
-			long xliffConversionDuration = System.currentTimeMillis() - xliffConversionStart;
-
+			
 			// Collect xliffs and skels from results
 			for (ProcessingResult fpr : results) {
 				if (fpr.skipped) {
@@ -192,7 +186,6 @@ public class DitaMap2Xliff {
 				}
 			}
 
-			long xliffMergeStart = System.currentTimeMillis();
 			Document merged = new Document(null, "xliff", null, null);
 			mergedRoot = merged.getRootElement();
 			mergedRoot.setAttribute("version", "1.2");
@@ -279,15 +272,6 @@ public class DitaMap2Xliff {
 			try (FileOutputStream output = new FileOutputStream(xliff)) {
 				outputter.output(merged, output);
 			}
-			long xliffMergeDuration = System.currentTimeMillis() - xliffMergeStart;
-
-			System.out.println("scope build duration: " + scopeBuildTime + " ms");
-			System.out.println("DITA parsing duration: " + ditaParserDuration + " ms");
-			System.out.println("XLIFF conversion duration: " + xliffConversionDuration + " ms");
-			System.out.println("XLIFF merge duration: " + xliffMergeDuration + " ms");
-			System.out.println("Total duration: " + (ditaParserDuration + xliffConversionDuration + xliffMergeDuration) + " ms");
-			System.out.println("threads used: " + maxThreads);
-
 			result.add(Constants.SUCCESS);
 		} catch (Exception e) {
 			logger.log(Level.ERROR, Messages.getString("DitaMap2Xliff.05"), e);

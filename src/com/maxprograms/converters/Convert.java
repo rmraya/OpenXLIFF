@@ -491,9 +491,7 @@ public class Convert {
 				if (xliff22) {
 					version = "2.2";
 				}
-				long toXliff2Start = System.currentTimeMillis();
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
-				System.out.println("ToXliff2 conversion duration: " + (System.currentTimeMillis() - toXliff2Start));
 			}
 		} catch (Exception e) {
 			result.add(0, Constants.ERROR);
