@@ -20,6 +20,10 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -53,13 +57,44 @@ public class Resegmenter {
     public static List<String> run(String xliff, String srx, String srcLang, Catalog catalog) {
         List<String> result = new ArrayList<>();
         try {
-            Context ctx = new Context();
-            ctx.segmenter = SegmenterPool.getSegmenter(srx, srcLang, catalog);
             SAXBuilder builder = new SAXBuilder();
             builder.setEntityResolver(catalog);
             Document doc = builder.build(xliff);
             Element root = doc.getRootElement();
-            recurse(ctx, root);
+            
+            // Get all <file> elements for parallel processing
+            List<Element> fileElements = root.getChildren("file");
+            
+            if (fileElements.isEmpty()) {
+                // No file elements, just recurse normally
+                Context ctx = new Context();
+                ctx.segmenter = SegmenterPool.getSegmenter(srx, srcLang, catalog);
+                recurse(ctx, root);
+            } else {
+                // Process file elements in parallel
+                int maxThreads = Runtime.getRuntime().availableProcessors();
+                System.out.println("Resegmenting " + fileElements.size() + " files using " + maxThreads + " threads");
+                ExecutorService executor = Executors.newFixedThreadPool(maxThreads);
+                List<Future<Void>> futures = new ArrayList<>();
+                
+                for (Element fileElement : fileElements) {
+                    Callable<Void> task = () -> {
+                        Context ctx = new Context();
+                        ctx.segmenter = SegmenterPool.getSegmenter(srx, srcLang, catalog);
+                        recurse(ctx, fileElement);
+                        return null;
+                    };
+                    futures.add(executor.submit(task));
+                }
+                
+                // Wait for all tasks to complete
+                for (Future<Void> future : futures) {
+                    future.get();
+                }
+                
+                executor.shutdown();
+            }
+            
             try (FileOutputStream out = new FileOutputStream(new File(xliff))) {
                 XMLOutputter outputter = new XMLOutputter();
                 outputter.preserveSpace(true);
@@ -67,7 +102,7 @@ public class Resegmenter {
                 outputter.output(doc, out);
             }
             result.add(Constants.SUCCESS);
-        } catch (SAXException | IOException | ParserConfigurationException e) {
+        } catch (Exception e) {
             Logger logger = System.getLogger(Resegmenter.class.getName());
             logger.log(Level.ERROR, Messages.getString("Resegmenter.1"), e);
             result.add(Constants.ERROR);
