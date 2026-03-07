@@ -168,33 +168,8 @@ public class DitaParser {
 			parseDitaVal(ditaval, catalog);
 		}
 
-		filesMap.add(inputFile);
-
-		Element root = doc.getRootElement();
-
-		if (dataLogger != null) {
-			if (dataLogger.isCancelled()) {
-				throw new IOException(Constants.CANCELLED);
-			}
-			synchronized (dataLogger) {
-				dataLogger.log(new File(inputFile).getName());
-			}
-		}
-
-		recurse(root, inputFile);
-		recursed.add(inputFile);
-
-		Iterator<Key> it = usedKeys.keySet().iterator();
-		while (it.hasNext()) {
-			Key key = it.next();
-			String defined = key.getDefined();
-			if (!filesMap.contains(defined)) {
-				pendingRecurse.add(defined);
-			}
-			if (!filesMap.contains(key.getHref())) {
-				pendingRecurse.add(key.getHref());
-			}
-		}
+		// Start by queueing the input file for parallel processing
+		pendingRecurse.add(inputFile);
 
 		String maxThreadsParam = params.get("maxThreads");
 		int maxThreads = Integer.parseInt(maxThreadsParam);
@@ -233,6 +208,22 @@ public class DitaParser {
 									recursed.add(file);
 									return;
 								}
+							}
+							// Check if file has translate="no" attribute
+							if (e.getAttributeValue("translate", "yes").equals("no")) {
+								synchronized (ignored) {
+									ignored.add(file);
+								}
+								MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.02"));
+								String issue = mf.format(new Object[] { file });
+								logger.log(Level.WARNING, issue);
+								synchronized (issues) {
+									if (!issues.contains(issue)) {
+										issues.add(issue);
+									}
+								}
+								recursed.add(file);
+								return;
 							}
 							recurse(e, file);
 							recursed.add(file);
@@ -373,61 +364,20 @@ public class DitaParser {
 			}
 			if (!href.isEmpty() && !href.equals(parentFile)) {
 				href = URLDecoder.decode(href, StandardCharsets.UTF_8);
-				try {
-					File file = new File(href);
-					if (file.getName().indexOf('#') != -1) {
-						// remove fragment identifier
-						file = new File(file.getParentFile(), file.getName().substring(0, file.getName().indexOf('#')));
-						href = file.getAbsolutePath();
+				File file = new File(href);
+				if (file.getName().indexOf('#') != -1) {
+					// remove fragment identifier
+					file = new File(file.getParentFile(), file.getName().substring(0, file.getName().indexOf('#')));
+					href = file.getAbsolutePath();
+				}
+				if (file.exists()) {
+					// Queue file for parallel processing instead of processing synchronously
+					if (!recursed.contains(href) && !pendingRecurse.contains(href)) {
+						pendingRecurse.add(href);
 					}
-					if (file.exists()) {
-						if (dataLogger != null) {
-							if (dataLogger.isCancelled()) {
-								throw new IOException(Constants.CANCELLED);
-							}
-							dataLogger.log(file.getName());
-						}
-						SAXBuilder builder = new SAXBuilder();
-						builder.setEntityResolver(catalog);
-						builder.setErrorHandler(new SilentErrorHandler());
-						Document d = builder.build(href);
-						Element referenceRoot = d.getRootElement();
-						if (referenceRoot.getAttributeValue("translate", "yes").equals("yes")) {
-							if (!recursed.contains(href)) {
-								recurse(referenceRoot, href);
-								filesMap.add(href);
-								recursed.add(href);
-							}
-						} else {
-							ignored.add(file.getAbsolutePath());
-							MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.02"));
-							String issue = mf.format(new Object[] { href });
-							logger.log(Level.WARNING, issue);
-							if (!issues.contains(issue)) {
-								issues.add(issue);
-							}
-						}
-					} else {
-						MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.03"));
-						String issue = mf.format(new Object[] { href });
-						logger.log(Level.WARNING, issue);
-						if (!issues.contains(issue)) {
-							issues.add(issue);
-						}
-					}
-				} catch (IOException | SAXException ex) {
-					String lower = href.toLowerCase();
-					if (!(lower.endsWith(".eps") || lower.endsWith(".png") || lower.endsWith(".jpeg")
-							|| lower.endsWith(".jpg") || lower.endsWith(".pdf") || lower.endsWith(".tiff")
-							|| lower.endsWith(".tif") || lower.endsWith(".mov") || lower.endsWith(".mp4")
-							|| lower.endsWith(".m4v") || lower.endsWith(".flv") || lower.endsWith(".fl4v")
-							|| lower.endsWith(".avi") || lower.endsWith(".mpg") || lower.endsWith(".mpeg")
-							|| lower.endsWith(".wmv") || lower.endsWith(".asf"))) {
-						MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.04"));
-						throw new SAXException(mf.format(new String[] { ex.getMessage(), href }));
-					}
-					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.05"));
-					String issue = mf.format(new String[] { href });
+				} else {
+					MessageFormat mf = new MessageFormat(Messages.getString("DitaParser.03"));
+					String issue = mf.format(new Object[] { href });
 					logger.log(Level.WARNING, issue);
 					if (!issues.contains(issue)) {
 						issues.add(issue);
