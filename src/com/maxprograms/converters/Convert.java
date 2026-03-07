@@ -63,7 +63,6 @@ import com.maxprograms.converters.txml.Txml2Xliff;
 import com.maxprograms.converters.wpml.Wpml2Xliff;
 import com.maxprograms.converters.xliff.ToOpenXliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
-import com.maxprograms.xliff2.Resegmenter;
 import com.maxprograms.xliff2.ToXliff2;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -102,7 +101,6 @@ public class Convert {
 		boolean xliff21 = false;
 		boolean xliff22 = false;
 		boolean strict = false;
-		boolean mustResegment = false;
 
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
@@ -306,10 +304,8 @@ public class Convert {
 			logger.log(Level.ERROR, Messages.getString("Convert.21"));
 			return;
 		}
-		if ((xliff20 || xliff21 || xliff22) && !paragraph && config.isEmpty()) {
-			mustResegment = true;
-			paragraph = true;
-		}
+		// Don't force paragraph mode for XLIFF 2.x - let converters do proper sentence segmentation
+		// This eliminates the need for the expensive resegmentation step
 		Map<String, String> params = new HashMap<>();
 		params.put("source", source);
 		params.put("xliff", xliff);
@@ -338,9 +334,6 @@ public class Convert {
 		}
 		if (embed) {
 			params.put("embed", "yes");
-		}
-		if (mustResegment) {
-			params.put("resegment", "yes");
 		}
 		if (xliff20) {
 			params.put("xliff20", "yes");
@@ -501,12 +494,6 @@ public class Convert {
 				long toXliff2Start = System.currentTimeMillis();
 				result = ToXliff2.run(new File(params.get("xliff")), params.get("catalog"), version);
 				System.out.println("ToXliff2 conversion duration: " + (System.currentTimeMillis() - toXliff2Start));
-				if ("yes".equals(params.get("resegment")) && Constants.SUCCESS.equals(result.get(0))) {
-					long segentationStart = System.currentTimeMillis();
-					result = Resegmenter.run(params.get("xliff"), params.get("srxFile"), params.get("srcLang"),
-							CatalogBuilder.getCatalog(params.get("catalog")));
-					System.out.println("Resegmenter conversion duration: " + (System.currentTimeMillis() - segentationStart));
-				}
 			}
 		} catch (Exception e) {
 			result.add(0, Constants.ERROR);
