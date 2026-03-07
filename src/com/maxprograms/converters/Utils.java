@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -50,9 +51,15 @@ import com.maxprograms.xml.XMLNode;
 public class Utils {
 
 	protected static final Logger logger = System.getLogger(Utils.class.getName());
+	private static final ConcurrentHashMap<String, String> pathCache = new ConcurrentHashMap<>();
+	private static final int MAX_CACHE_SIZE = 10000; // Limit cache to prevent unbounded growth
 
 	private Utils() {
 		// do not instantiate this class
+	}
+
+	public static void clearPathCache() {
+		pathCache.clear();
 	}
 
 	public static String getAbsolutePath(File homeFile, String relative) throws IOException {
@@ -60,6 +67,13 @@ public class Utils {
 	}
 
 	public static String getAbsolutePath(String homeFile, String relative) throws IOException {
+		// Use cache to avoid expensive getCanonicalPath() filesystem calls
+		String cacheKey = homeFile + "|" + relative;
+		String cached = pathCache.get(cacheKey);
+		if (cached != null) {
+			return cached;
+		}
+
 		try {
 			if (relative.indexOf('%') != -1) {
 				try {
@@ -78,7 +92,16 @@ public class Utils {
 				}
 				result = new File(home, relative);
 			}
-			return result.getCanonicalPath();
+			String canonicalPath = result.getCanonicalPath();
+
+			// Prevent unbounded cache growth - clear if exceeds limit
+			// This is thread-safe but may cause occasional cache misses during clear
+			if (pathCache.size() >= MAX_CACHE_SIZE) {
+				pathCache.clear();
+			}
+
+			pathCache.put(cacheKey, canonicalPath);
+			return canonicalPath;
 		} catch (IOException e) {
 			MessageFormat mf = new MessageFormat(Messages.getString("Utils.1"));
 			logger.log(Level.ERROR, mf.format(new String[] { relative, homeFile }), e);
