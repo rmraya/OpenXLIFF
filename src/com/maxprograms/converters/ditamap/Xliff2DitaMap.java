@@ -27,6 +27,7 @@ import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -128,19 +129,33 @@ public class Xliff2DitaMap {
 				}
 			} catch (NumberFormatException e) {
 				// Use default if invalid
-				maxThreads = Runtime.getRuntime().availableProcessors();
+				maxThreads = 16;
 			}
 		} else {
-			maxThreads = Runtime.getRuntime().availableProcessors();
+			maxThreads = 16;
 		}
 		params.put("maxThreads", String.valueOf(maxThreads));
 
-		try (ExecutorService executor = Executors.newFixedThreadPool(maxThreads)) {
+		// Use virtual threads with semaphore to limit concurrency
+		Semaphore concurrencyLimit = new Semaphore(maxThreads);
+		try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
 			List<Future<ProcessingResult>> futures = new ArrayList<>();
 
 			for (String topicFile : topicFiles) {
 				Future<ProcessingResult> future = executor.submit(() -> {
-					return mergeSingleFile(topicFile, params, outputFile, fileCount, tgtlang, catalog);
+					try {
+						// Acquire permit to limit concurrency
+						concurrencyLimit.acquire();
+						try {
+							return mergeSingleFile(topicFile, params, outputFile, fileCount, tgtlang, catalog);
+						} finally {
+							// Always release permit
+							concurrencyLimit.release();
+						}
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+						return new ProcessingResult("Interrupted: " + ex.getMessage());
+					}
 				});
 				futures.add(future);
 			}

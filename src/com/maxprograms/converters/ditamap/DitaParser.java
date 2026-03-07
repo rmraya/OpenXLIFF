@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -175,7 +176,9 @@ public class DitaParser {
 		int maxThreads = Integer.parseInt(maxThreadsParam);
 
 		int count = 0;
-		ExecutorService executor = Executors.newFixedThreadPool(maxThreads);
+		// Use virtual threads with semaphore to limit concurrency
+		Semaphore concurrencyLimit = new Semaphore(maxThreads);
+		ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 		try {
 			do {
 				List<String> files = new ArrayList<>(pendingRecurse);
@@ -184,11 +187,15 @@ public class DitaParser {
 				List<java.util.concurrent.Future<?>> futures = files.stream()
 					.filter(file -> !recursed.contains(file))
 					.map(file -> executor.submit((Runnable) () -> {
-						// Use visiting as a semaphore to prevent concurrent processing of the same file
-						if (!visiting.add(file)) {
-							return; // Another thread is already processing this file
-						}
 						try {
+							// Acquire permit to limit concurrency
+							concurrencyLimit.acquire();
+							try {
+								// Use visiting as a semaphore to prevent concurrent processing of the same file
+								if (!visiting.add(file)) {
+									return; // Another thread is already processing this file
+								}
+								try {
 							if (dataLogger != null) {
 								if (dataLogger.isCancelled()) {
 									throw new IOException(Constants.CANCELLED);
@@ -238,7 +245,14 @@ public class DitaParser {
 						} finally {
 							visiting.remove(file);
 						}
-					}))
+					} finally {
+						// Always release permit
+						concurrencyLimit.release();
+					}
+				} catch (InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+			}))
 					.collect(Collectors.toList());
 				
 				// Wait for all tasks to complete
