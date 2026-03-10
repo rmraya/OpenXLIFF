@@ -166,7 +166,7 @@ public class Html2Xliff {
 	}
 
 	private static void processList(Segmenter segmenter)
-		throws IOException, SAXException, ParserConfigurationException {
+			throws IOException, SAXException, ParserConfigurationException {
 		for (int i = 0; i < segments.size(); i++) {
 			String text = segments.get(i);
 			if (isTranslateable(text)) {
@@ -179,7 +179,7 @@ public class Html2Xliff {
 	}
 
 	private static void extractSegment(Segmenter segmenter, String seg)
-		throws IOException, SAXException, ParserConfigurationException {
+			throws IOException, SAXException, ParserConfigurationException {
 
 		// start by making a smaller list
 
@@ -792,6 +792,9 @@ public class Html2Xliff {
 			}
 			if (atts.containsKey("placeholder")) {
 				translatables.add("placeholder");
+			}
+			if (atts.containsKey("lang") && "html".equalsIgnoreCase(type)) {
+				translatables.add("lang");
 			}
 			if (!translatables.isEmpty()) {
 				translatableAttributes.put(type.toLowerCase(), translatables);
