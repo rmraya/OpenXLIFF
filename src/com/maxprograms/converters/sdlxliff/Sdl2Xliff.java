@@ -19,10 +19,13 @@ import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -40,7 +43,8 @@ import com.maxprograms.xml.XMLUtils;
 
 public class Sdl2Xliff {
 
-	private static FileOutputStream out;
+	private static final List<String> CONTEXT_TYPES = Arrays.asList("database", "element", "elementtitle", "linenumber",
+			"numparams", "paramnotes", "record", "recordtitle", "sourceFile");
 
 	private Sdl2Xliff() {
 		// do not instantiate this class
@@ -73,35 +77,37 @@ public class Sdl2Xliff {
 			}
 			model = null;
 
+			Map<String, String[]> contextMap = new Hashtable<>();
+
 			SAXBuilder builder = new SAXBuilder();
 			builder.setEntityResolver(catalog);
 			Document doc = builder.build(original);
 
-			out = new FileOutputStream(output);
-			writeStr("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-			writeStr("<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
+			FileOutputStream out = new FileOutputStream(output);
+			writeStr(out, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+			writeStr(out, "<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" "
 					+ "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 					+ "xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">\n");
-			writeStr("<file datatype=\"x-sdlxliff\" original=\"" + XMLUtils.cleanText(params.get("source"))
+			writeStr(out, "<file datatype=\"x-sdlxliff\" original=\"" + XMLUtils.cleanText(params.get("source"))
 					+ "\" tool-id=\"" + Constants.TOOLID + "\" source-language=\"" + sourceLanguage + tgtLang + "\" "
 					+ "xmlns:sdl=\"http://sdl.com/FileTypes/SdlXliff/1.0\" " + ">\n");
-			writeStr("<?encoding " + doc.getEncoding() + "?>\n");
+			writeStr(out, "<?encoding " + doc.getEncoding() + "?>\n");
 
-			writeStr("<header>\n");
-			writeStr("  <skl>\n");
-			writeStr("    <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
-			writeStr("  </skl>\n");
-			writeStr("  <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
+			writeStr(out, "<header>\n");
+			writeStr(out, "  <skl>\n");
+			writeStr(out, "    <external-file href=\"" + XMLUtils.cleanText(skeletonFile) + "\"/>\n");
+			writeStr(out, "  </skl>\n");
+			writeStr(out, "  <tool tool-version=\"" + Constants.VERSION + " " + Constants.BUILD + "\" tool-id=\""
 					+ Constants.TOOLID + "\" tool-name=\"" + Constants.TOOLNAME + "\"/>\n");
-			writeStr("</header>\n");
-			writeStr("<body>\n");
+			writeStr(out, "</header>\n");
+			writeStr(out, "<body>\n");
 
 			acceptTrackedChanges(doc.getRootElement());
-			recurse(doc.getRootElement());
+			recurse(doc.getRootElement(), out, contextMap);
 
-			writeStr("</body>\n");
-			writeStr("</file>\n");
-			writeStr("</xliff>\n");
+			writeStr(out, "</body>\n");
+			writeStr(out, "</file>\n");
+			writeStr(out, "</xliff>\n");
 			out.close();
 
 			XMLOutputter outputter = new XMLOutputter();
@@ -121,99 +127,146 @@ public class Sdl2Xliff {
 		return result;
 	}
 
-	private static void recurse(Element root) throws IOException {
-		if (root.getName().equals("trans-unit")) {
-			if (root.getAttributeValue("translate", "yes").equals("no")
-					&& !(root.getAttributeValue("sdl:locktype").equals("Manual")
-							&& containsSrcText(root.getChild("source")))) {
-				return;
+	private static void recurse(Element root, FileOutputStream out, Map<String, String[]> contextMap)
+			throws IOException {
+		if ("cxt-defs".equals(root.getName())) {
+			List<Element> defs = root.getChildren("cxt-def");
+			for (Element def : defs) {
+				if (def.hasAttribute("id") && def.hasAttribute("name") && def.hasAttribute("descr")) {
+					String[] pair = new String[] { def.getAttributeValue("name"), def.getAttributeValue("descr") };
+					contextMap.put(def.getAttributeValue("id"), pair);
+				}
 			}
-			Element segSource = root.getChild("seg-source");
-			Element target = root.getChild("target");
-
-			Map<String, Boolean> lockedMap = new HashMap<>();
-			Map<String, String> statusMap = new HashMap<>();
-
-			Element segDefs = root.getChild("sdl:seg-defs");
-			if (segDefs != null) {
-				List<Element> children = segDefs.getChildren("sdl:seg");
-				Iterator<Element> it = children.iterator();
-				while (it.hasNext()) {
-					Element sdlSeg = it.next();
-					String id = sdlSeg.getAttributeValue("id");
-					if ("true".equals(sdlSeg.getAttributeValue("locked", "false"))) {
-						lockedMap.put(id, true);
-					}
-					if ("Draft".equals(sdlSeg.getAttributeValue("conf"))) {
-						statusMap.put(id, "new");
-					}
-					if ("Translated".equals(sdlSeg.getAttributeValue("conf"))) {
-						statusMap.put(id, "translated");
-					}
-					if ("RejectedTranslation".equals(sdlSeg.getAttributeValue("conf"))) {
-						statusMap.put(id, "needs-review-translation");
-					}
-					if ("ApprovedSignOff".equals(sdlSeg.getAttributeValue("conf"))) {
-						statusMap.put(id, "signed-off");
+		} else if ("group".equals(root.getName())) {
+			List<String[]> contextList = new Vector<>();
+			Element contextInfo = root.getChild("sdl:cxts");
+			if (contextInfo != null) {
+				List<Element> cxts = contextInfo.getChildren("sdl:cxt");
+				for (Element cxt : cxts) {
+					String id = cxt.getAttributeValue("id");
+					if (contextMap.containsKey(id)) {
+						String[] pair = contextMap.get(id);
+						contextList.add(pair);
 					}
 				}
 			}
-			if (segSource != null) {
-				if (containsText(segSource)) {
-					Map<String, Element> targets = new HashMap<>();
-					if (target != null) {
-						List<Element> tmarks = getSegments(target);
-						Iterator<Element> tt = tmarks.iterator();
-						while (tt.hasNext()) {
-							Element mrk = tt.next();
-							targets.put(mrk.getAttributeValue("mid"), mrk);
-						}
-					}
-					List<Element> mrks = getSegments(segSource);
-					if (!mrks.isEmpty()) {
-						Iterator<Element> it = mrks.iterator();
-						while (it.hasNext()) {
-							Element mrk = it.next();
-							String id = mrk.getAttributeValue("mid");
-							String lockedString = "";
-							if (lockedMap.containsKey(id)) {
-								lockedString = "\" ts=\"locked";
-							}
-							writeStr("  <trans-unit id=\"" + root.getAttributeValue("id") + ':'
-									+ mrk.getAttributeValue("mid") + lockedString + "\" xml:space=\"preserve\">\n");
-							// write new source
-							writeStr("    <source>");
-							recurseSource(mrk);
-							writeStr("</source>\n");
-							if (targets.containsKey(mrk.getAttributeValue("mid"))) {
-								// write new target
-								String stateString = "";
-								if (statusMap.containsKey(id)) {
-									stateString = " state=\"" + statusMap.get(id) + "\"";
-								}
-								Element tmrk = targets.get(mrk.getAttributeValue("mid"));
-								writeStr("    <target " + stateString + ">");
-								recurseTarget(tmrk);
-								writeStr("</target>\n");
-							}
-							writeStr("  </trans-unit>\n");
-						}
-					}
-				}
-			} else {
-				// <seg-source> is null
-				if (root.getAttributeValue("translate", "yes").equals("no")) {
-					writeStr(root.toString());
+			for (Element child : root.getChildren()) {
+				if ("trans-unit".equals(child.getName())) {
+					processUnit(child, out, contextMap, contextList);
 				} else {
-					throw new IOException(Messages.getString("Sdl2Xliff.2"));
+					recurse(child, out, contextMap);
 				}
 			}
+		} else if ("trans-unit".equals(root.getName())) {
+			processUnit(root, out, contextMap, new Vector<>());
 		} else {
-			// not in <trans-unit>
 			List<Element> children = root.getChildren();
 			Iterator<Element> it = children.iterator();
 			while (it.hasNext()) {
-				recurse(it.next());
+				recurse(it.next(), out, contextMap);
+			}
+		}
+	}
+
+	private static void processUnit(Element unit, FileOutputStream out, Map<String, String[]> contextMap,
+			List<String[]> contextList) throws IOException {
+		if (unit.getAttributeValue("translate", "yes").equals("no")
+				&& !(unit.getAttributeValue("sdl:locktype").equals("Manual")
+						&& containsSrcText(unit.getChild("source")))) {
+			return;
+		}
+		Element segSource = unit.getChild("seg-source");
+		Element target = unit.getChild("target");
+
+		Map<String, Boolean> lockedMap = new HashMap<>();
+		Map<String, String> statusMap = new HashMap<>();
+
+		Element segDefs = unit.getChild("sdl:seg-defs");
+		if (segDefs != null) {
+			List<Element> children = segDefs.getChildren("sdl:seg");
+			Iterator<Element> it = children.iterator();
+			while (it.hasNext()) {
+				Element sdlSeg = it.next();
+				String id = sdlSeg.getAttributeValue("id");
+				if ("true".equals(sdlSeg.getAttributeValue("locked", "false"))) {
+					lockedMap.put(id, true);
+				}
+				if ("Draft".equals(sdlSeg.getAttributeValue("conf"))) {
+					statusMap.put(id, "new");
+				}
+				if ("Translated".equals(sdlSeg.getAttributeValue("conf"))) {
+					statusMap.put(id, "translated");
+				}
+				if ("RejectedTranslation".equals(sdlSeg.getAttributeValue("conf"))) {
+					statusMap.put(id, "needs-review-translation");
+				}
+				if ("ApprovedSignOff".equals(sdlSeg.getAttributeValue("conf"))) {
+					statusMap.put(id, "signed-off");
+				}
+			}
+		}
+		if (segSource != null) {
+			if (containsText(segSource)) {
+				Map<String, Element> targets = new HashMap<>();
+				if (target != null) {
+					List<Element> tmarks = getSegments(target);
+					Iterator<Element> tt = tmarks.iterator();
+					while (tt.hasNext()) {
+						Element mrk = tt.next();
+						targets.put(mrk.getAttributeValue("mid"), mrk);
+					}
+				}
+				List<Element> mrks = getSegments(segSource);
+				if (!mrks.isEmpty()) {
+					Iterator<Element> it = mrks.iterator();
+					while (it.hasNext()) {
+						Element mrk = it.next();
+						String id = mrk.getAttributeValue("mid");
+						String lockedString = "";
+						if (lockedMap.containsKey(id)) {
+							lockedString = "\" ts=\"locked";
+						}
+						writeStr(out, "  <trans-unit id=\"" + unit.getAttributeValue("id") + ':'
+								+ mrk.getAttributeValue("mid") + lockedString + "\" xml:space=\"preserve\">\n");
+						// write new source
+						writeStr(out, "    <source>");
+						recurseSource(mrk, out);
+						writeStr(out, "</source>\n");
+						if (targets.containsKey(mrk.getAttributeValue("mid"))) {
+							// write new target
+							String stateString = "";
+							if (statusMap.containsKey(id)) {
+								stateString = " state=\"" + statusMap.get(id) + "\"";
+							}
+							Element tmrk = targets.get(mrk.getAttributeValue("mid"));
+							writeStr(out, "    <target " + stateString + ">");
+							recurseTarget(tmrk, out);
+							writeStr(out, "</target>\n");
+						}
+						if (!contextList.isEmpty()) {
+							writeStr(out, "    <context-group>\n");
+							for (String[] pair : contextList) {
+								String type = pair[0];
+								if (!CONTEXT_TYPES.contains(type)) {
+									type = "x-sdl-" + type;
+								}
+								type = type.replaceAll("\\s+", "_sdl:spc_");
+								writeStr(out,
+										"      <context context-type=\"" + type + "\">" + XMLUtils.cleanText(pair[1])
+												+ "</context>\n");
+							}
+							writeStr(out, "    </context-group>\n");
+						}
+						writeStr(out, "  </trans-unit>\n");
+					}
+				}
+			}
+		} else {
+			// <seg-source> is null
+			if (unit.getAttributeValue("translate", "yes").equals("no")) {
+				writeStr(out, unit.toString());
+			} else {
+				throw new IOException(Messages.getString("Sdl2Xliff.2"));
 			}
 		}
 	}
@@ -237,39 +290,39 @@ public class Sdl2Xliff {
 		return false;
 	}
 
-	private static void recurseTarget(Element mrk) throws IOException {
+	private static void recurseTarget(Element mrk, FileOutputStream out) throws IOException {
 		List<XMLNode> tnodes = mrk.getContent();
 		Iterator<XMLNode> tnt = tnodes.iterator();
 		while (tnt.hasNext()) {
 			XMLNode n = tnt.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				writeStr(n.toString());
+				writeStr(out, n.toString());
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element e = (Element) n;
 				if (e.getName().equals("mrk")) {
-					recurseTarget(e);
+					recurseTarget(e, out);
 				} else {
-					writeStr(e.toString());
+					writeStr(out, e.toString());
 				}
 			}
 		}
 	}
 
-	private static void recurseSource(Element mrk) throws IOException {
+	private static void recurseSource(Element mrk, FileOutputStream out) throws IOException {
 		List<XMLNode> nodes = mrk.getContent();
 		Iterator<XMLNode> nt = nodes.iterator();
 		while (nt.hasNext()) {
 			XMLNode n = nt.next();
 			if (n.getNodeType() == XMLNode.TEXT_NODE) {
-				writeStr(n.toString());
+				writeStr(out, n.toString());
 			}
 			if (n.getNodeType() == XMLNode.ELEMENT_NODE) {
 				Element e = (Element) n;
 				if (e.getName().equals("mrk")) {
-					recurseSource(e);
+					recurseSource(e, out);
 				} else {
-					writeStr(e.toString());
+					writeStr(out, e.toString());
 				}
 			}
 		}
@@ -312,7 +365,7 @@ public class Sdl2Xliff {
 		return false;
 	}
 
-	private static void writeStr(String string) throws IOException {
+	private static void writeStr(FileOutputStream out, String string) throws IOException {
 		out.write(string.getBytes(StandardCharsets.UTF_8));
 	}
 

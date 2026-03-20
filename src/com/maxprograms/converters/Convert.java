@@ -63,6 +63,7 @@ import com.maxprograms.converters.txml.Txml2Xliff;
 import com.maxprograms.converters.wpml.Wpml2Xliff;
 import com.maxprograms.converters.xliff.ToOpenXliff;
 import com.maxprograms.converters.xml.Xml2Xliff;
+import com.maxprograms.xliff2.Resegmenter;
 import com.maxprograms.xliff2.ToXliff2;
 import com.maxprograms.xml.CatalogBuilder;
 import com.maxprograms.xml.Document;
@@ -101,6 +102,7 @@ public class Convert {
 		boolean xliff21 = false;
 		boolean xliff22 = false;
 		boolean strict = false;
+		boolean resegment = false;
 
 		for (int i = 0; i < arguments.length; i++) {
 			String arg = arguments[i];
@@ -304,8 +306,10 @@ public class Convert {
 			logger.log(Level.ERROR, Messages.getString("Convert.21"));
 			return;
 		}
-		// Don't force paragraph mode for XLIFF 2.x - let converters do proper sentence segmentation
-		// This eliminates the need for the expensive resegmentation step
+		if (!paragraph && (xliff20 || xliff21 || xliff22)) {
+			paragraph = true;
+			resegment = true;
+		}
 		Map<String, String> params = new HashMap<>();
 		params.put("source", source);
 		params.put("xliff", xliff);
@@ -352,6 +356,13 @@ public class Convert {
 		}
 		List<String> result = run(params);
 
+		if (resegment && Constants.SUCCESS.equals(result.get(0))) {
+			try {
+				result = Resegmenter.run(xliff, srx, srcLang, CatalogBuilder.getCatalog(catalog));
+			} catch (Exception e) {
+				// do nothing
+			}
+		}
 		if (!Constants.SUCCESS.equals(result.get(0))) {
 			logger.log(Level.ERROR, Messages.getString("Convert.18"), result.get(1));
 		}

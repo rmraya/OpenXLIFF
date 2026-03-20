@@ -425,6 +425,31 @@ public class ToXliff2 {
 					metaGroup.addContent(meta);
 				}
 			}
+			Element contextGroup = source.getChild("context-group");
+			if (contextGroup != null) {
+				List<Element> contexts = contextGroup.getChildren("context");
+				if (!contexts.isEmpty()) {
+					Element metadata = unit.getChild("mda:metadata");
+					if (metadata == null) {
+						metadata = new Element("mda:metadata");
+						unit.addContent(metadata);
+					}
+					Element metaGroup = new Element("mda:metaGroup");
+					metaGroup.setAttribute("category", "context");
+					metadata.addContent(metaGroup);
+					for (Element context : contexts) {
+						String type = context.getAttributeValue("context-type");
+						if (type.startsWith("x-sdl-")) {
+							type = type.replaceAll("_sdl:spc_", " ");
+							type = type.substring(6);
+						}	
+						Element meta = new Element("mda:meta");
+						meta.setAttribute("type", type);
+						meta.addContent(context.getText());
+						metaGroup.addContent(meta);
+					}
+				}
+			}
 			List<PI> pis = source.getPI();
 			if (!pis.isEmpty()) {
 				Iterator<PI> pit = pis.iterator();
