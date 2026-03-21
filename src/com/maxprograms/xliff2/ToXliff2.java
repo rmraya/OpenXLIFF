@@ -425,8 +425,8 @@ public class ToXliff2 {
 					metaGroup.addContent(meta);
 				}
 			}
-			Element contextGroup = source.getChild("context-group");
-			if (contextGroup != null) {
+			List<Element> contextGroups = source.getChildren("context-group");
+			for (Element contextGroup : contextGroups) {
 				List<Element> contexts = contextGroup.getChildren("context");
 				if (!contexts.isEmpty()) {
 					Element metadata = unit.getChild("mda:metadata");
@@ -442,7 +442,7 @@ public class ToXliff2 {
 						if (type.startsWith("x-sdl-")) {
 							type = type.replaceAll("_sdl:spc_", " ");
 							type = type.substring(6);
-						}	
+						}
 						Element meta = new Element("mda:meta");
 						meta.setAttribute("type", type);
 						meta.addContent(context.getText());

@@ -149,6 +149,12 @@ public class Xliff1xProcessor {
                     }
                     unit.addContent(n);
                 }
+                List<Element> contextGroups = root.getChildren("context-group");
+                for (Element contextGroup : contextGroups) {
+                    Element group = new Element("context-group");
+                    group.clone(contextGroup);
+                    unit.addContent(group);
+                }   
                 units.add(unit);
                 root.addContent(new PI(Constants.TOOLID, currentFile + "_" + unit.getAttributeValue("id")));
             }

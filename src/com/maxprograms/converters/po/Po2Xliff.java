@@ -384,18 +384,18 @@ public class Po2Xliff {
 					writeString("      <target>" + XMLUtils.cleanText(target) + "</target>\n");
 				}
 			}
-			if (!comment.isEmpty()) {
+			if (!comment.isBlank()) {
 				writeString("      <note from=\"po-file\">" + XMLUtils.cleanText(comment) + "</note>\n");
 			}
-			if (!context.isEmpty()) {
+			if (!context.isBlank()) {
 				writeString("      <context-group name=\"x-po-entry-header#" + contextId++
 						+ "\" purpose=\"information\">\n" + "         <context context-type=\"x-po-autocomment\">"
 						+ XMLUtils.cleanText(context) + "</context>\n" + "      </context-group>\n");
 			}
-			if (!reference.isEmpty()) {
+			if (!reference.isBlank()) {
 				parseReference(reference);
 			}
-			if (!newContext.isEmpty()) {
+			if (!newContext.isBlank()) {
 				writeString("      <context-group name=\"x-po-msgctxt#" + contextId++ + "\" purpose=\"information\">\n"
 						+ "         <context context-type=\"x-msgctxt\">" + XMLUtils.cleanText(newContext)
 						+ "</context>\n" + "      </context-group>\n");
