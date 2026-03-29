@@ -97,7 +97,7 @@ OpenXLIFF Filters can generate XLIFF 1.2, 2.0, 2.1 and 2.2 from these formats:
 ### Requirements
 
 - JDK 21 or newer is required for compiling and building. Pre-built binaries already include everything you need to run all options.
-- Gradle 8.14.3 or newer. get it from [Gradle Releases](https://gradle.org/releases/).
+- Gradle 9.2 or newer. get it from [Gradle Releases](https://gradle.org/releases/).
 
 ### Steps for building
 
