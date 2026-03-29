@@ -123,8 +123,8 @@ public class Xliff2DitaMap {
 		if (maxThreadsParam != null) {
 			try {
 				maxThreads = Integer.parseInt(maxThreadsParam);
-				if (maxThreads < 2) {
-					maxThreads = 2;
+				if (maxThreads < 1) {
+					maxThreads = 1;
 				}
 			} catch (NumberFormatException e) {
 				// Use default if invalid

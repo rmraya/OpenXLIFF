@@ -49,7 +49,7 @@ JTEzJSUlCg==</skeleton>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="2">
-        <source xml:space="preserve">Missing -source argument</source>
+        <source xml:space="preserve">Missing '-source' argument</source>
         <target xml:space="preserve">Falta el parámetro '-source'</target>
       </segment>
     </unit>
@@ -60,7 +60,7 @@ JTEzJSUlCg==</skeleton>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="3">
-        <source xml:space="preserve">Missing -target argument</source>
+        <source xml:space="preserve">Missing '-target' argument</source>
         <target xml:space="preserve">Falta el parámetro '-target'</target>
       </segment>
     </unit>
@@ -172,7 +172,7 @@ Donde:
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="11">
-        <source xml:space="preserve">Missing -source argument</source>
+        <source xml:space="preserve">Missing '-source' argument</source>
         <target xml:space="preserve">Falta el parámetro '-source'</target>
       </segment>
     </unit>
@@ -183,7 +183,7 @@ Donde:
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="12">
-        <source xml:space="preserve">Missing -target argument</source>
+        <source xml:space="preserve">Missing '-target' argument</source>
         <target xml:space="preserve">Falta el parámetro '-target'</target>
       </segment>
     </unit>
@@ -206,7 +206,7 @@ Where:
    -source:    XLIFF 1.2 file to convert
    -target:    XLIFF 2.x to generate
    -2.0:       (optional) generate XLIFF 2.0
-   -2.1:       (optional) generate XLIFF 2.1
+   -2.1:       (optional) generate XLIFF 2.1 (default)
    -2.2:       (optional) generate XLIFF 2.2
    -catalog:   (optional) XML catalog to use for processing
 </source>
@@ -222,7 +222,7 @@ Donde:
    -source:    archivo XLIFF 1.2 para convertir
    -target:    XLIFF 2.x a generar
    -2.0:       (opcional) generar XLIFF 2.0
-   -2.1:       (opcional) generar XLIFF 2.1
+   -2.1:       (opcional) generar XLIFF 2.1 (predeterminado)
    -2.2:       (opcional) generar XLIFF 2.2
    -catalog:   (opcional) catálogo XML a utilizar para el procesamiento
 </target>
@@ -299,44 +299,44 @@ ZXJ0LjA4PSUlJTExJSUlCkNvbnZlcnQuMDk9JSUlMTIlJSUKQ29udmVydC4xMD0lJSUxMyUlJQpD
 b252ZXJ0LjExPSUlJTE0JSUlCkNvbnZlcnQuMTI9JSUlMTUlJSUKQ29udmVydC4xMz0lJSUxNiUl
 JQpDb252ZXJ0LjE0PSUlJTE3JSUlCkNvbnZlcnQuMTU9JSUlMTglJSUKQ29udmVydC4xNj0lJSUx
 OSUlJQpDb252ZXJ0LjE3PSUlJTIwJSUlCkNvbnZlcnQuMTg9JSUlMjElJSUKQ29udmVydC4xOT0l
-JSUyMiUlJQpDb252ZXJ0LjIwPSUlJTIzJSUlCkNvbnZlcnQuMjE9JSUlMjQlJSUKSUNFTWF0Y2hl
-cy5oZWxwPSUlJTI1JSUlCklDRU1hdGNoZXMuMT0lJSUyNiUlJQpDb3B5U291cmNlcy5oZWxwPSUl
-JTI3JSUlCkNvcHlTb3VyY2VzLjE9JSUlMjglJSUKQ29weVNvdXJjZXMuMj0lJSUyOSUlJQpDb3B5
-U291cmNlcy4zPSUlJTMwJSUlCkNvcHlTb3VyY2VzLjQ9JSUlMzElJSUKRW5jb2RpbmdSZXNvbHZl
-ci4xPSUlJTMyJSUlCkVuY29kaW5nUmVzb2x2ZXIuMj0lJSUzMyUlJQpFbmNvZGluZ1Jlc29sdmVy
-LjM9JSUlMzQlJSUKRW5jb2RpbmdSZXNvbHZlci40PSUlJTM1JSUlCkVuY29kaW5nUmVzb2x2ZXIu
-NT0lJSUzNiUlJQpFbmNvZGluZ1Jlc29sdmVyLjY9JSUlMzclJSUKRW5jb2RpbmdSZXNvbHZlci43
-PSUlJTM4JSUlCkVuY29kaW5nUmVzb2x2ZXIuOD0lJSUzOSUlJQpFbmNvZGluZ1Jlc29sdmVyLjk9
-JSUlNDAlJSUKRW5jb2RpbmdSZXNvbHZlci4xMD0lJSU0MSUlJQpFbmNvZGluZ1Jlc29sdmVyLjEx
-PSUlJTQyJSUlCkZpbGVGb3JtYXRzLjE9JSUlNDMlJSUKRmlsZUZvcm1hdHMuMj0lJSU0NCUlJQpG
-aWxlRm9ybWF0cy4zPSUlJTQ1JSUlCkZpbGVGb3JtYXRzLjQ9JSUlNDYlJSUKRmlsZUZvcm1hdHMu
-SU5YPSUlJTQ3JSUlCkZpbGVGb3JtYXRzLklDTUw9JSUlNDglJSUKRmlsZUZvcm1hdHMuSURNTD0l
-JSU0OSUlJQpGaWxlRm9ybWF0cy5ESVRBPSUlJTUwJSUlCkZpbGVGb3JtYXRzLkhUTUw9JSUlNTEl
-JSUKRmlsZUZvcm1hdHMuSlM9JSUlNTIlJSUKRmlsZUZvcm1hdHMuSlNPTj0lJSU1MyUlJQpGaWxl
-Rm9ybWF0cy5KQVZBPSUlJTU0JSUlCkZpbGVGb3JtYXRzLk1JRj0lJSU1NSUlJQpGaWxlRm9ybWF0
-cy5PRkY9JSUlNTYlJSUKRmlsZUZvcm1hdHMuT089JSUlNTclJSUKRmlsZUZvcm1hdHMuVEVYVD0l
-JSU1OCUlJQpGaWxlRm9ybWF0cy5QSFBBPSUlJTU5JSUlCkZpbGVGb3JtYXRzLlBPPSUlJTYwJSUl
-CkZpbGVGb3JtYXRzLlFUST0lJSU2MSUlJQpGaWxlRm9ybWF0cy5RVElQPSUlJTYyJSUlCkZpbGVG
-b3JtYXRzLlJDPSUlJTYzJSUlCkZpbGVGb3JtYXRzLlJFU1g9JSUlNjQlJSUKRmlsZUZvcm1hdHMu
-U0RMUFBYPSUlJTY1JSUlCkZpbGVGb3JtYXRzLlNETFhMSUZGPSUlJTY2JSUlCkZpbGVGb3JtYXRz
-LlNSVD0lJSU2NyUlJQpGaWxlRm9ybWF0cy5UUz0lJSU2OCUlJQpGaWxlRm9ybWF0cy5UWExGPSUl
-JTY5JSUlCkZpbGVGb3JtYXRzLlRYTUw9JSUlNzAlJSUKRmlsZUZvcm1hdHMuV1BNTD0lJSU3MSUl
-JQpGaWxlRm9ybWF0cy5YTElGRj0lJSU3MiUlJQpGaWxlRm9ybWF0cy5YTUw9JSUlNzMlJSUKRmls
-ZUZvcm1hdHMuWE1MRz0lJSU3NCUlJQpKb2luLmhlbHA9JSUlNzUlJSUKSm9pbi4xPSUlJTc2JSUl
-CkpvaW4uMj0lJSU3NyUlJQpKb2luLjM9JSUlNzglJSUKSm9pbi40PSUlJTc5JSUlCkpvaW4uNT0l
-JSU4MCUlJQpKb2luLjY9JSUlODElJSUKTWVyZ2UuaGVscD0lJSU4MiUlJQpNZXJnZS4wMT0lJSU4
-MyUlJQpNZXJnZS4wMj0lJSU4NCUlJQpNZXJnZS4wMz0lJSU4NSUlJQpNZXJnZS4wND0lJSU4NiUl
-JQpNZXJnZS4wNT0lJSU4NyUlJQpNZXJnZS4wNj0lJSU4OCUlJQpNZXJnZS4wNz0lJSU4OSUlJQpN
-ZXJnZS4wOD0lJSU5MCUlJQpNZXJnZS4wOT0lJSU5MSUlJQpNZXJnZS4xMD0lJSU5MiUlJQpNZXJn
-ZS4xMT0lJSU5MyUlJQpNZXJnZS4xMj0lJSU5NCUlJQpNZXJnZS4xMz0lJSU5NSUlJQpNZXJnZS4x
-ND0lJSU5NiUlJQpQc2V1ZG9UcmFuc2xhdGlvbi5oZWxwPSUlJTk3JSUlClBzZXVkb1RyYW5zbGF0
-aW9uLjE9JSUlOTglJSUKUHNldWRvVHJhbnNsYXRpb24uMj0lJSU5OSUlJQpQc2V1ZG9UcmFuc2xh
-dGlvbi4zPSUlJTEwMCUlJQpQc2V1ZG9UcmFuc2xhdGlvbi40PSUlJTEwMSUlJQpSZW1vdmVUYXJn
-ZXRzLmhlbHA9JSUlMTAyJSUlClJlbW92ZVRhcmdldHMuMT0lJSUxMDMlJSUKUmVtb3ZlVGFyZ2V0
-cy4yPSUlJTEwNCUlJQpUbXhFeHBvcnRlci4wPSUlJTEwNSUlJQpUbXhFeHBvcnRlci4xPSUlJTEw
-NiUlJQpUbXhFeHBvcnRlci4yPSUlJTEwNyUlJQpUbXhFeHBvcnRlci4zPSUlJTEwOCUlJQpVbmV4
-aXN0ZW50U2VnbWVudEV4Y2VwdGlvbi4xPSUlJTEwOSUlJQpVdGlscy4xPSUlJTExMCUlJQpVdGls
-cy4yPSUlJTExMSUlJQo=</skeleton>
+JSUyMiUlJQpDb252ZXJ0LjIwPSUlJTIzJSUlCkNvbnZlcnQuMjE9JSUlMjQlJSUKQ29udmVydC4y
+Mj0lJSUyNSUlJQpJQ0VNYXRjaGVzLmhlbHA9JSUlMjYlJSUKSUNFTWF0Y2hlcy4xPSUlJTI3JSUl
+CkNvcHlTb3VyY2VzLmhlbHA9JSUlMjglJSUKQ29weVNvdXJjZXMuMT0lJSUyOSUlJQpDb3B5U291
+cmNlcy4yPSUlJTMwJSUlCkNvcHlTb3VyY2VzLjM9JSUlMzElJSUKQ29weVNvdXJjZXMuND0lJSUz
+MiUlJQpFbmNvZGluZ1Jlc29sdmVyLjE9JSUlMzMlJSUKRW5jb2RpbmdSZXNvbHZlci4yPSUlJTM0
+JSUlCkVuY29kaW5nUmVzb2x2ZXIuMz0lJSUzNSUlJQpFbmNvZGluZ1Jlc29sdmVyLjQ9JSUlMzYl
+JSUKRW5jb2RpbmdSZXNvbHZlci41PSUlJTM3JSUlCkVuY29kaW5nUmVzb2x2ZXIuNj0lJSUzOCUl
+JQpFbmNvZGluZ1Jlc29sdmVyLjc9JSUlMzklJSUKRW5jb2RpbmdSZXNvbHZlci44PSUlJTQwJSUl
+CkVuY29kaW5nUmVzb2x2ZXIuOT0lJSU0MSUlJQpFbmNvZGluZ1Jlc29sdmVyLjEwPSUlJTQyJSUl
+CkVuY29kaW5nUmVzb2x2ZXIuMTE9JSUlNDMlJSUKRmlsZUZvcm1hdHMuMT0lJSU0NCUlJQpGaWxl
+Rm9ybWF0cy4yPSUlJTQ1JSUlCkZpbGVGb3JtYXRzLjM9JSUlNDYlJSUKRmlsZUZvcm1hdHMuND0l
+JSU0NyUlJQpGaWxlRm9ybWF0cy5JTlg9JSUlNDglJSUKRmlsZUZvcm1hdHMuSUNNTD0lJSU0OSUl
+JQpGaWxlRm9ybWF0cy5JRE1MPSUlJTUwJSUlCkZpbGVGb3JtYXRzLkRJVEE9JSUlNTElJSUKRmls
+ZUZvcm1hdHMuSFRNTD0lJSU1MiUlJQpGaWxlRm9ybWF0cy5KUz0lJSU1MyUlJQpGaWxlRm9ybWF0
+cy5KU09OPSUlJTU0JSUlCkZpbGVGb3JtYXRzLkpBVkE9JSUlNTUlJSUKRmlsZUZvcm1hdHMuTUlG
+PSUlJTU2JSUlCkZpbGVGb3JtYXRzLk9GRj0lJSU1NyUlJQpGaWxlRm9ybWF0cy5PTz0lJSU1OCUl
+JQpGaWxlRm9ybWF0cy5URVhUPSUlJTU5JSUlCkZpbGVGb3JtYXRzLlBIUEE9JSUlNjAlJSUKRmls
+ZUZvcm1hdHMuUE89JSUlNjElJSUKRmlsZUZvcm1hdHMuUVRJPSUlJTYyJSUlCkZpbGVGb3JtYXRz
+LlFUSVA9JSUlNjMlJSUKRmlsZUZvcm1hdHMuUkM9JSUlNjQlJSUKRmlsZUZvcm1hdHMuUkVTWD0l
+JSU2NSUlJQpGaWxlRm9ybWF0cy5TRExQUFg9JSUlNjYlJSUKRmlsZUZvcm1hdHMuU0RMWExJRkY9
+JSUlNjclJSUKRmlsZUZvcm1hdHMuU1JUPSUlJTY4JSUlCkZpbGVGb3JtYXRzLlRTPSUlJTY5JSUl
+CkZpbGVGb3JtYXRzLlRYTEY9JSUlNzAlJSUKRmlsZUZvcm1hdHMuVFhNTD0lJSU3MSUlJQpGaWxl
+Rm9ybWF0cy5XUE1MPSUlJTcyJSUlCkZpbGVGb3JtYXRzLlhMSUZGPSUlJTczJSUlCkZpbGVGb3Jt
+YXRzLlhNTD0lJSU3NCUlJQpGaWxlRm9ybWF0cy5YTUxHPSUlJTc1JSUlCkpvaW4uaGVscD0lJSU3
+NiUlJQpKb2luLjE9JSUlNzclJSUKSm9pbi4yPSUlJTc4JSUlCkpvaW4uMz0lJSU3OSUlJQpKb2lu
+LjQ9JSUlODAlJSUKSm9pbi41PSUlJTgxJSUlCkpvaW4uNj0lJSU4MiUlJQpNZXJnZS5oZWxwPSUl
+JTgzJSUlCk1lcmdlLjAxPSUlJTg0JSUlCk1lcmdlLjAyPSUlJTg1JSUlCk1lcmdlLjAzPSUlJTg2
+JSUlCk1lcmdlLjA0PSUlJTg3JSUlCk1lcmdlLjA1PSUlJTg4JSUlCk1lcmdlLjA2PSUlJTg5JSUl
+Ck1lcmdlLjA3PSUlJTkwJSUlCk1lcmdlLjA4PSUlJTkxJSUlCk1lcmdlLjA5PSUlJTkyJSUlCk1l
+cmdlLjEwPSUlJTkzJSUlCk1lcmdlLjExPSUlJTk0JSUlCk1lcmdlLjEyPSUlJTk1JSUlCk1lcmdl
+LjEzPSUlJTk2JSUlCk1lcmdlLjE0PSUlJTk3JSUlClBzZXVkb1RyYW5zbGF0aW9uLmhlbHA9JSUl
+OTglJSUKUHNldWRvVHJhbnNsYXRpb24uMT0lJSU5OSUlJQpQc2V1ZG9UcmFuc2xhdGlvbi4yPSUl
+JTEwMCUlJQpQc2V1ZG9UcmFuc2xhdGlvbi4zPSUlJTEwMSUlJQpQc2V1ZG9UcmFuc2xhdGlvbi40
+PSUlJTEwMiUlJQpSZW1vdmVUYXJnZXRzLmhlbHA9JSUlMTAzJSUlClJlbW92ZVRhcmdldHMuMT0l
+JSUxMDQlJSUKUmVtb3ZlVGFyZ2V0cy4yPSUlJTEwNSUlJQpUbXhFeHBvcnRlci4wPSUlJTEwNiUl
+JQpUbXhFeHBvcnRlci4xPSUlJTEwNyUlJQpUbXhFeHBvcnRlci4yPSUlJTEwOCUlJQpUbXhFeHBv
+cnRlci4zPSUlJTEwOSUlJQpVbmV4aXN0ZW50U2VnbWVudEV4Y2VwdGlvbi4xPSUlJTExMCUlJQpV
+dGlscy4xPSUlJTExMSUlJQpVdGlscy4yPSUlJTExMiUlJQo=</skeleton>
     <mda:metadata>
       <mda:metaGroup category="format">
         <mda:meta type="datatype">javapropertyresourcebundle</mda:meta>
@@ -421,9 +421,9 @@ Usage:
 {0} [-help] [-version] -file sourceFile -srcLang sourceLang 
         [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
         [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
-        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
-        [-xmlfilter folder] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] [-strict]
-        [-charsets] [-types]
+        [-maxThreads threads] [-divatal ditaval] [-config configFile] [-embed] 
+        [-paragraph] [-xmlfilter folder] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] 
+        [-strict] [-charsets] [-types]
 
 Where:
 
@@ -438,6 +438,7 @@ Where:
    -enc:       (optional) character set code for the source file
    -srx:       (optional) SRX file to use for segmentation
    -catalog:   (optional) XML catalog to use for processing
+   -maxThreads:(optional) Maximum number of threads to use while converting
    -ditaval:   (optional) conditional processing file to use when converting DITA maps
    -config:    (optional) configuration file to use when converting JSON documents
    -embed:     (optional) store skeleton inside the XLIFF file
@@ -459,9 +460,9 @@ Uso:
 {0} [-help] [-version] -file archivo -srcLang idiomaOrigen 
         [-tgtLang idiomaDestino] [-skl esqueleto] [-xliff archivoXliff] 
         [-type tipoArchivo] [-enc codificación] [-srx archivoSrx] [-catalog catalogoXml] 
-        [-divatal ditaval] [-config configuración] [-embed] [-paragraph] 
-        [-xmlfilter filtros] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] [-strict]
-        [-charsets] [-types]
+        [-maxThreads hilos] [-divatal ditaval] [-config configuración] [-embed] 
+        [-paragraph] [-xmlfilter filtros] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] 
+        [-strict] [-charsets] [-types]
 
 Donde:
 
@@ -476,6 +477,7 @@ Donde:
    -enc:       código de juego de caracteres (opcional) para el archivo fuente
    -srx:       (opcional) archivo SRX para usar para la segmentación
    -catalog:   (opcional) Catálogo XML para el procesamiento
+   -maxThreads:(opcional) Máximo número de hilos a usar al convertir
    -ditaval:   archivo de procesamiento condicional (opcional) para usar al convertir mapas DITA
    -config:    archivo de configuración (opcional) para usar al convertir documentos JSON
    -embed:     (opcional) almacenar esqueleto dentro del archivo XLIFF
@@ -790,10 +792,21 @@ Tipos de documentos
     <unit id="25">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">ICEMatches.help</mda:meta>
+          <mda:meta type="resname">Convert.22</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="25">
+        <source xml:space="preserve">Invalid maxThreads value, using default</source>
+        <target xml:space="preserve">Valor inválido de maxThreads, se utiliza el valor predeterminado</target>
+      </segment>
+    </unit>
+    <unit id="26">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">ICEMatches.help</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="26">
         <source xml:space="preserve">
 
 Usage:
@@ -824,24 +837,24 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="26">
+    <unit id="27">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">ICEMatches.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="26">
+      <segment state="final" id="27">
         <source xml:space="preserve">Selected file is not an XLIFF document</source>
         <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
       </segment>
     </unit>
-    <unit id="27">
+    <unit id="28">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">CopySources.help</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="27">
+      <segment state="final" id="28">
         <source xml:space="preserve">
 
 Usage:
@@ -870,530 +883,530 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="28">
+    <unit id="29">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">CopySources.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="28">
+      <segment state="final" id="29">
         <source xml:space="preserve">'catalog' folder not found</source>
         <target xml:space="preserve">No se encontró la carpeta 'catalog'</target>
-      </segment>
-    </unit>
-    <unit id="29">
-      <mda:metadata>
-        <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">CopySources.2</mda:meta>
-        </mda:metaGroup>
-      </mda:metadata>
-      <segment state="final" id="29">
-        <source xml:space="preserve">Catalog file does not exist</source>
-        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="30">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">CopySources.3</mda:meta>
+          <mda:meta type="resname">CopySources.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="30">
-        <source xml:space="preserve">Selected file is not an XLIFF document</source>
-        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
+        <source xml:space="preserve">Catalog file does not exist</source>
+        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="31">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">CopySources.4</mda:meta>
+          <mda:meta type="resname">CopySources.3</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="31">
-        <source xml:space="preserve">Missing target language declaration</source>
-        <target xml:space="preserve">Falta la declaración del idioma destino</target>
+        <source xml:space="preserve">Selected file is not an XLIFF document</source>
+        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
       </segment>
     </unit>
     <unit id="32">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.1</mda:meta>
+          <mda:meta type="resname">CopySources.4</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="32">
-        <source xml:space="preserve">Error detecting XML encoding</source>
-        <target xml:space="preserve">Error al detectar la codificación de XML</target>
+        <source xml:space="preserve">Missing target language declaration</source>
+        <target xml:space="preserve">Falta la declaración del idioma destino</target>
       </segment>
     </unit>
     <unit id="33">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.2</mda:meta>
+          <mda:meta type="resname">EncodingResolver.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="33">
-        <source xml:space="preserve">Error detecting RC encoding</source>
-        <target xml:space="preserve">Error al detectar la codificación de RC</target>
+        <source xml:space="preserve">Error detecting XML encoding</source>
+        <target xml:space="preserve">Error al detectar la codificación de XML</target>
       </segment>
     </unit>
     <unit id="34">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.3</mda:meta>
+          <mda:meta type="resname">EncodingResolver.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="34">
-        <source xml:space="preserve">Error detecting HTML encoding</source>
-        <target xml:space="preserve">Error al detectar la codificación de HTML</target>
+        <source xml:space="preserve">Error detecting RC encoding</source>
+        <target xml:space="preserve">Error al detectar la codificación de RC</target>
       </segment>
     </unit>
     <unit id="35">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.4</mda:meta>
+          <mda:meta type="resname">EncodingResolver.3</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="35">
-        <source xml:space="preserve">Error detecting SRT encoding</source>
-        <target xml:space="preserve">Error al detectar la codificación de SRT</target>
+        <source xml:space="preserve">Error detecting HTML encoding</source>
+        <target xml:space="preserve">Error al detectar la codificación de HTML</target>
       </segment>
     </unit>
     <unit id="36">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.5</mda:meta>
+          <mda:meta type="resname">EncodingResolver.4</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="36">
-        <source xml:space="preserve">Error detecting PHPA encoding</source>
-        <target xml:space="preserve">Error al detectar la codificación de PHPA</target>
+        <source xml:space="preserve">Error detecting SRT encoding</source>
+        <target xml:space="preserve">Error al detectar la codificación de SRT</target>
       </segment>
     </unit>
     <unit id="37">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.6</mda:meta>
+          <mda:meta type="resname">EncodingResolver.5</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="37">
-        <source xml:space="preserve">Error detecting JSON encoding</source>
-        <target xml:space="preserve">Error al detectar la codificación de JSON</target>
+        <source xml:space="preserve">Error detecting PHPA encoding</source>
+        <target xml:space="preserve">Error al detectar la codificación de PHPA</target>
       </segment>
     </unit>
     <unit id="38">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.7</mda:meta>
+          <mda:meta type="resname">EncodingResolver.6</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="38">
-        <source xml:space="preserve">Premature end of file</source>
-        <target xml:space="preserve">Fin prematuro del archivo</target>
+        <source xml:space="preserve">Error detecting JSON encoding</source>
+        <target xml:space="preserve">Error al detectar la codificación de JSON</target>
       </segment>
     </unit>
     <unit id="39">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.8</mda:meta>
+          <mda:meta type="resname">EncodingResolver.7</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="39">
-        <source xml:space="preserve">Missing '-file' parameter</source>
-        <target xml:space="preserve">Falta el parámetro '-file'</target>
+        <source xml:space="preserve">Premature end of file</source>
+        <target xml:space="preserve">Fin prematuro del archivo</target>
       </segment>
     </unit>
     <unit id="40">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.9</mda:meta>
+          <mda:meta type="resname">EncodingResolver.8</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="40">
-        <source xml:space="preserve">Source file does not exist</source>
-        <target xml:space="preserve">El archivo fuente no existe</target>
+        <source xml:space="preserve">Missing '-file' parameter</source>
+        <target xml:space="preserve">Falta el parámetro '-file'</target>
       </segment>
     </unit>
     <unit id="41">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.10</mda:meta>
+          <mda:meta type="resname">EncodingResolver.9</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="41">
-        <source xml:space="preserve">Missing '-type' parameter</source>
-        <target xml:space="preserve">Falta el parámetro '-type'</target>
+        <source xml:space="preserve">Source file does not exist</source>
+        <target xml:space="preserve">El archivo fuente no existe</target>
       </segment>
     </unit>
     <unit id="42">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">EncodingResolver.11</mda:meta>
+          <mda:meta type="resname">EncodingResolver.10</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="42">
-        <source xml:space="preserve">Unkown '-type' parameter: {0}</source>
-        <target xml:space="preserve">Parámetro '-type' desconocido: {0}</target>
+        <source xml:space="preserve">Missing '-type' parameter</source>
+        <target xml:space="preserve">Falta el parámetro '-type'</target>
       </segment>
     </unit>
     <unit id="43">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.1</mda:meta>
+          <mda:meta type="resname">EncodingResolver.11</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="43">
-        <source xml:space="preserve">Premature end of file</source>
-        <target xml:space="preserve">Fin prematuro del archivo</target>
+        <source xml:space="preserve">Unkown '-type' parameter: {0}</source>
+        <target xml:space="preserve">Parámetro '-type' desconocido: {0}</target>
       </segment>
     </unit>
     <unit id="44">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.2</mda:meta>
+          <mda:meta type="resname">FileFormats.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="44">
-        <source xml:space="preserve">Selected file is not JSON</source>
-        <target xml:space="preserve">El archivo seleccionado no es JSON</target>
+        <source xml:space="preserve">Premature end of file</source>
+        <target xml:space="preserve">Fin prematuro del archivo</target>
       </segment>
     </unit>
     <unit id="45">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.3</mda:meta>
+          <mda:meta type="resname">FileFormats.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="45">
-        <source xml:space="preserve">Missing '-file' parameter</source>
-        <target xml:space="preserve">Falta el parámetro '-file'</target>
+        <source xml:space="preserve">Selected file is not JSON</source>
+        <target xml:space="preserve">El archivo seleccionado no es JSON</target>
       </segment>
     </unit>
     <unit id="46">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.4</mda:meta>
+          <mda:meta type="resname">FileFormats.3</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="46">
-        <source xml:space="preserve">Source file does not exist</source>
-        <target xml:space="preserve">El archivo fuente no existe</target>
+        <source xml:space="preserve">Missing '-file' parameter</source>
+        <target xml:space="preserve">Falta el parámetro '-file'</target>
       </segment>
     </unit>
     <unit id="47">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.INX</mda:meta>
+          <mda:meta type="resname">FileFormats.4</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="47">
-        <source xml:space="preserve">Adobe InDesign Interchange</source>
-        <target xml:space="preserve">Adobe InDesign Interchange</target>
+        <source xml:space="preserve">Source file does not exist</source>
+        <target xml:space="preserve">El archivo fuente no existe</target>
       </segment>
     </unit>
     <unit id="48">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.ICML</mda:meta>
+          <mda:meta type="resname">FileFormats.INX</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="48">
-        <source xml:space="preserve">Adobe InCopy ICML</source>
-        <target xml:space="preserve">Adobe InCopy ICML</target>
+        <source xml:space="preserve">Adobe InDesign Interchange</source>
+        <target xml:space="preserve">Adobe InDesign Interchange</target>
       </segment>
     </unit>
     <unit id="49">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.IDML</mda:meta>
+          <mda:meta type="resname">FileFormats.ICML</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="49">
-        <source xml:space="preserve">Adobe InDesign IDML</source>
-        <target xml:space="preserve">Adobe InDesign IDML</target>
+        <source xml:space="preserve">Adobe InCopy ICML</source>
+        <target xml:space="preserve">Adobe InCopy ICML</target>
       </segment>
     </unit>
     <unit id="50">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.DITA</mda:meta>
+          <mda:meta type="resname">FileFormats.IDML</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="50">
-        <source xml:space="preserve">DITA Map</source>
-        <target xml:space="preserve">Mapa DITA</target>
+        <source xml:space="preserve">Adobe InDesign IDML</source>
+        <target xml:space="preserve">Adobe InDesign IDML</target>
       </segment>
     </unit>
     <unit id="51">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.HTML</mda:meta>
+          <mda:meta type="resname">FileFormats.DITA</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="51">
-        <source xml:space="preserve">HTML Page</source>
-        <target xml:space="preserve">Página HTML</target>
+        <source xml:space="preserve">DITA Map</source>
+        <target xml:space="preserve">Mapa DITA</target>
       </segment>
     </unit>
     <unit id="52">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.JS</mda:meta>
+          <mda:meta type="resname">FileFormats.HTML</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="52">
-        <source xml:space="preserve">JavaScript</source>
-        <target xml:space="preserve">JavaScript</target>
+        <source xml:space="preserve">HTML Page</source>
+        <target xml:space="preserve">Página HTML</target>
       </segment>
     </unit>
     <unit id="53">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.JSON</mda:meta>
+          <mda:meta type="resname">FileFormats.JS</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="53">
-        <source xml:space="preserve">JSON</source>
-        <target xml:space="preserve">JSON</target>
+        <source xml:space="preserve">JavaScript</source>
+        <target xml:space="preserve">JavaScript</target>
       </segment>
     </unit>
     <unit id="54">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.JAVA</mda:meta>
+          <mda:meta type="resname">FileFormats.JSON</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="54">
-        <source xml:space="preserve">Java Properties</source>
-        <target xml:space="preserve">Propiedades de Java</target>
+        <source xml:space="preserve">JSON</source>
+        <target xml:space="preserve">JSON</target>
       </segment>
     </unit>
     <unit id="55">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.MIF</mda:meta>
+          <mda:meta type="resname">FileFormats.JAVA</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="55">
-        <source xml:space="preserve">MIF (Maker Interchange Format)</source>
-        <target xml:space="preserve">MIF (Maker Interchange Format)</target>
+        <source xml:space="preserve">Java Properties</source>
+        <target xml:space="preserve">Propiedades de Java</target>
       </segment>
     </unit>
     <unit id="56">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.OFF</mda:meta>
+          <mda:meta type="resname">FileFormats.MIF</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="56">
-        <source xml:space="preserve">Microsoft Office 2007 Document</source>
-        <target xml:space="preserve">Documento de Microsoft Office 2007</target>
+        <source xml:space="preserve">MIF (Maker Interchange Format)</source>
+        <target xml:space="preserve">MIF (Maker Interchange Format)</target>
       </segment>
     </unit>
     <unit id="57">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.OO</mda:meta>
+          <mda:meta type="resname">FileFormats.OFF</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="57">
-        <source xml:space="preserve">OpenOffice Document</source>
-        <target xml:space="preserve">Documento de OpenOffice</target>
+        <source xml:space="preserve">Microsoft Office 2007 Document</source>
+        <target xml:space="preserve">Documento de Microsoft Office 2007</target>
       </segment>
     </unit>
     <unit id="58">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.TEXT</mda:meta>
+          <mda:meta type="resname">FileFormats.OO</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="58">
-        <source xml:space="preserve">Plain Text</source>
-        <target xml:space="preserve">Texto sin Formato</target>
+        <source xml:space="preserve">OpenOffice Document</source>
+        <target xml:space="preserve">Documento de OpenOffice</target>
       </segment>
     </unit>
     <unit id="59">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.PHPA</mda:meta>
+          <mda:meta type="resname">FileFormats.TEXT</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="59">
-        <source xml:space="preserve">PHP Array</source>
-        <target xml:space="preserve">PHP Array</target>
+        <source xml:space="preserve">Plain Text</source>
+        <target xml:space="preserve">Texto sin Formato</target>
       </segment>
     </unit>
     <unit id="60">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.PO</mda:meta>
+          <mda:meta type="resname">FileFormats.PHPA</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="60">
-        <source xml:space="preserve">PO (Portable Objects)</source>
-        <target xml:space="preserve">PO (Portable Objects)</target>
+        <source xml:space="preserve">PHP Array</source>
+        <target xml:space="preserve">PHP Array</target>
       </segment>
     </unit>
     <unit id="61">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.QTI</mda:meta>
+          <mda:meta type="resname">FileFormats.PO</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="61">
-        <source xml:space="preserve">QTI (IMS Question and Test Interoperability)</source>
-        <target xml:space="preserve">QTI (IMS Question and Test Interoperability)</target>
+        <source xml:space="preserve">PO (Portable Objects)</source>
+        <target xml:space="preserve">PO (Portable Objects)</target>
       </segment>
     </unit>
     <unit id="62">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.QTIP</mda:meta>
+          <mda:meta type="resname">FileFormats.QTI</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="62">
-        <source xml:space="preserve">QTI Package</source>
-        <target xml:space="preserve">Paquete QTI</target>
+        <source xml:space="preserve">QTI (IMS Question and Test Interoperability)</source>
+        <target xml:space="preserve">QTI (IMS Question and Test Interoperability)</target>
       </segment>
     </unit>
     <unit id="63">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.RC</mda:meta>
+          <mda:meta type="resname">FileFormats.QTIP</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="63">
-        <source xml:space="preserve">RC (Windows C/C++ Resources)</source>
-        <target xml:space="preserve">RC (Recursos de Windows C/C++)</target>
+        <source xml:space="preserve">QTI Package</source>
+        <target xml:space="preserve">Paquete QTI</target>
       </segment>
     </unit>
     <unit id="64">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.RESX</mda:meta>
+          <mda:meta type="resname">FileFormats.RC</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="64">
-        <source xml:space="preserve">ResX (Windows .NET Resources)</source>
-        <target xml:space="preserve">ResX (Recursos de Windows .NET)</target>
+        <source xml:space="preserve">RC (Windows C/C++ Resources)</source>
+        <target xml:space="preserve">RC (Recursos de Windows C/C++)</target>
       </segment>
     </unit>
     <unit id="65">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.SDLPPX</mda:meta>
+          <mda:meta type="resname">FileFormats.RESX</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="65">
-        <source xml:space="preserve">Trados Studio Package</source>
-        <target xml:space="preserve">Paquete de Trados Studio</target>
+        <source xml:space="preserve">ResX (Windows .NET Resources)</source>
+        <target xml:space="preserve">ResX (Recursos de Windows .NET)</target>
       </segment>
     </unit>
     <unit id="66">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.SDLXLIFF</mda:meta>
+          <mda:meta type="resname">FileFormats.SDLPPX</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="66">
-        <source xml:space="preserve">SDLXLIFF Document</source>
-        <target xml:space="preserve">Documento SDLXLIFF</target>
+        <source xml:space="preserve">Trados Studio Package</source>
+        <target xml:space="preserve">Paquete de Trados Studio</target>
       </segment>
     </unit>
     <unit id="67">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.SRT</mda:meta>
+          <mda:meta type="resname">FileFormats.SDLXLIFF</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="67">
-        <source xml:space="preserve">SRT Subtitle</source>
-        <target xml:space="preserve">Subtítulo SRT</target>
+        <source xml:space="preserve">SDLXLIFF Document</source>
+        <target xml:space="preserve">Documento SDLXLIFF</target>
       </segment>
     </unit>
     <unit id="68">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.TS</mda:meta>
+          <mda:meta type="resname">FileFormats.SRT</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="68">
-        <source xml:space="preserve">TS (Qt Linguist Translation Source)</source>
-        <target xml:space="preserve">TS (Fuente de Traducción de Qt Linguist)</target>
+        <source xml:space="preserve">SRT Subtitle</source>
+        <target xml:space="preserve">Subtítulo SRT</target>
       </segment>
     </unit>
     <unit id="69">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.TXLF</mda:meta>
+          <mda:meta type="resname">FileFormats.TS</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="69">
-        <source xml:space="preserve">Wordfast/GlobalLink XLIFF</source>
-        <target xml:space="preserve">Documento XLIFF de Wordfast/GlobalLink</target>
+        <source xml:space="preserve">TS (Qt Linguist Translation Source)</source>
+        <target xml:space="preserve">TS (Fuente de Traducción de Qt Linguist)</target>
       </segment>
     </unit>
     <unit id="70">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.TXML</mda:meta>
+          <mda:meta type="resname">FileFormats.TXLF</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="70">
-        <source xml:space="preserve">TXML Document</source>
-        <target xml:space="preserve">Documento TXML</target>
+        <source xml:space="preserve">Wordfast/GlobalLink XLIFF</source>
+        <target xml:space="preserve">Documento XLIFF de Wordfast/GlobalLink</target>
       </segment>
     </unit>
     <unit id="71">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.WPML</mda:meta>
+          <mda:meta type="resname">FileFormats.TXML</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="71">
-        <source xml:space="preserve">WPML XLIFF</source>
-        <target xml:space="preserve">Documento XLIFF de WPML</target>
+        <source xml:space="preserve">TXML Document</source>
+        <target xml:space="preserve">Documento TXML</target>
       </segment>
     </unit>
     <unit id="72">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.XLIFF</mda:meta>
+          <mda:meta type="resname">FileFormats.WPML</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="72">
-        <source xml:space="preserve">XLIFF Document</source>
-        <target xml:space="preserve">Documento XLIFF</target>
+        <source xml:space="preserve">WPML XLIFF</source>
+        <target xml:space="preserve">Documento XLIFF de WPML</target>
       </segment>
     </unit>
     <unit id="73">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.XML</mda:meta>
+          <mda:meta type="resname">FileFormats.XLIFF</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="73">
-        <source xml:space="preserve">XML Document</source>
-        <target xml:space="preserve">Documento XML</target>
+        <source xml:space="preserve">XLIFF Document</source>
+        <target xml:space="preserve">Documento XLIFF</target>
       </segment>
     </unit>
     <unit id="74">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">FileFormats.XMLG</mda:meta>
+          <mda:meta type="resname">FileFormats.XML</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="74">
-        <source xml:space="preserve">XML (Generic)</source>
-        <target xml:space="preserve">Documento XML (Genérico)</target>
+        <source xml:space="preserve">XML Document</source>
+        <target xml:space="preserve">Documento XML</target>
       </segment>
     </unit>
     <unit id="75">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Join.help</mda:meta>
+          <mda:meta type="resname">FileFormats.XMLG</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="75">
+        <source xml:space="preserve">XML (Generic)</source>
+        <target xml:space="preserve">Documento XML (Genérico)</target>
+      </segment>
+    </unit>
+    <unit id="76">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Join.help</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="76">
         <source xml:space="preserve">
 
 Usage:
@@ -1422,84 +1435,85 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="76">
+    <unit id="77">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">Join.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="76">
+      <segment state="final" id="77">
         <source xml:space="preserve">File ''{0}'' does not exist</source>
         <target xml:space="preserve">El archivo ''{0}'' no existe</target>
-      </segment>
-    </unit>
-    <unit id="77">
-      <mda:metadata>
-        <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Join.2</mda:meta>
-        </mda:metaGroup>
-      </mda:metadata>
-      <segment state="final" id="77">
-        <source xml:space="preserve">XLIFF files from different versions</source>
-        <target xml:space="preserve">Archivos XLIFF de diferentes versiones</target>
       </segment>
     </unit>
     <unit id="78">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Join.3</mda:meta>
+          <mda:meta type="resname">Join.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="78">
-        <source xml:space="preserve">XLIFF files with different source language</source>
-        <target xml:space="preserve">Archivos XLIFF con diferente idioma de origen</target>
+        <source xml:space="preserve">XLIFF files from different versions</source>
+        <target xml:space="preserve">Archivos XLIFF de diferentes versiones</target>
       </segment>
     </unit>
     <unit id="79">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Join.4</mda:meta>
+          <mda:meta type="resname">Join.3</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="79">
-        <source xml:space="preserve">XLIFF files with different target language</source>
-        <target xml:space="preserve">Archivos XLIFF con diferente idioma de destino</target>
+        <source xml:space="preserve">XLIFF files with different source language</source>
+        <target xml:space="preserve">Archivos XLIFF con diferente idioma de origen</target>
       </segment>
     </unit>
     <unit id="80">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Join.5</mda:meta>
+          <mda:meta type="resname">Join.4</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="80">
-        <source xml:space="preserve">Missing -target parameter</source>
-        <target xml:space="preserve">Falta el parámetro -target</target>
+        <source xml:space="preserve">XLIFF files with different target language</source>
+        <target xml:space="preserve">Archivos XLIFF con diferente idioma de destino</target>
       </segment>
     </unit>
     <unit id="81">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Join.6</mda:meta>
+          <mda:meta type="resname">Join.5</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="81">
-        <source xml:space="preserve">Missing -files parameter</source>
-        <target xml:space="preserve">Falta el parámetro -files</target>
+        <source xml:space="preserve">Missing -target parameter</source>
+        <target xml:space="preserve">Falta el parámetro -target</target>
       </segment>
     </unit>
     <unit id="82">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.help</mda:meta>
+          <mda:meta type="resname">Join.6</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="82">
+        <source xml:space="preserve">Missing -files parameter</source>
+        <target xml:space="preserve">Falta el parámetro -files</target>
+      </segment>
+    </unit>
+    <unit id="83">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Merge.help</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="83">
         <source xml:space="preserve">
 
 Usage:
 
-{0} [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
+{0} [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] 
+        [-maxThreads threads] [-unapproved] [-export]
 
 Where:
 
@@ -1508,6 +1522,7 @@ Where:
     -xliff:      XLIFF file to merge
     -target:     (optional) translated file or folder where to store translated files
     -catalog:    (optional) XML catalog to use for processing
+    -maxThreads: (optional) Maximum number of threads to use while merging
     -unapproved: (optional) accept translations from unapproved segments
     -export:     (optional) generate TMX file from approved segments
     -getTarget:  (optional) display a potential target file name and exit
@@ -1517,7 +1532,8 @@ Where:
 
 Uso:
 
-{0} [-help] [-version] -xliff archivoXliff -target traducción [-catalog catalogoXml] [-unapproved] [-export]
+{0} [-help] [-version] -xliff archivoXliff -target traducción [-catalog catalogoXml] 
+        [-maxThreads hilos] [-unapproved] [-export]
 
 Donde:
 
@@ -1526,6 +1542,7 @@ Donde:
     -xliff:      archivo XLIFF para combinar
     -target:     (opcional) archivo traducido o carpeta donde almacenar los archivos traducidos
     -catalog:    (opcional) Catálogo XML para el procesamiento
+    -maxThreads: (opcional) Máximo número de hilos a usar al combinar
     -unapproved: (opcional) aceptar traducciones de segmentos no aprobados
     -export:     (opcional) generar archivo TMX a partir de segmentos aprobados
     -getTarget:  (opcional) mostrar un posible nombre de archivo traducido y salir
@@ -1533,167 +1550,167 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="83">
+    <unit id="84">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">Merge.01</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="83">
+      <segment state="final" id="84">
         <source xml:space="preserve">Version: {0} Build: {1}</source>
         <target xml:space="preserve">Versión: {0} Compilación: {1}</target>
-      </segment>
-    </unit>
-    <unit id="84">
-      <mda:metadata>
-        <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.02</mda:meta>
-        </mda:metaGroup>
-      </mda:metadata>
-      <segment state="final" id="84">
-        <source xml:space="preserve">Missing '-xliff' parameter</source>
-        <target xml:space="preserve">Falta el parámetro '-xliff'</target>
       </segment>
     </unit>
     <unit id="85">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.03</mda:meta>
+          <mda:meta type="resname">Merge.02</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="85">
-        <source xml:space="preserve">Error getting target file</source>
-        <target xml:space="preserve">Error al obtener el archivo de destino</target>
+        <source xml:space="preserve">Missing '-xliff' parameter</source>
+        <target xml:space="preserve">Falta el parámetro '-xliff'</target>
       </segment>
     </unit>
     <unit id="86">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.04</mda:meta>
+          <mda:meta type="resname">Merge.03</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="86">
-        <source xml:space="preserve">Missing '-target' parameter</source>
-        <target xml:space="preserve">Falta el parámetro '-target'</target>
+        <source xml:space="preserve">Error getting target file</source>
+        <target xml:space="preserve">Error al obtener el archivo de destino</target>
       </segment>
     </unit>
     <unit id="87">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.05</mda:meta>
+          <mda:meta type="resname">Merge.04</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="87">
-        <source xml:space="preserve">Catalog folder ''{0}'' not found</source>
-        <target xml:space="preserve">No se encontró la carpeta de catálogo ''{0}''</target>
+        <source xml:space="preserve">Missing '-target' parameter</source>
+        <target xml:space="preserve">Falta el parámetro '-target'</target>
       </segment>
     </unit>
     <unit id="88">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.06</mda:meta>
+          <mda:meta type="resname">Merge.05</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="88">
-        <source xml:space="preserve">Catalog file does not exist</source>
-        <target xml:space="preserve">El archivo de catálogo no existe</target>
+        <source xml:space="preserve">Catalog folder ''{0}'' not found</source>
+        <target xml:space="preserve">No se encontró la carpeta de catálogo ''{0}''</target>
       </segment>
     </unit>
     <unit id="89">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.07</mda:meta>
+          <mda:meta type="resname">Merge.06</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="89">
-        <source xml:space="preserve">Merge error: {0}</source>
-        <target xml:space="preserve">Error de combinación: {0}</target>
+        <source xml:space="preserve">Catalog file does not exist</source>
+        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="90">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.08</mda:meta>
+          <mda:meta type="resname">Merge.07</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="90">
-        <source xml:space="preserve">''{0}'' is not a directory</source>
-        <target xml:space="preserve">''{0}'' no es un directorio</target>
+        <source xml:space="preserve">Merge error: {0}</source>
+        <target xml:space="preserve">Error de combinación: {0}</target>
       </segment>
     </unit>
     <unit id="91">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.09</mda:meta>
+          <mda:meta type="resname">Merge.08</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="91">
-        <source xml:space="preserve">Selected file is not an XLIFF document</source>
-        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
+        <source xml:space="preserve">''{0}'' is not a directory</source>
+        <target xml:space="preserve">''{0}'' no es un directorio</target>
       </segment>
     </unit>
     <unit id="92">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.10</mda:meta>
+          <mda:meta type="resname">Merge.09</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="92">
-        <source xml:space="preserve">Unsupported XLIFF file</source>
-        <target xml:space="preserve">Archivo XLIFF no compatible</target>
+        <source xml:space="preserve">Selected file is not an XLIFF document</source>
+        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
       </segment>
     </unit>
     <unit id="93">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.11</mda:meta>
+          <mda:meta type="resname">Merge.10</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="93">
-        <source xml:space="preserve">Error merging XLIFF</source>
-        <target xml:space="preserve">Error al combinar XLIFF</target>
+        <source xml:space="preserve">Unsupported XLIFF file</source>
+        <target xml:space="preserve">Archivo XLIFF no compatible</target>
       </segment>
     </unit>
     <unit id="94">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.12</mda:meta>
+          <mda:meta type="resname">Merge.11</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="94">
-        <source xml:space="preserve">Selected file is not an XLIFF document</source>
-        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
+        <source xml:space="preserve">Error merging XLIFF</source>
+        <target xml:space="preserve">Error al combinar XLIFF</target>
       </segment>
     </unit>
     <unit id="95">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.13</mda:meta>
+          <mda:meta type="resname">Merge.12</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="95">
-        <source xml:space="preserve">Selected file is not a valid XLIFF document</source>
-        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF válido</target>
+        <source xml:space="preserve">Selected file is not an XLIFF document</source>
+        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
       </segment>
     </unit>
     <unit id="96">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Merge.14</mda:meta>
+          <mda:meta type="resname">Merge.13</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="96">
-        <source xml:space="preserve">Missing target language declaration</source>
-        <target xml:space="preserve">Falta la declaración del idioma destino</target>
+        <source xml:space="preserve">Selected file is not a valid XLIFF document</source>
+        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF válido</target>
       </segment>
     </unit>
     <unit id="97">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">PseudoTranslation.help</mda:meta>
+          <mda:meta type="resname">Merge.14</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="97">
+        <source xml:space="preserve">Missing target language declaration</source>
+        <target xml:space="preserve">Falta la declaración del idioma destino</target>
+      </segment>
+    </unit>
+    <unit id="98">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">PseudoTranslation.help</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="98">
         <source xml:space="preserve">
 
 Usage:
@@ -1722,57 +1739,57 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="98">
+    <unit id="99">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">PseudoTranslation.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="98">
+      <segment state="final" id="99">
         <source xml:space="preserve">'catalog' folder not found</source>
         <target xml:space="preserve">No se encontró la carpeta 'catalog'</target>
-      </segment>
-    </unit>
-    <unit id="99">
-      <mda:metadata>
-        <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">PseudoTranslation.2</mda:meta>
-        </mda:metaGroup>
-      </mda:metadata>
-      <segment state="final" id="99">
-        <source xml:space="preserve">Catalog file does not exist</source>
-        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="100">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">PseudoTranslation.3</mda:meta>
+          <mda:meta type="resname">PseudoTranslation.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="100">
-        <source xml:space="preserve">Selected file is not an XLIFF document</source>
-        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
+        <source xml:space="preserve">Catalog file does not exist</source>
+        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="101">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">PseudoTranslation.4</mda:meta>
+          <mda:meta type="resname">PseudoTranslation.3</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="101">
-        <source xml:space="preserve">Missing target language declaration</source>
-        <target xml:space="preserve">Falta la declaración del idioma destino</target>
+        <source xml:space="preserve">Selected file is not an XLIFF document</source>
+        <target xml:space="preserve">El archivo seleccionado no es un documento XLIFF</target>
       </segment>
     </unit>
     <unit id="102">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">RemoveTargets.help</mda:meta>
+          <mda:meta type="resname">PseudoTranslation.4</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="102">
+        <source xml:space="preserve">Missing target language declaration</source>
+        <target xml:space="preserve">Falta la declaración del idioma destino</target>
+      </segment>
+    </unit>
+    <unit id="103">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">RemoveTargets.help</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="103">
         <source xml:space="preserve">
 
 Usage:
@@ -1801,68 +1818,68 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="103">
+    <unit id="104">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">RemoveTargets.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="103">
+      <segment state="final" id="104">
         <source xml:space="preserve">'catalog' folder not found</source>
         <target xml:space="preserve">No se encontró la carpeta 'catalog'</target>
-      </segment>
-    </unit>
-    <unit id="104">
-      <mda:metadata>
-        <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">RemoveTargets.2</mda:meta>
-        </mda:metaGroup>
-      </mda:metadata>
-      <segment state="final" id="104">
-        <source xml:space="preserve">Catalog file does not exist</source>
-        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="105">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">TmxExporter.0</mda:meta>
+          <mda:meta type="resname">RemoveTargets.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="105">
-        <source xml:space="preserve">'catalog' folder not found</source>
-        <target xml:space="preserve">No se encontró la carpeta 'catalog'</target>
+        <source xml:space="preserve">Catalog file does not exist</source>
+        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="106">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">TmxExporter.1</mda:meta>
+          <mda:meta type="resname">TmxExporter.0</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="106">
-        <source xml:space="preserve">Catalog file does not exist</source>
-        <target xml:space="preserve">El archivo de catálogo no existe</target>
+        <source xml:space="preserve">'catalog' folder not found</source>
+        <target xml:space="preserve">No se encontró la carpeta 'catalog'</target>
       </segment>
     </unit>
     <unit id="107">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">TmxExporter.2</mda:meta>
+          <mda:meta type="resname">TmxExporter.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="107">
-        <source xml:space="preserve">Missing '-xliff' parameter</source>
-        <target xml:space="preserve">Falta el parámetro '-xliff'</target>
+        <source xml:space="preserve">Catalog file does not exist</source>
+        <target xml:space="preserve">El archivo de catálogo no existe</target>
       </segment>
     </unit>
     <unit id="108">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">TmxExporter.3</mda:meta>
+          <mda:meta type="resname">TmxExporter.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="108">
+        <source xml:space="preserve">Missing '-xliff' parameter</source>
+        <target xml:space="preserve">Falta el parámetro '-xliff'</target>
+      </segment>
+    </unit>
+    <unit id="109">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">TmxExporter.3</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="109">
         <source xml:space="preserve">
 
 Usage:
@@ -1893,35 +1910,35 @@ Donde:
 </target>
       </segment>
     </unit>
-    <unit id="109">
+    <unit id="110">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
           <mda:meta type="resname">UnexistentSegmentException.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
-      <segment state="final" id="109">
+      <segment state="final" id="110">
         <source xml:space="preserve">Requested segment does not exist in skeleton file</source>
         <target xml:space="preserve">El segmento solicitado no existe en el archivo esqueleto</target>
-      </segment>
-    </unit>
-    <unit id="110">
-      <mda:metadata>
-        <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Utils.1</mda:meta>
-        </mda:metaGroup>
-      </mda:metadata>
-      <segment state="final" id="110">
-        <source xml:space="preserve">Error retrieving absolute path for {0} relative to {1}</source>
-        <target xml:space="preserve">Error al generar ruta absoluta para {0} relativa a {1}</target>
       </segment>
     </unit>
     <unit id="111">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Utils.2</mda:meta>
+          <mda:meta type="resname">Utils.1</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="111">
+        <source xml:space="preserve">Error retrieving absolute path for {0} relative to {1}</source>
+        <target xml:space="preserve">Error al generar ruta absoluta para {0} relativa a {1}</target>
+      </segment>
+    </unit>
+    <unit id="112">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Utils.2</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="112">
         <source xml:space="preserve">Path is not absolute for {0}</source>
         <target xml:space="preserve">La ruta no es absoluta para {0}</target>
       </segment>
@@ -3801,8 +3818,8 @@ JSUKWGxpZmYyTWlmLjM9JSUlMyUlJQo=</skeleton>
     </unit>
   </file>
   <file original="com/maxprograms/converters/idml/idml.properties" id="25">
-    <skeleton>SWRtbDJYbGlmZi4xPSUlJTAlJSUKU3RvcnkyWGxpZmYuMT0lJSUxJSUlClhsaWZmMklkbWwuMT0l
-JSUyJSUlCg==</skeleton>
+    <skeleton>SWRtbDJYbGlmZi4xPSUlJTAlJSUKSWRtbDJYbGlmZi4yPSUlJTElJSUKSWRtbDJYbGlmZi4zPSUl
+JTIlJSUKU3RvcnkyWGxpZmYuMT0lJSUzJSUlClhsaWZmMklkbWwuMT0lJSU0JSUlCg==</skeleton>
     <mda:metadata>
       <mda:metaGroup category="format">
         <mda:meta type="datatype">javapropertyresourcebundle</mda:meta>
@@ -3830,28 +3847,51 @@ JSUyJSUlCg==</skeleton>
     <unit id="1">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Story2Xliff.1</mda:meta>
+          <mda:meta type="resname">Idml2Xliff.2</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="1">
-        <source xml:space="preserve">Error converting Story</source>
-        <target xml:space="preserve">Error al convertir Story</target>
+        <source xml:space="preserve">Failed to close ZipOutputStream during cleanup</source>
+        <target xml:space="preserve">Error al cerrar ZipOutputStream durante la limpieza</target>
       </segment>
     </unit>
     <unit id="2">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">Xliff2Idml.1</mda:meta>
+          <mda:meta type="resname">Idml2Xliff.3</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="2">
+        <source xml:space="preserve">Failed to delete temp file during cleanup</source>
+        <target xml:space="preserve">Error al eliminar archivo temporal durante la limpieza</target>
+      </segment>
+    </unit>
+    <unit id="3">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Story2Xliff.1</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="3">
+        <source xml:space="preserve">Error converting Story</source>
+        <target xml:space="preserve">Error al convertir Story</target>
+      </segment>
+    </unit>
+    <unit id="4">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">Xliff2Idml.1</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="4">
         <source xml:space="preserve">Error merging IDML file</source>
         <target xml:space="preserve">Error al combinar el archivo IDML</target>
       </segment>
     </unit>
   </file>
   <file original="com/maxprograms/segmenter/segmenter.properties" id="26">
-    <skeleton>U2VnbWVudGVyLjE9JSUlMCUlJQpTZWdtZW50ZXIuMj0lJSUxJSUlCg==</skeleton>
+    <skeleton>U2VnbWVudGVyLjE9JSUlMCUlJQpTZWdtZW50ZXIuMj0lJSUxJSUlClNlZ21lbnRlclBvb2wuMT0l
+JSUyJSUlCg==</skeleton>
     <mda:metadata>
       <mda:metaGroup category="format">
         <mda:meta type="datatype">javapropertyresourcebundle</mda:meta>
@@ -3885,6 +3925,17 @@ JSUyJSUlCg==</skeleton>
       <segment state="final" id="1">
         <source xml:space="preserve">Incorrect SRX version</source>
         <target xml:space="preserve">Versión incorrecta de SRX</target>
+      </segment>
+    </unit>
+    <unit id="2">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">SegmenterPool.1</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="2">
+        <source xml:space="preserve">srxFile and language parameters must not be null</source>
+        <target xml:space="preserve">Los parámetros srxFile y language no deben ser nulos</target>
       </segment>
     </unit>
   </file>
@@ -4572,8 +4623,16 @@ JSUlMTY3JSUlClhsaWZmQ2hlY2tlci4zNj0lJSUxNjglJSUKWGxpZmZDaGVja2VyLjM3PSUlJTE2
 OSUlJQpYbGlmZkNoZWNrZXIuMzg9JSUlMTcwJSUlClhsaWZmQ2hlY2tlci4zOT0lJSUxNzElJSUK
 WGxpZmZDaGVja2VyLjQ9JSUlMTcyJSUlClhsaWZmQ2hlY2tlci40MD0lJSUxNzMlJSUKWGxpZmZD
 aGVja2VyLjU9JSUlMTc0JSUlClhsaWZmQ2hlY2tlci42PSUlJTE3NSUlJQpYbGlmZkNoZWNrZXIu
-Nz0lJSUxNzYlJSUKWGxpZmZDaGVja2VyLjg9JSUlMTc3JSUlClhsaWZmQ2hlY2tlci45PSUlJTE3
-OCUlJQo=</skeleton>
+Nz0lJSUxNzYlJSUKWGxpZmZDaGVja2VyLjg9JSUlMTc3JSUlClhsaWZmQ29tcGFyZXIuaGVscD0l
+JSUxNzglJSUKWGxpZmZDb21wYXJlci4xPSUlJTE3OSUlJQpYbGlmZkNvbXBhcmVyLjI9JSUlMTgw
+JSUlClhsaWZmQ29tcGFyZXIuMz0lJSUxODElJSUKWGxpZmZDb21wYXJlci40PSUlJTE4MiUlJQpY
+bGlmZkNvbXBhcmVyLjU9JSUlMTgzJSUlClhsaWZmQ29tcGFyZXIuNj0lJSUxODQlJSUKWGxpZmZD
+b21wYXJlci43PSUlJTE4NSUlJQpYbGlmZkNvbXBhcmVyLjg9JSUlMTg2JSUlClhsaWZmQ29tcGFy
+ZXIuOT0lJSUxODclJSUKWGxpZmZDb21wYXJlci4xMD0lJSUxODglJSUKWGxpZmZDb21wYXJlci4x
+MT0lJSUxODklJSUKWGxpZmZDb21wYXJlci4xMj0lJSUxOTAlJSUKWGxpZmZDb21wYXJlci4xMz0l
+JSUxOTElJSUKWGxpZmZDb21wYXJlci4xND0lJSUxOTIlJSUKWGxpZmZDb21wYXJlci4xNT0lJSUx
+OTMlJSUKWGxpZmZDb21wYXJlci4xNj0lJSUxOTQlJSUKWGxpZmZDb21wYXJlci4xNz0lJSUxOTUl
+JSUK</skeleton>
     <mda:metadata>
       <mda:metaGroup category="format">
         <mda:meta type="datatype">javapropertyresourcebundle</mda:meta>
@@ -6572,12 +6631,229 @@ Donde:
     <unit id="178">
       <mda:metadata>
         <mda:metaGroup category="transUnitAttributes">
-          <mda:meta type="resname">XliffChecker.9</mda:meta>
+          <mda:meta type="resname">XliffComparer.help</mda:meta>
         </mda:metaGroup>
       </mda:metadata>
       <segment state="final" id="178">
-        <source xml:space="preserve">XLIFF {0} not supported yet</source>
-        <target xml:space="preserve">XLIFF {0} aún no es compatible</target>
+        <source xml:space="preserve">Usage: XliffComparer -file1 &lt;xliff1&gt; -file2 &lt;xliff2&gt; [-catalog &lt;catalog&gt;]
+
+Parameters:
+  -file1 &lt;xliff1&gt;     First XLIFF file to compare
+  -file2 &lt;xliff2&gt;     Second XLIFF file to compare
+  -catalog &lt;catalog&gt;  XML catalog file (optional)
+  -help               Display this help information
+
+Compares two XLIFF files for semantic equivalence, ignoring:
+  - Skeleton file references and paths
+  - Whitespace and formatting differences
+  - Attribute order
+
+Exit codes:
+  0 - Files are equivalent
+  1 - Files differ or error occurred</source>
+        <target xml:space="preserve">Uso: XliffComparer -file1 &lt;xliff1&gt; -file2 &lt;xliff2&gt; [-catalog &lt;catalog&gt;]
+
+Parámetros:
+  -file1 &lt;xliff1&gt;     Primer archivo XLIFF a comparar
+  -file2 &lt;xliff2&gt;     Segundo archivo XLIFF a comparar
+  -catalog &lt;catalog&gt;  Archivo de catálogo XML (opcional)
+  -help               Mostrar esta información de ayuda
+
+Compara dos archivos XLIFF por equivalencia semántica, ignorando:
+  - Referencias y rutas de archivos de esqueleto
+  - Diferencias de formato y espacios en blanco
+  - Orden de atributos
+
+Códigos de salida:
+  0 - Los archivos son equivalentes
+  1 - Los archivos difieren o se produjo un error</target>
+      </segment>
+    </unit>
+    <unit id="179">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.1</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="179">
+        <source xml:space="preserve">Both -file1 and -file2 arguments are required</source>
+        <target xml:space="preserve">Se requieren ambos argumentos -file1 y -file2</target>
+      </segment>
+    </unit>
+    <unit id="180">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.2</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="180">
+        <source xml:space="preserve">Error comparing files</source>
+        <target xml:space="preserve">Error al comparar archivos</target>
+      </segment>
+    </unit>
+    <unit id="181">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.3</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="181">
+        <source xml:space="preserve">Files are semantically equivalent</source>
+        <target xml:space="preserve">Los archivos son semánticamente equivalentes</target>
+      </segment>
+    </unit>
+    <unit id="182">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.4</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="182">
+        <source xml:space="preserve">Total segments compared: {0}</source>
+        <target xml:space="preserve">Total de segmentos comparados: {0}</target>
+      </segment>
+    </unit>
+    <unit id="183">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.5</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="183">
+        <source xml:space="preserve">Files have differences</source>
+        <target xml:space="preserve">Los archivos tienen diferencias</target>
+      </segment>
+    </unit>
+    <unit id="184">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.6</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="184">
+        <source xml:space="preserve">Different number of files</source>
+        <target xml:space="preserve">Número diferente de archivos</target>
+      </segment>
+    </unit>
+    <unit id="185">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.7</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="185">
+        <source xml:space="preserve">File1 has {0} files, File2 has {1} files</source>
+        <target xml:space="preserve">Archivo1 tiene {0} archivos, Archivo2 tiene {1} archivos</target>
+      </segment>
+    </unit>
+    <unit id="186">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.8</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="186">
+        <source xml:space="preserve">Different original attribute at file position: {0}</source>
+        <target xml:space="preserve">Atributo original diferente en la posición de archivo: {0}</target>
+      </segment>
+    </unit>
+    <unit id="187">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.9</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="187">
+        <source xml:space="preserve">  File1 original: {0}</source>
+        <target xml:space="preserve">Original de Archivo1: {0}</target>
+      </segment>
+    </unit>
+    <unit id="188">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.10</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="188">
+        <source xml:space="preserve">  File2 original: {0}</source>
+        <target xml:space="preserve">Original de Archivo2: {0}</target>
+      </segment>
+    </unit>
+    <unit id="189">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.11</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="189">
+        <source xml:space="preserve">Different number of units in file: {0} (position {1})</source>
+        <target xml:space="preserve">Número diferente de unidades en archivo: {0} (posición {1})</target>
+      </segment>
+    </unit>
+    <unit id="190">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.12</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="190">
+        <source xml:space="preserve">File1 has {0} units, File2 has {1} units</source>
+        <target xml:space="preserve">Archivo1 tiene {0} unidades, Archivo2 tiene {1} unidades</target>
+      </segment>
+    </unit>
+    <unit id="191">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.13</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="191">
+        <source xml:space="preserve">Difference in file: {0} (position {1}), unit position: {2}</source>
+        <target xml:space="preserve">Diferencia en archivo: {0} (posición {1}), posición de unidad: {2}</target>
+      </segment>
+    </unit>
+    <unit id="192">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.14</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="192">
+        <source xml:space="preserve">  File1 unit id: {0}</source>
+        <target xml:space="preserve">Id de unidad de Archivo1: {0}</target>
+      </segment>
+    </unit>
+    <unit id="193">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.15</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="193">
+        <source xml:space="preserve">  File2 unit id: {0}</source>
+        <target xml:space="preserve">Id de unidad de Archivo2: {0}</target>
+      </segment>
+    </unit>
+    <unit id="194">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.16</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="194">
+        <source xml:space="preserve">  File1 unit: {0}</source>
+        <target xml:space="preserve">Unidad de Archivo1: {0}</target>
+      </segment>
+    </unit>
+    <unit id="195">
+      <mda:metadata>
+        <mda:metaGroup category="transUnitAttributes">
+          <mda:meta type="resname">XliffComparer.17</mda:meta>
+        </mda:metaGroup>
+      </mda:metadata>
+      <segment state="final" id="195">
+        <source xml:space="preserve">  File2 unit: {0}</source>
+        <target xml:space="preserve">Unidad de Archivo2: {0}</target>
       </segment>
     </unit>
   </file>

@@ -125,9 +125,9 @@ Usage:
 convert.sh [-help] [-version] -file sourceFile -srcLang sourceLang 
         [-tgtLang targetLang] [-skl skeletonFile] [-xliff xliffFile] 
         [-type fileType] [-enc encoding] [-srx srxFile] [-catalog catalogFile] 
-        [-divatal ditaval] [-config configFile] [-embed] [-paragraph] 
-        [-xmlfilter folder] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] [-strict]
-        [-charsets] [-types]
+        [-maxThreads threads] [-divatal ditaval] [-config configFile] [-embed] 
+        [-paragraph] [-xmlfilter folder] [-2.0] [-2.1] [-2.2] [-ignoretc] [-ignoresvg] 
+        [-strict] [-charsets] [-types]
 
 Where:
 
@@ -142,6 +142,7 @@ Where:
    -enc:       (optional) character set code for the source file
    -srx:       (optional) SRX file to use for segmentation
    -catalog:   (optional) XML catalog to use for processing
+   -maxThreads:(optional) Maximum number of threads to use while converting
    -ditaval:   (optional) conditional processing file to use when converting DITA maps
    -config:    (optional) configuration file to use when converting JSON documents
    -embed:     (optional) store skeleton inside the XLIFF file
@@ -209,18 +210,20 @@ If you use binaries from the command line, running `.\merge.cmd` or `./merge.sh`
 ```text
 Usage:
 
-   merge.cmd [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] [-unapproved] [-export]
+merge.sh [-help] [-version] -xliff xliffFile -target targetFile [-catalog catalogFile] 
+        [-maxThreads threads] [-unapproved] [-export]
 
 Where:
 
-   -help:       (optional) Display this help information and exit
-   -version:    (optional) Display version & build information and exit
-   -xliff:      XLIFF file to merge
-   -target:     translated file or folder where to store translated files
-   -catalog:    (optional) XML catalog to use for processing
-   -unapproved: (optional) accept translations from unapproved segments
-   -export:     (optional) generate TMX file from approved segments
-   -getTarget:  (optional) display a potential target file name and exit
+    -help:       (optional) display this help information and exit
+    -version:    (optional) display version & build information and exit
+    -xliff:      XLIFF file to merge
+    -target:     (optional) translated file or folder where to store translated files
+    -catalog:    (optional) XML catalog to use for processing
+    -maxThreads: (optional) Maximum number of threads to use while merging
+    -unapproved: (optional) accept translations from unapproved segments
+    -export:     (optional) generate TMX file from approved segments
+    -getTarget:  (optional) display a potential target file name and exit
 ```
 
 ## Recover ICE (In-Context Exact) Matches

@@ -358,7 +358,16 @@ public class Convert {
 
 		if (resegment && Constants.SUCCESS.equals(result.get(0))) {
 			try {
-				result = Resegmenter.run(xliff, srx, srcLang, CatalogBuilder.getCatalog(catalog));
+				int threads = Runtime.getRuntime().availableProcessors();
+				if (!maxThreads.isEmpty()) {
+					try {
+						threads = Integer.parseInt(maxThreads);
+					} catch (NumberFormatException e) {
+						MessageFormat mf = new MessageFormat(Messages.getString("Convert.22"));
+						logger.log(Level.WARNING, mf.format(new String[] { maxThreads }));
+					}
+				}
+				result = Resegmenter.run(xliff, srx, srcLang, CatalogBuilder.getCatalog(catalog), threads);
 			} catch (Exception e) {
 				// do nothing
 			}

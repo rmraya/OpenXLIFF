@@ -54,7 +54,7 @@ public class Resegmenter {
         // use run method instead
     }
 
-    public static List<String> run(String xliff, String srx, String srcLang, Catalog catalog) {
+    public static List<String> run(String xliff, String srx, String srcLang, Catalog catalog, int maxThreads) {
         List<String> result = new ArrayList<>();
         try {
             SAXBuilder builder = new SAXBuilder();
@@ -72,7 +72,6 @@ public class Resegmenter {
                 recurse(ctx, root);
             } else {
                 // Process file elements in parallel
-                int maxThreads = Runtime.getRuntime().availableProcessors();
                 ExecutorService executor = Executors.newFixedThreadPool(maxThreads);
                 List<Future<Void>> futures = new ArrayList<>();
                 

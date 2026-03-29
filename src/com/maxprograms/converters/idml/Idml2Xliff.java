@@ -215,18 +215,20 @@ public class Idml2Xliff {
 
 		// Parse maxThreads parameter
 		String maxThreadsParam = params.get("maxThreads");
-		int maxThreads;
-		if (maxThreadsParam != null) {
-			try {
-				maxThreads = Integer.parseInt(maxThreadsParam);
-				maxThreads = Math.max(1, maxThreads);
-			} catch (NumberFormatException e) {
-				logger.log(Level.WARNING, "Invalid maxThreads value, using default", e);
+			int maxThreads;
+			if (maxThreadsParam != null) {
+				try {
+					maxThreads = Integer.parseInt(maxThreadsParam);
+					if (maxThreads < 1) {
+						maxThreads = 1;
+					}
+				} catch (NumberFormatException e) {
+					// Use default if invalid
+					maxThreads = Runtime.getRuntime().availableProcessors();
+				}
+			} else {
 				maxThreads = Runtime.getRuntime().availableProcessors();
 			}
-		} else {
-			maxThreads = Runtime.getRuntime().availableProcessors();
-		}
 		params.put("maxThreads", String.valueOf(maxThreads));
 
 		List<String> entryOrder = new Vector<>();
