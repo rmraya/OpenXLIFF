@@ -59,7 +59,7 @@ public class Xliff20 {
 	private static final String XLIFF_DOCUMENT_2_2 = "urn:oasis:names:tc:xliff:document:2.2";
 	private static final String XLIFF_PGS_1_0 = "urn:oasis:names:tc:xliff:pgs:1.0";
 	private static final String W3_ORG_XML_NAMESPACE = "http://www.w3.org/XML/1998/namespace";
-	private static final String W3_ORG_ITS_2_0 = "http://www.w3.org/2005/11/its/";
+	private static final String W3_ORG_ITS_2_0 = "http://www.w3.org/2005/11/its";
 
 	private static Logger logger = System.getLogger(Xliff20.class.getName());
 	private String reason = "";
