@@ -101,12 +101,12 @@ OpenXLIFF Filters can generate XLIFF 1.2, 2.0, 2.1 and 2.2 from these formats:
 
 ### Steps for building
 
-- Checkout this repository.
+- Clone this repository.
 - Point your JAVA_HOME variable to JDK 21
 - Run `gradle` to generate a binary distribution in `./dist`
 
 ``` bash
-  git clone https://github.com/rmraya/OpenXLIFF.git
+  git clone https://github.com/maxprograms-com/OpenXLIFF.git
   cd OpenXLIFF
   gradle
 ```
