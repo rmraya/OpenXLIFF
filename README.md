@@ -13,36 +13,36 @@ With OpenXLIFF Filters you can create XLIFF files that don't use proprietary mar
 
 ## Features
 
-- **[Convert Document to XLIFF](https://github.com/rmraya/OpenXLIFF#convert-document-to-xliff)**  
-- **[Convert XLIFF to Original Format](https://github.com/rmraya/OpenXLIFF#convert-xliff-to-original-format)**
-- **[XLIFF Validation](https://github.com/rmraya/OpenXLIFF#xliff-validation)**
-- **[Convert XLIFF 1.2 to XLIFF 2.x](https://github.com/rmraya/OpenXLIFF#convert-xliff-12-to-xliff-2x)**
-- **[Convert XLIFF 2.x to XLIFF 1.2](https://github.com/rmraya/OpenXLIFF#convert-xliff-2x-to-xliff-12)**
-- **[Recover ICE (In-Context Exact) Matches](https://github.com/rmraya/OpenXLIFF#recover-ice-in-context-exact-matches)**
-- **[Translation Status Analysis](https://github.com/rmraya/OpenXLIFF#translation-status-analysis)**
-- **[Join multiple XLIFF files](https://github.com/rmraya/OpenXLIFF#join-multiple-xliff-files)**
-- **[Pseudo-translate XLIFF file](https://github.com/rmraya/OpenXLIFF#pseudo-translate-xliff-file)**
-- **[Copy Source to Target](https://github.com/rmraya/OpenXLIFF#copy-source-to-target)**
-- **[Approve All Segments](https://github.com/rmraya/OpenXLIFF#approve-all-segments)**
-- **[Remove All Targets](https://github.com/rmraya/OpenXLIFF#remove-all-targets)**
-- **[Export Approved Segments as TMX](https://github.com/rmraya/OpenXLIFF#export-approved-segments-as-tmx)**
+- **[Convert Document to XLIFF](https://github.com/maxprograms-com/OpenXLIFF#convert-document-to-xliff)**  
+- **[Convert XLIFF to Original Format](https://github.com/maxprograms-com/OpenXLIFF#convert-xliff-to-original-format)**
+- **[XLIFF Validation](https://github.com/maxprograms-com/OpenXLIFF#xliff-validation)**
+- **[Convert XLIFF 1.2 to XLIFF 2.x](https://github.com/maxprograms-com/OpenXLIFF#convert-xliff-12-to-xliff-2x)**
+- **[Convert XLIFF 2.x to XLIFF 1.2](https://github.com/maxprograms-com/OpenXLIFF#convert-xliff-2x-to-xliff-12)**
+- **[Recover ICE (In-Context Exact) Matches](https://github.com/maxprograms-com/OpenXLIFF#recover-ice-in-context-exact-matches)**
+- **[Translation Status Analysis](https://github.com/maxprograms-com/OpenXLIFF#translation-status-analysis)**
+- **[Join multiple XLIFF files](https://github.com/maxprograms-com/OpenXLIFF#join-multiple-xliff-files)**
+- **[Pseudo-translate XLIFF file](https://github.com/maxprograms-com/OpenXLIFF#pseudo-translate-xliff-file)**
+- **[Copy Source to Target](https://github.com/maxprograms-com/OpenXLIFF#copy-source-to-target)**
+- **[Approve All Segments](https://github.com/maxprograms-com/OpenXLIFF#approve-all-segments)**
+- **[Remove All Targets](https://github.com/maxprograms-com/OpenXLIFF#remove-all-targets)**
+- **[Export Approved Segments as TMX](https://github.com/maxprograms-com/OpenXLIFF#export-approved-segments-as-tmx)**
 
 ## Filters Configuration
 
 XML and JSON filters are configurable
 
-- **[XML Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/master/src/com/maxprograms/converters/xml#readme)**
-- **[JSON Filter Configuration](https://github.com/rmraya/OpenXLIFF/tree/master/src/com/maxprograms/converters/json#readme)**
+- **[XML Filter Configuration](https://github.com/maxprograms-com/OpenXLIFF/tree/master/src/com/maxprograms/converters/xml#readme)**
+- **[JSON Filter Configuration](https://github.com/maxprograms-com/OpenXLIFF/tree/master/src/com/maxprograms/converters/json#readme)**
 
 ## Related Projects
 
-- **[XLIFF Manager](https://github.com/rmraya/XLIFFManager)** implements an easy-to-use user interface for creating, merging, validating, and manipulating XLIFF files in a graphical environment.
-- **[Swordfish](https://github.com/rmraya/Swordfish)** uses OpenXLIFF Filters to extract translatable text from supported formats.
-- **[RemoteTM](https://github.com/rmraya/RemoteTM)** uses OpenXLIFF Filters to handle all TMX processing.
-- **[Stingray](https://github.com/rmraya/Stingray)** uses OpenXLIFF Filters for extracting the text to align from supported monolingual documents.
-- **[XLIFF Validation](https://github.com/rmraya/XLIFFValidation)** web-based XLIFF Validation Service.
-- **[Fluenta](https://github.com/rmraya/Fluenta)** a Translation Manager that uses OpenXLIFF Filters to generate XLIFF from DITA projects.
-- **[JavaPM](https://github.com/rmraya/JavaPM)** a set of scripts for localizing Java `.properties` files using XLIFF.
+- **[XLIFF Manager](https://github.com/maxprograms-com/XLIFFManager)** implements an easy-to-use user interface for creating, merging, validating, and manipulating XLIFF files in a graphical environment.
+- **[Swordfish](https://github.com/maxprograms-com/Swordfish)** uses OpenXLIFF Filters to extract translatable text from supported formats.
+- **[RemoteTM](https://github.com/maxprograms-com/RemoteTM)** uses OpenXLIFF Filters to handle all TMX processing.
+- **[Stingray](https://github.com/maxprograms-com/Stingray)** uses OpenXLIFF Filters for extracting the text to align from supported monolingual documents.
+- **[XLIFF Validation](https://github.com/maxprograms-com/XLIFFValidation)** web-based XLIFF Validation Service.
+- **[Fluenta](https://github.com/maxprograms-com/Fluenta)** a Translation Manager that uses OpenXLIFF Filters to generate XLIFF from DITA projects.
+- **[JavaPM](https://github.com/maxprograms-com/JavaPM)** a set of scripts for localizing Java `.properties` files using XLIFF.
 
 ## Supported Versions
 
