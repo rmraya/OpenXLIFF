@@ -2,7 +2,9 @@
 
 ![OpenXLIFF FIlters logo](openxliff_128.png)
 
-A set of Java filters for creating, merging and validating XLIFF 1.2, 2.0, 2.1 and 2.2 files.
+**OpenXLIFF** is a Java library for working with XLIFF 1.2, 2.0, 2.1, and 2.2 across the entire translation lifecycle. It enables conversion between source documents and XLIFF, validation beyond schema-level checks, transformation between XLIFF versions, and advanced operations such as merging, analysis, and translation data extraction.
+
+Support for multiple input formats is built in through internal filters, allowing the library to function as a self-contained engine for XLIFF processing in automated workflows and applications.
 
 With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup and are compatible with most CAT (Computer Asisted Translation) tools.
 
