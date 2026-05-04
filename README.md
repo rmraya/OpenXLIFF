@@ -6,8 +6,6 @@
 
 Support for multiple input formats is built in through internal filters, allowing the library to function as a self-contained engine for XLIFF processing in automated workflows and applications.
 
-With OpenXLIFF Filters you can create XLIFF files that don't use proprietary markup and are compatible with most CAT (Computer Asisted Translation) tools.
-
 - **[Binary Downloads](https://www.maxprograms.com/products/openxliff.html)**
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
