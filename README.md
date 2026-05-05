@@ -9,7 +9,7 @@ Support for multiple input formats is built in through internal filters, allowin
 - **[Binary Downloads](https://www.maxprograms.com/products/openxliff.html)**
 - **[Filters Configuration](https://github.com/rmraya/OpenXLIFF#filters-configuration)**
 - **[Supported File Formats](https://github.com/rmraya/OpenXLIFF#supported-file-formats)**
-- **[Building OpenXLIFF Filters](https://github.com/rmraya/OpenXLIFF/tree/master?tab=readme-ov-file#building-openxliff-filters)**
+- **[Building OpenXLIFF](https://github.com/rmraya/OpenXLIFF/tree/master?tab=readme-ov-file#building-openxliff)**
 
 ## Features
 
@@ -92,7 +92,7 @@ OpenXLIFF Filters can generate XLIFF 1.2, 2.0, 2.1 and 2.2 from these formats:
   - ResX (Windows .NET Resources)
   - TS (Qt Linguist translation source)
 
-## Building OpenXLIFF Filters
+## Building OpenXLIFF
 
 ### Requirements
 
