@@ -200,7 +200,11 @@ public class Xliff2Txlf {
                     StringBuilder tagContent = new StringBuilder();
                     List<XMLNode> tagNodes = e.getContent();
                     for (XMLNode tagNode : tagNodes) {
-                        tagContent = tagContent.append(tagNode.toString());
+                        if (tagNode.getNodeType() == XMLNode.TEXT_NODE) {
+                            tagContent.append(((TextNode) tagNode).getText());
+                        } else {
+                            tagContent.append(tagNode.toString());
+                        }
                     }
                     sb.append(uncleanString(tagContent.toString()));
                 }
@@ -217,9 +221,9 @@ public class Xliff2Txlf {
     }
 
     public static String uncleanString(String string) {
-        String result = string.replace("&amp;", "&");
+        String result = string.replace("&lt;", "<");
         result = result.replace("&gt;", ">");
-        result = result.replace("&lt;", "<");
+        result = result.replace("&amp;", "&");
         return result;
     }
 }
