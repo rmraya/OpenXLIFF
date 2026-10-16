@@ -211,19 +211,16 @@ public class XliffComparer {
     }
 
     private static List<Element> getUnits(Element fileElement) {
-        // For XLIFF 2.x, get <unit> elements directly
-        List<Element> units = fileElement.getChildren("unit");
-        if (!units.isEmpty()) {
-            return units;
+        List<Element> units = new java.util.ArrayList<>();
+        List<Element> children = fileElement.getChildren();
+        for (Element child : children) {
+            if ("unit".equals(child.getName()) || "trans-unit".equals(child.getName())) {
+                units.add(child);
+            } else {
+                units.addAll(getUnits(child));
+            }
         }
-
-        // For XLIFF 1.x, get <trans-unit> elements from <body>
-        Element body = fileElement.getChild("body");
-        if (body != null) {
-            return body.getChildren("trans-unit");
-        }
-
-        return new java.util.ArrayList<>();
+        return units;
     }
 
     private static void help() {
