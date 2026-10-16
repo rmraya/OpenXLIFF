@@ -21,7 +21,7 @@ The project is maintained by Maxprograms and published under the Eclipse Public 
 ## Technology Stack
 
 - **Language:** Java 25 (source and target).
-- **Build Tool:** Gradle 9.5 or newer (the repository uses Gradle 9.7).
+- **Build Tool:** Gradle 9.5 or newer (the repository uses Gradle 9.8.1).
 - **Module System:** Java Platform Module System (JPMS). The module name is `openxliff` and is declared in `src/module-info.java`.
 - **Dependencies:** Pre-built JARs stored in `lib/`:
   - `bcp47j.jar` — BCP 47 language tag handling.
@@ -57,7 +57,7 @@ The project is maintained by Maxprograms and published under the Eclipse Public 
 └── sonar-project.properties   # SonarQube configuration
 ```
 
-There are approximately 134 Java source files and 64 `.properties` resource bundles.
+There are approximately 137 Java source files and 66 `.properties` resource bundles.
 
 ## Build Commands
 
@@ -88,7 +88,7 @@ The build intentionally disables all caching (`gradle.properties` sets `org.grad
 ### Requirements
 
 - JDK 25 (`JAVA_HOME` must point to a JDK 25 installation).
-- Gradle 9.5+ on the path.
+- Gradle 9.5+ on the path. This repository has **no Gradle wrapper** (`gradlew`); all builds rely on a system-installed Gradle.
 
 ## Running the Tools
 
@@ -102,6 +102,27 @@ After building, the `dist/` directory contains a self-contained runtime. On Unix
 
 On Windows, use the corresponding `.cmd` launchers.
 
+### Available CLI tools
+
+| Script | Main class | Purpose |
+| --- | --- | --- |
+| `convert` | `com.maxprograms.converters.Convert` | Convert a source document to XLIFF |
+| `merge` | `com.maxprograms.converters.Merge` | Merge a translated XLIFF back into its source format |
+| `join` | `com.maxprograms.converters.Join` | Join multiple XLIFF files into one |
+| `iceMatches` | `com.maxprograms.converters.ICEMatches` | Extract in-context exact (ICE) matches |
+| `pseudotranslate` | `com.maxprograms.converters.PseudoTranslation` | Pseudo-translate an XLIFF file |
+| `copysources` | `com.maxprograms.converters.CopySources` | Copy source text into empty targets |
+| `approveall` | `com.maxprograms.converters.ApproveAll` | Mark all translations as approved |
+| `removetargets` | `com.maxprograms.converters.RemoveTargets` | Remove target elements from an XLIFF file |
+| `exporttmx` | `com.maxprograms.converters.TmxExporter` | Export approved segments as TMX |
+| `analysis` | `com.maxprograms.stats.RepetitionAnalysis` | Generate a repetition/status analysis report |
+| `xliffchecker` | `com.maxprograms.validation.XliffChecker` | Validate an XLIFF file |
+| `xliffcomparer` | `com.maxprograms.validation.XliffComparer` | Compare two XLIFF files |
+| `toxliff2` | `com.maxprograms.xliff2.ToXliff2` | Convert XLIFF 1.2 to 2.x |
+| `fromxliff2` | `com.maxprograms.xliff2.FromXliff2` | Convert XLIFF 2.x to 1.2 |
+| `resegment` | `com.maxprograms.xliff2.Resegmenter` | Re-segment an XLIFF 2.x document |
+| `xslt` | `com.maxprograms.xslt.XsltRunner` | Run an XSLT transformation |
+
 Each launcher invokes the embedded `dist/bin/java` with the `openxliff` module and the appropriate main class, for example:
 
 ```bash
@@ -113,7 +134,7 @@ $OpenXLIFF_HOME/bin/java -XX:+UseCompactObjectHeaders --module-path $OpenXLIFF_H
 The exported JPMS packages (from `src/module-info.java`) are the public API surface:
 
 - `com.maxprograms.converters` — core conversion CLI entry points (`Convert`, `Merge`, `Join`, `ICEMatches`, `PseudoTranslation`, `CopySources`, `ApproveAll`, `RemoveTargets`, `TmxExporter`).
-- `com.maxprograms.converters.<format>` — format-specific conversion implementations.
+- `com.maxprograms.converters.<format>` — format-specific conversion implementations. Exported format packages: `ditamap`, `html`, `idml`, `javaproperties`, `javascript`, `json`, `mif`, `msoffice`, `office`, `php`, `plaintext`, `po`, `rc`, `resx`, `sdlxliff`, `sdlppx`, `srt`, `ts`, `txlf`, `txml`, `wpml`, `xliff`, and `xml`.
 - `com.maxprograms.segmenter` — SRX-based segmentation (`Segmenter`, `SegmenterPool`).
 - `com.maxprograms.stats` — translation status analysis (`RepetitionAnalysis`).
 - `com.maxprograms.validation` — XLIFF validation (`XliffChecker`, `XliffComparer`).
