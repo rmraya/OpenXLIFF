@@ -53,7 +53,7 @@ public class JsonConfig {
         trimTags = true;
         mergeTags = true;
         rawSegmentation = false;
-        exportHTML = true;
+        exportHTML = false;
         preserveSpaces = false;
         htmlIgnore = new Vector<>();
     }
