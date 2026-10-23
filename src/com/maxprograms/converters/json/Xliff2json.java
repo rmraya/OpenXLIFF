@@ -118,13 +118,18 @@ public class Xliff2json {
         if (text == null || text.isEmpty()) {
             return "";
         }
-        Matcher matcher = Pattern.compile("\\\\u([0-9a-fA-F]{4})").matcher(text);
+        // only unescape \\uXXXX when its backslash is not itself escaped
+        Matcher matcher = Pattern.compile("(?<!\\\\)((?:\\\\\\\\)*)\\\\u([0-9a-fA-F]{4})").matcher(text);
         StringBuilder result = new StringBuilder();
         while (matcher.find()) {
-            String hexString = matcher.group(1);
-            int codePoint = Integer.parseInt(hexString, 16);
-            char unicodeChar = (char) codePoint;
-            matcher.appendReplacement(result, Character.toString(unicodeChar));
+            int codePoint = Integer.parseInt(matcher.group(2), 16);
+            String replacement = matcher.group();
+            // keep escapes that must stay escaped in valid JSON
+            if (codePoint >= 0x20 && codePoint != '"' && codePoint != '\\'
+                    && !Character.isSurrogate((char) codePoint)) {
+                replacement = matcher.group(1) + (char) codePoint;
+            }
+            matcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
         }
         matcher.appendTail(result);
         return result.toString();
@@ -250,7 +255,7 @@ public class Xliff2json {
                     if (escaped) {
                         result.append(replaceEntities(text));
                     } else if (exportHTML) {
-                        result.append(XMLUtils.cleanText(text));
+                        result.append(escapeHtml(text));
                     } else {
                         result.append(text);
                     }
@@ -258,6 +263,11 @@ public class Xliff2json {
             }
         }
         return result.toString();
+    }
+
+    private static String escapeHtml(String text) {
+        // do not escape the ampersand of entities that are already in the text
+        return XMLUtils.cleanText(text).replaceAll("&amp;(#[0-9]+|#[xX][0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*);", "&$1;");
     }
 
     private String replaceEntities(String string) {
